@@ -31,6 +31,25 @@ from sphinx_gallery.utils import get_md5sum
 sys.path.insert(0, os.path.abspath("."))
 sys.path.insert(0, os.path.abspath("../.."))  # Source code dir relative to this file
 
+
+def _cores_allowed() -> int:
+    """How many cores this machine lets the build use.
+
+    A hosted builder is a slice of a much larger machine, and PyTorch sizes
+    its thread pool from the machine: left alone it starts a thread per host
+    core, and they spend the build contending for the few the quota allows.
+    """
+    try:
+        quota, period = Path("/sys/fs/cgroup/cpu.max").read_text().split()
+        if quota != "max":
+            return max(1, round(int(quota) / int(period)))
+    except (OSError, ValueError):
+        pass
+    return len(os.sched_getaffinity(0))
+
+
+torch.set_num_threads(min(torch.get_num_threads(), _cores_allowed()))
+
 # -- Project information -----------------------------------------------------
 
 project = "torchsim"
