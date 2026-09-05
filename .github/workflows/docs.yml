@@ -16,8 +16,8 @@ permissions:
   contents: read
 
 jobs:
-  pages:
-    name: Pages
+  html:
+    name: HTML
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -29,26 +29,25 @@ jobs:
 
       - uses: actions/setup-python@v7
         with:
-          # What .readthedocs.yaml builds the published pages with.
           python-version: "3.12"
           cache: pip
 
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
 
-      # What .readthedocs.yaml installs, so that this job rehearses it: the
-      # CPU build of PyTorch, which is the same release as the CUDA one the
-      # default index serves and sorts above it, with PyPI named alongside so
-      # that a package the CPU index has no wheel for is still resolvable.
+      # The default index serves the CUDA build on Linux, which is gigabytes
+      # of driver libraries a runner with no card cannot use. PyPI is named
+      # alongside it so that a package the CPU index has no wheel for is
+      # still resolvable.
       - name: Install PyTorch (CPU)
         run: |
           python -m pip install torch \
             --index-url https://download.pytorch.org/whl/cpu \
             --extra-index-url https://pypi.org/simple
 
-      # The ``doc`` extra alone, which is what the hosted builder installs:
-      # every page is written, and the examples needing nothing but TorchSim
-      # are executed. What the rest need is the Gallery job below.
+      # The ``doc`` extra alone: every page is written and the examples
+      # needing nothing but TorchSim are executed, which is what a branch
+      # wants to know within a few minutes. The Site job below runs the rest.
       - name: Build the extensions and install
         run: python -m pip install ".[doc]"
 
@@ -61,12 +60,12 @@ jobs:
           path: docs/build/html
           retention-days: 7
 
-  gallery:
-    name: Gallery
-    # What the published pages show. The examples are executed here, where
-    # the phantoms, the segmentation network and the encoding fit and where
-    # there is time to download a subject, and what they produced is pushed
-    # to the branch ``.readthedocs.yaml`` restores before it runs Sphinx.
+  site:
+    name: Site
+    # What is published. The examples are executed here, where the phantoms,
+    # the segmentation network and the encoding fit and where there is time
+    # to download a subject, and the pages are pushed to the branch GitHub
+    # Pages serves: ``latest`` for this branch, its own directory per tag.
     if: >-
       github.event_name == 'workflow_dispatch'
       || (github.event_name == 'push'
@@ -77,6 +76,17 @@ jobs:
 
     permissions:
       contents: write
+
+    # Deploys queue rather than race for the branch they all push to.
+    concurrency:
+      group: publish-docs
+      cancel-in-progress: false
+
+    env:
+      # A tag is published under its own name; anything else is the
+      # development version. It names the directory of the site, the entry
+      # the switcher marks, and the prefix the notebook links reach through.
+      TORCHSIM_DOCS_VERSION: ${{ github.ref_type == 'tag' && github.ref_name || 'latest' }}
 
     steps:
       - uses: actions/checkout@v7
@@ -115,27 +125,24 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: html-gallery
+          name: html-${{ env.TORCHSIM_DOCS_VERSION }}
           path: docs/build/html
           retention-days: 7
 
-      # One commit holding the executed gallery, replaced each time: the
-      # branch is what a documentation build restores, not a history.
-      - name: Publish the executed gallery
-        # A run started by hand on a branch builds and uploads; what the
-        # published pages restore is written by ``main`` and by a tag.
+      - name: Publish to the site branch
         if: >-
           github.ref == 'refs/heads/main'
           || startsWith(github.ref, 'refs/tags/v')
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout --orphan docs-gallery
-          git rm -r --cached . --quiet
-          # sphinx-gallery caches the indexes it resolves links against in a
-          # shelve, which is written in whichever dbm format this runner's
-          # interpreter has and is unreadable to one built without it.
-          find docs/generated -name 'searchindex*' -delete
-          git add --force docs/generated
-          git commit --quiet -m "Gallery executed from ${{ github.sha }}"
-          git push --force origin docs-gallery
+          if git fetch origin gh-pages; then
+            git worktree add ../pages FETCH_HEAD
+          else
+            git worktree add --orphan ../pages
+          fi
+          python scripts/publish_docs.py docs/build/html "$TORCHSIM_DOCS_VERSION" ../pages
+          git -C ../pages add --all
+          git -C ../pages commit --quiet \
+            -m "Publish $TORCHSIM_DOCS_VERSION from ${{ github.sha }}" || exit 0
+          git -C ../pages push origin HEAD:gh-pages

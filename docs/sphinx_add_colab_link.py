@@ -38,14 +38,24 @@ class ColabLinkDirective(SphinxDirective):
         # Full path to the notebook
         notebook_full_path = os.path.join(rst_file_dir, notebook_filename)
 
-        # Convert the full path back to a relative path from the repo root
-        # repo_root = self.config.project_root_dir
-        notebook_repo_relative_path = os.path.relpath(
-            notebook_full_path, os.path.join(os.getcwd(), "docs")
+        # Where that notebook is on the branch the built pages are served
+        # from: sphinx-gallery copies the galleries under its notebooks
+        # directory, and the site holds one directory per version.
+        binder = self.config.sphinx_gallery_conf["binder"]
+        on_the_branch = "/".join(
+            part
+            for part in (
+                binder.get("filepath_prefix"),
+                binder["notebooks_dir"],
+                os.path.relpath(notebook_full_path, self.env.srcdir).replace(
+                    os.sep, "/"
+                ),
+            )
+            if part
         )
 
         # Generate the Colab URL based on GitHub repo information
-        self.colab_url = f"https://colab.research.google.com/github/FiRMLAB-Pisa/torchsim/blob/gh-pages/examples/{notebook_repo_relative_path}"
+        self.colab_url = f"https://colab.research.google.com/github/FiRMLAB-Pisa/torchsim/blob/{binder['branch']}/{on_the_branch}"
 
         # Create the HTML button or link
         self.html = f"""<div class="colab-button">

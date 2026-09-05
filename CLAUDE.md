@@ -179,11 +179,12 @@ everything it imports, so what a build runs follows from the extras installed
 into it, and a page already carrying output executed from the source as it
 stands is reused rather than re-run.
 
-Read the Docs builds and hosts the published pages, one version per release,
-from the `doc` extra and Sphinx alone. The thirteen examples are executed by
-the Gallery job of `.github/workflows/docs.yml`, which pushes `docs/generated`
-to the `docs-gallery` branch; the published build restores it and so publishes
-every page with the output it was executed with.
+`.github/workflows/docs.yml` builds the published pages and GitHub Pages
+serves them from `gh-pages`: its HTML job checks every branch with the `doc`
+extra, and its Site job executes all thirteen examples with the `examples`
+extra and hands the tree to `scripts/publish_docs.py`, which keeps one
+directory per version -- `latest` for `main`, its own for each `v*.*.*` tag --
+beside the list the version switcher reads.
 
 ## Packaging
 
