@@ -36,10 +36,15 @@ jobs:
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
 
-      # The default index serves the CUDA build on Linux, which is gigabytes
-      # of driver libraries a runner with no card cannot use.
+      # What .readthedocs.yaml installs, so that this job rehearses it: the
+      # CPU build of PyTorch, which is the same release as the CUDA one the
+      # default index serves and sorts above it, with PyPI named alongside so
+      # that a package the CPU index has no wheel for is still resolvable.
       - name: Install PyTorch (CPU)
-        run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+        run: |
+          python -m pip install torch \
+            --index-url https://download.pytorch.org/whl/cpu \
+            --extra-index-url https://pypi.org/simple
 
       # The ``doc`` extra alone, which is what the hosted builder installs:
       # every page is written, and the examples needing nothing but TorchSim
@@ -93,7 +98,8 @@ jobs:
       - name: Install PyTorch and torchvision (CPU)
         run: |
           python -m pip install torch torchvision \
-            --index-url https://download.pytorch.org/whl/cpu
+            --index-url https://download.pytorch.org/whl/cpu \
+            --extra-index-url https://pypi.org/simple
 
       # Everything else the notebooks import while they run, which is the
       # ``examples`` extra, so that every one of the thirteen is executed.

@@ -21,9 +21,17 @@ build:
       - git fetch --tags || true
     pre_install:
       # The default index serves the CUDA build on Linux, which is gigabytes
-      # of driver libraries a builder with no card cannot use. Installed
-      # first, it is what the project's own requirement resolves against.
-      - python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      # of driver libraries a builder with no card cannot use, so PyTorch
+      # comes from its own CPU index and is what the project's requirement
+      # resolves against: ``2.x+cpu`` sorts above the plain ``2.x`` of the
+      # same release. PyPI is named alongside it because that index carries
+      # wheels and nothing to build one from, so a package it serves as a
+      # source distribution has to find its build backend somewhere.
+      - python -m pip install --upgrade pip
+      - >-
+        python -m pip install torch
+        --index-url https://download.pytorch.org/whl/cpu
+        --extra-index-url https://pypi.org/simple
     pre_build:
       # The gallery is executed by the Docs workflow, on a runner with the
       # room for the phantoms, the segmentation network and the encoding, and
