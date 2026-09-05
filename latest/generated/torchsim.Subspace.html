@@ -1,0 +1,848 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Subspace &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/torchsim.Subspace';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/generated/torchsim.Subspace.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sequence design" href="../api/optim.html" />
+    <link rel="prev" title="iterative" href="torchsim.iterative.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../explanations/epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="autoexamples/index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../api/index.html">API References</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../api/recon.html">Model-based reconstruction</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/edit/main/generated/torchsim.Subspace.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2Fgenerated/torchsim.Subspace.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/generated/torchsim.Subspace.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Subspace</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace"><code class="docutils literal notranslate"><span class="pre">Subspace</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.basis"><code class="docutils literal notranslate"><span class="pre">Subspace.basis</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.singular_values"><code class="docutils literal notranslate"><span class="pre">Subspace.singular_values</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.dictionary"><code class="docutils literal notranslate"><span class="pre">Subspace.dictionary</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.simulation"><code class="docutils literal notranslate"><span class="pre">Subspace.simulation</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.rank"><code class="docutils literal notranslate"><span class="pre">Subspace.rank</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.contrasts"><code class="docutils literal notranslate"><span class="pre">Subspace.contrasts</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.retained"><code class="docutils literal notranslate"><span class="pre">Subspace.retained</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.modes"><code class="docutils literal notranslate"><span class="pre">Subspace.modes</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.project"><code class="docutils literal notranslate"><span class="pre">Subspace.project()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.expand"><code class="docutils literal notranslate"><span class="pre">Subspace.expand()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.fit"><code class="docutils literal notranslate"><span class="pre">Subspace.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="subspace">
+<h1>Subspace<a class="headerlink" href="#subspace" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="torchsim.Subspace">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torchsim.</span></span><span class="sig-name descname"><span class="pre">Subspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/_subspace.html#Subspace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.Subspace" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A temporal basis fitted to a set of signals.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torchsim.Subspace.basis">
+<span class="sig-name descname"><span class="pre">basis</span></span><a class="headerlink" href="#torchsim.Subspace.basis" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">(contrasts,</span> <span class="pre">rank)</span></code>, orthonormal. Complex when the signals are.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torchsim.Subspace.singular_values">
+<span class="sig-name descname"><span class="pre">singular_values</span></span><a class="headerlink" href="#torchsim.Subspace.singular_values" title="Link to this definition">#</a></dt>
+<dd><p>Every singular value of the signals it was fitted from, not only the
+ones kept, so <a class="reference internal" href="#torchsim.Subspace.retained" title="torchsim.Subspace.retained"><code class="xref py py-attr docutils literal notranslate"><span class="pre">retained</span></code></a> can be read and another rank costed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torchsim.Subspace.dictionary">
+<span class="sig-name descname"><span class="pre">dictionary</span></span><a class="headerlink" href="#torchsim.Subspace.dictionary" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">(atoms,</span> <span class="pre">contrasts)</span></code> – the signals the basis was fitted to, where
+they were simulated for the purpose.
+<code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_subspace()</span></code> fills this in;
+<a class="reference internal" href="#torchsim.Subspace.fit" title="torchsim.Subspace.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> leaves it out, since the caller already holds them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>torch.Tensor, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torchsim.Subspace.simulation">
+<span class="sig-name descname"><span class="pre">simulation</span></span><a class="headerlink" href="#torchsim.Subspace.simulation" title="Link to this definition">#</a></dt>
+<dd><p>What that simulation recorded, with the labels that say which sample
+is which.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SimulationResult, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torchsim.Subspace.expand" title="torchsim.Subspace.expand"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand</span></code></a></p></td>
+<td><p>Return subspace coefficients as contrasts again.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torchsim.Subspace.fit" title="torchsim.Subspace.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a></p></td>
+<td><p>Fit the leading <code class="docutils literal notranslate"><span class="pre">rank</span></code> directions of <code class="docutils literal notranslate"><span class="pre">signals</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torchsim.Subspace.project" title="torchsim.Subspace.project"><code class="xref py py-obj docutils literal notranslate"><span class="pre">project</span></code></a></p></td>
+<td><p>Return <code class="docutils literal notranslate"><span class="pre">signals</span></code> in the subspace: <code class="docutils literal notranslate"><span class="pre">(...,</span> <span class="pre">contrasts)</span></code> to <code class="docutils literal notranslate"><span class="pre">(...,</span> <span class="pre">rank)</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="torchsim.Subspace.rank">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">rank</span></span><a class="headerlink" href="#torchsim.Subspace.rank" title="Link to this definition">#</a></dt>
+<dd><p>How many directions the basis keeps.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torchsim.Subspace.contrasts">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">contrasts</span></span><a class="headerlink" href="#torchsim.Subspace.contrasts" title="Link to this definition">#</a></dt>
+<dd><p>How many contrasts it was fitted over.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torchsim.Subspace.retained">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">retained</span></span><a class="headerlink" href="#torchsim.Subspace.retained" title="Link to this definition">#</a></dt>
+<dd><p>The fraction of the fitted signals’ energy the basis keeps.</p>
+<p>One minus this is the relative squared error of projecting those
+signals onto it and back, so it is the approximation, not a proxy
+for it.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torchsim.Subspace.modes">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">modes</span></span><a class="headerlink" href="#torchsim.Subspace.modes" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">(rank,</span> <span class="pre">contrasts)</span></code>.</p>
+<p>A reconstruction library’s subspace operator takes the basis this way
+round – mri-nufft’s <code class="docutils literal notranslate"><span class="pre">MRISubspace</span></code>, BART’s <code class="docutils literal notranslate"><span class="pre">pics</span> <span class="pre">-B</span></code>. It is a
+plain transpose and not a conjugate one: expanding coefficients back
+into contrasts is <code class="docutils literal notranslate"><span class="pre">image_t</span> <span class="pre">=</span> <span class="pre">sum_k</span> <span class="pre">conj(modes[k,</span> <span class="pre">t])</span> <span class="pre">c_k</span></code>, which is
+what <a class="reference internal" href="#torchsim.Subspace.expand" title="torchsim.Subspace.expand"><code class="xref py py-meth docutils literal notranslate"><span class="pre">expand()</span></code></a> does and what those operators do.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The basis with the rank axis first</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchsim.Subspace.project">
+<span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signals</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/_subspace.html#Subspace.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.Subspace.project" title="Link to this definition">#</a></dt>
+<dd><p>Return <code class="docutils literal notranslate"><span class="pre">signals</span></code> in the subspace: <code class="docutils literal notranslate"><span class="pre">(...,</span> <span class="pre">contrasts)</span></code> to <code class="docutils literal notranslate"><span class="pre">(...,</span> <span class="pre">rank)</span></code>.</p>
+<p>A basis fitted to real signals is real, and a complex signal projected
+onto it keeps both its parts – the arithmetic is promoted to whichever
+of the two is wider, never narrowed to the basis. The basis follows the
+signals to whichever device they are on, rather than the other way
+round: a volume is large and a basis is not.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchsim.Subspace.expand">
+<span class="sig-name descname"><span class="pre">expand</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/_subspace.html#Subspace.expand"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.Subspace.expand" title="Link to this definition">#</a></dt>
+<dd><p>Return subspace coefficients as contrasts again.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchsim.Subspace.fit">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/_subspace.html#Subspace.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.Subspace.fit" title="Link to this definition">#</a></dt>
+<dd><p>Fit the leading <code class="docutils literal notranslate"><span class="pre">rank</span></code> directions of <code class="docutils literal notranslate"><span class="pre">signals</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signals</strong> – <code class="docutils literal notranslate"><span class="pre">(...,</span> <span class="pre">contrasts)</span></code>. Every leading axis is flattened, so a
+simulated dictionary and a training set are the same input.</p></li>
+<li><p><strong>rank</strong> – How many directions to keep.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#torchsim.Subspace" title="torchsim.Subspace">Subspace</a></p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">rank</span></code> is not positive, or exceeds what the signals span.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="torchsim.iterative.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">iterative</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../api/optim.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Sequence design</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace"><code class="docutils literal notranslate"><span class="pre">Subspace</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.basis"><code class="docutils literal notranslate"><span class="pre">Subspace.basis</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.singular_values"><code class="docutils literal notranslate"><span class="pre">Subspace.singular_values</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.dictionary"><code class="docutils literal notranslate"><span class="pre">Subspace.dictionary</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.simulation"><code class="docutils literal notranslate"><span class="pre">Subspace.simulation</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.rank"><code class="docutils literal notranslate"><span class="pre">Subspace.rank</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.contrasts"><code class="docutils literal notranslate"><span class="pre">Subspace.contrasts</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.retained"><code class="docutils literal notranslate"><span class="pre">Subspace.retained</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.modes"><code class="docutils literal notranslate"><span class="pre">Subspace.modes</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.project"><code class="docutils literal notranslate"><span class="pre">Subspace.project()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.expand"><code class="docutils literal notranslate"><span class="pre">Subspace.expand()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Subspace.fit"><code class="docutils literal notranslate"><span class="pre">Subspace.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1024 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Estimator &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/torchsim.Estimator';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/generated/torchsim.Estimator.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="DictionaryMatcher" href="torchsim.DictionaryMatcher.html" />
+    <link rel="prev" title="Parameter estimation" href="../api/estimators.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../explanations/epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../explanations/implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="autoexamples/index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../api/index.html">API References</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../api/estimators.html">Parameter estimation</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/edit/main/generated/torchsim.Estimator.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2Fgenerated/torchsim.Estimator.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/generated/torchsim.Estimator.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Estimator</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator"><code class="docutils literal notranslate"><span class="pre">Estimator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.acquisition"><code class="docutils literal notranslate"><span class="pre">Estimator.acquisition</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.noise_std"><code class="docutils literal notranslate"><span class="pre">Estimator.noise_std</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.rank"><code class="docutils literal notranslate"><span class="pre">Estimator.rank</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.seed"><code class="docutils literal notranslate"><span class="pre">Estimator.seed</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.unknown"><code class="docutils literal notranslate"><span class="pre">Estimator.unknown</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.known"><code class="docutils literal notranslate"><span class="pre">Estimator.known</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.subspace"><code class="docutils literal notranslate"><span class="pre">Estimator.subspace</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.trained"><code class="docutils literal notranslate"><span class="pre">Estimator.trained</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.fit"><code class="docutils literal notranslate"><span class="pre">Estimator.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.training_set"><code class="docutils literal notranslate"><span class="pre">Estimator.training_set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.map"><code class="docutils literal notranslate"><span class="pre">Estimator.map()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.forward"><code class="docutils literal notranslate"><span class="pre">Estimator.forward()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.uncertainty_of"><code class="docutils literal notranslate"><span class="pre">Estimator.uncertainty_of()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.from_coefficients"><code class="docutils literal notranslate"><span class="pre">Estimator.from_coefficients()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="estimator">
+<h1>Estimator<a class="headerlink" href="#estimator" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="torchsim.Estimator">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torchsim.</span></span><span class="sig-name descname"><span class="pre">Estimator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">acquisition</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/estimators/_mapping.html#Estimator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.Estimator" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>What every mapping method is, and the machinery all of them share.</p>
+<p><a class="reference internal" href="torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher"><code class="xref py py-class docutils literal notranslate"><span class="pre">DictionaryMatcher</span></code></a>, <a class="reference internal" href="torchsim.LookupTable.html#torchsim.LookupTable" title="torchsim.LookupTable"><code class="xref py py-class docutils literal notranslate"><span class="pre">LookupTable</span></code></a>,
+<a class="reference internal" href="torchsim.NonlinearLeastSquares.html#torchsim.NonlinearLeastSquares" title="torchsim.NonlinearLeastSquares"><code class="xref py py-class docutils literal notranslate"><span class="pre">NonlinearLeastSquares</span></code></a> and <a class="reference internal" href="torchsim.PERK.html#torchsim.PERK" title="torchsim.PERK"><code class="xref py py-class docutils literal notranslate"><span class="pre">PERK</span></code></a> are
+all one of these. What they inherit is the whole problem statement –
+<a class="reference internal" href="#torchsim.Estimator.fit" title="torchsim.Estimator.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> naming the unknowns and drawing the training set from
+<a class="reference internal" href="#torchsim.Estimator.acquisition" title="torchsim.Estimator.acquisition"><code class="xref py py-attr docutils literal notranslate"><span class="pre">acquisition</span></code></a>, <a class="reference internal" href="#torchsim.Estimator.map" title="torchsim.Estimator.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a> returning one named map per unknown –
+so a method differs from the next only in what it does with plain tensors.</p>
+<p>Writing another one is those two tensor steps. Subclass this, take the
+method’s own settings in the constructor, and implement
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_fit_arrays()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">_estimate_arrays()</span></code>, which see signals and
+parameters as matrices and know nothing about names, subspaces or
+simulators. Everything above them then works unchanged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>acquisition</strong> (<a class="reference internal" href="torchsim.model.SignalModel.html#torchsim.model.SignalModel" title="torchsim.model.SignalModel"><em>SignalModel</em></a><em>, </em><em>optional</em>) – The sequence being inverted, with any tissue property that is neither
+unknown nor measured already fixed on it. Left out where the estimator
+is given signals directly.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torchsim.Estimator.acquisition">
+<span class="sig-name descname"><span class="pre">acquisition</span></span><a class="headerlink" href="#torchsim.Estimator.acquisition" title="Link to this definition">#</a></dt>
+<dd><p>The sequence being inverted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="torchsim.model.SignalModel.html#torchsim.model.SignalModel" title="torchsim.model.SignalModel">SignalModel</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torchsim.Estimator.noise_std">
+<span class="sig-name descname"><span class="pre">noise_std</span></span><a class="headerlink" href="#torchsim.Estimator.noise_std" title="Link to this definition">#</a></dt>
+<dd><p>The noise <a class="reference internal" href="#torchsim.Estimator.fit" title="torchsim.Estimator.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> was told the measurement has.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a> or torch.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torchsim.Estimator.rank">
+<span class="sig-name descname"><span class="pre">rank</span></span><a class="headerlink" href="#torchsim.Estimator.rank" title="Link to this definition">#</a></dt>
+<dd><p>The rank <a class="reference internal" href="#torchsim.Estimator.fit" title="torchsim.Estimator.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> was asked to compress to, if any.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="torchsim.Estimator.seed">
+<span class="sig-name descname"><span class="pre">seed</span></span><a class="headerlink" href="#torchsim.Estimator.seed" title="Link to this definition">#</a></dt>
+<dd><p>The seed the training draw used, if one was given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torchsim.Estimator.fit" title="torchsim.Estimator.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a></p></td>
+<td><p>Fit the estimator over a sampling of the tissue it will meet.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torchsim.Estimator.from_coefficients" title="torchsim.Estimator.from_coefficients"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_coefficients</span></code></a></p></td>
+<td><p>Map coefficients that are already in this estimator's basis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torchsim.Estimator.map" title="torchsim.Estimator.map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">map</span></code></a></p></td>
+<td><p>Estimate the tissue a measurement came from.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#torchsim.Estimator.training_set" title="torchsim.Estimator.training_set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">training_set</span></code></a></p></td>
+<td><p>Simulate a training set: signals, unknowns, and knowns.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#torchsim.Estimator.uncertainty_of" title="torchsim.Estimator.uncertainty_of"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uncertainty_of</span></code></a></p></td>
+<td><p>The standard deviation the measurement noise leaves on each map.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="torchsim.Estimator.unknown">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">unknown</span></span><a class="headerlink" href="#torchsim.Estimator.unknown" title="Link to this definition">#</a></dt>
+<dd><p>The properties being estimated, in the order the maps come back.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torchsim.Estimator.known">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">known</span></span><a class="headerlink" href="#torchsim.Estimator.known" title="Link to this definition">#</a></dt>
+<dd><p>The properties measured separately, in the order they are given.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torchsim.Estimator.subspace">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">subspace</span></span><a class="headerlink" href="#torchsim.Estimator.subspace" title="Link to this definition">#</a></dt>
+<dd><p>The temporal basis in use, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the estimator works in full.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="torchsim.Estimator.trained">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">trained</span></span><a class="headerlink" href="#torchsim.Estimator.trained" title="Link to this definition">#</a></dt>
+<dd><p>Whether the estimator has what it needs to map.</p>
+<p>A dictionary handed straight to the constructor counts, which is why
+this consults the subclass rather than only recording that <a class="reference internal" href="#torchsim.Estimator.fit" title="torchsim.Estimator.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>
+was called.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchsim.Estimator.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unknown</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">known</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subspace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_CHUNK</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">signals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">ranges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/estimators/_mapping.html#Estimator.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.Estimator.fit" title="Link to this definition">#</a></dt>
+<dd><p>Fit the estimator over a sampling of the tissue it will meet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unknown</strong> (<em>mapping</em><em>, </em><em>optional</em>) – The properties being estimated, as <code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">(low,</span> <span class="pre">high)}</span></code> to draw
+uniformly over, or an array of values to use as given. The order
+is the order of the maps that come back. Naming them as keywords
+instead is the same thing and is usually shorter; a mapping is the
+way to name one that collides with a keyword here.</p></li>
+<li><p><strong>known</strong> (<em>mapping</em><em> or </em><em>torch.Tensor</em><em>, </em><em>optional</em>) – Properties measured separately, as <code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">range}</span></code> or
+<code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">values}</span></code>. They are drawn over here and reach the
+simulator, so the training signals carry their effect, and the
+measured maps are given again to <a class="reference internal" href="#torchsim.Estimator.map" title="torchsim.Estimator.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a>. A tensor alongside
+<code class="docutils literal notranslate"><span class="pre">signals</span></code>, where the columns are given outright.</p></li>
+<li><p><strong>noise_std</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>torch.Tensor</em><em>, </em><em>optional</em>) – Standard deviation of the noise added to the training signals, in
+the units the signal is in – a fully relaxed voxel is 1. This is
+what teaches a method how far to trust a measurement, so it should
+be the noise the scan actually has.</p></li>
+<li><p><strong>rank</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Fit a temporal <a class="reference internal" href="torchsim.Subspace.html#torchsim.Subspace" title="torchsim.Subspace"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subspace</span></code></a> of this rank to the
+training signals and work in it. Every contrast dropped is
+arithmetic neither training nor mapping has to do;
+<a class="reference internal" href="#torchsim.Estimator.subspace" title="torchsim.Estimator.subspace"><code class="xref py py-attr docutils literal notranslate"><span class="pre">subspace</span></code></a> reports what the compression kept.</p></li>
+<li><p><strong>subspace</strong> (<a class="reference internal" href="torchsim.Subspace.html#torchsim.Subspace" title="torchsim.Subspace"><em>Subspace</em></a><em>, </em><em>optional</em>) – Work in a basis fitted elsewhere rather than fitting one here –
+the one another estimator carries, or one
+<code class="xref py py-func docutils literal notranslate"><span class="pre">simulate_subspace()</span></code> produced. This is what lets a
+reconstruction and the estimator that reads its coefficients agree
+on the basis by construction. Not with <code class="docutils literal notranslate"><span class="pre">rank</span></code>, which asks for a
+basis to be fitted.</p></li>
+<li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Seed for the training draw.</p></li>
+<li><p><strong>samples</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – How many tissues to draw. Stating a property as an array of values
+fixes this, so it may be left out; where everything is a range to
+draw from, it defaults to ten thousand.</p></li>
+<li><p><strong>chunk</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – How many to simulate at a time.</p></li>
+<li><p><strong>signals</strong> (<em>torch.Tensor</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">(samples,</span> <span class="pre">contrasts)</span></code> given outright, instead of simulated. The
+acquisition is then not consulted and <a class="reference internal" href="#torchsim.Estimator.map" title="torchsim.Estimator.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a> returns a tensor
+rather than named maps, unless names were given as well.</p></li>
+<li><p><strong>parameters</strong> (<em>torch.Tensor</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">(samples,</span> <span class="pre">unknowns)</span></code>, alongside <code class="docutils literal notranslate"><span class="pre">signals</span></code>.</p></li>
+<li><p><strong>ranges</strong> – The unknown properties, named as keywords.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>This estimator, fitted.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If nothing is given to fit from: no signals, and no acquisition to
+    simulate them.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If a name is both unknown and known, if a range is not a pair, if
+    <code class="docutils literal notranslate"><span class="pre">rank</span></code> is not positive, or if both <code class="docutils literal notranslate"><span class="pre">rank</span></code> and <code class="docutils literal notranslate"><span class="pre">subspace</span></code> are
+    given.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchsim.Estimator.training_set">
+<span class="sig-name descname"><span class="pre">training_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">samples</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_CHUNK</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/estimators/_mapping.html#Estimator.training_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.Estimator.training_set" title="Link to this definition">#</a></dt>
+<dd><p>Simulate a training set: signals, unknowns, and knowns.</p>
+<p>Memory is <code class="docutils literal notranslate"><span class="pre">samples</span></code> by contrasts, because the signals are held once
+rather than resimulated for each pass a method makes over them. The
+properties are the ones <a class="reference internal" href="#torchsim.Estimator.fit" title="torchsim.Estimator.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> was given, so this is what a caller
+wanting the training signals themselves calls after fitting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>samples</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – How many tissues to draw.</p></li>
+<li><p><strong>chunk</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – How many to simulate at a time.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(signals,</span> <span class="pre">parameters,</span> <span class="pre">known)</span></code>, the last <code class="docutils literal notranslate"><span class="pre">None</span></code> when nothing
+is measured separately.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If the estimator has no acquisition, or was never told what is
+    unknown.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">samples</span></code> or <code class="docutils literal notranslate"><span class="pre">chunk</span></code> is not positive, or if an array given
+    for a property has a different length.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchsim.Estimator.map">
+<span class="sig-name descname"><span class="pre">map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">known</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">uncertainty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/estimators/_mapping.html#Estimator.map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.Estimator.map" title="Link to this definition">#</a></dt>
+<dd><p>Estimate the tissue a measurement came from.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>volume</strong> (<em>array-like</em>) – <code class="docutils literal notranslate"><span class="pre">(...,</span> <span class="pre">contrasts)</span></code>. Every leading axis is the voxel axis and
+comes back on the maps unchanged.</p></li>
+<li><p><strong>known</strong> (<em>mapping</em><em> or </em><em>torch.Tensor</em><em>, </em><em>optional</em>) – The measured maps, under the names the estimator was given. Each
+is broadcast to the voxel shape.</p></li>
+<li><p><strong>uncertainty</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Also return the standard deviation the noise leaves on each map.
+See <a class="reference internal" href="#torchsim.Estimator.uncertainty_of" title="torchsim.Estimator.uncertainty_of"><code class="xref py py-meth docutils literal notranslate"><span class="pre">uncertainty_of()</span></code></a> for what that number is and what it is
+not. Not every method can state one.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">map}</span></code> where the estimator was told what it is solving
+for, each shaped like <code class="docutils literal notranslate"><span class="pre">volume</span></code> without its contrast axis. Where
+it was fitted from bare arrays, the parameter columns as a tensor.
+With <code class="docutils literal notranslate"><span class="pre">uncertainty=True</span></code>, a pair of those – the maps, and the
+standard deviations beside them.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a> or torch.Tensor</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If the estimator has not been fitted.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.14)"><strong>NotImplementedError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">uncertainty</span></code> is asked of a method that does not state one.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If a measured map is missing, or has the wrong voxel count.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchsim.Estimator.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">known</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">uncertainty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/estimators/_mapping.html#Estimator.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.Estimator.forward" title="Link to this definition">#</a></dt>
+<dd><p>Alias of <a class="reference internal" href="#torchsim.Estimator.map" title="torchsim.Estimator.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a>, so a fitted estimator is callable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchsim.Estimator.uncertainty_of">
+<span class="sig-name descname"><span class="pre">uncertainty_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">known</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/estimators/_mapping.html#Estimator.uncertainty_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.Estimator.uncertainty_of" title="Link to this definition">#</a></dt>
+<dd><p>The standard deviation the measurement noise leaves on each map.</p>
+<p>The noise <a class="reference internal" href="#torchsim.Estimator.fit" title="torchsim.Estimator.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> was told about, propagated through the estimate
+this method makes – so it says how much the answer would move if the
+scan were repeated, and it is a property of the method as much as of
+the sequence.</p>
+<p>It is not the error. An estimator that is biased is biased the same way
+in every realization, so repeating the measurement never reveals that
+part and this number does not contain it. Read against
+<a class="reference internal" href="torchsim.crlb.html#torchsim.crlb" title="torchsim.crlb"><code class="xref py py-func docutils literal notranslate"><span class="pre">crlb()</span></code></a>, which is the lowest standard deviation an
+unbiased estimate could have, it says how much of the distance to the
+truth the acquisition is responsible for.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>volume</strong> (<em>array-like</em>) – <code class="docutils literal notranslate"><span class="pre">(...,</span> <span class="pre">contrasts)</span></code>, as <a class="reference internal" href="#torchsim.Estimator.map" title="torchsim.Estimator.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a> takes.</p></li>
+<li><p><strong>known</strong> (<em>mapping</em><em> or </em><em>torch.Tensor</em><em>, </em><em>optional</em>) – The measured maps, as <a class="reference internal" href="#torchsim.Estimator.map" title="torchsim.Estimator.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a> takes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>One standard deviation per unknown, shaped like the maps.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a> or torch.Tensor</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.14)"><strong>NotImplementedError</strong></a> – If this method does not state one.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="torchsim.Estimator.from_coefficients">
+<span class="sig-name descname"><span class="pre">from_coefficients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coefficients</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">known</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/estimators/_mapping.html#Estimator.from_coefficients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.Estimator.from_coefficients" title="Link to this definition">#</a></dt>
+<dd><p>Map coefficients that are already in this estimator’s basis.</p>
+<p>A subspace reconstruction solves for the coefficients directly and
+never forms the contrast images, so what it returns is already
+projected. <a class="reference internal" href="#torchsim.Estimator.map" title="torchsim.Estimator.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a> would project it a second time; this does not.
+The basis it is in is <a class="reference internal" href="#torchsim.Estimator.subspace" title="torchsim.Estimator.subspace"><code class="xref py py-attr docutils literal notranslate"><span class="pre">subspace</span></code></a>, which is also what the
+reconstruction was given.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coefficients</strong> (<em>array-like</em>) – <code class="docutils literal notranslate"><span class="pre">(...,</span> <span class="pre">rank)</span></code>. Every leading axis is a voxel axis.</p></li>
+<li><p><strong>known</strong> (<em>mapping</em><em>, </em><em>optional</em>) – The measured maps, as for <a class="reference internal" href="#torchsim.Estimator.map" title="torchsim.Estimator.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">map}</span></code>, shaped like <code class="docutils literal notranslate"><span class="pre">coefficients</span></code> without its last
+axis.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If the estimator has not been fitted, or was fitted without a
+    rank, in which case there is no basis for these to be in.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the last axis is not the rank of that basis.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../api/estimators.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Parameter estimation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="torchsim.DictionaryMatcher.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">DictionaryMatcher</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator"><code class="docutils literal notranslate"><span class="pre">Estimator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.acquisition"><code class="docutils literal notranslate"><span class="pre">Estimator.acquisition</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.noise_std"><code class="docutils literal notranslate"><span class="pre">Estimator.noise_std</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.rank"><code class="docutils literal notranslate"><span class="pre">Estimator.rank</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.seed"><code class="docutils literal notranslate"><span class="pre">Estimator.seed</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.unknown"><code class="docutils literal notranslate"><span class="pre">Estimator.unknown</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.known"><code class="docutils literal notranslate"><span class="pre">Estimator.known</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.subspace"><code class="docutils literal notranslate"><span class="pre">Estimator.subspace</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.trained"><code class="docutils literal notranslate"><span class="pre">Estimator.trained</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.fit"><code class="docutils literal notranslate"><span class="pre">Estimator.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.training_set"><code class="docutils literal notranslate"><span class="pre">Estimator.training_set()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.map"><code class="docutils literal notranslate"><span class="pre">Estimator.map()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.forward"><code class="docutils literal notranslate"><span class="pre">Estimator.forward()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.uncertainty_of"><code class="docutils literal notranslate"><span class="pre">Estimator.uncertainty_of()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim.Estimator.from_coefficients"><code class="docutils literal notranslate"><span class="pre">Estimator.from_coefficients()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

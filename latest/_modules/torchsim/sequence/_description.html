@@ -1,0 +1,1557 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>torchsim.sequence._description &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/torchsim/sequence/_description';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/_modules/torchsim/sequence/_description.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../generated/autoexamples/index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2F_modules/torchsim/sequence/_description.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for torchsim.sequence._description</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Backend-independent description of an MR sequence state machine."""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"AdcRole"</span><span class="p">,</span>
+    <span class="s2">"EventAction"</span><span class="p">,</span>
+    <span class="s2">"EventType"</span><span class="p">,</span>
+    <span class="s2">"RfDefinition"</span><span class="p">,</span>
+    <span class="s2">"RfMode"</span><span class="p">,</span>
+    <span class="s2">"RfShape"</span><span class="p">,</span>
+    <span class="s2">"RfUse"</span><span class="p">,</span>
+    <span class="s2">"SequenceDescription"</span><span class="p">,</span>
+    <span class="s2">"SequenceEvent"</span><span class="p">,</span>
+    <span class="s2">"ShimDefinition"</span><span class="p">,</span>
+    <span class="s2">"decompress_shape"</span><span class="p">,</span>
+    <span class="s2">"ideal_rf_definition"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntEnum</span><span class="p">,</span> <span class="n">IntFlag</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># ``np.trapz`` was renamed to ``np.trapezoid`` in NumPy 2.0.</span>
+<span class="n">_trapezoid</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">np</span><span class="p">,</span> <span class="s2">"trapezoid"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">trapz</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">EventType</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""State-machine event type used by Pulserver SEQDESC streams."""</span>
+
+    <span class="n">WAIT</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">RF</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ADC</span> <span class="o">=</span> <span class="mi">2</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">EventAction</span><span class="p">(</span><span class="n">IntFlag</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""What the sequence does around an event, beyond the event itself.</span>
+
+<span class="sd">    A Pulseq file has no gradient "use" field, so a crusher cannot be told from</span>
+<span class="sd">    a phase encode by looking at waveforms -- that would mean tracking the</span>
+<span class="sd">    k-space moment through the whole TR. The sequence says instead what each</span>
+<span class="sd">    event's role implies, and the description carries it, which is what lets an</span>
+<span class="sd">    autogenerated stream reach the kernels without a policy being named.</span>
+
+<span class="sd">    ``CRUSH_BEFORE`` and ``CRUSH_AFTER`` are the unbalanced gradients a</span>
+<span class="sd">    refocusing pulse sits between. ``SHIFT_AFTER`` is one played after a</span>
+<span class="sd">    readout, and ``SPOIL_AFTER`` is ideal transverse spoiling there instead.</span>
+
+<span class="sd">    The values are the bits the packed action word carries, so a description</span>
+<span class="sd">    and a kernel never hold two numberings of the same fact.</span>
+<span class="sd">    """</span>
+
+    <span class="n">NONE</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">CRUSH_BEFORE</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">CRUSH_AFTER</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">SPOIL_AFTER</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">SHIFT_AFTER</span> <span class="o">=</span> <span class="mi">16</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">RfMode</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""How a pulse's rotation is reached.</span>
+
+<span class="sd">    The three are alternatives rather than combinable. ``INSTANT`` turns</span>
+<span class="sd">    through a flip angle and a phase. ``PROFILED`` reads the rotation from a</span>
+<span class="sd">    table over slice position and effective flip. ``DYNAMIC`` reads it per</span>
+<span class="sd">    voxel, which is what a pulse whose channel weights vary while it plays</span>
+<span class="sd">    needs -- and which subsumes a profile, since a rotation integrated at the</span>
+<span class="sd">    voxel's own position is one.</span>
+<span class="sd">    """</span>
+
+    <span class="n">INSTANT</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">PROFILED</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">DYNAMIC</span> <span class="o">=</span> <span class="mi">2</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">RfUse</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Pulseq RF-use tag.</span>
+
+<span class="sd">    The whole tag set, not the subset the operators that ship here happen to</span>
+<span class="sd">    emit. A file written elsewhere may carry any of them, and an operator</span>
+<span class="sd">    written later may emit one nothing emits today.</span>
+<span class="sd">    """</span>
+
+    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">EXCITATION</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">REFOCUSING</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">INVERSION</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">SATURATION</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">PREPARATION</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">OTHER</span> <span class="o">=</span> <span class="mi">6</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AdcRole</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Relationship between ADC events in a canonical event stream."""</span>
+
+    <span class="n">NON_ACQUIRED</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">SINGLE</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ECHO_CENTER</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">NON_CENTER</span> <span class="o">=</span> <span class="mi">3</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SequenceEvent</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One WAIT, RF, or ADC state-machine event.</span>
+
+<span class="sd">    ``params`` deliberately accepts tensors. This lets a hard-coded sequence</span>
+<span class="sd">    description carry differentiable flip angles, phases, and timings without</span>
+<span class="sd">    introducing a second representation for sequence optimization.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    type : EventType</span>
+<span class="sd">        Whether this is a wait, an RF pulse or an ADC.</span>
+<span class="sd">    timestamp_us : float or torch.Tensor</span>
+<span class="sd">        When it happens, in microseconds from the start of the stream.</span>
+<span class="sd">    params : tuple</span>
+<span class="sd">        The payload its type defines, read through the named properties rather</span>
+<span class="sd">        than by position.</span>
+<span class="sd">    action : EventAction</span>
+<span class="sd">        What the sequence does around it -- the crushers a refocusing pulse</span>
+<span class="sd">        sits between, the gradient or the ideal spoiling after a readout.</span>
+<span class="sd">    """</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="n">EventType</span>
+    <span class="n">timestamp_us</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">params</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">action</span><span class="p">:</span> <span class="n">EventAction</span> <span class="o">=</span> <span class="n">EventAction</span><span class="o">.</span><span class="n">NONE</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wait</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">timestamp_us</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SequenceEvent</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Create a timing-only event."""</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">WAIT</span><span class="p">,</span> <span class="n">timestamp_us</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rf</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">timestamp_us</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">definition_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">use</span><span class="p">:</span> <span class="n">RfUse</span><span class="p">,</span>
+        <span class="n">amplitude_hz</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">phase_rad</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">frequency_hz</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">shim_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">slice_select_gradient_hz_per_m</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">action</span><span class="p">:</span> <span class="n">EventAction</span> <span class="o">=</span> <span class="n">EventAction</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SequenceEvent</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Create an RF event using the Pulserver SEQDESC field order."""</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">EventType</span><span class="o">.</span><span class="n">RF</span><span class="p">,</span>
+            <span class="n">timestamp_us</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="n">definition_id</span><span class="p">,</span>
+                <span class="n">use</span><span class="p">,</span>
+                <span class="n">amplitude_hz</span><span class="p">,</span>
+                <span class="n">phase_rad</span><span class="p">,</span>
+                <span class="n">frequency_hz</span><span class="p">,</span>
+                <span class="n">shim_id</span><span class="p">,</span>
+                <span class="n">slice_select_gradient_hz_per_m</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">action</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">adc</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">timestamp_us</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">role</span><span class="p">:</span> <span class="n">AdcRole</span> <span class="o">=</span> <span class="n">AdcRole</span><span class="o">.</span><span class="n">SINGLE</span><span class="p">,</span>
+        <span class="n">phase_rad</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">is_echo</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">action</span><span class="p">:</span> <span class="n">EventAction</span> <span class="o">=</span> <span class="n">EventAction</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SequenceEvent</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Create an ADC event using the Pulserver SEQDESC field order."""</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">ADC</span><span class="p">,</span> <span class="n">timestamp_us</span><span class="p">,</span> <span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">phase_rad</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">is_echo</span><span class="p">)),</span> <span class="n">action</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rf_definition_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">RF</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rf_use</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RfUse</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">RF</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RfUse</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rf_amplitude_hz</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">RF</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rf_phase_rad</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">RF</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rf_frequency_hz</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">RF</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rf_shim_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">RF</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">slice_select_gradient_hz_per_m</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">RF</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">adc_role</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AdcRole</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">ADC</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AdcRole</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">adc_phase_rad</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">ADC</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_echo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Whether this ADC position reaches the k-space origin."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_require</span><span class="p">(</span><span class="n">EventType</span><span class="o">.</span><span class="n">ADC</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_require</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="n">EventType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">expected</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">expected</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> payload requested from </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> event"</span>
+            <span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RfShape</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One Pulseq derivative/run-length encoded shape.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    num_uncompressed : int</span>
+<span class="sd">        How many samples the shape decodes to.</span>
+<span class="sd">    samples : array-like</span>
+<span class="sd">        The encoded samples, decoded by :meth:`decompress`.</span>
+<span class="sd">    """</span>
+
+    <span class="n">num_uncompressed</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">samples</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">decompress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the decoded shape."""</span>
+        <span class="k">return</span> <span class="n">decompress_shape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_uncompressed</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RfDefinition</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""RF definition referenced by RF events.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        What an RF event names this pulse by.</span>
+<span class="sd">    bandwidth_hz : float</span>
+<span class="sd">        The pulse's bandwidth, which is the gradient the slice select is</span>
+<span class="sd">        quoted against.</span>
+<span class="sd">    num_bands : int</span>
+<span class="sd">        How many slices the pulse excites at once.</span>
+<span class="sd">    band_frequency_offsets_hz : tuple of float</span>
+<span class="sd">        Where each band sits, in Hz off the centre frequency.</span>
+<span class="sd">    band_bandwidth_hz : float</span>
+<span class="sd">        The bandwidth of one band.</span>
+<span class="sd">    total_b1sq_power : float</span>
+<span class="sd">        The pulse's integrated squared amplitude, which is what a power limit</span>
+<span class="sd">        is read against.</span>
+<span class="sd">    magnitude : RfShape or tuple of RfShape</span>
+<span class="sd">        The envelope, or one envelope per transmit channel.</span>
+<span class="sd">    phase : RfShape or tuple of RfShape, optional</span>
+<span class="sd">        The phase, matching ``magnitude``. ``None`` for a pulse of constant</span>
+<span class="sd">        phase.</span>
+<span class="sd">    time : RfShape, optional</span>
+<span class="sd">        Sample times, for a pulse on a non-uniform raster. ``None`` for a</span>
+<span class="sd">        uniform one.</span>
+<span class="sd">    gradient : RfShape, optional</span>
+<span class="sd">        The slice-select gradient per sample, in units ``bandwidth_hz`` is</span>
+<span class="sd">        quoted at. ``None`` where the gradient holds.</span>
+<span class="sd">    """</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bandwidth_hz</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">num_bands</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">band_frequency_offsets_hz</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">band_bandwidth_hz</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">total_b1sq_power</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">magnitude</span><span class="p">:</span> <span class="n">RfShape</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">RfShape</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">phase</span><span class="p">:</span> <span class="n">RfShape</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">RfShape</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">time</span><span class="p">:</span> <span class="n">RfShape</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">gradient</span><span class="p">:</span> <span class="n">RfShape</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> drives no channel"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="si">}</span><span class="s2"> "</span>
+                        <span class="sa">f</span><span class="s2">"magnitude channels against </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span><span class="si">}</span><span class="s2"> phase"</span>
+                    <span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: a per-channel magnitude takes a "</span>
+                    <span class="sa">f</span><span class="s2">"phase per channel, or none"</span>
+                <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: a phase per channel takes a "</span>
+                <span class="sa">f</span><span class="s2">"magnitude per channel"</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">channel_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""How many transmit channels drive their own waveform."""</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">channel_envelopes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the normalized complex envelope per channel, ``(C, N)``."""</span>
+        <span class="n">magnitudes</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">else</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="n">phases</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">RfShape</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">phases</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">,)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">magnitudes</span><span class="p">)</span>
+        <span class="n">channels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">magnitude_shape</span><span class="p">,</span> <span class="n">phase_shape</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">magnitudes</span><span class="p">,</span> <span class="n">phases</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="n">magnitude</span> <span class="o">=</span> <span class="n">magnitude_shape</span><span class="o">.</span><span class="n">decompress</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">phase_shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">magnitude</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">complex64</span><span class="p">))</span>
+                <span class="k">continue</span>
+            <span class="n">phase</span> <span class="o">=</span> <span class="n">phase_shape</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">phase</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">magnitude</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: magnitude/phase size mismatch"</span>
+                <span class="p">)</span>
+            <span class="n">channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">magnitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phase</span><span class="p">))</span>
+        <span class="n">widths</span> <span class="o">=</span> <span class="p">{</span><span class="n">channel</span><span class="o">.</span><span class="n">size</span> <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">channels</span><span class="p">}</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">widths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: channels of </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">widths</span><span class="p">)</span><span class="si">}</span><span class="s2"> samples"</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">complex_envelope</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the normalized complex RF envelope.</span>
+
+<span class="sd">        ``(samples,)`` for a pulse every channel plays alike, ``(channels,</span>
+<span class="sd">        samples)`` for one whose channels each carry their own waveform.</span>
+<span class="sd">        """</span>
+        <span class="n">channels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_envelopes</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_count</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">channels</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">combined_envelope</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the envelope a voxel of unit sensitivity on every channel sees.</span>
+
+<span class="sd">        The sum over channels, ``(samples,)``. This is the shape the flip</span>
+<span class="sd">        angle, the integral and the saturation are all read against, so each</span>
+<span class="sd">        keeps the meaning it has for a pulse driving a single channel.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_envelopes</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">gradient_waveform</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the slice-select gradient per sample, or ``None`` if it holds.</span>
+
+<span class="sd">        In units of the gradient ``bandwidth_hz`` is quoted at, so a shape of</span>
+<span class="sd">        ones is the gradient the scanner does not move and reproduces the</span>
+<span class="sd">        constant case exactly. What a spin at a normalized position accrues</span>
+<span class="sd">        while sample ``s`` lasts is ``bandwidth_hz * position * g[s]`` in Hz.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">            ValueError: if the gradient and the envelope disagree on how many</span>
+<span class="sd">                samples the pulse has.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">waveform</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span><span class="o">.</span><span class="n">decompress</span><span class="p">()</span>
+        <span class="n">samples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_envelopes</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">waveform</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">samples</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: the gradient carries "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">waveform</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> samples and the pulse </span><span class="si">{</span><span class="n">samples</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">waveform</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">sample_durations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">rf_raster_time_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return how long each sample holds its field, in seconds.</span>
+
+<span class="sd">        ``time`` names where along the pulse each sample sits, so what a sample</span>
+<span class="sd">        lasts is the distance between the midpoints either side of it, and the</span>
+<span class="sd">        whole spacing to its one neighbour at the two ends. A definition</span>
+<span class="sd">        declaring no time is played one sample per raster step.</span>
+
+<span class="sd">        This is what the rotation a pulse performs is composed from: the field</span>
+<span class="sd">        is held constant across a sample, so a longer sample turns further and</span>
+<span class="sd">        lets a spin off the slice centre accrue more phase.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">            ValueError: if the declared times and the envelope disagree on how</span>
+<span class="sd">                many samples the pulse has, or the times do not advance.</span>
+<span class="sd">        """</span>
+        <span class="n">samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel_envelopes</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">samples</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">rf_raster_time_s</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">time_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">rf_raster_time_s</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">time_s</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">samples</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">time_s</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> sample times against "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">samples</span><span class="si">}</span><span class="s2"> samples"</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">time_s</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: the sample times do not advance, so "</span>
+                <span class="sa">f</span><span class="s2">"they do not say how long a sample lasts"</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">time_s</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">rf_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RfMode</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return which rotation this pulse's waveform asks the kernels for.</span>
+
+<span class="sd">        Memoized on the (immutable) definition: every event naming this pulse</span>
+<span class="sd">        asks the same question, and answering it reads the whole envelope.</span>
+<span class="sd">        """</span>
+        <span class="n">cached</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_mode_cache"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cached</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cached</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel_count</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">RfMode</span><span class="o">.</span><span class="n">DYNAMIC</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_turns_about_one_axis</span><span class="p">():</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">RfMode</span><span class="o">.</span><span class="n">INSTANT</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mode</span> <span class="o">=</span> <span class="n">RfMode</span><span class="o">.</span><span class="n">PROFILED</span>
+        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_mode_cache"</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mode</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_turns_about_one_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Whether a flip angle and a phase already say what this pulse does.</span>
+
+<span class="sd">        A rectangle played without slice selection holds its effective field</span>
+<span class="sd">        fixed for its whole duration, so integrating it lands on the rotation a</span>
+<span class="sd">        hard pulse performs -- and lands there exactly, where reading a</span>
+<span class="sd">        tabulated one at a flip between knots would not.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bandwidth_hz</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="n">envelope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">combined_envelope</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">envelope</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">envelope</span> <span class="o">==</span> <span class="n">envelope</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">integral</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">rf_raster_time_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">complex</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the complex time integral of the normalized envelope.</span>
+
+<span class="sd">        The envelope is normalized, so this depends only on the pulse shape and</span>
+<span class="sd">        the raster, never on the amplitude of a particular occurrence. A</span>
+<span class="sd">        sequence typically reuses one definition for every refocusing pulse and</span>
+<span class="sd">        re-evaluates it on every simulation, so the result is memoized on the</span>
+<span class="sd">        (immutable) definition.</span>
+<span class="sd">        """</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_integral_cache"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_integral_cache"</span><span class="p">,</span> <span class="n">cache</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">rf_raster_time_s</span> <span class="ow">in</span> <span class="n">cache</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cache</span><span class="p">[</span><span class="n">rf_raster_time_s</span><span class="p">]</span>
+
+        <span class="n">envelope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">combined_envelope</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">envelope</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">cache</span><span class="p">[</span><span class="n">rf_raster_time_s</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="n">j</span>
+            <span class="k">return</span> <span class="mf">0.0</span><span class="n">j</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">time_s</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">envelope</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span>
+            <span class="p">)</span> <span class="o">*</span> <span class="n">rf_raster_time_s</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">time_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">rf_raster_time_s</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">time_s</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">envelope</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: envelope/time size mismatch"</span>
+                <span class="p">)</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="nb">complex</span><span class="p">(</span><span class="n">_trapezoid</span><span class="p">(</span><span class="n">envelope</span><span class="p">,</span> <span class="n">time_s</span><span class="p">))</span>
+        <span class="n">cache</span><span class="p">[</span><span class="n">rf_raster_time_s</span><span class="p">]</span> <span class="o">=</span> <span class="n">area</span>
+        <span class="k">return</span> <span class="n">area</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">saturation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">rf_raster_time_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return what this shape deposits in a bound pool, per flip squared.</span>
+
+<span class="sd">        The saturation an RF pulse applies to a pool with no transverse</span>
+<span class="sd">        magnetization is ``-pi gamma**2 int B1**2 dt * G(df)``. Writing the</span>
+<span class="sd">        pulse as a normalized envelope ``w`` driven to a flip angle,</span>
+<span class="sd">        ``B1 = w / (gamma int w dt)`` per radian, so::</span>
+
+<span class="sd">            -pi gamma**2 int B1**2 dt  ==  -pi int |w|**2 dt / |int w dt|**2</span>
+
+<span class="sd">        and the gyromagnetic ratio cancels: what is left depends on the shape</span>
+<span class="sd">        alone. Multiplied by the square of the flip a voxel actually takes and</span>
+<span class="sd">        by the lineshape at the offset it is played at, this is the exponent of</span>
+<span class="sd">        the bound pool's saturation.</span>
+
+<span class="sd">        In 1/s. A pulse with no area saturates nothing that a flip angle can</span>
+<span class="sd">        describe, so it reports zero.</span>
+<span class="sd">        """</span>
+        <span class="n">cache</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_saturation_cache"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cache</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_saturation_cache"</span><span class="p">,</span> <span class="n">cache</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">rf_raster_time_s</span> <span class="ow">in</span> <span class="n">cache</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cache</span><span class="p">[</span><span class="n">rf_raster_time_s</span><span class="p">]</span>
+
+        <span class="n">area</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">integral</span><span class="p">(</span><span class="n">rf_raster_time_s</span><span class="o">=</span><span class="n">rf_raster_time_s</span><span class="p">))</span>
+        <span class="n">envelope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">combined_envelope</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">area</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">envelope</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">cache</span><span class="p">[</span><span class="n">rf_raster_time_s</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">return</span> <span class="mf">0.0</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">time_s</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">envelope</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span>
+            <span class="p">)</span> <span class="o">*</span> <span class="n">rf_raster_time_s</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">time_s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">rf_raster_time_s</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">power</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">_trapezoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">envelope</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">time_s</span><span class="p">))</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">power</span> <span class="o">/</span> <span class="p">(</span><span class="n">area</span> <span class="o">*</span> <span class="n">area</span><span class="p">)</span>
+        <span class="n">cache</span><span class="p">[</span><span class="n">rf_raster_time_s</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">flip_angle</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">amplitude_hz</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">rf_raster_time_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return ``(flip_rad, integral_phase_rad)`` for one RF occurrence.</span>
+
+<span class="sd">        Tensor amplitudes remain tensors, so both reverse- and forward-mode</span>
+<span class="sd">        automatic differentiation pass through a description unchanged.</span>
+<span class="sd">        """</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">integral</span><span class="p">(</span><span class="n">rf_raster_time_s</span><span class="o">=</span><span class="n">rf_raster_time_s</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover - Torch is a required dependency</span>
+            <span class="n">torch</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">torch</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">amplitude_hz</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="c1"># The area is a Python number, so it multiplies a tensor without</span>
+            <span class="c1"># being made one first. A pulse whose envelope integrates to a real</span>
+            <span class="c1"># number -- every shape that is symmetric about its centre, which</span>
+            <span class="c1"># is most of them -- keeps the product real, and a real product is</span>
+            <span class="c1"># both cheaper per event and the only kind the real-subspace</span>
+            <span class="c1"># kernels can be handed.</span>
+            <span class="n">signed_area</span> <span class="o">=</span> <span class="n">amplitude_hz</span> <span class="o">*</span> <span class="p">(</span><span class="n">area</span><span class="o">.</span><span class="n">real</span> <span class="k">if</span> <span class="n">area</span><span class="o">.</span><span class="n">imag</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="n">area</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">signed_area</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">signed_area</span><span class="p">)</span>
+        <span class="n">signed_area</span> <span class="o">=</span> <span class="n">amplitude_hz</span> <span class="o">*</span> <span class="n">area</span>
+        <span class="k">return</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">signed_area</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">signed_area</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ShimDefinition">
+<a class="viewcode-back" href="../../../generated/torchsim.ShimDefinition.html#torchsim.ShimDefinition">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShimDefinition</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One transmit-shim definition: a complex weight per channel.</span>
+
+<span class="sd">    The weights hold for the whole pulse, and every channel plays the same</span>
+<span class="sd">    waveform -- static parallel transmit. :mod:`._transmit` combines them with</span>
+<span class="sd">    the per-channel sensitivities into the field a voxel sees.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    id : int</span>
+<span class="sd">        What an RF event names this shim by.</span>
+<span class="sd">    magnitudes : tuple of float</span>
+<span class="sd">        One weight per transmit channel.</span>
+<span class="sd">    phases_rad : tuple of float</span>
+<span class="sd">        One phase per transmit channel, in radians.</span>
+<span class="sd">    """</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">magnitudes</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">phases_rad</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="SequenceDescription">
+<a class="viewcode-back" href="../../../generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SequenceDescription</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Event stream and RF resources for one sequence or subsequence.</span>
+
+<span class="sd">    ``crusher_dephasing_rad`` is the dephasing the sequence's unbalanced</span>
+<span class="sd">    gradient winds across one voxel of ``voxel_size_m``. Their ratio sets the</span>
+<span class="sd">    b-factor diffusion is damped by and the phase each dephasing order turns</span>
+<span class="sd">    through under flow, so a dephasing of zero leaves both terms out however</span>
+<span class="sd">    large the coefficient behind them.</span>
+
+<span class="sd">    ``voxel_size_m`` also stands on its own: spins cross a voxel of that size</span>
+<span class="sd">    at their own speed whether or not a gradient is playing, which is what</span>
+<span class="sd">    washes the voxel out and replaces it with unexcited magnetization. Leaving</span>
+<span class="sd">    it ``None`` declares no voxel, and a spin velocity then has nothing to</span>
+<span class="sd">    cross.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    subsequence_index : int</span>
+<span class="sd">        Which subsequence of a multi-part acquisition this is.</span>
+<span class="sd">    tr_duration_us : float or torch.Tensor</span>
+<span class="sd">        How long one playing of this stream holds the timeline, in</span>
+<span class="sd">        microseconds.</span>
+<span class="sd">    events : tuple of SequenceEvent</span>
+<span class="sd">        The stream itself, in the order it is played.</span>
+<span class="sd">    rf_definitions : dict</span>
+<span class="sd">        ``{id: RfDefinition}`` -- the pulses the RF events name.</span>
+<span class="sd">    shim_definitions : dict</span>
+<span class="sd">        ``{id: ShimDefinition}`` -- the transmit shims the RF events drive.</span>
+<span class="sd">    crusher_dephasing_rad : float</span>
+<span class="sd">        Dephasing wound across one voxel by the sequence's unbalanced</span>
+<span class="sd">        gradient.</span>
+<span class="sd">    voxel_size_m : float, optional</span>
+<span class="sd">        The voxel a spin crosses, and the length the dephasing is wound</span>
+<span class="sd">        across. ``None`` declares no voxel.</span>
+<span class="sd">    rf_raster_time_s : float</span>
+<span class="sd">        The dwell the RF shapes are sampled on. A pulse is integrated against</span>
+<span class="sd">        it, so a stream carrying shapes on a 2 microsecond raster and read on a</span>
+<span class="sd">        1 microsecond one turns half the angle it should.</span>
+<span class="sd">    """</span>
+
+    <span class="n">subsequence_index</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">tr_duration_us</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">events</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">SequenceEvent</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">rf_definitions</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">RfDefinition</span><span class="p">]</span>
+    <span class="n">shim_definitions</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ShimDefinition</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">crusher_dephasing_rad</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">voxel_size_m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">rf_raster_time_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+<div class="viewcode-block" id="SequenceDescription.from_operators">
+<a class="viewcode-back" href="../../../generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.from_operators">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_operators</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">parts</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">rf_definitions</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">RfDefinition</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">shim_definitions</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ShimDefinition</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">subsequence_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">crusher_dephasing_rad</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">voxel_size_m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">start_s</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SequenceDescription</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Lay operators out end to end and return the stream they make.</span>
+
+<span class="sd">        The other way in besides a scanner: what a sequence written here plays,</span>
+<span class="sd">        in the same object one that arrived would be read into.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parts : Operator, optional</span>
+<span class="sd">            The operators, in the order they play.</span>
+<span class="sd">        rf_definitions : mapping, optional</span>
+<span class="sd">            The pulses the events drive, by id. One ideal pulse under id zero</span>
+<span class="sd">            when not given, which is what an operator naming no shape asks for.</span>
+<span class="sd">        shim_definitions : mapping, optional</span>
+<span class="sd">            The transmit shims the pulses are driven on, by id.</span>
+<span class="sd">        subsequence_index : int, optional</span>
+<span class="sd">            Which subsequence of a scan this is.</span>
+<span class="sd">        crusher_dephasing_rad : float, optional</span>
+<span class="sd">            The turn one crusher puts across a voxel. Diffusion and flow are</span>
+<span class="sd">            read off it and are zero without it.</span>
+<span class="sd">        voxel_size_m : float, optional</span>
+<span class="sd">            The distance that turn is put across.</span>
+<span class="sd">        start_s : float or torch.Tensor, optional</span>
+<span class="sd">            When the first operator starts.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            The stream, lasting as long as the operators laid out end to end.</span>
+<span class="sd">        """</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">._operators</span><span class="w"> </span><span class="kn">import</span> <span class="n">compose</span>
+
+        <span class="n">events</span><span class="p">,</span> <span class="n">duration_s</span> <span class="o">=</span> <span class="n">compose</span><span class="p">(</span><span class="o">*</span><span class="n">parts</span><span class="p">,</span> <span class="n">start_s</span><span class="o">=</span><span class="n">start_s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">subsequence_index</span><span class="o">=</span><span class="n">subsequence_index</span><span class="p">,</span>
+            <span class="n">tr_duration_us</span><span class="o">=</span><span class="mf">1e6</span> <span class="o">*</span> <span class="n">duration_s</span><span class="p">,</span>
+            <span class="n">events</span><span class="o">=</span><span class="n">events</span><span class="p">,</span>
+            <span class="n">rf_definitions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">ideal_rf_definition</span><span class="p">()}</span> <span class="k">if</span> <span class="n">rf_definitions</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">rf_definitions</span>
+            <span class="p">),</span>
+            <span class="n">shim_definitions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">shim_definitions</span> <span class="ow">or</span> <span class="p">{}),</span>
+            <span class="n">crusher_dephasing_rad</span><span class="o">=</span><span class="n">crusher_dephasing_rad</span><span class="p">,</span>
+            <span class="n">voxel_size_m</span><span class="o">=</span><span class="n">voxel_size_m</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SequenceDescription.from_pulseq">
+<a class="viewcode-back" href="../../../generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.from_pulseq">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_pulseq</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SequenceDescription</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return what one repetition of a Pulseq ``.seq`` file plays.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path : str or Path</span>
+<span class="sd">            The sequence file.</span>
+<span class="sd">        settings : Any</span>
+<span class="sd">            ``tr_index`` to name which repetition to read, and the</span>
+<span class="sd">            ``subsequence_index``, ``crusher_dephasing_rad`` and</span>
+<span class="sd">            ``voxel_size_m`` the description carries.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            The stream, in the same object a scanner's own would arrive in.</span>
+<span class="sd">        """</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">._pulseq</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_pulseq_description</span>
+
+        <span class="k">return</span> <span class="n">read_pulseq_description</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SequenceDescription.plot">
+<a class="viewcode-back" href="../../../generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">upto_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Draw the stream: pulses as stems, samples as markers.</span>
+
+<span class="sd">        What a layout actually laid down, which is easier to check here than</span>
+<span class="sd">        in the signal it produces. A pulse's stem is as tall as the angle it</span>
+<span class="sd">        turns.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        axis : matplotlib.axes.Axes, optional</span>
+<span class="sd">            Where to draw. A new figure when not given.</span>
+<span class="sd">        upto_s : float, optional</span>
+<span class="sd">            Stop after this much of the stream, for a repetition long enough</span>
+<span class="sd">            that all of it is a smear.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            The axis drawn on.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">            ImportError: if matplotlib is not installed, which is not a</span>
+<span class="sd">                dependency of this package.</span>
+<span class="sd">        """</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">reason</span><span class="p">:</span>  <span class="c1"># pragma: no cover - depends on the env</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                <span class="s2">"plotting a description needs matplotlib, which torchsim does "</span>
+                <span class="s2">"not depend on; pip install matplotlib"</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">reason</span>
+
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">axis</span>
+        <span class="n">limit</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span> <span class="k">if</span> <span class="n">upto_s</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">upto_s</span> <span class="o">*</span> <span class="mf">1e6</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
+            <span class="n">when</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">timestamp_us</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">when</span> <span class="o">&gt;</span> <span class="n">limit</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="n">EventType</span><span class="o">.</span><span class="n">RF</span><span class="p">:</span>
+                <span class="n">axis</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span>
+                    <span class="n">when</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">,</span>
+                    <span class="mf">0.0</span><span class="p">,</span>
+                    <span class="nb">float</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">rf_amplitude_hz</span><span class="p">)</span> <span class="o">*</span> <span class="mf">180.0</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">"crimson"</span><span class="p">,</span>
+                    <span class="n">lw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="n">EventType</span><span class="o">.</span><span class="n">ADC</span><span class="p">:</span>
+                <span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">when</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">"v"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"tab:blue"</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"crimson"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"RF, height is the flip"</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="s2">"v"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"tab:blue"</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"ADC"</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">"time [ms]"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">"flip angle [deg]"</span><span class="p">)</span>
+        <span class="n">axis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">axis</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">adc_events</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">SequenceEvent</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return ADC events in state-machine order."""</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">event</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events</span> <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="n">EventType</span><span class="o">.</span><span class="n">ADC</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">decompress_shape</span><span class="p">(</span>
+    <span class="n">packed</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">num_uncompressed</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Decode Pulseq derivative/run-length shape compression."""</span>
+    <span class="n">packed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">packed</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">num_uncompressed</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"negative uncompressed shape length"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">packed</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">num_uncompressed</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">packed</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">num_uncompressed</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">packed</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">num_uncompressed</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">source</span> <span class="o">&lt;</span> <span class="n">packed</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">packed</span><span class="p">[</span><span class="n">source</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">source</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">packed</span><span class="o">.</span><span class="n">size</span> <span class="ow">and</span> <span class="n">packed</span><span class="p">[</span><span class="n">source</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">source</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">&gt;=</span> <span class="n">packed</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"truncated Pulseq RLE triplet"</span><span class="p">)</span>
+            <span class="n">count_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">packed</span><span class="p">[</span><span class="n">source</span> <span class="o">+</span> <span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="mf">2.0</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">count_value</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">count_value</span> <span class="o">-</span> <span class="n">count</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">1e-6</span> <span class="ow">or</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"invalid Pulseq RLE repeat count"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">target</span> <span class="o">+</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">num_uncompressed</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Pulseq RLE shape expands past declared length"</span><span class="p">)</span>
+            <span class="n">delta</span><span class="p">[</span><span class="n">target</span> <span class="p">:</span> <span class="n">target</span> <span class="o">+</span> <span class="n">count</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">target</span> <span class="o">+=</span> <span class="n">count</span>
+            <span class="n">source</span> <span class="o">+=</span> <span class="mi">3</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">target</span> <span class="o">&gt;=</span> <span class="n">num_uncompressed</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Pulseq shape expands past declared length"</span><span class="p">)</span>
+            <span class="n">delta</span><span class="p">[</span><span class="n">target</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">target</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">source</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">target</span> <span class="o">!=</span> <span class="n">num_uncompressed</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Pulseq shape expanded to </span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">, expected </span><span class="si">{</span><span class="n">num_uncompressed</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="rf_definition">
+<a class="viewcode-back" href="../../../generated/torchsim.rf_definition.html#torchsim.rf_definition">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">rf_definition</span><span class="p">(</span>
+    <span class="n">waveform</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">dwell_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">bandwidth_hz</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">definition_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">band_frequency_offsets_hz</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">band_bandwidth_hz</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">rf_raster_time_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RfDefinition</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return the definition of a pulse from the envelope a scanner plays.</span>
+
+<span class="sd">    The envelope is whatever a designer or a Pulseq block hands over -- a</span>
+<span class="sd">    complex waveform on a uniform raster, in any amplitude units, one row per</span>
+<span class="sd">    transmit channel where there is more than one. What it is scaled to does</span>
+<span class="sd">    not matter and must not be relied on: it is rescaled here so that its</span>
+<span class="sd">    integral is ``1 / (2 pi)`` seconds, which is what makes an event's</span>
+<span class="sd">    amplitude, written in radians, the flip that event turns. A pulse handed</span>
+<span class="sd">    over peak-normalized and left that way turns a fraction of a degree and</span>
+<span class="sd">    returns a signal of nothing, which is the one mistake this exists to stop.</span>
+
+<span class="sd">    The pulse's own phase is kept rather than divided out, so a linear-phase</span>
+<span class="sd">    pulse keeps the axis it turns about.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    waveform : array-like</span>
+<span class="sd">        The complex envelope, ``(samples,)`` or ``(channels, samples)``.</span>
+<span class="sd">    dwell_s : float</span>
+<span class="sd">        How long one sample is held, in seconds.</span>
+<span class="sd">    bandwidth_hz : float, optional</span>
+<span class="sd">        The pulse's bandwidth, which the slice select is quoted against. Zero</span>
+<span class="sd">        -- the default -- is a pulse that selects nothing and stays on the</span>
+<span class="sd">        instant operator, and a non-zero one is what makes a pulse slice</span>
+<span class="sd">        selective. There is no separate flag for that, here or in the stream a</span>
+<span class="sd">        description arrives on.</span>
+<span class="sd">    definition_id : int, optional</span>
+<span class="sd">        The identifier events name this pulse by.</span>
+<span class="sd">    band_frequency_offsets_hz : sequence of float, optional</span>
+<span class="sd">        Where each band sits, for a multiband pulse. One band at zero when not</span>
+<span class="sd">        given.</span>
+<span class="sd">    band_bandwidth_hz : float, optional</span>
+<span class="sd">        The bandwidth of one band, defaulting to ``bandwidth_hz``.</span>
+<span class="sd">    rf_raster_time_s : float, optional</span>
+<span class="sd">        The raster the sample times are written against, which is the one the</span>
+<span class="sd">        run will read them back with. Sample times are carried in units of it</span>
+<span class="sd">        rather than in seconds, so a pulse whose dwell is not the raster still</span>
+<span class="sd">        says how long it lasts.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    RfDefinition</span>
+<span class="sd">        The pulse, scaled so an event amplitude in radians is a flip in</span>
+<span class="sd">        radians.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the envelope is empty, if ``dwell_s`` is not positive, or if the</span>
+<span class="sd">        waveform integrates to nothing and so has no flip angle to be read</span>
+<span class="sd">        against.</span>
+<span class="sd">    """</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">waveform</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">samples</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">samples</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="k">if</span> <span class="n">samples</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">samples</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"an RF envelope is (samples,) or (channels, samples), and not empty"</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dwell_s</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"dwell_s must be positive, not </span><span class="si">{</span><span class="n">dwell_s</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rf_raster_time_s</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"rf_raster_time_s must be positive, not </span><span class="si">{</span><span class="n">rf_raster_time_s</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># In units of the raster, which is how a description carries sample times</span>
+    <span class="c1"># and how a run reads them back.</span>
+    <span class="n">times</span> <span class="o">=</span> <span class="n">RfShape</span><span class="p">(</span>
+        <span class="n">count</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">*</span> <span class="n">dwell_s</span> <span class="o">/</span> <span class="n">rf_raster_time_s</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">shapes</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="n">rows</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">RfShape</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rows</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">rows</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">built</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RfDefinition</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">RfDefinition</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="n">definition_id</span><span class="p">,</span>
+            <span class="n">bandwidth_hz</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">bandwidth_hz</span><span class="p">),</span>
+            <span class="n">num_bands</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">offsets</span><span class="p">),</span>
+            <span class="n">band_frequency_offsets_hz</span><span class="o">=</span><span class="n">offsets</span><span class="p">,</span>
+            <span class="n">band_bandwidth_hz</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span>
+                <span class="n">bandwidth_hz</span> <span class="k">if</span> <span class="n">band_bandwidth_hz</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">band_bandwidth_hz</span>
+            <span class="p">),</span>
+            <span class="n">magnitude</span><span class="o">=</span><span class="n">shapes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">values</span><span class="p">)),</span>
+            <span class="n">phase</span><span class="o">=</span><span class="n">shapes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)),</span>
+            <span class="n">time</span><span class="o">=</span><span class="n">times</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">extra</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">offsets</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="mf">0.0</span><span class="p">,)</span>
+        <span class="k">if</span> <span class="n">band_frequency_offsets_hz</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">band_frequency_offsets_hz</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="mi">1</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">offsets</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">8</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"a pulse carries one to eight bands, not </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">offsets</span><span class="p">)</span><span class="si">}</span><span class="s2">: that is "</span>
+            <span class="sa">f</span><span class="s2">"how many a description has room for"</span>
+        <span class="p">)</span>
+    <span class="c1"># Scaled against the integral the definition itself reads, rather than one</span>
+    <span class="c1"># taken here: the two would have to agree about the quadrature and about</span>
+    <span class="c1"># what the last sample's duration is, and only one of them decides.</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span>
+        <span class="n">built</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">total_b1sq_power</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span><span class="o">.</span><span class="n">integral</span><span class="p">(</span><span class="n">rf_raster_time_s</span><span class="o">=</span><span class="n">rf_raster_time_s</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">area</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"this envelope integrates to nothing, so it has no flip angle to "</span>
+            <span class="s2">"be read against"</span>
+        <span class="p">)</span>
+    <span class="n">scaled</span> <span class="o">=</span> <span class="n">samples</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">area</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">built</span><span class="p">(</span><span class="n">scaled</span><span class="p">,</span> <span class="n">total_b1sq_power</span><span class="o">=</span><span class="nb">float</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">scaled</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="n">dwell_s</span><span class="p">))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ideal_rf_definition</span><span class="p">(</span><span class="n">definition_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RfDefinition</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return the definition of a pulse that turns instantly and selects nothing.</span>
+
+<span class="sd">    Its envelope integrates to exactly ``1 / (2 pi)`` seconds, so an event</span>
+<span class="sd">    amplitude expressed in radians comes back unchanged as the flip that event</span>
+<span class="sd">    turns. It declares no bandwidth, which is what keeps a sequence built from</span>
+<span class="sd">    it on the instant operator rather than on a tabulated rotation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    definition_id : int, optional</span>
+<span class="sd">        The identifier events name this pulse by.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    RfDefinition</span>
+<span class="sd">        The ideal hard pulse.</span>
+<span class="sd">    """</span>
+    <span class="n">duration_us</span> <span class="o">=</span> <span class="mf">1e6</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">RfDefinition</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="n">definition_id</span><span class="p">,</span>
+        <span class="n">bandwidth_hz</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">num_bands</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">band_frequency_offsets_hz</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,),</span>
+        <span class="n">band_bandwidth_hz</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">total_b1sq_power</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">magnitude</span><span class="o">=</span><span class="n">RfShape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)),</span>
+        <span class="n">time</span><span class="o">=</span><span class="n">RfShape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">duration_us</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)),</span>
+    <span class="p">)</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1082 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>torchsim._execution &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/torchsim/_execution';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/_modules/torchsim/_execution.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../explanations/epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../explanations/description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../explanations/implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../generated/autoexamples/index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../generated/torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2F_modules/torchsim/_execution.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for torchsim._execution</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Where a per-voxel workload runs, and how it gets there.</span>
+
+<span class="sd">Simulating a volume and mapping one are both per-voxel, and both outgrow a</span>
+<span class="sd">card long before they outgrow a host. What to do about that is one policy --</span>
+<span class="sd">stay on the host when a launch would not repay itself, cross whole when the</span>
+<span class="sd">problem fits, stream through in chunks when it does not, and spread across as</span>
+<span class="sd">many cards as there are -- and it is written once, here.</span>
+
+<span class="sd">A workload joins by answering three questions: how much work it is, what one</span>
+<span class="sd">voxel costs on the device, and what to do with a chunk. Choosing the devices,</span>
+<span class="sd">sizing the chunk to a memory budget, the pinned staging, and the streams that</span>
+<span class="sd">let one chunk's transfer overlap another chunk's arithmetic are the same</span>
+<span class="sd">whatever the kernel underneath computes.</span>
+
+<span class="sd">The two policies are process-wide and are read through :func:`policy` and</span>
+<span class="sd">:func:`offloading` rather than imported, because a caller that imported the</span>
+<span class="sd">value would hold the one in force when it imported.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"execution"</span><span class="p">,</span> <span class="s2">"offload"</span><span class="p">]</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="c1">#: What streaming may hold on the devices when the caller names no budget.</span>
+<span class="n">_DEFAULT_BUDGET_BYTES</span> <span class="o">=</span> <span class="mi">512</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span>
+
+<span class="c1">#: Left free on every card. A recon server's product pipeline keeps its own</span>
+<span class="c1">#: kernels and workspaces resident, and taking the last of the memory would</span>
+<span class="c1">#: evict them rather than fail honestly.</span>
+<span class="n">_RESERVE_BYTES</span> <span class="o">=</span> <span class="mi">512</span> <span class="o">&lt;&lt;</span> <span class="mi">20</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_Offload</span><span class="p">:</span>
+    <span class="n">devices</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">budget_bytes</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">lanes</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_Execution</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What the caller asked for, before any problem is in hand."""</span>
+
+    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># "auto", "cpu" or "devices"</span>
+    <span class="n">devices</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">stream</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">budget_bytes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">lanes</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">reserve_bytes</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_Choice</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What to do with one particular problem."""</span>
+
+    <span class="n">where</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># "cpu", "upfront" or "stream"</span>
+    <span class="n">devices</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">()</span>
+    <span class="n">offload</span><span class="p">:</span> <span class="n">_Offload</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="n">_OFFLOAD</span><span class="p">:</span> <span class="n">_Offload</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">_EXECUTION</span><span class="p">:</span> <span class="n">_Execution</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">_ON_HOST</span> <span class="o">=</span> <span class="n">_Choice</span><span class="p">(</span><span class="s2">"cpu"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">policy</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">_Execution</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The execution policy in force, or ``None`` if there is none."""</span>
+    <span class="k">return</span> <span class="n">_EXECUTION</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">offloading</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">_Offload</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The offload plan in force, or ``None`` if there is none."""</span>
+    <span class="k">return</span> <span class="n">_OFFLOAD</span>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">without_policy</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Drop the execution policy inside the block, keeping any offload plan.</span>
+
+<span class="sd">    For a call that has already chosen its devices and is now running one</span>
+<span class="sd">    shard: the choice is made, and asking again per shard would make it twice.</span>
+<span class="sd">    """</span>
+    <span class="k">global</span> <span class="n">_EXECUTION</span>
+    <span class="n">previous</span> <span class="o">=</span> <span class="n">_EXECUTION</span>
+    <span class="n">_EXECUTION</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">_EXECUTION</span> <span class="o">=</span> <span class="n">previous</span>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">unpoliced</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Run inside the block as written, whatever policy is in force.</span>
+
+<span class="sd">    What a probe measures has to be the kernel, not the dispatcher's opinion</span>
+<span class="sd">    of it.</span>
+<span class="sd">    """</span>
+    <span class="k">global</span> <span class="n">_EXECUTION</span><span class="p">,</span> <span class="n">_OFFLOAD</span>
+    <span class="n">previous</span> <span class="o">=</span> <span class="p">(</span><span class="n">_EXECUTION</span><span class="p">,</span> <span class="n">_OFFLOAD</span><span class="p">)</span>
+    <span class="n">_EXECUTION</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_OFFLOAD</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">_EXECUTION</span><span class="p">,</span> <span class="n">_OFFLOAD</span> <span class="o">=</span> <span class="n">previous</span>
+
+
+<div class="viewcode-block" id="offload">
+<a class="viewcode-back" href="../../generated/torchsim.offload.html#torchsim.offload">[docs]</a>
+<span class="nd">@contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">offload</span><span class="p">(</span>
+    <span class="n">devices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"cuda"</span><span class="p">,),</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">budget_bytes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">_DEFAULT_BUDGET_BYTES</span><span class="p">,</span>
+    <span class="n">lanes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Run host-resident volumes on CUDA without holding them there.</span>
+
+<span class="sd">    Inside the block a workload whose voxels are on the host still runs on</span>
+<span class="sd">    ``devices``, in chunks sized so that the device buffers stay within</span>
+<span class="sd">    ``budget_bytes`` in total. The result comes back on the host.</span>
+
+<span class="sd">    The budget buys memory with time, and steeply once the chunks get small: a</span>
+<span class="sd">    chunk both fills the device less well and pays its own launch and transfer</span>
+<span class="sd">    latency, so quartering the budget costs far more than a quarter of the</span>
+<span class="sd">    throughput. Give it as much as the card can spare.</span>
+
+<span class="sd">    ``lanes`` is how many chunks may be in flight per device. A lane owns a</span>
+<span class="sd">    stream and its own buffers, so a second one lets a chunk's transfer overlap</span>
+<span class="sd">    another chunk's arithmetic -- but it takes its share out of the same</span>
+<span class="sd">    budget, and every chunk gets narrower as a result. Narrower chunks lose</span>
+<span class="sd">    more than the overlap recovers except when the volume was barely splitting</span>
+<span class="sd">    to begin with, so one lane is the default and raising it is worth measuring</span>
+<span class="sd">    before believing. A machine that overlaps transfers better than this one</span>
+<span class="sd">    would move that balance.</span>
+
+<span class="sd">    Whatever ``lanes`` is set to, it changes only throughput: what makes a</span>
+<span class="sd">    volume larger than the card runnable at all is the chunking.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">        ValueError: if ``devices`` is empty, names a device that is not CUDA,</span>
+<span class="sd">            or if ``budget_bytes`` or ``lanes`` is not positive.</span>
+<span class="sd">    """</span>
+    <span class="k">global</span> <span class="n">_OFFLOAD</span>
+    <span class="n">resolved</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">resolved</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"offload needs at least one device"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">resolved</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">"cuda"</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"offload is for CUDA devices, got </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">budget_bytes</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"budget_bytes must be positive, got </span><span class="si">{</span><span class="n">budget_bytes</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lanes</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"lanes must be positive, got </span><span class="si">{</span><span class="n">lanes</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">previous</span> <span class="o">=</span> <span class="n">_OFFLOAD</span>
+    <span class="n">_OFFLOAD</span> <span class="o">=</span> <span class="n">_Offload</span><span class="p">(</span><span class="n">resolved</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">budget_bytes</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">lanes</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">_OFFLOAD</span> <span class="o">=</span> <span class="n">previous</span></div>
+
+
+
+<div class="viewcode-block" id="execution">
+<a class="viewcode-back" href="../../generated/torchsim.execution.html#torchsim.execution">[docs]</a>
+<span class="nd">@contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">execution</span><span class="p">(</span>
+    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"auto"</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">stream</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">budget_bytes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">lanes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">reserve_bytes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">_RESERVE_BYTES</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Choose where work runs inside the block.</span>
+
+<span class="sd">    ``target`` is ``"auto"`` to decide per call, ``"cpu"`` to insist on the</span>
+<span class="sd">    host, or a device or list of devices to insist on those. Deciding weighs</span>
+<span class="sd">    the problem against what each card has free right now: work too small to</span>
+<span class="sd">    repay a launch stays on the CPU, work that fits goes across in one piece,</span>
+<span class="sd">    and work that does not is streamed through in chunks.</span>
+
+<span class="sd">    ``stream`` overrules that last step -- ``False`` demands the whole volume</span>
+<span class="sd">    be resident and lets it fail if it will not fit, ``True`` streams even when</span>
+<span class="sd">    it would have fit. ``budget_bytes`` caps what streaming may hold, and</span>
+<span class="sd">    defaults to what the devices report free less ``reserve_bytes``. ``lanes``</span>
+<span class="sd">    is passed to :func:`offload` for streamed work and rarely wants changing.</span>
+
+<span class="sd">    Outside a block, work runs wherever its tensors already are.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">        ValueError: for an empty device list, a non-CUDA device, or a</span>
+<span class="sd">            non-positive ``budget_bytes`` or ``lanes``.</span>
+<span class="sd">    """</span>
+    <span class="k">global</span> <span class="n">_EXECUTION</span>
+    <span class="k">if</span> <span class="n">lanes</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"lanes must be positive, got </span><span class="si">{</span><span class="n">lanes</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">budget_bytes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">budget_bytes</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"budget_bytes must be positive, got </span><span class="si">{</span><span class="n">budget_bytes</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">target</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"auto"</span><span class="p">,</span> <span class="s2">"cpu"</span><span class="p">}:</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">devices</span> <span class="o">=</span> <span class="n">target</span><span class="p">,</span> <span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">named</span> <span class="o">=</span> <span class="p">(</span><span class="n">target</span><span class="p">,)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">))</span> <span class="k">else</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">named</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"execution needs at least one device"</span><span class="p">)</span>
+        <span class="n">devices</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">named</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cpu"</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">):</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">devices</span> <span class="o">=</span> <span class="s2">"cpu"</span><span class="p">,</span> <span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">"cuda"</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"execution takes CUDA devices or 'cpu', got </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s2">"devices"</span>
+
+    <span class="n">previous</span> <span class="o">=</span> <span class="n">_EXECUTION</span>
+    <span class="n">_EXECUTION</span> <span class="o">=</span> <span class="n">_Execution</span><span class="p">(</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">devices</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">budget_bytes</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">lanes</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">reserve_bytes</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">_EXECUTION</span> <span class="o">=</span> <span class="n">previous</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_free_bytes</span><span class="p">(</span><span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="n">reserve</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What this card can spare, after leaving the reserve alone."""</span>
+    <span class="n">free</span><span class="p">,</span> <span class="n">_total</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">mem_get_info</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">free</span> <span class="o">-</span> <span class="n">reserve</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_candidate_devices</span><span class="p">(</span><span class="n">plan</span><span class="p">:</span> <span class="n">_Execution</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">plan</span><span class="o">.</span><span class="n">devices</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">plan</span><span class="o">.</span><span class="n">devices</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cuda"</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">())</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">choose</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">work</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">voxels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">bytes_per_voxel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">crossover</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_Choice</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Decide where one per-voxel problem runs, given the policy in force.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    work:</span>
+<span class="sd">        How much arithmetic the problem is, in whatever unit ``crossover``</span>
+<span class="sd">        answers in.</span>
+<span class="sd">    voxels:</span>
+<span class="sd">        The independent axis, which is what a chunk is a slice of.</span>
+<span class="sd">    bytes_per_voxel:</span>
+<span class="sd">        Device memory one voxel needs for this pass.</span>
+<span class="sd">    crossover:</span>
+<span class="sd">        Called with the first candidate device for the work below which a</span>
+<span class="sd">        launch does not repay itself. A callable rather than a number because</span>
+<span class="sd">        answering it may mean measuring the machine, and a problem that is</span>
+<span class="sd">        going to a named device never asks.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    _Choice or None</span>
+<span class="sd">        ``None`` means no policy is in force and the call stands as written:</span>
+<span class="sd">        it runs wherever its tensors already are.</span>
+<span class="sd">    """</span>
+    <span class="n">plan</span> <span class="o">=</span> <span class="n">_EXECUTION</span>
+    <span class="k">if</span> <span class="n">plan</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">plan</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="s2">"cpu"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_ON_HOST</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">_ON_HOST</span>
+
+    <span class="n">devices</span> <span class="o">=</span> <span class="n">_candidate_devices</span><span class="p">(</span><span class="n">plan</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">devices</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_ON_HOST</span>
+
+    <span class="k">if</span> <span class="n">plan</span><span class="o">.</span><span class="n">target</span> <span class="o">==</span> <span class="s2">"auto"</span> <span class="ow">and</span> <span class="n">work</span> <span class="o">&lt;</span> <span class="n">crossover</span><span class="p">(</span><span class="n">devices</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">_ON_HOST</span>
+
+    <span class="n">footprint</span> <span class="o">=</span> <span class="n">voxels</span> <span class="o">*</span> <span class="n">bytes_per_voxel</span>
+    <span class="n">free</span> <span class="o">=</span> <span class="p">[</span><span class="n">_free_bytes</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">plan</span><span class="o">.</span><span class="n">reserve_bytes</span><span class="p">)</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">devices</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">plan</span><span class="o">.</span><span class="n">stream</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="c1"># Fewest cards that can hold it, so the rest stay out of the way.</span>
+        <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">devices</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">free</span><span class="p">[:</span><span class="n">count</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="n">footprint</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">_Choice</span><span class="p">(</span><span class="s2">"upfront"</span><span class="p">,</span> <span class="n">devices</span><span class="p">[:</span><span class="n">count</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">plan</span><span class="o">.</span><span class="n">stream</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="c1"># Asked for resident and it will not fit; let the allocator say so</span>
+            <span class="c1"># rather than silently doing something else.</span>
+            <span class="k">return</span> <span class="n">_Choice</span><span class="p">(</span><span class="s2">"upfront"</span><span class="p">,</span> <span class="n">devices</span><span class="p">)</span>
+
+    <span class="n">budget</span> <span class="o">=</span> <span class="n">plan</span><span class="o">.</span><span class="n">budget_bytes</span> <span class="ow">or</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">free</span><span class="p">)</span> <span class="k">if</span> <span class="n">free</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_Choice</span><span class="p">(</span><span class="s2">"stream"</span><span class="p">,</span> <span class="n">devices</span><span class="p">,</span> <span class="n">_Offload</span><span class="p">(</span><span class="n">devices</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">budget</span><span class="p">),</span> <span class="n">plan</span><span class="o">.</span><span class="n">lanes</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">chunk_voxels</span><span class="p">(</span><span class="n">plan</span><span class="p">:</span> <span class="n">_Offload</span><span class="p">,</span> <span class="n">bytes_per_voxel</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Largest voxel chunk whose buffers fit the budget, across every lane."""</span>
+    <span class="n">across</span> <span class="o">=</span> <span class="n">plan</span><span class="o">.</span><span class="n">lanes</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">devices</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">plan</span><span class="o">.</span><span class="n">budget_bytes</span> <span class="o">//</span> <span class="p">(</span><span class="n">across</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">bytes_per_voxel</span><span class="p">)))</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Lane</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One device stream, and the pinned buffer its transfers go through."""</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">Stream</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drained</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="c1"># Claimed by the first :meth:`stage`; a pass that only brings results</span>
+        <span class="c1"># home never needs it.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">staging</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">piece</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""One chunk on this lane's device.</span>
+
+<span class="sd">        A chunk coming from the host goes through pinned memory so the copy</span>
+<span class="sd">        can overlap another chunk's arithmetic; one already on a device is</span>
+<span class="sd">        left where it is.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">piece</span><span class="o">.</span><span class="n">device</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">piece</span>
+        <span class="k">if</span> <span class="n">piece</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">"cpu"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">piece</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">landed</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">piece</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">piece</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage</span><span class="p">(</span><span class="n">piece</span><span class="p">,</span> <span class="n">landed</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">stage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">piece</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">landed</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Copy one host chunk into a device buffer, and return it there.</span>
+
+<span class="sd">        The staging buffer is pinned, so the transfer runs asynchronously and</span>
+<span class="sd">        the stream reads the buffer long after the host wrote it. Overwriting</span>
+<span class="sd">        it for the next chunk therefore has to wait for that read.</span>
+<span class="sd">        """</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">piece</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">staging</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">staging</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">size</span>
+            <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">staging</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">piece</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">staging</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>
+                <span class="n">size</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">piece</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">"cpu"</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drained</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">staging</span><span class="p">[:</span><span class="n">size</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">piece</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">host</span><span class="o">.</span><span class="n">copy_</span><span class="p">(</span><span class="n">piece</span><span class="p">)</span>
+        <span class="n">landed</span><span class="o">.</span><span class="n">copy_</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">non_blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drained</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">landed</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">per_voxel</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">bytes_per_voxel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">work</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">crossover</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+    <span class="n">body</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Run a per-voxel body wherever the policy in force says to.</span>
+
+<span class="sd">    Voxels are independent, so the only question is how many go across at</span>
+<span class="sd">    once and to which card. ``body`` is handed one chunk of every input,</span>
+<span class="sd">    already on a device, and returns that chunk's answer.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    inputs:</span>
+<span class="sd">        Tensors sharing a leading voxel axis, which is the axis chunked.</span>
+<span class="sd">    bytes_per_voxel:</span>
+<span class="sd">        What one voxel needs on the device, for sizing a chunk against the</span>
+<span class="sd">        memory budget.</span>
+<span class="sd">    work:</span>
+<span class="sd">        The problem's size, in the unit ``crossover`` answers in.</span>
+<span class="sd">    crossover:</span>
+<span class="sd">        The work below which a launch does not repay itself, called with the</span>
+<span class="sd">        first candidate device.</span>
+<span class="sd">    body:</span>
+<span class="sd">        Called as ``body(chunk, device)``, returning one or more tensors that</span>
+<span class="sd">        share the chunk's voxel axis.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple of torch.Tensor, or None</span>
+<span class="sd">        The assembled answers, on the device the inputs came from. ``None``</span>
+<span class="sd">        means no policy is in force and the caller should proceed as written.</span>
+<span class="sd">    """</span>
+    <span class="n">voxels</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">choice</span> <span class="o">=</span> <span class="n">choose</span><span class="p">(</span>
+        <span class="n">work</span><span class="o">=</span><span class="n">work</span><span class="p">,</span>
+        <span class="n">voxels</span><span class="o">=</span><span class="n">voxels</span><span class="p">,</span>
+        <span class="n">bytes_per_voxel</span><span class="o">=</span><span class="n">bytes_per_voxel</span><span class="p">,</span>
+        <span class="n">crossover</span><span class="o">=</span><span class="n">crossover</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">choice</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">home</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">device</span>
+    <span class="k">if</span> <span class="n">choice</span><span class="o">.</span><span class="n">where</span> <span class="o">==</span> <span class="s2">"cpu"</span><span class="p">:</span>
+        <span class="n">gathered</span> <span class="o">=</span> <span class="n">body</span><span class="p">([</span><span class="n">value</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cpu"</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">choice</span><span class="o">.</span><span class="n">where</span> <span class="o">==</span> <span class="s2">"upfront"</span><span class="p">:</span>
+        <span class="n">gathered</span> <span class="o">=</span> <span class="n">_spread</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">voxels</span><span class="p">,</span> <span class="n">choice</span><span class="o">.</span><span class="n">devices</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">gathered</span> <span class="o">=</span> <span class="n">_streamed</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">voxels</span><span class="p">,</span> <span class="n">choice</span><span class="o">.</span><span class="n">offload</span><span class="p">,</span> <span class="n">bytes_per_voxel</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">home</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">gathered</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">one_device</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">work</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">voxels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">bytes_per_voxel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">crossover</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Where a chunked reduction should run, under the policy in force.</span>
+
+<span class="sd">    A reduction keeps small accumulators in one place and feeds them a chunk</span>
+<span class="sd">    at a time, so unlike a per-voxel map it wants a device rather than a plan:</span>
+<span class="sd">    the chunking is already the caller's, and what crosses is the chunk. The</span>
+<span class="sd">    arguments mean what they mean for :func:`per_voxel`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    torch.device or None</span>
+<span class="sd">        ``None`` means no policy is in force and the caller should run where</span>
+<span class="sd">        its tensors already are.</span>
+<span class="sd">    """</span>
+    <span class="n">choice</span> <span class="o">=</span> <span class="n">choose</span><span class="p">(</span>
+        <span class="n">work</span><span class="o">=</span><span class="n">work</span><span class="p">,</span>
+        <span class="n">voxels</span><span class="o">=</span><span class="n">voxels</span><span class="p">,</span>
+        <span class="n">bytes_per_voxel</span><span class="o">=</span><span class="n">bytes_per_voxel</span><span class="p">,</span>
+        <span class="n">crossover</span><span class="o">=</span><span class="n">crossover</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">choice</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">choice</span><span class="o">.</span><span class="n">where</span> <span class="o">==</span> <span class="s2">"cpu"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cpu"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">choice</span><span class="o">.</span><span class="n">devices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spread</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
+    <span class="n">voxels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">devices</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">body</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""One share of the voxels to each card, resident, then joined."""</span>
+    <span class="n">share</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">voxels</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">devices</span><span class="p">))</span>
+    <span class="n">pieces</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">device</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">devices</span><span class="p">):</span>
+        <span class="n">begin</span> <span class="o">=</span> <span class="n">index</span> <span class="o">*</span> <span class="n">share</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">voxels</span><span class="p">,</span> <span class="n">begin</span> <span class="o">+</span> <span class="n">share</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">begin</span> <span class="o">&gt;=</span> <span class="n">end</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">body</span><span class="p">([</span><span class="n">value</span><span class="p">[</span><span class="n">begin</span><span class="p">:</span><span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">],</span> <span class="n">device</span><span class="p">)</span>
+        <span class="n">pieces</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">answer</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">_joined</span><span class="p">(</span><span class="n">pieces</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_streamed</span><span class="p">(</span>
+    <span class="n">inputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
+    <span class="n">voxels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">plan</span><span class="p">:</span> <span class="n">_Offload</span><span class="p">,</span>
+    <span class="n">bytes_per_voxel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">body</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Sequence</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""The volume through the cards a chunk at a time, transfers overlapping."""</span>
+    <span class="n">chunk</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">voxels</span><span class="p">,</span> <span class="n">chunk_voxels</span><span class="p">(</span><span class="n">plan</span><span class="p">,</span> <span class="n">bytes_per_voxel</span><span class="p">)))</span>
+    <span class="n">lanes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Lane</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">plan</span><span class="o">.</span><span class="n">devices</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">plan</span><span class="o">.</span><span class="n">lanes</span><span class="p">)]</span>
+    <span class="n">pieces</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">((</span><span class="n">voxels</span> <span class="o">+</span> <span class="n">chunk</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">chunk</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">lane</span><span class="p">:</span> <span class="n">Lane</span><span class="p">,</span> <span class="n">begin</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">moved</span> <span class="o">=</span> <span class="p">[</span><span class="n">lane</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">begin</span><span class="p">:</span><span class="n">end</span><span class="p">])</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">body</span><span class="p">(</span><span class="n">moved</span><span class="p">,</span> <span class="n">lane</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">pieces</span><span class="p">[</span><span class="n">begin</span> <span class="o">//</span> <span class="n">chunk</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">answer</span><span class="p">)</span>
+
+    <span class="n">stream_chunks</span><span class="p">(</span><span class="n">plan</span><span class="p">,</span> <span class="n">voxels</span><span class="p">,</span> <span class="n">chunk</span><span class="p">,</span> <span class="n">lanes</span><span class="p">,</span> <span class="n">run</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_joined</span><span class="p">([</span><span class="n">piece</span> <span class="k">for</span> <span class="n">piece</span> <span class="ow">in</span> <span class="n">pieces</span> <span class="k">if</span> <span class="n">piece</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_joined</span><span class="p">(</span><span class="n">pieces</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Each chunk's answers, concatenated along the voxel axis."""</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">pieces</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">stream_chunks</span><span class="p">(</span>
+    <span class="n">plan</span><span class="p">:</span> <span class="n">_Offload</span><span class="p">,</span>
+    <span class="n">voxels</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">chunk</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">lanes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="n">body</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="kc">None</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Walk the volume one chunk per lane, then wait for every stream.</span>
+
+<span class="sd">    The launches are asynchronous, so the loop runs ahead of the devices and a</span>
+<span class="sd">    chunk's transfer can proceed while another chunk computes.</span>
+<span class="sd">    """</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">begin</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">voxels</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)):</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">voxels</span><span class="p">,</span> <span class="n">begin</span> <span class="o">+</span> <span class="n">chunk</span><span class="p">)</span>
+        <span class="n">lane</span> <span class="o">=</span> <span class="n">lanes</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">lanes</span><span class="p">)]</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">stream</span><span class="p">(</span><span class="n">lane</span><span class="o">.</span><span class="n">stream</span><span class="p">):</span>
+            <span class="n">body</span><span class="p">(</span><span class="n">lane</span><span class="p">,</span> <span class="n">begin</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">lane</span> <span class="ow">in</span> <span class="n">lanes</span><span class="p">:</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">current_stream</span><span class="p">(</span><span class="n">lane</span><span class="o">.</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">wait_stream</span><span class="p">(</span><span class="n">lane</span><span class="o">.</span><span class="n">stream</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">plan</span><span class="o">.</span><span class="n">devices</span><span class="p">:</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">synchronize</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

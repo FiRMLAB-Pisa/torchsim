@@ -1,0 +1,1101 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/genindex.html" />
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="explanations/epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/autoexamples/index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2Fgenindex.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Operator.html#torchsim.Operator.__matmul__">__matmul__() (torchsim.Operator method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.ModelOperator.html#torchsim.ModelOperator.A">A() (torchsim.ModelOperator method)</a>
+</li>
+      <li><a href="generated/torchsim.ModelOperator.html#torchsim.ModelOperator.A_jvp">A_jvp() (torchsim.ModelOperator method)</a>
+</li>
+      <li><a href="generated/torchsim.ModelOperator.html#torchsim.ModelOperator.A_vjp">A_vjp() (torchsim.ModelOperator method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.model.SignalModel.html#torchsim.model.SignalModel.accepts">accepts (torchsim.model.SignalModel property)</a>
+</li>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.acquisition">acquisition (torchsim.Estimator attribute)</a>
+</li>
+      <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.adc_events">adc_events (torchsim.SequenceDescription property)</a>
+</li>
+      <li><a href="generated/torchsim.TrustRegion.html#torchsim.TrustRegion.anchored">anchored (torchsim.TrustRegion attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.utils.b1rms.html#torchsim.utils.b1rms">b1rms() (in module torchsim.utils)</a>
+</li>
+      <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.basis">basis (torchsim.Subspace attribute)</a>
+</li>
+      <li><a href="generated/torchsim.TrustRegion.html#torchsim.TrustRegion.begin">begin() (torchsim.TrustRegion method)</a>
+</li>
+      <li><a href="generated/torchsim.model.SignalModel.html#torchsim.model.SignalModel.bind">bind() (torchsim.model.SignalModel method)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.bind">(torchsim.model.Simulator method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.model.SignalModel.html#torchsim.model.SignalModel.bound">bound (torchsim.model.SignalModel attribute)</a>
+</li>
+      <li><a href="generated/torchsim.Bounded.html#torchsim.Bounded">Bounded (class in torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.bssfp_sim.html#torchsim.bssfp_sim">bssfp_sim() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.bSSFPReadout.html#torchsim.bSSFPReadout">bSSFPReadout() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.bSSFPSimulator.html#torchsim.simulators.bSSFPSimulator">bSSFPSimulator (class in torchsim.simulators)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.ModelOperator.html#torchsim.ModelOperator.channels">channels (torchsim.ModelOperator property)</a>
+</li>
+      <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.contrasts">contrasts (torchsim.Subspace property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.crlb.html#torchsim.crlb">crlb() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.crusher_dephasing_rad">crusher_dephasing_rad (torchsim.SequenceDescription attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Delay.html#torchsim.Delay">Delay() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.Dephase.html#torchsim.Dephase">Dephase() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.describe">describe() (torchsim.model.Simulator method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.dictionary">dictionary (torchsim.Subspace attribute)</a>
+</li>
+      <li><a href="generated/torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher">DictionaryMatcher (class in torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.direct.html#torchsim.direct">direct() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.DoubleAngleSimulator.html#torchsim.simulators.DoubleAngleSimulator">DoubleAngleSimulator (class in torchsim.simulators)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator">Estimator (class in torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.model.SignalModel.html#torchsim.model.SignalModel.evaluate">evaluate() (torchsim.model.SignalModel method)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.evaluate">(torchsim.model.Simulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.bSSFPSimulator.html#torchsim.simulators.bSSFPSimulator.evaluate">(torchsim.simulators.bSSFPSimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.DoubleAngleSimulator.html#torchsim.simulators.DoubleAngleSimulator.evaluate">(torchsim.simulators.DoubleAngleSimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator.evaluate">(torchsim.simulators.FSESimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.InversionRecoverySimulator.html#torchsim.simulators.InversionRecoverySimulator.evaluate">(torchsim.simulators.InversionRecoverySimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.MP2RAGESimulator.html#torchsim.simulators.MP2RAGESimulator.evaluate">(torchsim.simulators.MP2RAGESimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.MPnRAGESimulator.html#torchsim.simulators.MPnRAGESimulator.evaluate">(torchsim.simulators.MPnRAGESimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.MPRAGESimulator.html#torchsim.simulators.MPRAGESimulator.evaluate">(torchsim.simulators.MPRAGESimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator.evaluate">(torchsim.simulators.MRFSimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.MultiEchoSimulator.html#torchsim.simulators.MultiEchoSimulator.evaluate">(torchsim.simulators.MultiEchoSimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.SPGRSimulator.html#torchsim.simulators.SPGRSimulator.evaluate">(torchsim.simulators.SPGRSimulator method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.events">events (torchsim.SequenceDescription attribute)</a>
+</li>
+      <li><a href="generated/torchsim.Excitation.html#torchsim.Excitation">Excitation() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.execution.html#torchsim.execution">execution() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.expand">expand() (torchsim.Subspace method)</a>
+</li>
+      <li><a href="generated/torchsim.model.SignalModel.html#torchsim.model.SignalModel.exposes">exposes (torchsim.model.SignalModel property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.fit">fit() (torchsim.Estimator method)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.fit">(torchsim.Subspace class method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher.fitted">fitted (torchsim.DictionaryMatcher property)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.LookupTable.html#torchsim.LookupTable.fitted">(torchsim.LookupTable property)</a>
+</li>
+        <li><a href="generated/torchsim.NonlinearLeastSquares.html#torchsim.NonlinearLeastSquares.fitted">(torchsim.NonlinearLeastSquares property)</a>
+</li>
+        <li><a href="generated/torchsim.PERK.html#torchsim.PERK.fitted">(torchsim.PERK property)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.forward">forward() (torchsim.Estimator method)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.ModelOperator.html#torchsim.ModelOperator.forward">(torchsim.ModelOperator method)</a>
+</li>
+        <li><a href="generated/torchsim.SequenceDesign.html#torchsim.SequenceDesign.forward">(torchsim.SequenceDesign method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.from_coefficients">from_coefficients() (torchsim.Estimator method)</a>
+</li>
+      <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.from_description">from_description() (torchsim.model.Simulator class method)</a>
+</li>
+      <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.from_operators">from_operators() (torchsim.SequenceDescription class method)</a>
+</li>
+      <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.from_pulseq">from_pulseq() (torchsim.model.Simulator class method)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.from_pulseq">(torchsim.SequenceDescription class method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/torchsim.fse_sim.html#torchsim.fse_sim">fse_sim() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.FSEReadout.html#torchsim.FSEReadout">FSEReadout() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator">FSESimulator (class in torchsim.simulators)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.GaussNewton.html#torchsim.GaussNewton">GaussNewton (class in torchsim)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher.grouping">grouping (torchsim.DictionaryMatcher property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.ShimDefinition.html#torchsim.ShimDefinition.id">id (torchsim.ShimDefinition attribute)</a>
+</li>
+      <li><a href="generated/torchsim.Bounded.html#torchsim.Bounded.initial">initial (torchsim.Bounded attribute)</a>
+</li>
+      <li><a href="generated/torchsim.ModelOperator.html#torchsim.ModelOperator.initial">initial() (torchsim.ModelOperator method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Inversion.html#torchsim.Inversion">Inversion() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.InversionRecoverySimulator.html#torchsim.simulators.InversionRecoverySimulator">InversionRecoverySimulator (class in torchsim.simulators)</a>
+</li>
+      <li><a href="generated/torchsim.NonlinearLeastSquares.html#torchsim.NonlinearLeastSquares.iterations">iterations (torchsim.NonlinearLeastSquares attribute)</a>
+</li>
+      <li><a href="generated/torchsim.iterative.html#torchsim.iterative">iterative() (in module torchsim)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.model.SignalModel.html#torchsim.model.SignalModel.jacobian">jacobian() (torchsim.model.SignalModel method)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.ModelOperator.html#torchsim.ModelOperator.jacobian">(torchsim.ModelOperator method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.TrustRegion.html#torchsim.TrustRegion.judge">judge() (torchsim.TrustRegion method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.known">known (torchsim.Estimator property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.layout">layout() (torchsim.model.Simulator method)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator.layout">(torchsim.simulators.FSESimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.MP2RAGESimulator.html#torchsim.simulators.MP2RAGESimulator.layout">(torchsim.simulators.MP2RAGESimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.MPnRAGESimulator.html#torchsim.simulators.MPnRAGESimulator.layout">(torchsim.simulators.MPnRAGESimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.MPRAGESimulator.html#torchsim.simulators.MPRAGESimulator.layout">(torchsim.simulators.MPRAGESimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator.layout">(torchsim.simulators.MRFSimulator method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.LookupTable.html#torchsim.LookupTable">LookupTable (class in torchsim)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.ShimDefinition.html#torchsim.ShimDefinition.magnitudes">magnitudes (torchsim.ShimDefinition attribute)</a>
+</li>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.map">map() (torchsim.Estimator method)</a>
+</li>
+      <li><a href="generated/torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher.match">match() (torchsim.DictionaryMatcher method)</a>
+</li>
+      <li><a href="generated/torchsim.GaussNewton.html#torchsim.GaussNewton.minimize">minimize() (torchsim.GaussNewton method)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.SequenceDesign.html#torchsim.SequenceDesign.minimize">(torchsim.SequenceDesign method)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.model">model (torchsim.model.Simulator attribute)</a>
+</li>
+      <li><a href="generated/torchsim.ModelOperator.html#torchsim.ModelOperator">ModelOperator (class in torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.modes">modes (torchsim.Subspace property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.mp2rage_sim.html#torchsim.mp2rage_sim">mp2rage_sim() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.MP2RAGESimulator.html#torchsim.simulators.MP2RAGESimulator">MP2RAGESimulator (class in torchsim.simulators)</a>
+</li>
+      <li><a href="generated/torchsim.mpnrage_sim.html#torchsim.mpnrage_sim">mpnrage_sim() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.MPnRAGESimulator.html#torchsim.simulators.MPnRAGESimulator">MPnRAGESimulator (class in torchsim.simulators)</a>
+</li>
+      <li><a href="generated/torchsim.mprage_sim.html#torchsim.mprage_sim">mprage_sim() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.MPRAGESimulator.html#torchsim.simulators.MPRAGESimulator">MPRAGESimulator (class in torchsim.simulators)</a>
+</li>
+      <li><a href="generated/torchsim.mrf_sim.html#torchsim.mrf_sim">mrf_sim() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator">MRFSimulator (class in torchsim.simulators)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.MultiEchoSimulator.html#torchsim.simulators.MultiEchoSimulator">MultiEchoSimulator (class in torchsim.simulators)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.ModelOperator.html#torchsim.ModelOperator.names">names (torchsim.ModelOperator property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.noise_std">noise_std (torchsim.Estimator attribute)</a>
+</li>
+      <li><a href="generated/torchsim.NonlinearLeastSquares.html#torchsim.NonlinearLeastSquares">NonlinearLeastSquares (class in torchsim)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.offload.html#torchsim.offload">offload() (in module torchsim)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Operator.html#torchsim.Operator">Operator (class in torchsim)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.TrustRegion.html#torchsim.TrustRegion.per_voxel">per_voxel (torchsim.TrustRegion attribute)</a>
+</li>
+      <li><a href="generated/torchsim.PERK.html#torchsim.PERK">PERK (class in torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.ShimDefinition.html#torchsim.ShimDefinition.phases_rad">phases_rad (torchsim.ShimDefinition attribute)</a>
+</li>
+      <li><a href="generated/torchsim.ModelOperator.html#torchsim.ModelOperator.physics">physics() (torchsim.ModelOperator method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.played">played() (torchsim.model.Simulator method)</a>
+</li>
+      <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.plot">plot() (torchsim.SequenceDescription method)</a>
+</li>
+      <li><a href="generated/torchsim.LookupTable.html#torchsim.LookupTable.points">points (torchsim.LookupTable property)</a>
+</li>
+      <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.project">project() (torchsim.Subspace method)</a>
+</li>
+      <li><a href="generated/torchsim.model.SignalModel.html#torchsim.model.SignalModel.properties">properties (torchsim.model.SignalModel attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.rank">rank (torchsim.Estimator attribute)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.rank">(torchsim.Subspace property)</a>
+</li>
+      </ul></li>
+      <li><a href="generated/torchsim.Readout.html#torchsim.Readout">Readout() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.Refocusing.html#torchsim.Refocusing">Refocusing() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.repetition_s">repetition_s() (torchsim.model.Simulator method)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator.repetition_s">(torchsim.simulators.FSESimulator method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.retained">retained (torchsim.Subspace property)</a>
+</li>
+      <li><a href="generated/torchsim.TrustRegion.html#torchsim.TrustRegion.retire">retire() (torchsim.TrustRegion method)</a>
+</li>
+      <li><a href="generated/torchsim.rf_definition.html#torchsim.rf_definition">rf_definition() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.rf_definitions">rf_definitions (torchsim.SequenceDescription attribute)</a>
+</li>
+      <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.rf_raster_time_s">rf_raster_time_s (torchsim.model.Simulator property)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.rf_raster_time_s">(torchsim.SequenceDescription attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Saturation.html#torchsim.Saturation">Saturation() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.seed">seed (torchsim.Estimator attribute)</a>
+</li>
+      <li><a href="generated/torchsim.ModelOperator.html#torchsim.ModelOperator.select">select() (torchsim.ModelOperator method)</a>
+</li>
+      <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription">SequenceDescription (class in torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.SequenceDesign.html#torchsim.SequenceDesign">SequenceDesign (class in torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.shim_definitions">shim_definitions (torchsim.SequenceDescription attribute)</a>
+</li>
+      <li><a href="generated/torchsim.ShimDefinition.html#torchsim.ShimDefinition">ShimDefinition (class in torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.model.SignalModel.html#torchsim.model.SignalModel">SignalModel (class in torchsim.model)</a>
+</li>
+      <li><a href="generated/torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate">simulate() (torchsim.model.SignalModel method)</a>
+</li>
+      <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.simulation">simulation (torchsim.Subspace attribute)</a>
+</li>
+      <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator">Simulator (class in torchsim.model)</a>
+</li>
+      <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.singular_values">singular_values (torchsim.Subspace attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.LookupTable.html#torchsim.LookupTable.span">span (torchsim.LookupTable property)</a>
+</li>
+      <li><a href="generated/torchsim.spgr_sim.html#torchsim.spgr_sim">spgr_sim() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.SPGRReadout.html#torchsim.SPGRReadout">SPGRReadout() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.SPGRSimulator.html#torchsim.simulators.SPGRSimulator">SPGRSimulator (class in torchsim.simulators)</a>
+</li>
+      <li><a href="generated/torchsim.ModelOperator.html#torchsim.ModelOperator.split">split() (torchsim.ModelOperator method)</a>
+</li>
+      <li><a href="generated/torchsim.Spoil.html#torchsim.Spoil">Spoil() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.SSFPEchoReadout.html#torchsim.SSFPEchoReadout">SSFPEchoReadout() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.SSFPFidReadout.html#torchsim.SSFPFidReadout">SSFPFidReadout() (in module torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.states">states (torchsim.model.Simulator attribute)</a>
+</li>
+      <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.subsequence_index">subsequence_index (torchsim.SequenceDescription attribute)</a>
+</li>
+      <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace">Subspace (class in torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.subspace">subspace (torchsim.Estimator property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.TrustRegion.html#torchsim.TrustRegion.tau">tau (torchsim.TrustRegion attribute)</a>
+</li>
+      <li><a href="generated/torchsim.model.SignalModel.html#torchsim.model.SignalModel.to">to() (torchsim.model.SignalModel method)</a>
+
+      <ul>
+        <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.to">(torchsim.model.Simulator method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.tr_duration_us">tr_duration_us (torchsim.SequenceDescription attribute)</a>
+</li>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.trained">trained (torchsim.Estimator property)</a>
+</li>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.training_set">training_set() (torchsim.Estimator method)</a>
+</li>
+      <li><a href="generated/torchsim.TrustRegion.html#torchsim.TrustRegion">TrustRegion (class in torchsim)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.uncertainty_of">uncertainty_of() (torchsim.Estimator method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.Estimator.html#torchsim.Estimator.unknown">unknown (torchsim.Estimator property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.SequenceDesign.html#torchsim.SequenceDesign.values">values() (torchsim.SequenceDesign method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.variables">variables (torchsim.model.Simulator property)</a>
+</li>
+      <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.voxel_size_m">voxel_size_m (torchsim.SequenceDescription attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

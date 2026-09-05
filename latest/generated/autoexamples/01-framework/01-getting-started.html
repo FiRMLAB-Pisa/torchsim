@@ -1,0 +1,1042 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Basic Usage &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/autoexamples/01-framework/01-getting-started';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/generated/autoexamples/01-framework/01-getting-started.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Expanded Physics" href="02-expanded-physics.html" />
+    <link rel="prev" title="Framework" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/edit/main/generated/autoexamples/01-framework/01-getting-started.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2Fgenerated/autoexamples/01-framework/01-getting-started.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/generated/autoexamples/01-framework/01-getting-started.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Basic Usage</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-simulation">Forward simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivative-with-respect-to-tissue-parameters">Derivative with respect to tissue parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approaching-steady-state">Approaching steady state</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-wrapper">Functional wrapper</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-tweaking">Performance tweaking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulating-a-sequence-you-did-not-write">Simulating a sequence you did not write</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-a-pulseq-file">From a Pulseq file</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next steps</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-generated-autoexamples-01-framework-01-getting-started-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code or to run this example in your browser via Binder.</p>
+</div>
+<section class="sphx-glr-example-title" id="basic-usage">
+<span id="sphx-glr-generated-autoexamples-01-framework-01-getting-started-py"></span><h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h1>
+<p>The scope of this notebook is to showcase the basic functionalities of Torchsim,
+including how to simulate a signal, calculating derivatives etc.</p>
+<p>This example uses a fast spin echo that ships with TorchSim.</p>
+<div class="colab-button">
+            <a href="https://colab.research.google.com/github/FiRMLAB-Pisa/torchsim/blob/gh-pages/latest/examples/generated/autoexamples/01-framework/01-getting-started.ipynb" target="_blank">
+                <img src="https://colab.research.google.com/assets/colab-badge.svg"
+                alt="Open In Colab"/>
+            </a>
+        </div>
+        <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torchsim</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchsim.simulators</span><span class="w"> </span><span class="kn">import</span> <a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class"><span class="n">FSESimulator</span></a>
+</pre></div>
+</div>
+<section id="forward-simulation">
+<h2>Forward simulation<a class="headerlink" href="#forward-simulation" title="Link to this heading">#</a></h2>
+<p>First, we need to create a Simulator object instance. The constructor
+accepts the sequence parameters (in this example, number of echoes and echo spacing)
+and the tissue properties (T1, and T2).</p>
+<p>The simulator is parallelized: if N (T1, T2) pairs are provided,
+the corresponding N signals are computed in parallel. Properties support broadcasting:
+if we pass a list of T2s but just a single T1, the same T1 is used for all atoms.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ECHOES</span></a> <span class="o">=</span> <span class="mi">48</span>
+<a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ESP_MS</span></a> <span class="o">=</span> <span class="mf">5.0</span>
+
+<a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_MS</span></a> <span class="o">=</span> <span class="mf">1000.0</span>
+<span class="n">T2_MS</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">80.0</span><span class="p">,</span> <span class="mf">110.0</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">])</span>
+
+<a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">simulator</span></a> <span class="o">=</span> <a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class"><span class="n">FSESimulator</span></a><span class="p">(</span><span class="n">ESP</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ESP_MS</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_MS</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">)</span>
+
+<span class="n">flip</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ECHOES</span></a><span class="p">,),</span> <span class="mf">180.0</span><span class="p">)</span>
+<span class="n">signal180</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">simulator</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">)</span>  <span class="c1"># (3, 48): one row per tissue</span>
+</pre></div>
+</div>
+<p>Changing the system parameters (e.g., simulating a refocusing train with 60° flip angle)
+will affect the resulting signal evolution</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">signal60</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">simulator</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ECHOES</span></a><span class="p">,),</span> <span class="mf">60.0</span><span class="p">))</span>
+</pre></div>
+</div>
+<img src="../../../_images/sphx_glr_01-getting-started_001.png" srcset="../../../_images/sphx_glr_01-getting-started_001.png" alt="a 180 degree train, a 60 degree train" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f4864a07620&gt;
+</pre></div>
+</div>
+</section>
+<section id="derivative-with-respect-to-tissue-parameters">
+<h2>Derivative with respect to tissue parameters<a class="headerlink" href="#derivative-with-respect-to-tissue-parameters" title="Link to this heading">#</a></h2>
+<p>Torchsim allows to efficiently evaluate the derivative
+of the signal wrt input parameters, via <a class="reference internal" href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.jacobian" title="torchsim.model.SignalModel.jacobian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">jacobian()</span></code></a>.
+The desired derivatives can be specified by string:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">signal</span><span class="p">,</span> <span class="n">dT2</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.jacobian" title="torchsim.model.SignalModel.jacobian" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">simulator</span><span class="o">.</span><span class="n">jacobian</span></a><span class="p">(</span><span class="s2">"T2"</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">)</span>  <span class="c1"># dT2 is (3, 48) too</span>
+</pre></div>
+</div>
+<p>Since the number of echoes is typically much larger than the number of differentiation parameters,
+forward mode differentiation is more efficient than the more common backward propagation.</p>
+<p>Here you can see a comparison with finite differences derivatives:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">STEP_MS</span></a> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">signal_plus</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">simulator</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">STEP_MS</span></a><span class="p">)</span>
+<span class="n">dT2_finite</span> <span class="o">=</span> <span class="p">(</span><span class="n">signal_plus</span> <span class="o">-</span> <span class="n">signal</span><span class="p">)</span> <span class="o">/</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">STEP_MS</span></a>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>largest disagreement with a 1.0 ms step: 7.70e-03
+</pre></div>
+</div>
+</section>
+<section id="approaching-steady-state">
+<h2>Approaching steady state<a class="headerlink" href="#approaching-steady-state" title="Link to this heading">#</a></h2>
+<p>Everything so far started from equilibrium. A scanner does not: it plays the
+train over and over, and what it records is the state the train has settled
+into. Reaching that by playing it out is hundreds of repetitions, every one
+of them the full cost of the sequence.</p>
+<p><code class="docutils literal notranslate"><span class="pre">repetitions=&quot;auto&quot;</span></code> reads the limit off a handful of playings instead. A
+settled signal is a constant plus decaying modes, so finitely many terms fix
+where it is going, and the answer is the one that running there arrives at.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">settling</span></a> <span class="o">=</span> <a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class"><span class="n">FSESimulator</span></a><span class="p">(</span><span class="n">ESP</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ESP_MS</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_MS</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">first_pass</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">settling</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">)</span>
+<span class="n">settled</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">settling</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">,</span> <span class="n">repetitions</span><span class="o">=</span><span class="s2">"auto"</span><span class="p">)</span>
+<span class="n">played_out</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">settling</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">,</span> <span class="n">repetitions</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>one playing          0.78021
+repetitions="auto"   0.05895
+200 playings         0.05895
+the last two agree to 4.7e-02
+</pre></div>
+</div>
+<p>The first playing is wrong by a fraction that a short TR makes large, which
+is what a simulation of a steady-state sequence gets wrong if it starts from
+equilibrium and stops. Every shipped simulator takes the setting, and it
+costs a fraction of what running there costs.</p>
+</section>
+<section id="functional-wrapper">
+<h2>Functional wrapper<a class="headerlink" href="#functional-wrapper" title="Link to this heading">#</a></h2>
+<p>Every sequence that ships also has a function, for the case where there is
+nothing to reuse: it takes the protocol and the tissue together, returns the
+signal, and returns the derivative too if <code class="docutils literal notranslate"><span class="pre">diff</span></code> names a property. It is
+the object above with the construction folded in, so the answer is the same
+to the bit.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">signal</span><span class="p">,</span> <span class="n">dT2</span> <span class="o">=</span> <a href="../../torchsim.fse_sim.html#torchsim.fse_sim" title="torchsim.fse_sim" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">torchsim</span><span class="o">.</span><span class="n">fse_sim</span></a><span class="p">(</span>
+    <span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">,</span> <span class="n">ESP</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ESP_MS</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_MS</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">,</span> <span class="n">diff</span><span class="o">=</span><span class="s2">"T2"</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>agrees with the simulator to 0.0e+00
+</pre></div>
+</div>
+<p>Reach for it when a sequence is simulated once and nothing about it is being
+varied. The object is what a loop wants: it resolves the event stream on its
+first call and rebinds only the numbers that change afterwards, which is
+worth about eight times the whole call to a design or a dictionary sweep.</p>
+</section>
+<section id="performance-tweaking">
+<h2>Performance tweaking<a class="headerlink" href="#performance-tweaking" title="Link to this heading">#</a></h2>
+<p>Everything so far took the defaults. Four settings decide what the run costs
+and how exact it is, and each is given to the constructor or to the call.</p>
+<p><code class="docutils literal notranslate"><span class="pre">states</span></code> is how many configuration orders are carried. A refocused train
+winds one order per interval, and a pulse that is not a perfect 180 degrees
+splits the magnetization down every pathway those orders describe, so the
+answer is only as good as the number kept. Too few is a wrong answer rather
+than a slow one. Held against a train carrying far more than it needs:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">signal_ref</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">simulator</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">)</span>
+<span class="n">converged</span> <span class="o">=</span> <a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class"><span class="n">FSESimulator</span></a><span class="p">(</span><span class="n">ESP</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ESP_MS</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_MS</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="mi">64</span><span class="p">)</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span>
+    <span class="n">flip</span><span class="o">=</span><span class="n">flip</span>
+<span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ORDERS</span></a> <span class="o">=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">48</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">truncated</span></a> <span class="o">=</span> <span class="p">[</span>
+    <a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class"><span class="n">FSESimulator</span></a><span class="p">(</span><span class="n">ESP</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ESP_MS</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_MS</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">,</span> <span class="n">states</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">orders</span></a><span class="p">)</span>
+    <span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">orders</span></a> <span class="ow">in</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ORDERS</span></a>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span> 4 orders   0.0e+00 from converged
+10 orders   0.0e+00 from converged
+16 orders   0.0e+00 from converged
+32 orders   0.0e+00 from converged
+48 orders   0.0e+00 from converged
+</pre></div>
+</div>
+<p>It lands exactly at forty-eight, which is the number of echoes: a train that
+winds one order per interval can populate one more pathway per echo and no
+more, so carrying more orders than the train has intervals changes nothing.
+A spoiled sequence is the other case – it discards the transverse orders
+every repetition, so a handful is enough however long it runs.</p>
+<p>The shipped default is chosen for the refocused trains these simulators are
+written for, and a 60 degree train is not one of them. It is the first
+setting to raise when a signal looks wrong late in an echo train, and the
+check above – run once against a larger number – is how you find out rather
+than assume.</p>
+<p>A simulator is worth holding on to. The structure of a sequence – the order
+of its events, which of them record, how far it winds – is settled the first
+time it runs and the numbers are rebound onto it afterwards, so a sweep that
+changes only flip angles never walks the event stream again. That happens by
+itself; what it is worth grows with the sequence, and a 500-repetition
+fingerprinting schedule is where it decides whether a dictionary sweep takes
+minutes or hours.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">held</span></a> <span class="o">=</span> <a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class"><span class="n">FSESimulator</span></a><span class="p">(</span><span class="n">ESP</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ESP_MS</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_MS</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">)</span>
+<a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rebuilt</span></a> <span class="o">=</span> <a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class"><span class="n">FSESimulator</span></a><span class="p">(</span><span class="n">ESP</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ESP_MS</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_MS</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">)</span>
+
+<span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">name</span></a><span class="p">,</span> <a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">candidate</span></a> <span class="ow">in</span> <span class="p">((</span><span class="s2">"held"</span><span class="p">,</span> <a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">held</span></a><span class="p">),</span> <span class="p">(</span><span class="s2">"rebuilt anew"</span><span class="p">,</span> <a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rebuilt</span></a><span class="p">)):</span>
+    <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">candidate</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">)</span>  <span class="c1"># the first call is where the structure is read</span>
+    <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">start</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.perf_counter" title="time.perf_counter" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span></a><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+        <span class="k">if</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">name</span></a> <span class="o">!=</span> <span class="s2">"held"</span><span class="p">:</span>
+            <a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">candidate</span></a> <span class="o">=</span> <a href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class"><span class="n">FSESimulator</span></a><span class="p">(</span><span class="n">ESP</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ESP_MS</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_MS</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">)</span>
+        <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">candidate</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">name</span></a><span class="si">:</span><span class="s2">14s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="mf">1e3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><a href="https://docs.python.org/3/library/time.html#time.perf_counter" title="time.perf_counter" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span></a><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">start</span></a><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">20</span><span class="si">:</span><span class="s2">6.2f</span><span class="si">}</span><span class="s2"> ms a call"</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>held             0.94 ms a call
+rebuilt anew    14.19 ms a call
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">execution</span></code> says where the work goes. <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code> weighs the problem against
+what the cards have free – work too small to repay a launch stays on the
+host, work that fits crosses in one piece, work that does not is streamed
+through in chunks. Naming a device insists on it, and a block settles it for
+everything inside:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <a href="../../torchsim.execution.html#torchsim.execution" title="torchsim.execution" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">torchsim</span><span class="o">.</span><span class="n">execution</span></a><span class="p">(</span><span class="s2">"cpu"</span><span class="p">):</span>
+    <span class="n">on_the_host</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">simulator</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"  forced onto the host, agrees to </span><span class="si">{</span><span class="nb">float</span><span class="p">((</span><span class="n">on_the_host</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">signal_ref</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">"</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>forced onto the host, agrees to 0.0e+00
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">stream</span></code> and <code class="docutils literal notranslate"><span class="pre">budget_bytes</span></code> are for a volume rather than a dictionary:
+the first insists the run be cut into chunks even where it would have fit,
+the second caps what a chunk may hold. A whole-brain map at a hundred
+thousand voxels is the case they exist for, and it is written like this:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>
+    <span class="k">with</span> <a href="../../torchsim.execution.html#torchsim.execution" title="torchsim.execution" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">torchsim</span><span class="o">.</span><span class="n">execution</span></a><span class="p">(</span><span class="s2">"cuda"</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">budget_bytes</span><span class="o">=</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">28</span><span class="p">):</span>
+        <span class="n">streamed</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">simulator</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">)</span>
+    <span class="n">agreement</span> <span class="o">=</span> <span class="nb">float</span><span class="p">((</span><span class="n">streamed</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span> <span class="o">-</span> <span class="n">signal_ref</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  streamed through a card in 256 MiB chunks, agrees to </span><span class="si">{</span><span class="n">agreement</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"  no card here, so the streamed run is skipped"</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>no card here, so the streamed run is skipped
+</pre></div>
+</div>
+</section>
+<section id="simulating-a-sequence-you-did-not-write">
+<h2>Simulating a sequence you did not write<a class="headerlink" href="#simulating-a-sequence-you-did-not-write" title="Link to this heading">#</a></h2>
+<p>Every call so far named the sequence: <code class="docutils literal notranslate"><span class="pre">ESP</span></code>, <code class="docutils literal notranslate"><span class="pre">TR</span></code>, the flip train. That
+is fine when you wrote it, and wrong when it came from somewhere else – a
+scan does not need its parameters retyped, it needs them read.</p>
+<p>The MRD client streams a <strong>sequence description</strong>, having taken it from the
+Pulseq sequence the scanner is running. It is a repetition’s worth of events:
+time passing, an RF pulse, an ADC window, each with a timestamp and the
+numbers that kind of event carries, plus the pulse shapes and transmit shims
+they name.</p>
+<p>Echo spacing, echo train length, refocusing angle, TR and pulse shapes are
+all in there. Nothing about the sequence has to be given again.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../../torchsim.SequenceDescription.html#torchsim.SequenceDescription" title="torchsim.SequenceDescription" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">described</span></a> <span class="o">=</span> <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator.describe" title="torchsim.model.Simulator.describe" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">simulator</span><span class="o">.</span><span class="n">describe</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">,</span> <span class="n">ESP</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ESP_MS</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>145 events over 3000 ms, 1 pulse shape, 0 shims
+</pre></div>
+</div>
+<p>You do not have to read it. <code class="docutils literal notranslate"><span class="pre">describe</span></code> here only shows what a stream looks
+like; <a class="reference internal" href="../../torchsim.SequenceDescription.html#torchsim.SequenceDescription.plot" title="torchsim.SequenceDescription.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> draws one, which is the way
+to check that a layout laid down what you meant.</p>
+<ul class="sphx-glr-horizontal">
+<li><img src="../../../_images/sphx_glr_01-getting-started_002.png" srcset="../../../_images/sphx_glr_01-getting-started_002.png" alt="01 getting started" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../../_images/sphx_glr_01-getting-started_003.png" srcset="../../../_images/sphx_glr_01-getting-started_003.png" alt="the first 6 echoes of the description above" class = "sphx-glr-multi-img"/></li>
+</ul>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f4864800d10&gt;]
+</pre></div>
+</div>
+<p>A description normally arrives; it is not typed. Writing one by hand once is
+worth it only to see that there is nothing else in it –
+<a class="reference internal" href="../../torchsim.SequenceDescription.html#torchsim.SequenceDescription.from_operators" title="torchsim.SequenceDescription.from_operators"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_operators()</span></code></a> lays them out.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../../torchsim.SequenceDescription.html#torchsim.SequenceDescription" title="torchsim.SequenceDescription" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">by_hand</span></a> <span class="o">=</span> <a href="../../torchsim.SequenceDescription.html#torchsim.SequenceDescription.from_operators" title="torchsim.SequenceDescription.from_operators" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-method"><span class="n">torchsim</span><span class="o">.</span><span class="n">SequenceDescription</span><span class="o">.</span><span class="n">from_operators</span></a><span class="p">(</span>
+    <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">torchsim</span><span class="o">.</span><span class="n">Excitation</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">math</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">math</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="o">*</span><span class="p">[</span>
+        <span class="n">part</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ECHOES</span></a><span class="p">)</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="p">(</span>
+            <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">torchsim</span><span class="o">.</span><span class="n">Delay</span></a><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ESP_MS</span></a> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">),</span>
+            <a href="../../torchsim.Refocusing.html#torchsim.Refocusing" title="torchsim.Refocusing" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">torchsim</span><span class="o">.</span><span class="n">Refocusing</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/math.html#math.radians" title="math.radians" class="sphx-glr-backref-module-math sphx-glr-backref-type-py-function"><span class="n">math</span><span class="o">.</span><span class="n">radians</span></a><span class="p">(</span><span class="mf">60.0</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">),</span>
+            <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">torchsim</span><span class="o">.</span><span class="n">Delay</span></a><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ESP_MS</span></a> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">),</span>
+            <a href="../../torchsim.Readout.html#torchsim.Readout" title="torchsim.Readout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">torchsim</span><span class="o">.</span><span class="n">Readout</span></a><span class="p">(</span><span class="mf">0.0</span><span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">"  written by hand: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">by_hand</span><span class="o">.</span><span class="n">events</span></a><span class="p">)</span><span class="si">}</span><span class="s2"> events over "</span>
+    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">by_hand</span><span class="o">.</span><span class="n">tr_duration_us</span></a><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1e-3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> ms"</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>written by hand: 193 events over 240 ms
+</pre></div>
+</div>
+<p><a class="reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator.from_description" title="torchsim.model.Simulator.from_description"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_description()</span></code></a> runs one, and the only
+thing given to it is the tissue. The events are already concrete – each
+carries the action word saying whether it winds, spoils or records – so no
+layout is walked and no sequence parameter is inferred.</p>
+<p>Which simulator you call it on is the whole of what you choose, and it is
+not a formality. A description says an RF pulse was played, tagged with the
+use its designer gave it, and an ADC window was opened. It says nothing
+about the gradients between them, because the transport carries none.</p>
+<p>The dephasing lives in the handlers instead: a refocused train crushes
+either side of its refocusing pulses, an unbalanced one winds an order after
+every sample, a spoiled one discards the transverse states. Naming
+<code class="docutils literal notranslate"><span class="pre">FSESimulator</span></code> is how you say which of those the events are to be read as.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">from_stream</span> <span class="o">=</span> <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator.from_description" title="torchsim.model.Simulator.from_description" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">FSESimulator</span><span class="o">.</span><span class="n">from_description</span></a><span class="p">(</span><a href="../../torchsim.SequenceDescription.html#torchsim.SequenceDescription" title="torchsim.SequenceDescription" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">described</span></a><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_MS</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">)</span>
+<span class="n">streamed_signal</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">from_stream</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<p>It differentiates like anything else, because the derivative follows from the
+events and not from who wrote them:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">streamed_dT2</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.jacobian" title="torchsim.model.SignalModel.jacobian" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">from_stream</span><span class="o">.</span><span class="n">jacobian</span></a><span class="p">(</span><span class="s2">"T2"</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>signal (3, 48), dT2 (3, 48)
+</pre></div>
+</div>
+<p>One thing to know when comparing it against the shipped simulator: a
+description carries the events, and a simulator may carry physics <em>around</em>
+them. <a class="reference internal" href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator"><code class="xref py py-class docutils literal notranslate"><span class="pre">FSESimulator</span></code></a> folds in the recovery
+between one train and the next in closed form, which is not an event and so
+is not in the stream. The shape of the train is the same; the driven
+equilibrium the shipped object adds does not come along.</p>
+<img src="../../../_images/sphx_glr_01-getting-started_004.png" srcset="../../../_images/sphx_glr_01-getting-started_004.png" alt="white matter, the same train both ways" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f4864213170&gt;]
+</pre></div>
+</div>
+</section>
+<section id="from-a-pulseq-file">
+<h2>From a Pulseq file<a class="headerlink" href="#from-a-pulseq-file" title="Link to this heading">#</a></h2>
+<p>The stream a scanner sends is read off the Pulseq sequence it is running, so
+the same events can be read from the <code class="docutils literal notranslate"><span class="pre">.seq</span></code> file directly – which is what
+to do when the scan has not been run yet. The file is parsed by pypulseq,
+which also computes its trajectory: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">torchsim[pulseq]</span></code>.</p>
+<p>The file states how many blocks one repetition holds, in its <code class="docutils literal notranslate"><span class="pre">TRSize</span></code>
+definition, so nothing is searched for. What is read off the trajectory is
+what Pulseq does not write down: which ADC sample each readout passes
+through k = 0 in, which is the echo the timestamp goes on.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">train</span> <span class="o">=</span> <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator.from_pulseq" title="torchsim.model.Simulator.from_pulseq" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">FSESimulator</span><span class="o">.</span><span class="n">from_pulseq</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/pathlib.html#pathlib.PosixPath" title="pathlib.PosixPath" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SEQ_FILE</span></a><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">from_file</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">train</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">T1</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_MS</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../../_images/sphx_glr_01-getting-started_005.png" srcset="../../../_images/sphx_glr_01-getting-started_005.png" alt="one repetition of fse.seq, white matter, at the echo times the file puts them at" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>read from fse.seq:
+  25 events over 2053 ms
+  8 echoes, 6.28 ms apart
+  2 pulse shapes
+</pre></div>
+</div>
+<p>Echo spacing, echo train length, refocusing angle and pulse shapes were never
+named. The two things given were the tissue and which simulator to read the
+events as.</p>
+</section>
+<section id="next-steps">
+<h2>Next steps<a class="headerlink" href="#next-steps" title="Link to this heading">#</a></h2>
+<p>The derivative with respect to tissue is what a fit descends and what a
+model-based reconstruction pushes through an encoding operator; the parameter
+inference and model-based imaging notebooks do both. Differentiating with
+respect to the schedule instead is what designs a protocol, and is the
+subject of the sequence optimization notebooks.</p>
+<p>When the sequence you want is not one of the ones that ship, the next
+notebooks say what to write instead.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 8.979 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-01-framework-01-getting-started-py">
+<div class="binder-badge docutils container">
+<a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/01-framework/01-getting-started.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo.svg" style="width: 150px;" />
+</a>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/9d96d9bb800bf81205af6c5dcfb1df29/01-getting-started.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">01-getting-started.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/e8b3d071d209516a04d301e26bf4e852/01-getting-started.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">01-getting-started.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/ed17910e388727fd3460602a4d7f0abb/01-getting-started.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">01-getting-started.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Framework</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02-expanded-physics.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Expanded Physics</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-simulation">Forward simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivative-with-respect-to-tissue-parameters">Derivative with respect to tissue parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#approaching-steady-state">Approaching steady state</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-wrapper">Functional wrapper</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-tweaking">Performance tweaking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulating-a-sequence-you-did-not-write">Simulating a sequence you did not write</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-a-pulseq-file">From a Pulseq file</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">Next steps</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

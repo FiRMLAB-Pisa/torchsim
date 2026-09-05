@@ -1,0 +1,941 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Writing a New Operator &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/autoexamples/01-framework/04-custom-operator';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/generated/autoexamples/01-framework/04-custom-operator.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Parameter inference" href="../02-parameter-inference/index.html" />
+    <link rel="prev" title="Writing a Signal Model" href="03-writing-a-simulator.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/edit/main/generated/autoexamples/01-framework/04-custom-operator.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2Fgenerated/autoexamples/01-framework/04-custom-operator.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/generated/autoexamples/01-framework/04-custom-operator.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Writing a New Operator</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composing-existing-operators">Composing existing operators</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-operator">Using the operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation">Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-readout">Custom readout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limits">Limits</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-generated-autoexamples-01-framework-04-custom-operator-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code or to run this example in your browser via Binder.</p>
+</div>
+<section class="sphx-glr-example-title" id="writing-a-new-operator">
+<span id="sphx-glr-generated-autoexamples-01-framework-04-custom-operator-py"></span><h1>Writing a New Operator<a class="headerlink" href="#writing-a-new-operator" title="Link to this heading">#</a></h1>
+<p>The scope of this notebook is to show how to add a sequence module TorchSim
+does not ship – a preparation, or a readout – without touching a kernel.</p>
+<p>An operator is a Python function that returns events and says how long it
+holds the timeline, and <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> composes two into one. Two are written here: a
+T2 preparation, and a readout that takes both samples an unbalanced repetition
+can carry.</p>
+<div class="colab-button">
+            <a href="https://colab.research.google.com/github/FiRMLAB-Pisa/torchsim/blob/gh-pages/latest/examples/generated/autoexamples/01-framework/04-custom-operator.ipynb" target="_blank">
+                <img src="https://colab.research.google.com/assets/colab-badge.svg"
+                alt="Open In Colab"/>
+            </a>
+        </div>
+        <p>The operators the new ones are composed from, and the simulator that plays
+them.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">,</span>
+    <a href="../../torchsim.Dephase.html#torchsim.Dephase" title="torchsim.Dephase" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Dephase</span></a><span class="p">,</span>
+    <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Excitation</span></a><span class="p">,</span>
+    <a href="../../torchsim.Readout.html#torchsim.Readout" title="torchsim.Readout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Readout</span></a><span class="p">,</span>
+    <a href="../../torchsim.Refocusing.html#torchsim.Refocusing" title="torchsim.Refocusing" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Refocusing</span></a><span class="p">,</span>
+    <a href="../../torchsim.SSFPEchoReadout.html#torchsim.SSFPEchoReadout" title="torchsim.SSFPEchoReadout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">SSFPEchoReadout</span></a><span class="p">,</span>
+    <a href="../../torchsim.SSFPFidReadout.html#torchsim.SSFPFidReadout" title="torchsim.SSFPFidReadout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">SSFPFidReadout</span></a><span class="p">,</span>
+    <a href="../../torchsim.Spoil.html#torchsim.Spoil" title="torchsim.Spoil" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Spoil</span></a><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchsim.model</span><span class="w"> </span><span class="kn">import</span> <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">Simulator</span></a>
+</pre></div>
+</div>
+<section id="composing-existing-operators">
+<h2>Composing existing operators<a class="headerlink" href="#composing-existing-operators" title="Link to this heading">#</a></h2>
+<p>A T2 preparation tips the magnetization into the transverse plane, lets it
+decay for a chosen time about a Refocusing pulse, tips what is left back
+along z, and spoils whatever did not come back.</p>
+<p>All of those are operators already, so <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> is the whole of writing it.
+Nothing new is taught to the kernels – what is new is the <em>arrangement</em>, and
+that is what an operator is.</p>
+<p>The Refocusing pulse is asked for uncrushed: a T2 preparation refocuses
+rather than dephases, and the crusher pair <a class="reference internal" href="../../torchsim.Refocusing.html#torchsim.Refocusing" title="torchsim.Refocusing"><code class="xref py py-func docutils literal notranslate"><span class="pre">Refocusing()</span></code></a> adds
+by default would spoil the echo it exists to form.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">t2_preparation</span><span class="p">(</span><span class="n">echo_time_s</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">spoil_s</span><span class="o">=</span><span class="mf">2e-3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Return a T2 preparation that weights the magnetization by its own decay.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    echo_time_s:</span>
+<span class="sd">        How long the magnetization spends in the transverse plane.</span>
+<span class="sd">    spoil_s:</span>
+<span class="sd">        The spoiler after the tip-up, which removes what did not return.</span>
+<span class="sd">    """</span>
+    <span class="n">half</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">echo_time_s</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Excitation</span></a><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">)</span>
+        <span class="o">@</span> <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">(</span><span class="n">half</span><span class="p">)</span>
+        <span class="o">@</span> <a href="../../torchsim.Refocusing.html#torchsim.Refocusing" title="torchsim.Refocusing" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Refocusing</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="n">crushed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="o">@</span> <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">(</span><span class="n">half</span><span class="p">)</span>
+        <span class="o">@</span> <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Excitation</span></a><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">)</span>
+        <span class="o">@</span> <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">(</span><span class="n">spoil_s</span><span class="p">)</span>
+        <span class="o">@</span> <a href="../../torchsim.Spoil.html#torchsim.Spoil" title="torchsim.Spoil" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Spoil</span></a><span class="p">()</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="using-the-operator">
+<h2>Using the operator<a class="headerlink" href="#using-the-operator" title="Link to this heading">#</a></h2>
+<p>A new operator goes into a layout beside the shipped ones. The preparation
+leaves the weighted magnetization along z, so the train that follows excites
+it as it would any other longitudinal magnetization.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">T2PreparedFSE</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">Simulator</span></a><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A T2 preparation, then a refocused train.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    TE_prep : float</span>
+<span class="sd">        How long the preparation holds the magnetization transverse, in</span>
+<span class="sd">        milliseconds.</span>
+<span class="sd">    ESP : float</span>
+<span class="sd">        The echo spacing, in milliseconds.</span>
+<span class="sd">    ETL : int</span>
+<span class="sd">        How many echoes are recorded.</span>
+<span class="sd">    """</span>
+
+    <span class="n">states</span> <span class="o">=</span> <span class="mi">8</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">TE_prep</span><span class="p">,</span> <span class="n">ESP</span><span class="p">,</span> <span class="n">ETL</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return the operators of the whole train, in order."""</span>
+        <span class="n">half</span> <span class="o">=</span> <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">ESP</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">t2_preparation</span><span class="p">(</span><span class="n">TE_prep</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">excitation</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">),</span>
+        <span class="p">]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ETL</span><span class="p">):</span>
+            <span class="n">parts</span> <span class="o">+=</span> <span class="p">[</span>
+                <span class="n">half</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">refocusing</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">),</span>
+                <span class="n">half</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">),</span>
+            <span class="p">]</span>
+        <span class="k">return</span> <span class="n">parts</span>
+</pre></div>
+</div>
+</section>
+<section id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Link to this heading">#</a></h2>
+<p>A preparation is worth only as much as the weighting it imposes, so we check
+it rather than assert it: sweep the preparation time and hold the first
+recorded echo against <code class="docutils literal notranslate"><span class="pre">exp(-TE</span> <span class="pre">/</span> <span class="pre">T2)</span></code>, which is what a T2 preparation is
+for.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">T2_MS</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">40.0</span><span class="p">,</span> <span class="mf">80.0</span><span class="p">,</span> <span class="mf">160.0</span><span class="p">])</span>
+<span class="n">prep_times_ms</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">120.0</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
+
+<span class="n">prepared</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+    <span class="p">[</span>
+        <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">T2PreparedFSE</span></a><span class="p">(</span><span class="n">TE_prep</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">prep_ms</span><span class="p">),</span> <span class="n">ESP</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">ETL</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">T1</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">prep_ms</span> <span class="ow">in</span> <span class="n">prep_times_ms</span>
+    <span class="p">],</span>
+    <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">weighting</span> <span class="o">=</span> <span class="n">prepared</span> <span class="o">/</span> <span class="n">prepared</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">prep_times_ms</span> <span class="o">/</span> <span class="n">T2_MS</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span>
+</pre></div>
+</div>
+<img src="../../../_images/sphx_glr_04-custom-operator_001.png" srcset="../../../_images/sphx_glr_04-custom-operator_001.png" alt="simulated, against the closed form (solid)" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>worst departure from exp(-TE/T2): 0.0018985345959663391
+</pre></div>
+</div>
+<p>The two follow each other to about 0.2%, and the residual is physics rather
+than error: the tipped-up magnetization recovers a little across the spoiler
+that follows it, by more for the longer preparations that leave less behind.</p>
+</section>
+<section id="custom-readout">
+<h2>Custom readout<a class="headerlink" href="#custom-readout" title="Link to this heading">#</a></h2>
+<p>The shipped readouts differ only in what they play around the sample. An
+unbalanced train winds every order on once per repetition, so a sample taken
+<em>before</em> that winding is a free induction decay after the pulse just played,
+and a sample taken <em>after</em> it sits where the next pulse will refocus the
+previous excitation – an echo, and far more strongly T2-weighted.</p>
+<p>TorchSim ships each of those separately. Taking both in one repetition is a
+double-echo steady state, and writing it is putting the winding between two
+samples rather than on one side of them.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">dess_readout</span><span class="p">(</span><span class="n">phase_rad</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">duration_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Return the two samples an unbalanced repetition can carry.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    phase_rad : float, optional</span>
+<span class="sd">        The receiver phase both samples are taken at.</span>
+<span class="sd">    duration_s : float, optional</span>
+<span class="sd">        What is left of the repetition after the second sample.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <a href="../../torchsim.Readout.html#torchsim.Readout" title="torchsim.Readout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Readout</span></a><span class="p">(</span><span class="n">phase_rad</span><span class="p">)</span> <span class="o">@</span> <a href="../../torchsim.Dephase.html#torchsim.Dephase" title="torchsim.Dephase" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Dephase</span></a><span class="p">()</span> <span class="o">@</span> <a href="../../torchsim.Readout.html#torchsim.Readout" title="torchsim.Readout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Readout</span></a><span class="p">(</span><span class="n">phase_rad</span><span class="p">)</span> <span class="o">@</span> <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">(</span><span class="n">duration_s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Whether that is the right arrangement is not a matter of opinion: the first
+sample has to be what an SSFP-FID train records and the second what an
+SSFP-Echo train records, since those are the same two samples taken one at a
+time. So the check is to run all three.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FLIP_DEG</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">TR_MS</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">REPETITIONS</span></a> <span class="o">=</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mi">64</span>
+<span class="n">T2_MS</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">40.0</span><span class="p">,</span> <span class="mf">80.0</span><span class="p">,</span> <span class="mf">160.0</span><span class="p">])</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DESS</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">Simulator</span></a><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A steady-state train taking both samples each repetition can carry."""</span>
+
+    <span class="n">excitation</span> <span class="o">=</span> <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Excitation</span></a>
+    <span class="n">readout</span> <span class="o">=</span> <span class="n">dess_readout</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="mi">24</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">flip</span><span class="p">,</span> <span class="n">TR</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return the operators of one repetition, in order."""</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">excitation</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">flip</span><span class="p">))),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span><span class="n">duration_s</span><span class="o">=</span><span class="n">TR</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">),</span>
+        <span class="p">]</span>
+
+
+<span class="c1"># Naming a different readout is the whole of the difference between the three.</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SSFPFid</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">DESS</span></a><span class="p">):</span>
+    <span class="n">readout</span> <span class="o">=</span> <a href="../../torchsim.SSFPFidReadout.html#torchsim.SSFPFidReadout" title="torchsim.SSFPFidReadout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">SSFPFidReadout</span></a>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SSFPEcho</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">DESS</span></a><span class="p">):</span>
+    <span class="n">readout</span> <span class="o">=</span> <a href="../../torchsim.SSFPEchoReadout.html#torchsim.SSFPEchoReadout" title="torchsim.SSFPEchoReadout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">SSFPEchoReadout</span></a>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">played</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1_ms</span></a><span class="o">=</span><span class="mf">1000.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Return what one train records, over the three T2 values."""</span>
+    <span class="n">train</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span><span class="n">flip</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FLIP_DEG</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">TR_MS</span></a><span class="p">,</span> <span class="n">repetitions</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">REPETITIONS</span></a><span class="p">)</span>
+    <span class="k">return</span> <span class="n">train</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">T1</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1_ms</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">)</span>
+
+
+<span class="n">both</span> <span class="o">=</span> <span class="n">played</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">DESS</span></a><span class="p">)</span>
+<span class="n">fid</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="n">both</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">both</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>first sample against SSFPFidReadout:  0.0e+00
+second sample against SSFPEchoReadout: 0.0e+00
+</pre></div>
+</div>
+<p>Both exactly, which is the whole claim: two samples in one repetition, and
+each is the sample the sequence that takes it alone would have recorded.</p>
+<p>What it is for is the ratio between them. The echo has spent a further
+repetition in the transverse plane, so it carries T2 where the free induction
+decay carries a mixture – and the ratio of the two is a T2 contrast that
+needs no separate measurement to normalize.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ratios</span></a> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1_ms</span></a> <span class="ow">in</span> <span class="p">(</span><span class="mf">600.0</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">):</span>
+    <span class="n">recorded</span> <span class="o">=</span> <span class="n">played</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">DESS</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1_ms</span></a><span class="p">)</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ratios</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1_ms</span></a><span class="p">]</span> <span class="o">=</span> <span class="n">recorded</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">][:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">/</span> <span class="n">recorded</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">][:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><img src="../../../_images/sphx_glr_04-custom-operator_002.png" srcset="../../../_images/sphx_glr_04-custom-operator_002.png" alt="the two samples one repetition takes (echo dashed)" class = "sphx-glr-multi-img"/></li>
+<li><img src="../../../_images/sphx_glr_04-custom-operator_003.png" srcset="../../../_images/sphx_glr_04-custom-operator_003.png" alt="their ratio rises with T2, and moves far less with T1" class = "sphx-glr-multi-img"/></li>
+</ul>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>at T2 = 40 ms the ratio moves 0.10 over a 3.3x range in T1
+</pre></div>
+</div>
+<p>The ratio rises with T2 at every T1, and moves far less with T1 than with
+T2 – which is what makes it usable, and why a DESS T2 measurement at a
+larger flip angle wants T1 known rather than assumed away.</p>
+</section>
+<section id="limits">
+<h2>Limits<a class="headerlink" href="#limits" title="Link to this heading">#</a></h2>
+<p>A preparation, a readout, a shaped or per-channel pulse is written from the
+shipped operators and reaches the kernels unchanged.</p>
+<p>What an event stream cannot express is <em>how much</em> a gradient dephases. It
+carries one crusher moment for the whole sequence and dephasing is quantized
+to whole configuration orders, so a bipolar pair, a velocity-encoding moment
+of its own, or a crusher of twice its neighbour’s area have no spelling here.
+Those need a per-event gradient moment through the packed layout and every
+kernel, which is a change to the engine rather than to an operator written on
+top of it.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.700 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-01-framework-04-custom-operator-py">
+<div class="binder-badge docutils container">
+<a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/01-framework/04-custom-operator.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo.svg" style="width: 150px;" />
+</a>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/9cc3482855876bf909b562025c88c881/04-custom-operator.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">04-custom-operator.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/bdd772963445d57bbbcd7ffae8fbd856/04-custom-operator.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">04-custom-operator.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/45141eb6cf792bf1499356b8ad9f6d8a/04-custom-operator.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">04-custom-operator.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03-writing-a-simulator.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Writing a Signal Model</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../02-parameter-inference/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Parameter inference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#composing-existing-operators">Composing existing operators</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-operator">Using the operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation">Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-readout">Custom readout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limits">Limits</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

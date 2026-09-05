@@ -1,0 +1,932 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>User Guide &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/user_guide.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Developer Guide" href="developer_guide.html" />
+    <link rel="prev" title="TorchSim" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="explanations/epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explanations/implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="generated/autoexamples/index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/edit/main/user_guide.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2Fuser_guide.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/user_guide.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>User Guide</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install">Install</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#an-environment-of-its-own">An environment of its own</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-first">PyTorch first</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim">TorchSim</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-first-simulation">Your first simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-your-way-around-this-documentation">Finding your way around this documentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-help-and-reporting-what-breaks">Getting help, and reporting what breaks</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="user-guide">
+<h1>User Guide<a class="headerlink" href="#user-guide" title="Link to this heading">#</a></h1>
+<p>Everything you need to go from an empty environment to a simulated echo train,
+and a map of where the rest of this documentation is.</p>
+<nav class="contents local" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#install" id="id1">Install</a></p>
+<ul>
+<li><p><a class="reference internal" href="#an-environment-of-its-own" id="id2">An environment of its own</a></p></li>
+<li><p><a class="reference internal" href="#pytorch-first" id="id3">PyTorch first</a></p></li>
+<li><p><a class="reference internal" href="#torchsim" id="id4">TorchSim</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#your-first-simulation" id="id5">Your first simulation</a></p></li>
+<li><p><a class="reference internal" href="#finding-your-way-around-this-documentation" id="id6">Finding your way around this documentation</a></p></li>
+<li><p><a class="reference internal" href="#getting-help-and-reporting-what-breaks" id="id7">Getting help, and reporting what breaks</a></p></li>
+</ul>
+</nav>
+<section id="install">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Install</a><a class="headerlink" href="#install" title="Link to this heading">#</a></h2>
+<p>TorchSim is a PyTorch package with two compiled kernels behind it. <code class="docutils literal notranslate"><span class="pre">pip</span></code>
+installs the Python side and its NumPy and SciPy dependencies for you. Two
+things it cannot decide on your behalf, and which you therefore settle first:
+<strong>which build of PyTorch you want</strong>, and <strong>where you want the whole thing to
+live</strong>.</p>
+<section id="an-environment-of-its-own">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">An environment of its own</a><a class="headerlink" href="#an-environment-of-its-own" title="Link to this heading">#</a></h3>
+<p>Install into an isolated environment rather than the system interpreter. A
+simulation pins versions of PyTorch, NumPy and SciPy, and the phantom, coil
+and reconstruction packages the examples reach for pin their own; keeping them
+apart from the rest of the machine is what lets you delete a bad combination
+by deleting a directory.</p>
+<p>Any of these works. Pick the one you already use.</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="venv" for="sd-tab-item-0">
+venv</label><div class="sd-tab-content docutils">
+<p>Ships with Python, nothing to install first:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>~/envs/torchsim
+<span class="nb">source</span><span class="w"> </span>~/envs/torchsim/bin/activate<span class="w">     </span><span class="c1"># Windows: ~\envs\torchsim\Scripts\activate</span>
+python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
+</pre></div>
+</div>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="conda" for="sd-tab-item-1">
+conda</label><div class="sd-tab-content docutils">
+<p>Useful when you also want a specific Python, or non-Python libraries
+beside it:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>torchsim<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.12
+conda<span class="w"> </span>activate<span class="w"> </span>torchsim
+</pre></div>
+</div>
+<p>Install TorchSim itself with <code class="docutils literal notranslate"><span class="pre">pip</span></code> inside that environment; there is no
+conda package.</p>
+</div>
+<input id="sd-tab-item-2" name="sd-tab-set-0" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="uv" for="sd-tab-item-2">
+uv</label><div class="sd-tab-content docutils">
+<p>The fastest of the three, and it resolves the whole set at once:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>venv<span class="w"> </span>--python<span class="w"> </span><span class="m">3</span>.12<span class="w"> </span>~/envs/torchsim
+<span class="nb">source</span><span class="w"> </span>~/envs/torchsim/bin/activate
+</pre></div>
+</div>
+<p>Read <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">pip</span> <span class="pre">install</span></code> for <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> in everything that follows.</p>
+</div>
+</div>
+</section>
+<section id="pytorch-first">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">PyTorch first</a><a class="headerlink" href="#pytorch-first" title="Link to this heading">#</a></h3>
+<p><strong>Install PyTorch before TorchSim.</strong> The wheel you want depends on hardware
+<code class="docutils literal notranslate"><span class="pre">pip</span></code> cannot see: a CPU-only build and a CUDA build have the same name and
+version, and differ only in which index they came from. Install TorchSim first
+and you get whichever build the default index happens to serve, which is
+usually not the one you meant.</p>
+<p>Choose by what you will run on:</p>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="cpu" for="sd-tab-item-3">
+CPU only</label><div class="sd-tab-content docutils">
+<p>A laptop, a login node, or a machine with no NVIDIA card. This is also
+the smallest download by a wide margin:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>torch<span class="w"> </span>--index-url<span class="w"> </span>https://download.pytorch.org/whl/cpu
+</pre></div>
+</div>
+<p>Everything in TorchSim runs here. The state machine has a threaded,
+vectorized C++ kernel behind it, so a dictionary of a few thousand atoms
+is seconds rather than minutes.</p>
+</div>
+<input id="sd-tab-item-4" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="cuda" for="sd-tab-item-4">
+NVIDIA GPU</label><div class="sd-tab-content docutils">
+<p>Check which CUDA versions the current PyTorch release ships wheels for
+on <a class="reference external" href="https://pytorch.org/get-started/locally/">pytorch.org/get-started</a>,
+pick the one your driver supports, and install from that index –
+<code class="docutils literal notranslate"><span class="pre">cu128</span></code> below stands for whichever tag you chose:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>torch<span class="w"> </span>--index-url<span class="w"> </span>https://download.pytorch.org/whl/cu128
+</pre></div>
+</div>
+<p>The GPU kernels are written in Triton, which comes with the Linux CUDA
+wheels; you do not install it separately and you do not need the CUDA
+toolkit, only a driver new enough for the build you picked.</p>
+</div>
+<input id="sd-tab-item-5" name="sd-tab-set-1" type="radio">
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="mac" for="sd-tab-item-5">
+Apple silicon</label><div class="sd-tab-content docutils">
+<p>The default wheel is the right one:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>torch
+</pre></div>
+</div>
+<p>The simulation runs on the CPU kernels. There is no Metal path: the
+fused state machine exists as C++ and as Triton, and Triton has no
+Apple backend.</p>
+</div>
+</div>
+<p>Then check that the build is the one you wanted, <em>before</em> installing anything
+on top of it:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import torch; print(torch.__version__, torch.version.cuda, torch.cuda.is_available())"</span>
+</pre></div>
+</div>
+<p>A CUDA build prints a version and <code class="docutils literal notranslate"><span class="pre">True</span></code>; a CPU build prints <code class="docutils literal notranslate"><span class="pre">None</span></code> and
+<code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</section>
+<section id="torchsim">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">TorchSim</a><a class="headerlink" href="#torchsim" title="Link to this heading">#</a></h3>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>torchsim
+</pre></div>
+</div>
+<p>Where a wheel exists for your platform this is the whole of it. Where one does
+not, <code class="docutils literal notranslate"><span class="pre">pip</span></code> builds the two C++ extensions from source and you need a C++17
+compiler on the path – <code class="docutils literal notranslate"><span class="pre">build-essential</span></code> on Debian and Ubuntu, <code class="docutils literal notranslate"><span class="pre">gcc-c++</span></code>
+on Fedora, the Command Line Tools on macOS, the Visual Studio Build Tools on
+Windows. There is no pure-Python fallback: the extensions <em>are</em> the CPU state
+machine, and a run that cannot find one raises rather than quietly running
+something slower.</p>
+<p>To check the install, simulate a fast spin echo train and read three tissues at
+once:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchsim.simulators</span><span class="w"> </span><span class="kn">import</span> <span class="n">FSESimulator</span>
+
+<span class="n">acquisition</span> <span class="o">=</span> <span class="n">FSESimulator</span><span class="p">(</span>
+    <span class="n">ESP</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+    <span class="n">TR</span><span class="o">=</span><span class="mf">3000.0</span><span class="p">,</span>
+    <span class="n">T1</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">830.0</span><span class="p">,</span> <span class="mf">1330.0</span><span class="p">,</span> <span class="mf">4000.0</span><span class="p">]),</span>   <span class="c1"># ms</span>
+    <span class="n">T2</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">80.0</span><span class="p">,</span> <span class="mf">110.0</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">]),</span>
+<span class="p">)</span>
+<span class="n">signal</span> <span class="o">=</span> <span class="n">acquisition</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">48</span><span class="p">,),</span> <span class="mf">60.0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>                              <span class="c1"># torch.Size([3, 48])</span>
+</pre></div>
+</div>
+<p>On a card, hand it tissue that already lives there and the whole run follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">acquisition</span> <span class="o">=</span> <span class="n">acquisition</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"cuda"</span><span class="p">)</span>
+<span class="n">signal</span> <span class="o">=</span> <span class="n">acquisition</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="mi">48</span><span class="p">,),</span> <span class="mf">60.0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">"cuda"</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The first GPU call pays for compiling the Triton kernel it needs – tens of
+seconds, once per kernel per machine, cached afterwards. A first call that
+seems to hang is almost always that compile.</p>
+</section>
+</section>
+<section id="your-first-simulation">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Your first simulation</a><a class="headerlink" href="#your-first-simulation" title="Link to this heading">#</a></h2>
+<p>A simulator carries a sequence and the tissue it is being asked about; what
+you pass at the call is whatever is actually varying. Asking for derivatives
+alongside the signal costs one extra pass:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torchsim</span>
+
+<span class="n">flip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">60.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">280</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="n">signal</span><span class="p">,</span> <span class="n">jacobian</span> <span class="o">=</span> <span class="n">torchsim</span><span class="o">.</span><span class="n">mrf_sim</span><span class="p">(</span>
+    <span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">diff</span><span class="o">=</span><span class="p">(</span><span class="s2">"T1"</span><span class="p">,</span> <span class="s2">"T2"</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">signal</span></code> is the forward pass; <code class="docutils literal notranslate"><span class="pre">jacobian</span></code> holds its derivative with respect
+to T1 and T2. That derivative is what a dictionary fit, a nonlinear
+least-squares map, a model-based reconstruction and a sequence design all
+start from, which is why it is one keyword rather than a separate call.</p>
+<p>Arrays go in and come back in whatever library you wrote them in – NumPy here,
+CuPy or PyTorch elsewhere – over the same memory rather than a copy.</p>
+</section>
+<section id="finding-your-way-around-this-documentation">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Finding your way around this documentation</a><a class="headerlink" href="#finding-your-way-around-this-documentation" title="Link to this heading">#</a></h2>
+<dl class="simple myst">
+<dt><a class="reference internal" href="explanations/epg.html"><span class="doc">Extended phase graphs</span></a></dt><dd><p>What configuration states are, why a train of pulses generates more echoes
+than it has pulses, and where relaxation, diffusion, flow and a second
+proton pool enter. Read this if EPG is new, or if you want to know what
+the simulator is actually computing.</p>
+</dd>
+<dt><a class="reference internal" href="explanations/implementation.html"><span class="doc">How TorchSim runs it</span></a></dt><dd><p>How that algorithm is realized here: a sequence as a stream of events, one
+fused kernel per voxel, derivatives taken forward or backward depending on
+what you differentiate, and the shortcuts a run takes when your sequence
+allows them.</p>
+</dd>
+<dt><a class="reference internal" href="generated/autoexamples/index.html"><span class="doc">Examples</span></a></dt><dd><p>Worked examples you can run, download or open in Colab. They go from
+calling a simulator that ships with TorchSim, through writing one of your
+own, to parameter inference, sequence design and model-based
+reconstruction.</p>
+</dd>
+<dt><a class="reference internal" href="api/index.html"><span class="doc">API References</span></a></dt><dd><p>The reference. Start at <a class="reference internal" href="api/simulators.html"><span class="doc">Simulators</span></a> for what ships, at
+<a class="reference internal" href="api/model.html"><span class="doc">Signal models</span></a> for writing your own, and at <a class="reference internal" href="api/execution.html"><span class="doc">Running a simulation</span></a> for
+placing a run across devices.</p>
+</dd>
+<dt><a class="reference internal" href="developer_guide.html"><span class="doc">Developer Guide</span></a></dt><dd><p>Setting up to change TorchSim: the editable install, the style the code is
+written in, the tests, and how a pull request is opened.</p>
+</dd>
+</dl>
+</section>
+<section id="getting-help-and-reporting-what-breaks">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Getting help, and reporting what breaks</a><a class="headerlink" href="#getting-help-and-reporting-what-breaks" title="Link to this heading">#</a></h2>
+<p><strong>Ask a question</strong> in
+<a class="reference external" href="https://github.com/FiRMLAB-Pisa/torchsim/discussions">Discussions</a>. How to model
+a sequence, whether a signal you got is expected, which estimator suits a
+problem – these belong there, and the answer is then findable by whoever asks
+next.</p>
+<p><strong>Report a bug</strong> in
+<a class="reference external" href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new/choose">Issues</a>, where a
+form asks for what a fix needs:</p>
+<ul class="simple">
+<li><p>the shortest script that reproduces it, pasted whole – a sequence is enough
+numbers that a description of it leaves the run ambiguous;</p></li>
+<li><p>what you expected instead, and why. A signal that surprises you is not yet a
+bug: say which analytic case, published figure or alternative simulator you
+are comparing against;</p></li>
+<li><p>the full traceback, if it raises;</p></li>
+<li><p>the environment, as the form’s command prints it – TorchSim, PyTorch, CUDA,
+Python;</p></li>
+<li><p>whether you have seen it on the CPU kernels, the CUDA kernels, or both. That
+difference is often the whole diagnosis.</p></li>
+</ul>
+<p><strong>Ask for a feature</strong> – a sequence, a physical effect, an estimator – through
+the same form chooser. Name the paper the model comes from and the figure it
+would have to reproduce; that is what makes it implementable.</p>
+<p><strong>Report a vulnerability</strong> privately instead: open a draft advisory from the
+repository’s <a class="reference external" href="https://github.com/FiRMLAB-Pisa/torchsim/security/advisories/new">Security tab</a>,
+or email the address in the <a class="reference external" href="https://github.com/FiRMLAB-Pisa/torchsim/blob/main/.github/SECURITY.md">security policy</a>.
+The kernels index raw pointers, so anything reachable from ordinary arguments
+that reads or writes out of bounds is worth reporting that way rather than in a
+public issue. Wrong physics is a bug report, not a vulnerability.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">TorchSim</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="developer_guide.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Developer Guide</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install">Install</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#an-environment-of-its-own">An environment of its own</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pytorch-first">PyTorch first</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#torchsim">TorchSim</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-first-simulation">Your first simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-your-way-around-this-documentation">Finding your way around this documentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-help-and-reporting-what-breaks">Getting help, and reporting what breaks</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

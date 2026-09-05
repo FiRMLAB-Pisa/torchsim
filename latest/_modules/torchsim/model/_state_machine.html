@@ -1,0 +1,1391 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>torchsim.model._state_machine &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/torchsim/model/_state_machine';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/_modules/torchsim/model/_state_machine.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../generated/autoexamples/index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2F_modules/torchsim/model/_state_machine.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for torchsim.model._state_machine</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""What the spins are, and what each kind of event does to them.</span>
+
+<span class="sd">A signal model made of a state machine splits in two. A</span>
+<span class="sd">:class:`SpinPhysics` says what a voxel holds -- which tissue properties</span>
+<span class="sd">are exposed, and so which physics the kernels carry -- and what each kind of</span>
+<span class="sd">event is realized as: whether an excitation is ideal or integrated from a</span>
+<span class="sd">waveform, whether a readout is followed by an unbalanced gradient, by ideal</span>
+<span class="sd">spoiling, or by nothing. A :class:`Simulator` says what order the</span>
+<span class="sd">events are played in.</span>
+
+<span class="sd">Splitting them is what lets one be changed without the other. The MRF timing</span>
+<span class="sd">with a selective excitation, or a refocused train whose readout spoils rather</span>
+<span class="sd">than winds, is an assignment rather than a new model.</span>
+
+<span class="sd">**The operators are resolved before a description exists.** A simulator binds</span>
+<span class="sd">each slot when it is constructed; what a protocol then produces is an ordinary</span>
+<span class="sd">:class:`~torchsim.sequence.SequenceDescription`, whose events carry their own</span>
+<span class="sd">action word. From there the path is the fused one -- packing, the feature</span>
+<span class="sd">mask, the real-subspace verdict, offload and sharding -- and nothing consults</span>
+<span class="sd">an operator slot again. There is no interpretation at run time and none per</span>
+<span class="sd">event.</span>
+
+<span class="sd">Three vocabularies name a pulse along that path, and they are not the same</span>
+<span class="sd">vocabulary at three sizes. :class:`EventOperators` has one slot per role a</span>
+<span class="sd">sequence is written in terms of, and its values are operator factories, read</span>
+<span class="sd">only while a description is being assembled. Each factory emits events tagged</span>
+<span class="sd">with an :class:`~torchsim.sequence.RfUse`, which is what a Pulseq file</span>
+<span class="sd">carries, and with an :class:`~torchsim.sequence.EventAction`, which is the bit</span>
+<span class="sd">field the kernels read. The three do not line up one to one and are not meant</span>
+<span class="sd">to: the :attr:`~EventOperators.saturation` slot plays a pulse tagged</span>
+<span class="sd">``RfUse.EXCITATION``, because what the scanner is told about a pulse and what</span>
+<span class="sd">role the sequence gives it are separate questions.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"Simulator"</span><span class="p">,</span>
+    <span class="s2">"BALANCED"</span><span class="p">,</span>
+    <span class="s2">"REFOCUSED"</span><span class="p">,</span>
+    <span class="s2">"SPOILED"</span><span class="p">,</span>
+    <span class="s2">"SpinPhysics"</span><span class="p">,</span>
+    <span class="s2">"EventOperators"</span><span class="p">,</span>
+    <span class="s2">"UNBALANCED"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">nullcontext</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy</span> <span class="k">as</span> <span class="n">shallow_copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">replace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">MappingProxyType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..sequence</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Delay</span><span class="p">,</span>
+    <span class="n">EpgEngine</span><span class="p">,</span>
+    <span class="n">EventType</span><span class="p">,</span>
+    <span class="n">Excitation</span><span class="p">,</span>
+    <span class="n">FSEReadout</span><span class="p">,</span>
+    <span class="n">Inversion</span><span class="p">,</span>
+    <span class="n">Operator</span><span class="p">,</span>
+    <span class="n">Readout</span><span class="p">,</span>
+    <span class="n">Refocusing</span><span class="p">,</span>
+    <span class="n">RfDefinition</span><span class="p">,</span>
+    <span class="n">RfUse</span><span class="p">,</span>
+    <span class="n">Saturation</span><span class="p">,</span>
+    <span class="n">SequenceDescription</span><span class="p">,</span>
+    <span class="n">SequenceEvent</span><span class="p">,</span>
+    <span class="n">ShimDefinition</span><span class="p">,</span>
+    <span class="n">SPGRReadout</span><span class="p">,</span>
+    <span class="n">SSFPFidReadout</span><span class="p">,</span>
+    <span class="n">TissueProperties</span><span class="p">,</span>
+    <span class="n">bSSFPReadout</span><span class="p">,</span>
+    <span class="n">compose</span><span class="p">,</span>
+    <span class="n">execution</span><span class="p">,</span>
+    <span class="n">ideal_rf_definition</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..sequence._array</span><span class="w"> </span><span class="kn">import</span> <span class="n">brought</span><span class="p">,</span> <span class="n">is_array</span><span class="p">,</span> <span class="n">read</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..sequence._parameters</span><span class="w"> </span><span class="kn">import</span> <span class="n">PROPERTY_NAMES</span><span class="p">,</span> <span class="n">PUBLIC_PROPERTIES</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..sequence._simulation</span><span class="w"> </span><span class="kn">import</span> <span class="n">RecordMode</span><span class="p">,</span> <span class="n">target_device</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..sequence._transition</span><span class="w"> </span><span class="kn">import</span> <span class="n">across_the_slice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._binding</span><span class="w"> </span><span class="kn">import</span> <span class="n">Packing</span><span class="p">,</span> <span class="n">bind</span><span class="p">,</span> <span class="n">run_key</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">SignalModel</span><span class="p">,</span> <span class="n">_moved</span>
+
+<span class="n">_EMPTY</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">MappingProxyType</span><span class="p">({})</span>
+
+<span class="c1"># What a caller may name that describes the run rather than the sequence. Each</span>
+<span class="c1"># has an attribute of the same name, set once at construction.</span>
+<span class="n">RUN_SETTINGS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"nstates"</span><span class="p">,</span>
+    <span class="s2">"repetitions"</span><span class="p">,</span>
+    <span class="s2">"record"</span><span class="p">,</span>
+    <span class="s2">"device"</span><span class="p">,</span>
+    <span class="s2">"execution"</span><span class="p">,</span>
+    <span class="s2">"pulse"</span><span class="p">,</span>
+    <span class="s2">"shims"</span><span class="p">,</span>
+    <span class="s2">"across_slice"</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># The raster :class:`~torchsim.sequence.EpgEngine` reads a pulse's shape on,</span>
+<span class="c1"># named here because a packing resolved against one is not valid against</span>
+<span class="c1"># another.</span>
+<span class="n">_RF_RASTER_TIME_S</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">realised</span><span class="p">(</span>
+    <span class="n">description</span><span class="p">:</span> <span class="n">SequenceDescription</span><span class="p">,</span> <span class="n">physics</span><span class="p">:</span> <span class="n">SpinPhysics</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SequenceDescription</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""An arriving event stream, re-emitted through a model's own handlers.</span>
+
+<span class="sd">    The transport carries RF pulses and ADC windows and no gradients, so a</span>
+<span class="sd">    description that arrives says what was played and not how the sequence</span>
+<span class="sd">    dephased between one event and the next. That belongs to the sequence</span>
+<span class="sd">    family rather than to the stream, and it is what the operators hold: a</span>
+<span class="sd">    refocusing pulse brings its crusher pair, an unbalanced sample winds an</span>
+<span class="sd">    order after it, a spoiled one discards the transverse states.</span>
+
+<span class="sd">    So each event is played back through the operator its kind and its RF use</span>
+<span class="sd">    name, at the timestamp it arrived with. A gradient hangs off a pulse or a</span>
+<span class="sd">    sample, which is what the wire carries; one standing on its own -- the</span>
+<span class="sd">    spoiler of a preparation written by hand -- has no handler to reinstate it</span>
+<span class="sd">    and does not survive, because an arriving stream could not have held it</span>
+<span class="sd">    either. A pulse whose use is one the</span>
+<span class="sd">    handlers have no reading for -- a preparation, or an untagged one -- is</span>
+<span class="sd">    emitted as it stands, with no gradient behaviour added, since guessing one</span>
+<span class="sd">    is how a stream comes back as the wrong sequence.</span>
+<span class="sd">    """</span>
+    <span class="n">parts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">description</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
+        <span class="n">when</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">timestamp_us</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-6</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="n">EventType</span><span class="o">.</span><span class="n">RF</span><span class="p">:</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">when</span><span class="p">,</span> <span class="n">_rf_operator</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">physics</span><span class="o">.</span><span class="n">operators</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="n">EventType</span><span class="o">.</span><span class="n">ADC</span><span class="p">:</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">when</span><span class="p">,</span> <span class="n">_adc_operator</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">physics</span><span class="o">.</span><span class="n">operators</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">parts</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">description</span>
+    <span class="n">events</span><span class="p">,</span> <span class="n">_played_s</span> <span class="o">=</span> <span class="n">compose</span><span class="p">(</span><span class="o">*</span><span class="n">parts</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">events</span><span class="o">=</span><span class="n">events</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_accepted</span><span class="p">(</span><span class="n">handler</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">offered</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""The offered arguments this handler has somewhere to put.</span>
+
+<span class="sd">    The handlers differ in what a stream can tell them: a readout that fixes</span>
+<span class="sd">    the role it records at takes none, an inversion is a pulse whose flip is</span>
+<span class="sd">    its own. Passing what a handler does not take is how a stream that carries</span>
+<span class="sd">    more than one family of sequence stops working on the second one.</span>
+<span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">inspect</span><span class="w"> </span><span class="kn">import</span> <span class="n">signature</span>
+
+    <span class="n">takes</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">offered</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">takes</span><span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_adc_operator</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">SequenceEvent</span><span class="p">,</span> <span class="n">operators</span><span class="p">:</span> <span class="n">EventOperators</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The sample this model's readout makes of an ADC window."""</span>
+    <span class="k">return</span> <span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">adc_phase_rad</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">_accepted</span><span class="p">(</span><span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">adc_role</span><span class="p">,</span> <span class="n">is_echo</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">is_echo</span><span class="p">),</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_rf_operator</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">SequenceEvent</span><span class="p">,</span> <span class="n">operators</span><span class="p">:</span> <span class="n">EventOperators</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The operator a pulse's own ``use`` tag names."""</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">RfUse</span><span class="o">.</span><span class="n">REFOCUSING</span><span class="p">:</span> <span class="n">operators</span><span class="o">.</span><span class="n">refocusing</span><span class="p">,</span>
+        <span class="n">RfUse</span><span class="o">.</span><span class="n">INVERSION</span><span class="p">:</span> <span class="n">operators</span><span class="o">.</span><span class="n">inversion</span><span class="p">,</span>
+        <span class="n">RfUse</span><span class="o">.</span><span class="n">SATURATION</span><span class="p">:</span> <span class="n">operators</span><span class="o">.</span><span class="n">saturation</span><span class="p">,</span>
+    <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">rf_use</span><span class="p">,</span> <span class="n">operators</span><span class="o">.</span><span class="n">excitation</span><span class="p">)</span>
+    <span class="n">offered</span> <span class="o">=</span> <span class="n">_accepted</span><span class="p">(</span>
+        <span class="n">handler</span><span class="p">,</span>
+        <span class="n">flip_rad</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">rf_amplitude_hz</span><span class="p">,</span>
+        <span class="n">phase_rad</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">rf_phase_rad</span><span class="p">,</span>
+        <span class="n">definition_id</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">rf_definition_id</span><span class="p">,</span>
+        <span class="n">frequency_hz</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">rf_frequency_hz</span><span class="p">,</span>
+        <span class="n">offset_hz</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">rf_frequency_hz</span><span class="p">,</span>
+        <span class="n">shim_id</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">rf_shim_id</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">handler</span><span class="p">(</span><span class="o">**</span><span class="n">offered</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">replace_pulse</span><span class="p">(</span><span class="n">simulator</span><span class="p">:</span> <span class="n">Simulator</span><span class="p">,</span> <span class="n">pulse</span><span class="p">:</span> <span class="n">RfDefinition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Simulator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A copy of ``simulator`` whose events drive ``pulse``.</span>
+
+<span class="sd">    The shipped operators name definition zero, so substituting there is what</span>
+<span class="sd">    makes a shaped pulse the one they play.</span>
+<span class="sd">    """</span>
+    <span class="n">held</span> <span class="o">=</span> <span class="n">shallow_copy</span><span class="p">(</span><span class="n">simulator</span><span class="p">)</span>
+    <span class="n">held</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="n">simulator</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">definitions</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">replace</span><span class="p">(</span><span class="n">pulse</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">0</span><span class="p">)})</span>
+    <span class="n">held</span><span class="o">.</span><span class="n">_packing</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">held</span><span class="o">.</span><span class="n">_described</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">held</span>
+
+
+<span class="c1">#: The kinds of event a model says what to do with.</span>
+<span class="n">_HANDLER_SLOTS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"excitation"</span><span class="p">,</span>
+    <span class="s2">"refocusing"</span><span class="p">,</span>
+    <span class="s2">"inversion"</span><span class="p">,</span>
+    <span class="s2">"saturation"</span><span class="p">,</span>
+    <span class="s2">"readout"</span><span class="p">,</span>
+    <span class="s2">"delay"</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EventOperators</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Which operator plays each kind of event.</span>
+
+<span class="sd">    Each field is an operator factory, called with the parameters the protocol</span>
+<span class="sd">    has for that event. Assigning one is how a sequence says that its readouts</span>
+<span class="sd">    wind the states on, or that its excitation is a shaped pulse rather than an</span>
+<span class="sd">    ideal rotation.</span>
+
+<span class="sd">    These are roles a sequence is written in terms of, not the tags the events</span>
+<span class="sd">    end up carrying: a factory here decides which</span>
+<span class="sd">    :class:`~torchsim.sequence.RfUse` and which</span>
+<span class="sd">    :class:`~torchsim.sequence.EventAction` its events are emitted with.</span>
+<span class="sd">    """</span>
+
+    <span class="c1">#: What a pulse that tips magnetization into the transverse plane plays.</span>
+    <span class="n">excitation</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Operator</span><span class="p">]</span> <span class="o">=</span> <span class="n">Excitation</span>
+    <span class="c1">#: What a refocusing pulse plays, including the gradients it sits between.</span>
+    <span class="n">refocusing</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Operator</span><span class="p">]</span> <span class="o">=</span> <span class="n">Refocusing</span>
+    <span class="c1">#: What an inversion plays, and the recovery it holds the timeline for.</span>
+    <span class="n">inversion</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Operator</span><span class="p">]</span> <span class="o">=</span> <span class="n">Inversion</span>
+    <span class="c1">#: What a saturation pulse plays.</span>
+    <span class="n">saturation</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Operator</span><span class="p">]</span> <span class="o">=</span> <span class="n">Saturation</span>
+    <span class="c1">#: What a sample and the rest of its repetition play -- which is where a</span>
+    <span class="c1">#: sequence says whether it winds the states on, spoils them, or rewinds</span>
+    <span class="c1">#: them.</span>
+    <span class="n">readout</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Operator</span><span class="p">]</span> <span class="o">=</span> <span class="n">Readout</span>
+    <span class="c1">#: What a wait plays, which is nothing but time.</span>
+    <span class="n">delay</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Operator</span><span class="p">]</span> <span class="o">=</span> <span class="n">Delay</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_uncrushed</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Operator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return a refocusing pulse with no crushers, as a balanced sequence plays."""</span>
+    <span class="k">return</span> <span class="n">Refocusing</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">crushed</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="c1">#: A readout the repetition rewinds after, and refocusing pulses left uncrushed.</span>
+<span class="n">BALANCED</span> <span class="o">=</span> <span class="n">EventOperators</span><span class="p">(</span><span class="n">readout</span><span class="o">=</span><span class="n">bSSFPReadout</span><span class="p">,</span> <span class="n">refocusing</span><span class="o">=</span><span class="n">_uncrushed</span><span class="p">)</span>
+<span class="c1">#: A readout followed by one unbalanced gradient.</span>
+<span class="n">UNBALANCED</span> <span class="o">=</span> <span class="n">EventOperators</span><span class="p">(</span><span class="n">readout</span><span class="o">=</span><span class="n">SSFPFidReadout</span><span class="p">)</span>
+<span class="c1">#: A readout followed by ideal transverse spoiling.</span>
+<span class="n">SPOILED</span> <span class="o">=</span> <span class="n">EventOperators</span><span class="p">(</span><span class="n">readout</span><span class="o">=</span><span class="n">SPGRReadout</span><span class="p">)</span>
+<span class="c1">#: A refocusing pulse between its crushers, and the sample at the echo centre.</span>
+<span class="n">REFOCUSED</span> <span class="o">=</span> <span class="n">EventOperators</span><span class="p">(</span><span class="n">readout</span><span class="o">=</span><span class="n">FSEReadout</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SpinPhysics</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Which properties a voxel has, and what each kind of event does to it.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    properties : mapping</span>
+<span class="sd">        ``{public name: tissue field}``. A field left unnamed is never given to</span>
+<span class="sd">        the tissue, and the kernels leave its term out -- so this is how a</span>
+<span class="sd">        model asks for off-resonance, diffusion, flow or a second pool. A name</span>
+<span class="sd">        mapped to ``None`` is the model's own and reaches the signal without</span>
+<span class="sd">        reaching the tissue.</span>
+<span class="sd">    operators : EventOperators</span>
+<span class="sd">        What each kind of event plays.</span>
+<span class="sd">    fixed : mapping</span>
+<span class="sd">        Tissue fields the model pins rather than exposes, as</span>
+<span class="sd">        ``{field: value}``.</span>
+<span class="sd">    definitions : mapping</span>
+<span class="sd">        The RF resources the events name. The default is one ideal hard pulse</span>
+<span class="sd">        at id 0; a model whose excitation is slice-selective supplies a shaped</span>
+<span class="sd">        definition here instead.</span>
+<span class="sd">    """</span>
+
+    <span class="n">properties</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_EMPTY</span><span class="p">)</span>
+    <span class="n">operators</span><span class="p">:</span> <span class="n">EventOperators</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">EventOperators</span><span class="p">)</span>
+    <span class="n">fixed</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">_EMPTY</span><span class="p">)</span>
+    <span class="n">definitions</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">RfDefinition</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">ideal_rf_definition</span><span class="p">()}</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">tissue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TissueProperties</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Build the tissue, leaving everything undeclared at its identity.</span>
+
+<span class="sd">        A property the model does not expose, and one it exposes that the</span>
+<span class="sd">        caller left out, are both simply absent -- so each reaches the gate as</span>
+<span class="sd">        the scalar default :class:`TissueProperties` holds and the kernels</span>
+<span class="sd">        leave its term out.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If a name is mapped to a field the tissue does not have.</span>
+<span class="sd">        """</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed</span><span class="p">)</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span> <span class="n">value</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">properties</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">TissueProperties</span><span class="p">(</span><span class="o">**</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""The public-name to tissue-field map, checked against the tissue.</span>
+
+<span class="sd">        Every field a voxel has can be named, whether or not this model asked</span>
+<span class="sd">        for it: the vocabulary is the same for all of them, and giving a value</span>
+<span class="sd">        is what turns a term on. What ``properties`` adds is a model's own</span>
+<span class="sd">        spelling -- a name of its own for a field, or a name it answers to and</span>
+<span class="sd">        the tissue does not.</span>
+<span class="sd">        """</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">PUBLIC_PROPERTIES</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">}</span>
+        <span class="n">unknown</span> <span class="o">=</span> <span class="p">{</span><span class="n">field</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">pairs</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+        <span class="n">unknown</span> <span class="o">|=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fixed</span><span class="p">)</span>
+        <span class="n">unknown</span> <span class="o">-=</span> <span class="nb">set</span><span class="p">(</span><span class="n">PROPERTY_NAMES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown tissue: </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unknown</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pairs</span>
+
+
+<div class="viewcode-block" id="Simulator">
+<a class="viewcode-back" href="../../../generated/torchsim.model.Simulator.html#torchsim.model.Simulator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Simulator</span><span class="p">(</span><span class="n">SignalModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A protocol: what a sequence plays, and the physics behind it.</span>
+
+<span class="sd">    Subclasses set :attr:`model` and implement :meth:`layout`, which returns</span>
+<span class="sd">    the operators of one repetition in the order they are played.</span>
+
+<span class="sd">    **The constructor takes the keywords**</span>
+<span class="sd">    :meth:`~torchsim.model.SignalModel.simulate` **takes, and fixes them; a</span>
+<span class="sd">    call overrides.** So a sequence is written once with the tissue it</span>
+<span class="sd">    is being asked about already on it, and what is left to give per call is</span>
+<span class="sd">    whatever is actually varying -- the design under optimization, the map</span>
+<span class="sd">    being fitted.</span>
+
+<span class="sd">    A protocol with a closed form -- a steady state that needs no state</span>
+<span class="sd">    machine -- overrides :meth:`evaluate` instead and never reaches</span>
+<span class="sd">    :meth:`layout`. Its :attr:`model` then carries only the property</span>
+<span class="sd">    declaration, since there are no events for operators to realize. Both kinds</span>
+<span class="sd">    are constructed and called the same way, which is what lets parameter</span>
+<span class="sd">    inference and sequence optimization take either.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    model : SpinPhysics, optional</span>
+<span class="sd">        The physics behind the protocol.</span>
+<span class="sd">    states : int, optional</span>
+<span class="sd">        Configuration orders to carry, or ``None`` to size them from the</span>
+<span class="sd">        winding the description asks for.</span>
+<span class="sd">    """</span>
+
+    <span class="n">model</span><span class="p">:</span> <span class="n">SpinPhysics</span> <span class="o">=</span> <span class="n">SpinPhysics</span><span class="p">()</span>
+    <span class="n">states</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># How many playings a sequence needs to reach the state a scanner plays it</span>
+    <span class="c1"># in. One is the transient from equilibrium, which is what a scanner plays</span>
+    <span class="c1"># once and never again; a sequence whose own physics says otherwise</span>
+    <span class="c1"># overrides this.</span>
+    <span class="n">repetitions</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__init_subclass__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Read handlers named in the class body into the model.</span>
+
+<span class="sd">        A subclass may say what plays each kind of event by naming it, which</span>
+<span class="sd">        is the shortest way to write a sequence family:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            class SSFPMRF(Simulator):</span>
+<span class="sd">                excitation = Excitation</span>
+<span class="sd">                readout = SSFPFidReadout</span>
+
+<span class="sd">        Anything not named keeps what the base class had, and a ``model``</span>
+<span class="sd">        given outright still wins, which is what a sequence needs when it also</span>
+<span class="sd">        fixes tissue or carries a pulse shape.</span>
+<span class="sd">        """</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init_subclass__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">named</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">slot</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">slot</span><span class="p">]</span> <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="n">_HANDLER_SLOTS</span> <span class="k">if</span> <span class="n">slot</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">named</span> <span class="ow">or</span> <span class="s2">"model"</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">operators</span><span class="o">=</span><span class="n">replace</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">operators</span><span class="p">,</span> <span class="o">**</span><span class="n">named</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="n">named</span><span class="p">:</span>
+            <span class="nb">delattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">slot</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">SpinPhysics</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">states</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">repetitions</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">record</span><span class="p">:</span> <span class="n">RecordMode</span> <span class="o">=</span> <span class="s2">"all"</span><span class="p">,</span>
+        <span class="n">execution</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">pulse</span><span class="p">:</span> <span class="n">RfDefinition</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">shims</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ShimDefinition</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">across_slice</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">resolve</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">crusher_dephasing_rad</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">voxel_size_m</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">protocol</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Bind the physics, the protocol and any tissue this simulator plays.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model:</span>
+<span class="sd">            The physics, or ``None`` for the class's own.</span>
+<span class="sd">        states:</span>
+<span class="sd">            Configuration orders to carry.</span>
+<span class="sd">        repetitions:</span>
+<span class="sd">            How many times the description is played to reach the state a</span>
+<span class="sd">            scanner plays it in, of which the last is the one recorded. One --</span>
+<span class="sd">            the default, unless the sequence declares otherwise -- records the</span>
+<span class="sd">            playing that starts from equilibrium, which is the transient a</span>
+<span class="sd">            scanner plays once and never again. ``"auto"`` reads the settled</span>
+<span class="sd">            state off a handful of playings rather than running to it, and</span>
+<span class="sd">            holds no structure fixed across calls.</span>
+<span class="sd">        record:</span>
+<span class="sd">            Which ADCs the signal holds.</span>
+<span class="sd">        shims:</span>
+<span class="sd">            The transmit shims the pulses are driven on, by id, for a layout</span>
+<span class="sd">            whose operators name a ``shim_id``. One channel driven alike when</span>
+<span class="sd">            not given.</span>
+<span class="sd">        execution:</span>
+<span class="sd">            Where to run -- ``"auto"`` to decide per call against what the</span>
+<span class="sd">            devices have free, ``"cpu"``, or a device or list of devices.</span>
+<span class="sd">            ``None`` follows whatever :func:`~torchsim.sequence.execution`</span>
+<span class="sd">            block is in scope, which is what lets a caller decide instead.</span>
+<span class="sd">        resolve:</span>
+<span class="sd">            Whether to hold the protocol's structure fixed across calls; see</span>
+<span class="sd">            :meth:`resolved`. A loop that plays the same sequence with</span>
+<span class="sd">            different numbers -- a design, a dictionary sweep -- is worth</span>
+<span class="sd">            roughly eight times the whole call this way. Turning it off</span>
+<span class="sd">            rebuilds the event stream every call, which is slower and agrees</span>
+<span class="sd">            to the last bit rather than to float32 round-off.</span>
+<span class="sd">        crusher_dephasing_rad, voxel_size_m:</span>
+<span class="sd">            The unbalanced gradient the sequence plays, and the voxel it winds</span>
+<span class="sd">            across. Their ratio is what diffusion is damped by and what flow</span>
+<span class="sd">            turns each dephasing order through.</span>
+<span class="sd">        protocol:</span>
+<span class="sd">            The sequence arguments :meth:`layout` reads, and any tissue</span>
+<span class="sd">            property to fix, under the names :attr:`properties` declares.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">model</span>
+        <span class="k">if</span> <span class="n">pulse</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">definitions</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="n">replace</span><span class="p">(</span><span class="n">pulse</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="mi">0</span><span class="p">)})</span>
+        <span class="c1"># Bound here rather than looked up per event: after this, what the</span>
+        <span class="c1"># protocol produces is an ordinary description and no trigger is</span>
+        <span class="c1"># consulted again.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operators</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">operators</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">properties</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">states</span> <span class="o">=</span> <span class="n">states</span> <span class="k">if</span> <span class="n">states</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">states</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">repetitions</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">repetitions</span> <span class="k">if</span> <span class="n">repetitions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">repetitions</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">record</span> <span class="o">=</span> <span class="n">record</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execution</span> <span class="o">=</span> <span class="n">execution</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shims</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">shims</span><span class="p">)</span> <span class="k">if</span> <span class="n">shims</span> <span class="k">else</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">across_slice</span> <span class="o">=</span> <span class="n">across_the_slice</span><span class="p">(</span><span class="n">across_slice</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crusher_dephasing_rad</span> <span class="o">=</span> <span class="n">crusher_dephasing_rad</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voxel_size_m</span> <span class="o">=</span> <span class="n">voxel_size_m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resolving</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">resolve</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_packing</span><span class="p">:</span> <span class="n">Packing</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refused</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Read once, so a layout can be written in torch whatever the caller</span>
+        <span class="c1"># brought, and so the answer knows where to go back to.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_brought</span> <span class="o">=</span> <span class="n">brought</span><span class="p">(</span><span class="n">protocol</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="c1"># Split the way a call is split, so the constructor takes exactly what</span>
+        <span class="c1"># simulate() takes and fixes it.</span>
+        <span class="n">declared</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">accepts</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fix</span><span class="p">(</span>
+            <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">protocol</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">declared</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="n">name</span><span class="p">:</span> <span class="n">value</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">protocol</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">declared</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">RUN_SETTINGS</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_described</span><span class="p">:</span> <span class="n">SequenceDescription</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Simulator.bind">
+<a class="viewcode-back" href="../../../generated/torchsim.model.Simulator.html#torchsim.model.Simulator.bind">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Simulator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""This simulator with more fixed on it, values or settings alike.</span>
+
+<span class="sd">        A property or a protocol argument is held for the next call; a setting</span>
+<span class="sd">        -- the pulse the events drive, where across the slice to work it out,</span>
+<span class="sd">        how many orders to carry -- is applied to the copy instead, because it</span>
+<span class="sd">        changes what is simulated rather than what is simulated with.</span>
+<span class="sd">        """</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">values</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">RUN_SETTINGS</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">values</span><span class="p">}</span>
+        <span class="n">held</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">**</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">pulse</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"pulse"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pulse</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">held</span> <span class="o">=</span> <span class="n">replace_pulse</span><span class="p">(</span><span class="n">held</span><span class="p">,</span> <span class="n">pulse</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">"across_slice"</span> <span class="ow">in</span> <span class="n">settings</span><span class="p">:</span>
+            <span class="n">held</span><span class="o">.</span><span class="n">across_slice</span> <span class="o">=</span> <span class="n">across_the_slice</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"across_slice"</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">held</span><span class="p">,</span> <span class="s2">"states"</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"nstates"</span> <span class="k">else</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">held</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">variables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""The protocol arguments this simulator's layout takes.</span>
+
+<span class="sd">        What a sequence is written in, as against the tissue it is played on:</span>
+<span class="sd">        :attr:`exposes` and :attr:`accepts` name the properties, this names the</span>
+<span class="sd">        flip angles, spacings and times. Everything here can be fixed on the</span>
+<span class="sd">        constructor, given at the call, or carried as a tensor a cost is</span>
+<span class="sd">        differentiated back through.</span>
+<span class="sd">        """</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">inspect</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameter</span><span class="p">,</span> <span class="n">signature</span>
+
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">name</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Parameter</span><span class="o">.</span><span class="n">VAR_KEYWORD</span><span class="p">,</span> <span class="n">Parameter</span><span class="o">.</span><span class="n">VAR_POSITIONAL</span><span class="p">)</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Simulator.to">
+<a class="viewcode-back" href="../../../generated/torchsim.model.Simulator.html#torchsim.model.Simulator.to">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Simulator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""This simulator, with everything it holds on ``device``.</span>
+
+<span class="sd">        A simulator carries its protocol -- echo times, a flip train -- and</span>
+<span class="sd">        whatever tissue is fixed on it, and the two have to arrive on a card</span>
+<span class="sd">        together: properties moved on their own would be multiplied against</span>
+<span class="sd">        echo times still on the host.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        device : torch.device or str</span>
+<span class="sd">            Where to put it.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Simulator</span>
+<span class="sd">            A copy. This one is left where it was.</span>
+<span class="sd">        """</span>
+        <span class="n">moved</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">moved</span><span class="o">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">_moved</span><span class="p">(</span><span class="n">moved</span><span class="o">.</span><span class="n">protocol</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+        <span class="c1"># Whatever was resolved was resolved somewhere else, and holds tensors</span>
+        <span class="c1"># that live there.</span>
+        <span class="n">moved</span><span class="o">.</span><span class="n">_packing</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">moved</span><span class="o">.</span><span class="n">_refused</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">moved</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_structure</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">played</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+        <span class="n">tissue</span><span class="p">:</span> <span class="n">TissueProperties</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">repetitions</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">record</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">device</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">across_slice</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">SequenceDescription</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""The description to run, and its events already packed if they are."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolving</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_described</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="o">**</span><span class="n">played</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">across_slice</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># A packing holds the event stream and not the table a pulse is</span>
+            <span class="c1"># integrated over, so a profiled run walks the description instead</span>
+            <span class="c1"># of rebinding onto a packing that has no table in it.</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="o">**</span><span class="n">played</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">repetitions</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="c1"># How many playings a settled run takes is decided against the</span>
+            <span class="c1"># tissue it is given, so there is no one packing to hold fixed.</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="o">**</span><span class="n">played</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="n">where</span> <span class="o">=</span> <span class="n">target_device</span><span class="p">(</span><span class="n">tissue</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"repetitions"</span><span class="p">:</span> <span class="n">repetitions</span><span class="p">,</span>
+            <span class="s2">"record"</span><span class="p">:</span> <span class="n">record</span><span class="p">,</span>
+            <span class="s2">"rf_raster_time_s"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rf_raster_time_s</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">run_key</span><span class="p">(</span><span class="n">played</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">where</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_packing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_packing</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_packing</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_packing</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">played</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">key</span> <span class="o">==</span> <span class="n">refused</span> <span class="k">for</span> <span class="n">refused</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refused</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="o">**</span><span class="n">played</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="n">packing</span> <span class="o">=</span> <span class="n">bind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">played</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">where</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">packing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refused</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="o">**</span><span class="n">played</span><span class="p">),</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_packing</span> <span class="o">=</span> <span class="n">packing</span>
+        <span class="k">return</span> <span class="n">packing</span><span class="o">.</span><span class="n">description</span><span class="p">,</span> <span class="n">packing</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">played</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_backend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the caller's array library, from the call or the constructor.</span>
+
+<span class="sd">        A call carrying arrays of its own decides, even when they are torch --</span>
+<span class="sd">        the tissue is what the answer is about. Only a call with no arrays at</span>
+<span class="sd">        all falls back to what the simulator was built from.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">is_array</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_backend</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_brought</span>
+
+    <span class="c1"># -- what a protocol says -----------------------------------------------</span>
+
+<div class="viewcode-block" id="Simulator.layout">
+<a class="viewcode-back" href="../../../generated/torchsim.model.Simulator.html#torchsim.model.Simulator.layout">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">protocol</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Operator</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Operator</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""Return the operators of one repetition, in the order they play.</span>
+
+<span class="sd">        A bare operator starts where the one before it ended; one given as</span>
+<span class="sd">        ``(offset_s, operator)`` starts that far into the repetition instead,</span>
+<span class="sd">        which is how a sequence that times itself from an echo says so.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        NotImplementedError</span>
+<span class="sd">            If the subclass implements neither this nor :meth:`describe`.</span>
+<span class="sd">        """</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> implements neither layout() nor describe()"</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Simulator.repetition_s">
+<a class="viewcode-back" href="../../../generated/torchsim.model.Simulator.html#torchsim.model.Simulator.repetition_s">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">repetition_s</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">played_s</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">protocol</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return how long one repetition lasts, given what the layout played.</span>
+
+<span class="sd">        The default is the span the layout covers. A sequence whose TR is</span>
+<span class="sd">        longer than what it plays -- a refocused train waiting out its</span>
+<span class="sd">        recovery -- says so here, and only a run of more than one repetition</span>
+<span class="sd">        can tell the difference.</span>
+<span class="sd">        """</span>
+        <span class="k">del</span> <span class="n">protocol</span>
+        <span class="k">return</span> <span class="n">played_s</span></div>
+
+
+<div class="viewcode-block" id="Simulator.played">
+<a class="viewcode-back" href="../../../generated/torchsim.model.Simulator.html#torchsim.model.Simulator.played">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">played</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">sequence</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return the protocol as it will be laid out.</span>
+
+<span class="sd">        The constructor's arguments, with anything given at the call</span>
+<span class="sd">        overriding them, every array read as torch. Anything naming a run</span>
+<span class="sd">        setting is left out: those describe the run, and a layout has no use</span>
+<span class="sd">        for them.</span>
+<span class="sd">        """</span>
+        <span class="n">given</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">sequence</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">RUN_SETTINGS</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">protocol</span><span class="p">,</span> <span class="o">**</span><span class="n">read</span><span class="p">(</span><span class="n">given</span><span class="p">)}</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rf_raster_time_s</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The dwell this simulator's RF shapes are sampled on."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_described</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_described</span><span class="o">.</span><span class="n">rf_raster_time_s</span>
+        <span class="k">return</span> <span class="n">_RF_RASTER_TIME_S</span>
+
+<div class="viewcode-block" id="Simulator.describe">
+<a class="viewcode-back" href="../../../generated/torchsim.model.Simulator.html#torchsim.model.Simulator.describe">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">protocol</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SequenceDescription</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the description this protocol plays."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_described</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_described</span>
+        <span class="n">events</span><span class="p">,</span> <span class="n">played_s</span> <span class="o">=</span> <span class="n">compose</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">(</span><span class="o">**</span><span class="n">protocol</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">SequenceDescription</span><span class="p">(</span>
+            <span class="n">subsequence_index</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">tr_duration_us</span><span class="o">=</span><span class="mf">1e6</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">repetition_s</span><span class="p">(</span><span class="n">played_s</span><span class="p">,</span> <span class="o">**</span><span class="n">protocol</span><span class="p">),</span>
+            <span class="n">events</span><span class="o">=</span><span class="n">events</span><span class="p">,</span>
+            <span class="n">rf_definitions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">definitions</span><span class="p">),</span>
+            <span class="n">shim_definitions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shims</span><span class="p">),</span>
+            <span class="n">crusher_dephasing_rad</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">crusher_dephasing_rad</span><span class="p">,</span>
+            <span class="n">voxel_size_m</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">voxel_size_m</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Simulator.from_pulseq">
+<a class="viewcode-back" href="../../../generated/torchsim.model.Simulator.html#torchsim.model.Simulator.from_pulseq">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_pulseq</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">tr_index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">settings</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Simulator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return a simulator over one repetition of a Pulseq ``.seq`` file.</span>
+
+<span class="sd">        The offline half of :meth:`from_description`: the same events, read</span>
+<span class="sd">        from the file a scanner would be given rather than from the stream it</span>
+<span class="sd">        sends back. The file states how many blocks a repetition holds, so</span>
+<span class="sd">        nothing here searches for the period; naming the simulator is what says</span>
+<span class="sd">        how those events are to be played.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path : str or Path</span>
+<span class="sd">            The sequence file.</span>
+<span class="sd">        tr_index : int, optional</span>
+<span class="sd">            Which repetition to read, counted in whole repetitions. Defaults to</span>
+<span class="sd">            the file's ``TRRef`` definition, and otherwise to the first</span>
+<span class="sd">            repetition that acquires -- which is refused when the repetitions</span>
+<span class="sd">            differ in their pulses.</span>
+<span class="sd">        settings : Any</span>
+<span class="sd">            Run settings and tissue, as the constructor takes them.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">            A simulator playing that repetition.</span>
+<span class="sd">        """</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">..sequence._pulseq</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_pulseq_description</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_description</span><span class="p">(</span>
+            <span class="n">read_pulseq_description</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">tr_index</span><span class="o">=</span><span class="n">tr_index</span><span class="p">),</span> <span class="o">**</span><span class="n">settings</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Simulator.from_description">
+<a class="viewcode-back" href="../../../generated/torchsim.model.Simulator.html#torchsim.model.Simulator.from_description">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_description</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="n">SequenceDescription</span><span class="p">,</span>
+        <span class="n">model</span><span class="p">:</span> <span class="n">SpinPhysics</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">settings</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Simulator</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return a simulator over a stream someone else assembled.</span>
+
+<span class="sd">        This is the path a description arriving from a scanner takes:</span>
+<span class="sd">        ``FSESimulator.from_description(stream)`` says the events are to be</span>
+<span class="sd">        read as a refocused train, and the only thing left to give is the</span>
+<span class="sd">        tissue. Echo spacing, echo train length, flip angles and pulse shapes</span>
+<span class="sd">        are in the stream and are not named again.</span>
+
+<span class="sd">        Which simulator you call it on is the whole of what you choose, and it</span>
+<span class="sd">        matters. A description says what was played -- an RF pulse, tagged with</span>
+<span class="sd">        the use its designer gave it, and an ADC window -- and says nothing</span>
+<span class="sd">        about the gradients between them, because the transport carries none.</span>
+<span class="sd">        The dephasing lives in the handlers instead: a</span>
+<span class="sd">        :func:`~torchsim.SSFPFidReadout` winds one order after every sample, a</span>
+<span class="sd">        :func:`~torchsim.SSFPEchoReadout` winds it before, a</span>
+<span class="sd">        :func:`~torchsim.SPGRReadout` spoils, and a refocusing pulse is</span>
+<span class="sd">        crushed either side. So the events are re-emitted through this model's</span>
+<span class="sd">        own operators rather than taken as they arrive.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        description : SequenceDescription</span>
+<span class="sd">            The stream, as the MRD client decodes it or a Pulseq design</span>
+<span class="sd">            exports it.</span>
+<span class="sd">        model : SpinPhysics, optional</span>
+<span class="sd">            The physics to read it with. Defaults to this simulator's own,</span>
+<span class="sd">            which is what naming a concrete one is for.</span>
+<span class="sd">        settings : Any, optional</span>
+<span class="sd">            Run settings and tissue, as the constructor takes them.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If called on :class:`Simulator` itself, which names no handlers and</span>
+<span class="sd">            so says nothing about how the stream is to be read.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="n">Simulator</span> <span class="ow">and</span> <span class="n">model</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"from_description reads a stream through a simulator's own "</span>
+                <span class="s2">"handlers, so call it on the simulator whose sequence it is -- "</span>
+                <span class="s2">"FSESimulator.from_description(...) for a refocused train"</span>
+            <span class="p">)</span>
+        <span class="n">physics</span> <span class="o">=</span> <span class="n">model</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model</span>
+        <span class="n">simulator</span> <span class="o">=</span> <span class="n">_Described</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">physics</span><span class="p">,</span> <span class="o">**</span><span class="n">settings</span><span class="p">)</span>
+        <span class="n">simulator</span><span class="o">.</span><span class="n">_described</span> <span class="o">=</span> <span class="n">realised</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">physics</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">simulator</span></div>
+
+
+    <span class="c1"># -- what a signal model owes -------------------------------------------</span>
+
+<div class="viewcode-block" id="Simulator.evaluate">
+<a class="viewcode-back" href="../../../generated/torchsim.model.Simulator.html#torchsim.model.Simulator.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">sequence</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Run one simulation of the described protocol.</span>
+
+<span class="sd">        ``nstates``, ``repetitions``, ``record``, ``device`` and ``execution``</span>
+<span class="sd">        describe the run and are taken here, each falling back to what the</span>
+<span class="sd">        constructor was given; everything else overrides a protocol argument.</span>
+<span class="sd">        """</span>
+        <span class="n">given</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="n">given</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"nstates"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">states</span><span class="p">)</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"repetitions"</span><span class="p">:</span> <span class="n">given</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"repetitions"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">repetitions</span><span class="p">),</span>
+            <span class="s2">"record"</span><span class="p">:</span> <span class="n">given</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"record"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">record</span><span class="p">),</span>
+            <span class="s2">"device"</span><span class="p">:</span> <span class="n">given</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"device"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="s2">"rf_raster_time_s"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rf_raster_time_s</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">given</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"execution"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">execution</span><span class="p">)</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">across_the_slice</span><span class="p">(</span><span class="n">given</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"across_slice"</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">across_slice</span>
+        <span class="n">played</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">played</span><span class="p">(</span><span class="o">**</span><span class="n">given</span><span class="p">)</span>
+        <span class="n">tissue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">tissue</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
+        <span class="n">described</span><span class="p">,</span> <span class="n">events</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_structure</span><span class="p">(</span>
+            <span class="n">played</span><span class="p">,</span>
+            <span class="n">tissue</span><span class="p">,</span>
+            <span class="n">repetitions</span><span class="o">=</span><span class="n">settings</span><span class="p">[</span><span class="s2">"repetitions"</span><span class="p">],</span>
+            <span class="n">record</span><span class="o">=</span><span class="n">settings</span><span class="p">[</span><span class="s2">"record"</span><span class="p">],</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">settings</span><span class="p">[</span><span class="s2">"device"</span><span class="p">],</span>
+            <span class="n">across_slice</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">block</span> <span class="o">=</span> <span class="n">nullcontext</span><span class="p">()</span> <span class="k">if</span> <span class="n">target</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">execution</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">block</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">EpgEngine</span><span class="p">()</span>
+                <span class="o">.</span><span class="n">simulate</span><span class="p">(</span>
+                    <span class="n">described</span><span class="p">,</span>
+                    <span class="n">tissue</span><span class="p">,</span>
+                    <span class="n">nstates</span><span class="o">=</span><span class="n">states</span><span class="p">,</span>
+                    <span class="n">events</span><span class="o">=</span><span class="n">events</span><span class="p">,</span>
+                    <span class="n">across_slice</span><span class="o">=</span><span class="n">profile</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">settings</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">signal</span>
+            <span class="p">)</span></div>
+</div>
+
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_Described</span><span class="p">(</span><span class="n">Simulator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A simulator whose description was handed to it whole."""</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

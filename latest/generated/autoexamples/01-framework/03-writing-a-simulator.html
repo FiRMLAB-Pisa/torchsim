@@ -1,0 +1,990 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Writing a Signal Model &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/autoexamples/01-framework/03-writing-a-simulator';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/generated/autoexamples/01-framework/03-writing-a-simulator.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Writing a New Operator" href="04-custom-operator.html" />
+    <link rel="prev" title="Expanded Physics" href="02-expanded-physics.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/edit/main/generated/autoexamples/01-framework/03-writing-a-simulator.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2Fgenerated/autoexamples/01-framework/03-writing-a-simulator.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/generated/autoexamples/01-framework/03-writing-a-simulator.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Writing a Signal Model</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handlers">Handlers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layout">Layout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-simulator">Running the simulator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-mode-derivatives">Forward-mode derivatives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-mode-derivatives">Reverse-mode derivatives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-physics">Additional physics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation-against-a-closed-form">Validation against a closed form</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-the-event-stream">Inspecting the event stream</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-from-a-description">Building from a description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-wrapper">Functional wrapper</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-generated-autoexamples-01-framework-03-writing-a-simulator-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code or to run this example in your browser via Binder.</p>
+</div>
+<section class="sphx-glr-example-title" id="writing-a-signal-model">
+<span id="sphx-glr-generated-autoexamples-01-framework-03-writing-a-simulator-py"></span><h1>Writing a Signal Model<a class="headerlink" href="#writing-a-signal-model" title="Link to this heading">#</a></h1>
+<p>The scope of this notebook is to write a simulator TorchSim does not ship.</p>
+<p>There are two things to say. <strong>Which operator plays each kind of event</strong> –
+what an excitation is, what a sample is – and <strong>what order they are played
+in</strong>. The base class does the rest: it resolves the layout into an event
+stream, rebinds values onto it, holds the derivatives, places the work on a
+device, and reads a sequence back from a description a scanner streamed.</p>
+<div class="colab-button">
+            <a href="https://colab.research.google.com/github/FiRMLAB-Pisa/torchsim/blob/gh-pages/latest/examples/generated/autoexamples/01-framework/03-writing-a-simulator.ipynb" target="_blank">
+                <img src="https://colab.research.google.com/assets/colab-badge.svg"
+                alt="Open In Colab"/>
+            </a>
+        </div>
+        <p>The base class, and the operators a layout is written from.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">,</span>
+    <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Excitation</span></a><span class="p">,</span>
+    <a href="../../torchsim.Inversion.html#torchsim.Inversion" title="torchsim.Inversion" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Inversion</span></a><span class="p">,</span>
+    <a href="../../torchsim.SPGRReadout.html#torchsim.SPGRReadout" title="torchsim.SPGRReadout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">SPGRReadout</span></a><span class="p">,</span>
+    <a href="../../torchsim.SSFPFidReadout.html#torchsim.SSFPFidReadout" title="torchsim.SSFPFidReadout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">SSFPFidReadout</span></a><span class="p">,</span>
+    <a href="../../torchsim.Spoil.html#torchsim.Spoil" title="torchsim.Spoil" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Spoil</span></a><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchsim.model</span><span class="w"> </span><span class="kn">import</span> <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">Simulator</span></a>
+</pre></div>
+</div>
+<section id="handlers">
+<h2>Handlers<a class="headerlink" href="#handlers" title="Link to this heading">#</a></h2>
+<p>A simulator says what plays each kind of event by naming it. The five
+readouts are what distinguishes one steady-state family from another: an
+<a class="reference internal" href="../../torchsim.SSFPFidReadout.html#torchsim.SSFPFidReadout" title="torchsim.SSFPFidReadout"><code class="xref py py-func docutils literal notranslate"><span class="pre">SSFPFidReadout()</span></code></a> winds one configuration order after every
+sample, an <a class="reference internal" href="../../torchsim.SSFPEchoReadout.html#torchsim.SSFPEchoReadout" title="torchsim.SSFPEchoReadout"><code class="xref py py-func docutils literal notranslate"><span class="pre">SSFPEchoReadout()</span></code></a> winds it before, an
+<a class="reference internal" href="../../torchsim.SPGRReadout.html#torchsim.SPGRReadout" title="torchsim.SPGRReadout"><code class="xref py py-func docutils literal notranslate"><span class="pre">SPGRReadout()</span></code></a> spoils, a <a class="reference internal" href="../../torchsim.bSSFPReadout.html#torchsim.bSSFPReadout" title="torchsim.bSSFPReadout"><code class="xref py py-func docutils literal notranslate"><span class="pre">bSSFPReadout()</span></code></a> leaves
+the states where they were, and an <a class="reference internal" href="../../torchsim.FSEReadout.html#torchsim.FSEReadout" title="torchsim.FSEReadout"><code class="xref py py-func docutils literal notranslate"><span class="pre">FSEReadout()</span></code></a> samples a
+spin echo the refocusing pulses have already crushed around.</p>
+<p>Naming one is the whole of choosing between them, and it is also what says
+how an arriving stream is to be read – the transport carries no gradients,
+so the handler is where the dephasing lives.</p>
+<p>Nothing is said here about the tissue. Every property a voxel has can be
+given to any simulator, and giving one is what turns its term on.</p>
+</section>
+<section id="layout">
+<h2>Layout<a class="headerlink" href="#layout" title="Link to this heading">#</a></h2>
+<p>An <a class="reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulator</span></code></a> is the protocol. You do not
+write timestamps: <code class="docutils literal notranslate"><span class="pre">layout</span></code> returns the <em>operators</em> of one repetition in
+order, and the simulator turns the span each one holds into the timestamps a
+description carries.</p>
+<p><code class="docutils literal notranslate"><span class="pre">self.operators</span></code> is the handler set named above. What <code class="docutils literal notranslate"><span class="pre">layout</span></code> produces
+is an event stream whose events carry their own action word, and from there
+the path is the fused one – packing, the feature mask, offload and sharding.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SSFPMRF</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">Simulator</span></a><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""An Inversion, then one Excitation and one sample per repetition."""</span>
+
+    <span class="n">excitation</span> <span class="o">=</span> <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Excitation</span></a>
+    <span class="n">inversion</span> <span class="o">=</span> <a href="../../torchsim.Inversion.html#torchsim.Inversion" title="torchsim.Inversion" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Inversion</span></a>
+    <span class="n">readout</span> <span class="o">=</span> <a href="../../torchsim.SSFPFidReadout.html#torchsim.SSFPFidReadout" title="torchsim.SSFPFidReadout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">SSFPFidReadout</span></a>
+    <span class="n">states</span> <span class="o">=</span> <span class="mi">10</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="p">,</span> <span class="n">TR</span><span class="p">,</span> <span class="n">TI</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return one repetition's operators, in the order they are played."""</span>
+        <span class="n">angles</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="p">))</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">inversion</span><span class="p">(</span><span class="n">duration_s</span><span class="o">=</span><span class="n">TI</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">angles</span><span class="o">.</span><span class="n">numel</span><span class="p">()):</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">excitation</span><span class="p">(</span><span class="n">angles</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span><span class="n">duration_s</span><span class="o">=</span><span class="n">TR</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">parts</span>
+</pre></div>
+</div>
+</section>
+<section id="running-the-simulator">
+<h2>Running the simulator<a class="headerlink" href="#running-the-simulator" title="Link to this heading">#</a></h2>
+<p>Property and sequence arguments are given together and told apart by
+<code class="docutils literal notranslate"><span class="pre">properties</span></code>. A scalar property is one voxel; an array is a map, and every
+voxel runs at once.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html#numpy.concatenate" title="numpy.concatenate" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span></a><span class="p">(</span>
+    <span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">,</span> <span class="mi">350</span><span class="p">),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.linspace.html#numpy.linspace" title="numpy.linspace" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mf">60.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">350</span><span class="p">),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ones.html#numpy.ones" title="numpy.ones" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">ones</span></a><span class="p">(</span><span class="mi">180</span><span class="p">))</span>
+<span class="p">)</span>
+
+<span class="n">sequence</span> <span class="o">=</span> <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">SSFPMRF</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">TI</span><span class="o">=</span><span class="mf">20.0</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">sequence</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">T1</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="mf">100.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../../_images/sphx_glr_03-writing-a-simulator_001.png" srcset="../../../_images/sphx_glr_03-writing-a-simulator_001.png" alt="03 writing a simulator" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(30.823120572916668, 0.5, 'signal magnitude [a.u.]')
+</pre></div>
+</div>
+<p>The same call over a parameter map returns one row per voxel:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">signals</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">sequence</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span>
+    <span class="n">T1</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">500.0</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="mf">1500.0</span><span class="p">]),</span>
+    <span class="n">T2</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">150.0</span><span class="p">]),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../../_images/sphx_glr_03-writing-a-simulator_002.png" srcset="../../../_images/sphx_glr_03-writing-a-simulator_002.png" alt="03 writing a simulator" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(30.823120572916668, 0.5, 'signal magnitude [a.u.]')
+</pre></div>
+</div>
+</section>
+<section id="forward-mode-derivatives">
+<h2>Forward-mode derivatives<a class="headerlink" href="#forward-mode-derivatives" title="Link to this heading">#</a></h2>
+<p>A Bloch simulation records far more samples than it takes parameters, so a
+derivative with respect to tissue is cheapest taken forwards: one directional
+derivative per property yields every voxel’s derivative at once, and the cost
+is one pass per property rather than per voxel.</p>
+<p>That is what <a class="reference internal" href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.jacobian" title="torchsim.model.SignalModel.jacobian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">jacobian()</span></code></a> does. A single name
+collapses the parameter axis; a sequence of names keeps it.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">jacobian</span></a> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.jacobian" title="torchsim.model.SignalModel.jacobian" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">sequence</span><span class="o">.</span><span class="n">jacobian</span></a><span class="p">((</span><span class="s2">"T1"</span><span class="p">,</span> <span class="s2">"T2"</span><span class="p">),</span> <span class="n">T1</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="mf">100.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../../_images/sphx_glr_03-writing-a-simulator_003.png" srcset="../../../_images/sphx_glr_03-writing-a-simulator_003.png" alt="03 writing a simulator" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(30.823120572916668, 0.5, 'signal jacobian [a.u.]')
+</pre></div>
+</div>
+</section>
+<section id="reverse-mode-derivatives">
+<h2>Reverse-mode derivatives<a class="headerlink" href="#reverse-mode-derivatives" title="Link to this heading">#</a></h2>
+<p>The simulator optimization problem runs the other way: one scalar cost,
+many sequence parameters. That is reverse mode, and it is deliberately not
+wrapped – build a cost on the signal and call <code class="docutils literal notranslate"><span class="pre">backward()</span></code>. The engine
+reads which of its inputs carry a gradient and picks its kernel from that, so
+a layer here would only hide the choice.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">schedule</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">recorded</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">sequence</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">T1</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="o">=</span><span class="n">schedule</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">recorded</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">square</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../../../_images/sphx_glr_03-writing-a-simulator_004.png" srcset="../../../_images/sphx_glr_03-writing-a-simulator_004.png" alt="03 writing a simulator" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Text(30.823120572916668, 0.5, 'd(loss) / d(flip) [1/deg]')
+</pre></div>
+</div>
+</section>
+<section id="additional-physics">
+<h2>Additional physics<a class="headerlink" href="#additional-physics" title="Link to this heading">#</a></h2>
+<p>Nothing was declared about the tissue, and nothing had to be. Naming a
+property in the call is what turns its term on, so a second exchanging pool
+is four more names in the call and no change to the simulator:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">two_pool</span></a> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">sequence</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span>
+    <span class="n">T1</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span>
+    <span class="n">T2</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span>
+    <span class="n">poolB_fraction</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">poolB_exchange</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+    <span class="n">poolB_T1</span><span class="o">=</span><span class="mf">500.0</span><span class="p">,</span>
+    <span class="n">poolB_T2</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>a second pool moves the train by 17.9%
+</pre></div>
+</div>
+<p>What the whole vocabulary is, and what each term does to a train, is
+<a class="reference internal" href="02-expanded-physics.html#sphx-glr-generated-autoexamples-01-framework-02-expanded-physics-py"><span class="std std-ref">the expanded-physics example</span></a>.</p>
+</section>
+<section id="validation-against-a-closed-form">
+<h2>Validation against a closed form<a class="headerlink" href="#validation-against-a-closed-form" title="Link to this heading">#</a></h2>
+<p>A fingerprinting train has no closed form to check against, so here is a
+second simulator that does. Saturation recovery destroys whatever
+magnetization was there, waits, and reads what has come back – and what it
+reads at a saturation time is <span class="math notranslate nohighlight">\(M_0 \sin\alpha \, (1 - e^{-T_S/T_1})\)</span>,
+because the saturation leaves nothing behind and the recovery is undisturbed
+until the readout.</p>
+<p>The state machine has never been told what sequence these events add up to.
+It plays them, so agreeing with the closed form is a check rather than a
+tautology.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&#64;</span></code> composes two operators into one, so the saturation reads as the single
+thing a physicist would name rather than as a pulse and a spoiler.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SaturationRecovery</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">Simulator</span></a><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Saturate, wait, read what recovered -- once per saturation time.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    TS : array-like</span>
+<span class="sd">        Saturation times, in milliseconds, one per block.</span>
+<span class="sd">    flip : float</span>
+<span class="sd">        The readout flip angle, in degrees.</span>
+<span class="sd">    phases : float or array-like, optional</span>
+<span class="sd">        The readout phase, in degrees.</span>
+<span class="sd">    """</span>
+
+    <span class="n">excitation</span> <span class="o">=</span> <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Excitation</span></a>
+    <span class="n">readout</span> <span class="o">=</span> <a href="../../torchsim.SPGRReadout.html#torchsim.SPGRReadout" title="torchsim.SPGRReadout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">SPGRReadout</span></a>
+    <span class="c1"># Every block begins by destroying the transverse magnetization, so nothing</span>
+    <span class="c1"># is carried in a dephased configuration and one order is the whole state.</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">TS</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="p">,</span> <span class="n">phases</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return one saturate-wait-read block per saturation time."""</span>
+        <span class="n">waits</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">TS</span><span class="p">))</span> <span class="o">*</span> <span class="mf">1e-3</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="p">))</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">waits</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">turn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">phases</span><span class="p">))</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">waits</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="n">saturate</span> <span class="o">=</span> <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Excitation</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">@</span> <a href="../../torchsim.Spoil.html#torchsim.Spoil" title="torchsim.Spoil" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Spoil</span></a><span class="p">()</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">waits</span><span class="o">.</span><span class="n">numel</span><span class="p">()):</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">saturate</span><span class="p">)</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">(</span><span class="n">waits</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">excitation</span><span class="p">(</span><span class="n">angle</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">turn</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span><span class="n">turn</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">parts</span>
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">SATURATION_TIMES</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">50.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">,</span> <span class="mf">400.0</span><span class="p">,</span> <span class="mf">800.0</span><span class="p">,</span> <span class="mf">1600.0</span><span class="p">,</span> <span class="mf">3200.0</span><span class="p">])</span>
+<a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FLIP_DEG</span></a> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="n">T1_MS</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">830.0</span><span class="p">,</span> <span class="mf">1330.0</span><span class="p">,</span> <span class="mf">4000.0</span><span class="p">])</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">NAMES</span></a> <span class="o">=</span> <span class="p">(</span><span class="s2">"white matter"</span><span class="p">,</span> <span class="s2">"grey matter"</span><span class="p">,</span> <span class="s2">"CSF"</span><span class="p">)</span>
+
+<span class="n">recovery</span> <span class="o">=</span> <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">SaturationRecovery</span></a><span class="p">(</span><span class="n">TS</span><span class="o">=</span><span class="n">SATURATION_TIMES</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FLIP_DEG</span></a><span class="p">)</span>
+<span class="n">recovered</span> <span class="o">=</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">recovery</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">T1</span><span class="o">=</span><span class="mf">830.0</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="mf">80.0</span><span class="p">,</span> <span class="n">M0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+<span class="n">closed_form</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FLIP_DEG</span></a><span class="p">)))</span> <span class="o">*</span> <span class="p">(</span>
+    <span class="mf">1.0</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">SATURATION_TIMES</span> <span class="o">/</span> <span class="mf">830.0</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">times</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mf">1.3</span><span class="p">,</span> <span class="mf">3.7</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">curves</span> <span class="o">=</span> <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">SaturationRecovery</span></a><span class="p">(</span><span class="n">TS</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FLIP_DEG</span></a><span class="p">)</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span>
+    <span class="n">T1</span><span class="o">=</span><span class="n">T1_MS</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">80.0</span><span class="p">,</span> <span class="mf">110.0</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">]),</span> <span class="n">M0</span><span class="o">=</span><span class="mf">1.0</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../../_images/sphx_glr_03-writing-a-simulator_005.png" srcset="../../../_images/sphx_glr_03-writing-a-simulator_005.png" alt="simulated, against the closed form (dashed)" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  largest disagreement with the closed form: 7.45e-09
+
+[&lt;matplotlib.legend.Legend object at 0x7f486a172e70&gt;]
+</pre></div>
+</div>
+</section>
+<section id="inspecting-the-event-stream">
+<h2>Inspecting the event stream<a class="headerlink" href="#inspecting-the-event-stream" title="Link to this heading">#</a></h2>
+<p><a class="reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator.describe" title="torchsim.model.Simulator.describe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">describe()</span></code></a> returns the event stream, which is
+the same object a sequence arriving from a scanner is read into: a timestamp
+and an action word on every event. It is worth looking at once, because a
+sequence that plays the wrong thing is far easier to see here than in the
+signal it produces.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../../torchsim.SequenceDescription.html#torchsim.SequenceDescription" title="torchsim.SequenceDescription" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">description</span></a> <span class="o">=</span> <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator.describe" title="torchsim.model.Simulator.describe" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">recovery</span><span class="o">.</span><span class="n">describe</span></a><span class="p">(</span><span class="n">TS</span><span class="o">=</span><span class="n">SATURATION_TIMES</span><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FLIP_DEG</span></a><span class="p">)</span>
+</pre></div>
+</div>
+<img src="../../../_images/sphx_glr_03-writing-a-simulator_006.png" srcset="../../../_images/sphx_glr_03-writing-a-simulator_006.png" alt="one saturate-wait-read block per saturation time" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  49 events, 6350 ms long
+
+[&lt;matplotlib.legend.Legend object at 0x7f4866d34620&gt;]
+</pre></div>
+</div>
+</section>
+<section id="building-from-a-description">
+<h2>Building from a description<a class="headerlink" href="#building-from-a-description" title="Link to this heading">#</a></h2>
+<p>A description that came from somewhere else – an MRD file, a Pulseq export,
+a scanner’s own stream – becomes a simulator through
+<a class="reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator.from_description" title="torchsim.model.Simulator.from_description"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_description()</span></code></a>. No layout is walked: the
+events are re-emitted through this model’s handlers, which is what puts the
+gradients back that the transport does not carry.</p>
+<p>It does not reproduce this sequence exactly, and the gap is the lesson. A
+handler reinstates what a pulse or a sample implies; the spoiler inside the
+saturation block is neither, so nothing reinstates it – and a stream
+arriving from a scanner could not have carried it either. A preparation that
+has to survive the round trip belongs in a pulse the wire can name.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">arrived</span> <span class="o">=</span> <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator.from_description" title="torchsim.model.Simulator.from_description" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">SaturationRecovery</span><span class="o">.</span><span class="n">from_description</span></a><span class="p">(</span><a href="../../torchsim.SequenceDescription.html#torchsim.SequenceDescription" title="torchsim.SequenceDescription" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">description</span></a><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>the same stream, read back through the handlers, differs by 5.3e-01
+</pre></div>
+</div>
+</section>
+<section id="functional-wrapper">
+<h2>Functional wrapper<a class="headerlink" href="#functional-wrapper" title="Link to this heading">#</a></h2>
+<p>The shipped models come with one, and yours can too:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ssfp_mrf_sim</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="p">,</span> <span class="n">TR</span><span class="p">,</span> <span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="p">,</span> <span class="n">TI</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">diff</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Simulate an inversion-prepared SSFP train, and differentiate it."""</span>
+    <span class="n">sequence</span> <span class="o">=</span> <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">SSFPMRF</span></a><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><span class="n">TR</span><span class="p">,</span> <span class="n">TI</span><span class="o">=</span><span class="n">TI</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">diff</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">sequence</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">T1</span><span class="o">=</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2</span><span class="p">)</span>
+    <span class="k">return</span> <a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.jacobian" title="torchsim.model.SignalModel.jacobian" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">sequence</span><span class="o">.</span><span class="n">jacobian</span></a><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><span class="n">T1</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2</span><span class="p">)</span>
+
+
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">signal</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">jacobian</span></a> <span class="o">=</span> <span class="n">ssfp_mrf_sim</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">flip</span></a><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="n">diff</span><span class="o">=</span><span class="p">(</span><span class="s2">"T1"</span><span class="p">,</span> <span class="s2">"T2"</span><span class="p">))</span>
+<span class="c1"># signal is (repetitions,); jacobian is (2, repetitions), one row per property</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.435 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-01-framework-03-writing-a-simulator-py">
+<div class="binder-badge docutils container">
+<a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/01-framework/03-writing-a-simulator.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo.svg" style="width: 150px;" />
+</a>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/3784ba3b6e3d539b42d1311d7cd05026/03-writing-a-simulator.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">03-writing-a-simulator.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/952dab286e841563f3871cd35307e123/03-writing-a-simulator.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">03-writing-a-simulator.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/9358a22ac2fb6e34b145d68ee91ef0d3/03-writing-a-simulator.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">03-writing-a-simulator.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02-expanded-physics.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Expanded Physics</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04-custom-operator.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Writing a New Operator</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handlers">Handlers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#layout">Layout</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-the-simulator">Running the simulator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-mode-derivatives">Forward-mode derivatives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reverse-mode-derivatives">Reverse-mode derivatives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-physics">Additional physics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation-against-a-closed-form">Validation against a closed form</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-the-event-stream">Inspecting the event stream</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#building-from-a-description">Building from a description</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-wrapper">Functional wrapper</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

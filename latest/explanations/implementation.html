@@ -1,0 +1,1009 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How TorchSim runs it &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'explanations/implementation';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/explanations/implementation.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Examples" href="../generated/autoexamples/index.html" />
+    <link rel="prev" title="Sequence description" href="description.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html">Sequence description</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../generated/autoexamples/index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/edit/main/explanations/implementation.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2Fexplanations/implementation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/explanations/implementation.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>How TorchSim runs it</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-path-from-the-sequence-you-write-to-the-signal">One path, from the sequence you write to the signal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sequence-is-events-and-each-carries-what-happens-around-it">A sequence is events, and each carries what happens around it</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-voxel-holds-while-it-is-simulated">What a voxel holds while it is simulated</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-kernel-not-a-graph-of-operators">One kernel, not a graph of operators</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#you-pay-for-the-physics-you-declare">You pay for the physics you declare</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-the-states-never-leave-a-line">When the states never leave a line</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivatives-in-whichever-direction-the-question-runs">Derivatives, in whichever direction the question runs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structure-resolved-once-values-rebound">Structure resolved once, values rebound</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-the-work-runs">Where the work runs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kept-honest-against-closed-forms">Kept honest against closed forms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-not-in-the-kernels">What is not in the kernels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="how-torchsim-runs-it">
+<h1>How TorchSim runs it<a class="headerlink" href="#how-torchsim-runs-it" title="Link to this heading">#</a></h1>
+<p><a class="reference internal" href="epg.html"><span class="doc">Extended phase graphs</span></a> says what is being computed. This page says how, and why the shape
+of the code is what it is: one description of a sequence, one fused kernel per
+voxel, and derivatives taken in whichever direction the question asks for.</p>
+<p>You do not need any of it to use TorchSim. You need it to know what a run costs
+before you launch it, to read a number that surprises you, and to change
+something without breaking the pieces underneath.</p>
+<section id="one-path-from-the-sequence-you-write-to-the-signal">
+<h2>One path, from the sequence you write to the signal<a class="headerlink" href="#one-path-from-the-sequence-you-write-to-the-signal" title="Link to this heading">#</a></h2>
+<p>Everything a sequence can say is said once, in a
+<a class="reference internal" href="../generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription" title="torchsim.SequenceDescription"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequenceDescription</span></code></a>: a list of events, each with a
+timestamp, a payload, and an <strong>action word</strong> saying what the sequence plays
+around it. Whatever assembled that description – operators you composed, a
+builder that ships here, a stream that arrived from a scanner – what runs
+afterwards is identical, because nothing downstream ever asks where the
+description came from.</p>
+<figure class="align-default" id="id7">
+<a class="reference internal image-reference" href="../_images/pipeline.png"><img alt="Operators to description to packed buffers to fused kernel to signal." src="../_images/pipeline.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The whole path. Everything to the left of the dashed line is Python and
+happens once per <em>structure</em>; everything to the right is compiled and
+happens once per <em>run</em>. There is no interpretation of a sequence during a
+simulation, and no per-event dispatch: by the time a kernel starts, a
+sequence is nine flat arrays.</span><a class="headerlink" href="#id7" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The split is what makes the same code fast on a dictionary of a hundred
+thousand atoms and honest about a single voxel. It is also what lets a
+sequence be <em>differentiated</em>: the description carries tensors, so a flip angle
+in it can be the variable an optimizer moves.</p>
+</section>
+<section id="a-sequence-is-events-and-each-carries-what-happens-around-it">
+<h2>A sequence is events, and each carries what happens around it<a class="headerlink" href="#a-sequence-is-events-and-each-carries-what-happens-around-it" title="Link to this heading">#</a></h2>
+<p>An event is a wait, an RF pulse, or an ADC. Gradients are not events. A Pulseq
+file has no gradient <em>use</em> field, so a crusher cannot be told from a phase
+encode by looking at waveforms without tracking the k-space moment through the
+whole TR – and instead of doing that, TorchSim has each event declare its own
+role: <code class="docutils literal notranslate"><span class="pre">CRUSH_BEFORE</span></code>, <code class="docutils literal notranslate"><span class="pre">CRUSH_AFTER</span></code>, <code class="docutils literal notranslate"><span class="pre">SHIFT_AFTER</span></code>, <code class="docutils literal notranslate"><span class="pre">SPOIL_AFTER</span></code>.</p>
+<figure class="align-default" id="id8">
+<a class="reference internal image-reference" href="../_images/event_stream.png"><img alt="A timeline of RF, ADC and wait events for a four-echo refocused train." src="../_images/event_stream.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">A four-echo refocused train, as <a class="reference internal" href="../generated/torchsim.model.Simulator.html#torchsim.model.Simulator.describe" title="torchsim.model.Simulator.describe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">describe()</span></code></a>
+emits it. The crushers ride on the refocusing pulses that sit between them,
+which is why <code class="docutils literal notranslate"><span class="pre">Refocusing</span></code> is one operator rather than three; a spoiled
+readout would instead carry <code class="docutils literal notranslate"><span class="pre">SPOIL_AFTER</span></code>, and an unbalanced one
+<code class="docutils literal notranslate"><span class="pre">SHIFT_AFTER</span></code>. The ADCs are marked as echo centres, which is how a
+reconstruction picks the samples it wants without counting events.</span><a class="headerlink" href="#id8" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Operators are how you write those events. <code class="docutils literal notranslate"><span class="pre">Excitation</span></code>, <code class="docutils literal notranslate"><span class="pre">Refocusing</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Readout</span></code>, <code class="docutils literal notranslate"><span class="pre">Dephase</span></code>, <code class="docutils literal notranslate"><span class="pre">Spoil</span></code>, <code class="docutils literal notranslate"><span class="pre">Delay</span></code> and the readout modules built
+from them speak exactly the vocabulary the kernels implement, so a module you
+write yourself – a T2 preparation, an MT saturation, a shaped pulse – reaches
+the kernels with no change to them. What an operator <em>cannot</em> say is how much a
+gradient dephases: a description carries one crusher moment for the whole
+sequence, and dephasing is quantized to whole configuration orders.</p>
+</section>
+<section id="what-a-voxel-holds-while-it-is-simulated">
+<h2>What a voxel holds while it is simulated<a class="headerlink" href="#what-a-voxel-holds-while-it-is-simulated" title="Link to this heading">#</a></h2>
+<p>The state of a voxel is the three families over the orders it carries, and
+nothing else. That is what a kernel keeps in registers, and it is why an EPG
+simulation of a whole volume fits where an isochromat simulation of it does
+not.</p>
+<figure class="align-default" id="id9">
+<a class="reference internal image-reference" href="../_images/state_memory.png"><img alt="The three state families over eight orders, and the memory that costs per voxel." src="../_images/state_memory.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">One voxel’s whole state, and what carrying more orders costs. In float32 a
+voxel at 20 orders is under half a kilobyte, so a million-voxel volume is a
+few hundred megabytes of state – the reason a run is limited by how many
+voxels a card holds rather than by the sequence.</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>You set the order count with <code class="docutils literal notranslate"><span class="pre">states=</span></code> on a simulator, or <code class="docutils literal notranslate"><span class="pre">nstates=</span></code> on a
+call. Left alone, TorchSim counts the winding the description declares –
+every <code class="docutils literal notranslate"><span class="pre">CRUSH</span></code>, every <code class="docutils literal notranslate"><span class="pre">SHIFT_AFTER</span></code>, over every repetition – and sizes the
+state from that, clamped into a sensible range. Measuring convergence for your
+own sequence is two calls, as in <a class="reference internal" href="epg.html"><span class="doc">Extended phase graphs</span></a>.</p>
+</section>
+<section id="one-kernel-not-a-graph-of-operators">
+<h2>One kernel, not a graph of operators<a class="headerlink" href="#one-kernel-not-a-graph-of-operators" title="Link to this heading">#</a></h2>
+<p>Written as tensor operations – a rotation here, a shift there – an EPG
+simulation would be one kernel launch per event, each reading the state out of
+memory and writing it back. For a thousand-event schedule over a thousand
+voxels, that is a thousand launches moving data that never needed to leave the
+processor.</p>
+<figure class="align-default" id="id10">
+<a class="reference internal image-reference" href="../_images/fusion.png"><img alt="A launch per event crossing memory each time, against one fused launch." src="../_images/fusion.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Why the state machine is fused. One program per voxel walks the whole event
+stream with the state in registers, touching memory once at the start and
+once at the end – plus the samples it records. What the kernel loops over
+is the sequence; what it is parallel in is the voxels.</span><a class="headerlink" href="#id10" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>There are two implementations of that program and they compute the same thing.
+The CPU one is a threaded C++ extension, with a lane-vectorized path that runs
+eight trains at once where the arithmetic allows it. The GPU one is written in
+Triton and compiles a specialization per feature combination it meets – which
+is why the <em>first</em> call on a card can take tens of seconds while the second
+takes milliseconds. Every mode exists on both sides: forward, forward-mode,
+adjoint, forward-over-reverse, the real-subspace specialization, and the pool
+models.</p>
+</section>
+<section id="you-pay-for-the-physics-you-declare">
+<h2>You pay for the physics you declare<a class="headerlink" href="#you-pay-for-the-physics-you-declare" title="Link to this heading">#</a></h2>
+<p>A tissue property has an <strong>identity</strong> – the value at which it has no effect on
+the answer – and a run reads which properties were actually passed to decide
+which terms the kernel evaluates. Off-resonance, diffusion, flow, a transmit
+array, a second pool: each is a term that is simply absent unless a model asks
+for it. This is what makes a model’s property declaration a physics
+declaration, and adding one line to it the whole of adding an effect.</p>
+<figure class="align-default" id="id11">
+<a class="reference internal image-reference" href="../_images/declared_physics.png"><img alt="Run time of the same schedule with off-resonance and with diffusion declared." src="../_images/declared_physics.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The same fingerprinting schedule over the same voxels, with more physics
+declared each time, measured on the machine that built this page. Numbers of
+this kind belong to a machine and a run size and are not to be quoted; the
+shape is the point. Asking for a second pool is not a term on top of these
+at all – it selects a different kernel, with a coupled relaxation-exchange
+operator <a class="footnote-reference brackets" href="#id4" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> in place of the two scalar factors.</span><a class="headerlink" href="#id11" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="when-the-states-never-leave-a-line">
+<h2>When the states never leave a line<a class="headerlink" href="#when-the-states-never-leave-a-line" title="Link to this heading">#</a></h2>
+<p>If every refocusing pulse shares one phase, the excitation is in phase with
+them or a half turn away, and there is no off-resonance, no transmit phase and
+no flow, then the states stay on one axis of the complex plane for the whole
+train. That is the CPMG and anti-CPMG arrangement of the EPG literature
+<a class="footnote-reference brackets" href="#id5" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, and it means the arithmetic can be done in real numbers: the shift’s
+conjugate coupling becomes a sign, and the rotation reduces to a real 3x3.</p>
+<p>A pulse a half turn round is the same pulse turning the other way, and a
+sample demodulated a half turn round is the same sample negated. The event
+stream is packed with those half turns subtracted – the flips they negate
+carry the sign, and the samples they negate hand theirs to the signal – so an
+anti-CPMG train, or one alternating its phase every repetition as a
+phase-cycled balanced sequence does, arrives on one axis and takes this path.
+Both identities hold at every phase, so what the packing rewrites is
+differentiated exactly.</p>
+<figure class="align-default" id="id12">
+<a class="reference internal image-reference" href="../_images/real_subspace.png"><img alt="A state trajectory on a line against one filling the plane, and the run times of each." src="../_images/real_subspace.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Left, where the recorded state goes in the two cases. Right, the same
+64-echo train over the same voxels, with the excitation in phase with the
+refocusing pulses, a quarter turn away from them, and in phase but with
+off-resonance declared. Only the first is confined to the axis, and it is
+several times faster on this machine.</span><a class="headerlink" href="#id12" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>TorchSim decides this per run, in one device round trip, and refuses two
+arrangements that look real but are not: off-resonance is refocused <em>at</em> the
+echo centres but not between them, and an excitation a quarter turn from the
+refocusing pulses gives samples that are real while the states fill the plane.
+A shaped pulse is refused too, because a rotation about an axis with a
+component along <span class="math notranslate nohighlight">\(z\)</span> carries states off the line. You never ask for this
+path and you cannot switch it off; you get it when your sequence has earned it.</p>
+</section>
+<section id="derivatives-in-whichever-direction-the-question-runs">
+<h2>Derivatives, in whichever direction the question runs<a class="headerlink" href="#derivatives-in-whichever-direction-the-question-runs" title="Link to this heading">#</a></h2>
+<p>A simulation records far more samples than it takes parameters, so the cheap
+direction depends on what you are differentiating.</p>
+<p><strong>With respect to tissue</strong>, forward mode wins. Voxels are independent, so one
+directional derivative covers every voxel at once, and the cost is one pass per
+<em>property</em> – not per voxel, not per echo. That is
+<a class="reference internal" href="../generated/torchsim.model.SignalModel.html#torchsim.model.SignalModel.jacobian" title="torchsim.model.SignalModel.jacobian"><code class="xref py py-meth docutils literal notranslate"><span class="pre">jacobian()</span></code></a>, and it is what a dictionary fit, a
+Cramer-Rao bound and a model-based reconstruction all consume. Inside the
+kernels it is dual arithmetic: each quantity carries a tangent beside it, and
+every operator differentiates itself.</p>
+<p><strong>With respect to the sequence</strong>, reverse mode wins. The cost you minimize when
+designing a schedule is a scalar over hundreds of flip angles, so one adjoint
+pass gives every derivative. That is plain
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">torch.Tensor.backward()</span></code> on the returned signal: the engine reads which
+inputs carry a gradient and picks its kernel from that, with no wrapper in the
+way.</p>
+<figure class="align-default" id="id13">
+<a class="reference internal image-reference" href="../_images/derivative_cost.png"><img alt="Forward-mode cost against the number of properties, and the cost of one adjoint pass." src="../_images/derivative_cost.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Left, forward mode: the cost grows linearly in the number of properties
+differentiated and is flat in everything else. Right, reverse mode: the
+gradient of a scalar cost with respect to 500 flip angles, in a few forward
+passes. Measured on the machine that built this page.</span><a class="headerlink" href="#id13" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The two compose. Optimizing a sequence for the <em>precision</em> of a fit means
+differentiating a bound that already contains a derivative, which is
+forward-over-reverse – and dual arithmetic through the adjoint gives both
+halves at once, with no second-order kernel written by hand.</p>
+</section>
+<section id="structure-resolved-once-values-rebound">
+<h2>Structure resolved once, values rebound<a class="headerlink" href="#structure-resolved-once-values-rebound" title="Link to this heading">#</a></h2>
+<p>A design loop and a dictionary sweep call the same sequence thousands of times
+with different numbers. Walking the layout, assembling events and packing
+buffers each time is per-event Python, and on a small problem it can cost more
+than the kernels it feeds.</p>
+<figure class="align-default" id="id14">
+<a class="reference internal image-reference" href="../_images/binding.png"><img alt="The packed buffers, with the four that change per call marked." src="../_images/binding.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">What a call actually has to rebuild. A layout turns its arguments into event
+parameters by scaling and offsetting them – degrees to radians, a spacing
+accumulated into timestamps – so each entry of these four buffers is an
+affine function of one element of one argument. Two forward-mode passes
+recover the map exactly; afterwards a call rebuilds them with whole-tensor
+arithmetic and leaves the structure alone.</span><a class="headerlink" href="#id14" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">resolved()</span></code> asks for that. It checks itself:
+where the map does not hold – an entry drawing on more than one element, a
+rebuild disagreeing with a fresh packing at a point the map never saw – the
+binding is refused and the ordinary path runs instead, same answer, slower.
+Where it does hold, the answer agrees to float32 round-off rather than to the
+bit, because the same product is formed in a different order.</p>
+</section>
+<section id="where-the-work-runs">
+<h2>Where the work runs<a class="headerlink" href="#where-the-work-runs" title="Link to this heading">#</a></h2>
+<p>Simulating a volume and mapping one are both per-voxel, and both outgrow a card
+long before they outgrow a host. That is one policy, written once, and it is
+the same whether the kernel underneath is the state machine, a dictionary
+match or a kernel regression.</p>
+<figure class="align-default" id="id15">
+<a class="reference internal image-reference" href="../_images/execution_policy.png"><img alt="A decision fan from the problem size to host, card, streaming, or several cards." src="../_images/execution_policy.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">What a run does with a problem. Streaming sizes its chunks to a memory
+budget and overlaps one chunk’s transfer with another’s arithmetic; sharding
+splits the voxels across cards and gathers the signal back. Say it around
+the call with <a class="reference internal" href="../generated/torchsim.execution.html#torchsim.execution" title="torchsim.execution"><code class="xref py py-func docutils literal notranslate"><span class="pre">execution()</span></code></a> and <a class="reference internal" href="../generated/torchsim.offload.html#torchsim.offload" title="torchsim.offload"><code class="xref py py-func docutils literal notranslate"><span class="pre">offload()</span></code></a>, or
+leave it alone and let each call decide against what the devices have free.</span><a class="headerlink" href="#id15" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="kept-honest-against-closed-forms">
+<h2>Kept honest against closed forms<a class="headerlink" href="#kept-honest-against-closed-forms" title="Link to this heading">#</a></h2>
+<p>Where a sequence has an analytic steady state, the state machine has to
+reproduce it. Where it does not, the operators still have closed forms one at a
+time, and the test suite pins each of them – the shift, the RF rotation,
+relaxation, diffusion, flow, spoiling, the two-pool and three-pool longitudinal
+steps – against an expression written out independently in the test.</p>
+<figure class="align-default" id="id16">
+<a class="reference internal image-reference" href="../_images/closed_form_agreement.png"><img alt="The simulated spoiled steady state over the Ernst curve, and the difference between them." src="../_images/closed_form_agreement.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">A spoiled gradient echo played out event by event, against the Ernst
+expression that ships as a closed-form simulator. They agree to float32
+round-off across the flip angles that matter. What is left at the smallest
+angles is not disagreement: recovery there is slow enough that 300
+repetitions have not finished approaching the steady state the closed form
+states outright – a real property of the sequence, and one you would want a
+simulator to show you rather than hide.</span><a class="headerlink" href="#id16" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The same style of check is what a change to the physics is expected to bring
+with it; see <a class="reference internal" href="../developer_guide.html"><span class="doc">Developer Guide</span></a>.</p>
+</section>
+<section id="what-is-not-in-the-kernels">
+<h2>What is not in the kernels<a class="headerlink" href="#what-is-not-in-the-kernels" title="Link to this heading">#</a></h2>
+<p>Worth knowing before you plan around it:</p>
+<ul class="simple">
+<li><p><strong>Gradient waveforms.</strong> A description declares one crusher moment for the
+whole sequence and dephasing is quantized to whole orders, so a bipolar pair,
+a b-value of its own, or a crusher of twice its neighbour’s area have no
+representation.</p></li>
+<li><p><strong>Intravoxel field variation.</strong> Off-resonance is a per-voxel constant, so
+<span class="math notranslate nohighlight">\(T_2'\)</span> dephasing comes from a distribution across voxels rather than
+from within one.</p></li>
+<li><p><strong>A shaped pulse, unless you ask.</strong> Pulses are instantaneous rotations by
+default. A slice-selective pulse can be integrated ahead of time into a table
+over slice position and effective flip angle <a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>, read back by cubic
+Hermite interpolation – the flip angle and the transmit scaling enter only through
+their product, and the RF phase factors out, which is what keeps that table
+small. Ask for it with <code class="docutils literal notranslate"><span class="pre">across_slice=</span></code>.</p></li>
+<li><p><strong>Three pools with two different second pools</strong> are carried, but a tissue
+cannot declare more than a voxel’s worth of magnetization between them.</p></li>
+</ul>
+<p>Everything in that list is a boundary of the model rather than of the
+implementation, which is the distinction worth keeping when you decide whether
+a simulation can answer your question.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+</section>
+</section>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Malik, S. J., Teixeira, R. P. A. G., Hajnal, J. V., “Extended phase
+graph formalism for systems with magnetization transfer and exchange”,
+Magnetic Resonance in Medicine 80.2 (2018), pp. 767-779.
+<a class="reference external" href="https://doi.org/10.1002/mrm.27040">https://doi.org/10.1002/mrm.27040</a></p>
+</aside>
+<aside class="footnote brackets" id="id5" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Weigel, M., “Extended phase graphs: dephasing, RF pulses, and echoes -
+pure and simple”, Journal of Magnetic Resonance Imaging 41.2 (2015),
+pp. 266-295. <a class="reference external" href="https://doi.org/10.1002/jmri.24619">https://doi.org/10.1002/jmri.24619</a></p>
+</aside>
+<aside class="footnote brackets" id="id6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>Guenthner, C., Amthor, T., Doneva, M., Kozerke, S., “A unifying view on
+extended phase graphs and Bloch simulations for quantitative MRI”,
+Scientific Reports 11 (2021), 21289.
+<a class="reference external" href="https://doi.org/10.1038/s41598-021-00233-6">https://doi.org/10.1038/s41598-021-00233-6</a></p>
+</aside>
+</aside>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="description.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Sequence description</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../generated/autoexamples/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Examples</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-path-from-the-sequence-you-write-to-the-signal">One path, from the sequence you write to the signal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sequence-is-events-and-each-carries-what-happens-around-it">A sequence is events, and each carries what happens around it</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-a-voxel-holds-while-it-is-simulated">What a voxel holds while it is simulated</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#one-kernel-not-a-graph-of-operators">One kernel, not a graph of operators</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#you-pay-for-the-physics-you-declare">You pay for the physics you declare</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-the-states-never-leave-a-line">When the states never leave a line</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#derivatives-in-whichever-direction-the-question-runs">Derivatives, in whichever direction the question runs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structure-resolved-once-values-rebound">Structure resolved once, values rebound</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#where-the-work-runs">Where the work runs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kept-honest-against-closed-forms">Kept honest against closed forms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-not-in-the-kernels">What is not in the kernels</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

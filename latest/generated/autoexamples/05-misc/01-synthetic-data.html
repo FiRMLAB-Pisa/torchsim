@@ -1,0 +1,1036 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Synthetic MR fingerprinting &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/autoexamples/05-misc/01-synthetic-data';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/generated/autoexamples/05-misc/01-synthetic-data.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="API References" href="../../../api/index.html" />
+    <link rel="prev" title="Miscellaneous" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/edit/main/generated/autoexamples/05-misc/01-synthetic-data.rst" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2Fgenerated/autoexamples/05-misc/01-synthetic-data.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../../_sources/generated/autoexamples/05-misc/01-synthetic-data.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Synthetic MR fingerprinting</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subject">Subject</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tissue-classes">Tissue classes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-per-class">Simulation per class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whole-brain-volume">Whole-brain volume</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coils-and-encoding">Coils and encoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstruction">Reconstruction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pair">Data pair</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#phantom-summary">Phantom summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-the-pair">Inspecting the pair</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting">Exporting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-line-use">Command-line use</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-generated-autoexamples-05-misc-01-synthetic-data-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code or to run this example in your browser via Binder.</p>
+</div>
+<section class="sphx-glr-example-title" id="synthetic-mr-fingerprinting">
+<span id="sphx-glr-generated-autoexamples-05-misc-01-synthetic-data-py"></span><h1>Synthetic MR fingerprinting<a class="headerlink" href="#synthetic-mr-fingerprinting" title="Link to this heading">#</a></h1>
+<p>The scope of this notebook is to build a training pair end to end: what a
+scanner would measure from a fingerprinting exam, and the maps it came from.</p>
+<p>A subject is segmented into tissue classes; each class is given an M0, a T1 and
+a T2; one voxel per class is simulated by extended phase graphs; every voxel of
+a class is handed its class’s evolution; the volume is weighted by birdcage
+sensitivities and pushed through a frame-wise non-uniform Fourier transform;
+the k-space is brought back and coil-combined. The undersampled series and the
+fully sampled one are the pair, with the ground-truth maps and the
+segmentation.</p>
+<p>Only the simulation is TorchSim’s. The phantom, the coils and the encoding come
+from torchio, deepmriprep, SigPy and mri-nufft.</p>
+<div class="colab-button">
+            <a href="https://colab.research.google.com/github/FiRMLAB-Pisa/torchsim/blob/gh-pages/latest/examples/generated/autoexamples/05-misc/01-synthetic-data.ipynb" target="_blank">
+                <img src="https://colab.research.google.com/assets/colab-badge.svg"
+                alt="Open In Colab"/>
+            </a>
+        </div>
+        <p>Only one step of this pipeline is TorchSim’s. Four other packages do the
+rest, and each has exactly one job here:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">torchio</span></code> fetches a T1-weighted IXI subject and gives it as tensors,
+which is where the anatomy comes from;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">deepmriprep</span></code> segments that anatomy into grey matter, white matter and
+CSF with a U-Net – torch throughout, and it hands back probabilities
+rather than labels;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sigpy.mri</span></code> generates birdcage coil sensitivities to weight the volume
+with;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mri-nufft</span></code> supplies the spiral trajectory and the non-uniform Fourier
+transform that plays it, forwards and back.</p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">mrinufft</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">deepmriprep</span><span class="w"> </span><span class="kn">import</span> <span class="n">Preprocess</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sigpy.mri</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">smri</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torchio</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mrinufft.trajectories</span><span class="w"> </span><span class="kn">import</span> <span class="n">initialize_2D_spiral</span>
+</pre></div>
+</div>
+<p>TorchSim’s part is the third step: one fingerprinting simulation per tissue
+class, rather than one per voxel.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <a href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="pathlib.Path" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class"><span class="n">Path</span></a>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchsim.simulators</span><span class="w"> </span><span class="kn">import</span> <a href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class"><span class="n">MRFSimulator</span></a>
+</pre></div>
+</div>
+<p>What the pair will be: a 128 matrix, four hundred frames, one spiral arm of
+768 samples per frame, and eight receive channels.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SIZE</span></a> <span class="o">=</span> <span class="mi">128</span>
+<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FRAMES</span></a> <span class="o">=</span> <span class="mi">400</span>
+<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SAMPLES</span></a> <span class="o">=</span> <span class="mi">768</span>
+<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">COILS</span></a> <span class="o">=</span> <span class="mi">8</span>
+<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SLICE</span></a> <span class="o">=</span> <span class="mi">110</span>  <span class="c1"># axial, at the level of the lateral ventricles</span>
+
+<span class="c1"># The GPU transform is used when it is both installed and usable; the</span>
+<span class="c1"># simulation follows it, so the images and the operator meet on one device.</span>
+<a href="https://docs.python.org/3/library/functions.html#bool" title="builtins.bool" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">on_gpu</span></a> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="ow">and</span> <span class="n">mrinufft</span><span class="o">.</span><span class="n">check_backend</span><span class="p">(</span><span class="s2">"cufinufft"</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">device</span></a> <span class="o">=</span> <span class="s2">"cuda"</span> <span class="k">if</span> <a href="https://docs.python.org/3/library/functions.html#bool" title="builtins.bool" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">on_gpu</span></a> <span class="k">else</span> <span class="s2">"cpu"</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">backend</span></a> <span class="o">=</span> <span class="s2">"cufinufft"</span> <span class="k">if</span> <a href="https://docs.python.org/3/library/functions.html#bool" title="builtins.bool" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">on_gpu</span></a> <span class="k">else</span> <span class="s2">"finufft"</span>
+</pre></div>
+</div>
+<section id="subject">
+<h2>Subject<a class="headerlink" href="#subject" title="Link to this heading">#</a></h2>
+<p>One IXI subject through torchio: a T1-weighted volume at 1.5 T, and the only
+measurement this notebook starts from. The segmentation reads it; a table
+supplies the tissue properties a contrast cannot give.</p>
+<p><code class="docutils literal notranslate"><span class="pre">download=True</span></code> fetches the archive once, a few hundred MB, into a cache
+under the home directory.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/pathlib.html#pathlib.PosixPath" title="pathlib.PosixPath" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">CACHE</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/pathlib.html#pathlib.Path.home" title="pathlib.Path.home" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-method"><span class="n">Path</span><span class="o">.</span><span class="n">home</span></a><span class="p">()</span> <span class="o">/</span> <span class="s2">".cache"</span> <span class="o">/</span> <span class="s2">"torchsim"</span> <span class="o">/</span> <span class="s2">"ixi-tiny"</span>
+<span class="n">subject</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic" class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class"><span class="n">tio</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">IXITiny</span></a><span class="p">(</span><span class="nb">str</span><span class="p">(</span><a href="https://docs.python.org/3/library/pathlib.html#pathlib.PosixPath" title="pathlib.PosixPath" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">CACHE</span></a><span class="p">),</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Downloading https://www.dropbox.com/s/ogxjwjxdv5mieah/ixi_tiny.zip?dl=1 to /tmp/tmp5ocqv5qs.zip
+
+0it [00:00, ?it/s]
+  0%|          | 0/233926107 [00:01&lt;?, ?it/s]
+  0%|          | 761856/233926107 [00:01&lt;00:31, 7467919.79it/s]
+  3%|▎         | 8118272/233926107 [00:01&lt;00:04, 46005669.16it/s]
+ 11%|█         | 25559040/233926107 [00:01&lt;00:02, 102210158.03it/s]
+ 17%|█▋        | 40288256/233926107 [00:01&lt;00:01, 115502848.48it/s]
+ 23%|██▎       | 54493184/233926107 [00:01&lt;00:01, 124682541.46it/s]
+ 29%|██▉       | 67665920/233926107 [00:02&lt;00:01, 124556865.83it/s]
+ 35%|███▍      | 80920576/233926107 [00:02&lt;00:01, 127092255.26it/s]
+ 40%|████      | 94699520/233926107 [00:02&lt;00:01, 130427828.47it/s]
+ 46%|████▌     | 107659264/233926107 [00:02&lt;00:00, 128877135.52it/s]
+ 52%|█████▏    | 122404864/233926107 [00:02&lt;00:00, 131092185.00it/s]
+ 58%|█████▊    | 136626176/233926107 [00:02&lt;00:00, 134394004.62it/s]
+ 64%|██████▍   | 149995520/233926107 [00:02&lt;00:00, 131134819.53it/s]
+ 70%|██████▉   | 163307520/233926107 [00:02&lt;00:00, 131715547.97it/s]
+ 75%|███████▌  | 176455680/233926107 [00:02&lt;00:00, 131175520.77it/s]
+ 81%|████████  | 189775872/233926107 [00:02&lt;00:00, 131179187.14it/s]
+ 87%|████████▋ | 202883072/233926107 [00:03&lt;00:00, 130042124.11it/s]
+ 92%|█████████▏| 215883776/233926107 [00:03&lt;00:00, 119617647.74it/s]
+ 98%|█████████▊| 228474880/233926107 [00:03&lt;00:00, 121373312.09it/s]
+233930752it [00:03, 67084123.85it/s]
+</pre></div>
+</div>
+</section>
+<section id="tissue-classes">
+<h2>Tissue classes<a class="headerlink" href="#tissue-classes" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">deepmriprep</span></code> segments the head into grey matter, white matter and CSF with
+a U-Net, in torch and on the same card as everything else. It returns three
+probability maps rather than one label per voxel, which is the difference
+between a phantom with partial volume in it and one without.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">NAMES</span></a> <span class="o">=</span> <span class="p">(</span><span class="s2">"grey matter"</span><span class="p">,</span> <span class="s2">"white matter"</span><span class="p">,</span> <span class="s2">"CSF"</span><span class="p">)</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">segmentation</span></a> <span class="o">=</span> <span class="n">Preprocess</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="nb">str</span><span class="p">(</span><a href="https://docs.python.org/3/library/pathlib.html#pathlib.PosixPath" title="pathlib.PosixPath" class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">subject</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">path</span></a><span class="p">),</span>
+    <span class="n">output_paths</span><span class="o">=</span><span class="p">{</span>
+        <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">name</span></a><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><a href="https://docs.python.org/3/library/tempfile.html#tempfile.gettempdir" title="tempfile.gettempdir" class="sphx-glr-backref-module-tempfile sphx-glr-backref-type-py-function"><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span></a><span class="p">()</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">name</span></a><span class="si">}</span><span class="s2">.nii.gz"</span> <span class="k">for</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">name</span></a> <span class="ow">in</span> <span class="p">(</span><span class="s2">"p1"</span><span class="p">,</span> <span class="s2">"p2"</span><span class="p">,</span> <span class="s2">"p3"</span><span class="p">)</span>
+    <span class="p">},</span>
+    <span class="n">run_all</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/brain_extraction_bbox_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/brain_extraction_bbox_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/brain_extraction_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/brain_extraction_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_nogm_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_nogm_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_0_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_0_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_1_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_1_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_2_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_2_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_3_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_3_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_4_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_4_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_5_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_5_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_6_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_6_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_7_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_7_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_8_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_8_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_9_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_9_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_10_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_10_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_11_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_11_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_12_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_12_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_13_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_13_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_14_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_14_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_15_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_15_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_16_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_16_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_patch_17_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_patch_17_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/segmentation_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/segmentation_model.pt
+Downloaded https://raw.githubusercontent.com/wwu-mmll/deepmriprep/main/deepmriprep/data/models/warp_model.pt to /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/site-packages/deepmriprep/data/models/warp_model.pt
+128x128 slice, 5735 brain voxels; 92% are a mixture of two tissues or more
+</pre></div>
+</div>
+<p>The contrast the subject arrived as, and the three probabilities the network
+made of it:</p>
+<img src="../../../_images/sphx_glr_01-synthetic-data_001.png" srcset="../../../_images/sphx_glr_01-synthetic-data_001.png" alt="T1w, grey, white, CSF" class = "sphx-glr-single-img"/><p>Each class is given the three numbers a simulation needs, tabulated at 1.5 T.
+None could be read off this subject: a T1-weighted volume is a contrast, not
+a map. The measurement supplies where each tissue is and in what proportion;
+the table supplies what each class is taken to be. A relaxometry protocol on
+the same subject would fill the table from data instead.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">NAMES_M0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.80</span><span class="p">,</span> <span class="mf">0.70</span><span class="p">,</span> <span class="mf">1.00</span><span class="p">])</span>  <span class="c1"># relative proton density</span>
+<span class="n">NAMES_T1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">1100.0</span><span class="p">,</span> <span class="mf">650.0</span><span class="p">,</span> <span class="mf">4000.0</span><span class="p">])</span>  <span class="c1"># ms, at 1.5 T</span>
+<span class="n">NAMES_T2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">95.0</span><span class="p">,</span> <span class="mf">70.0</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">])</span>  <span class="c1"># ms, at 1.5 T</span>
+
+<span class="n">dominant</span> <span class="o">=</span> <span class="n">fractions</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
+<span class="n">class_M0</span> <span class="o">=</span> <span class="n">NAMES_M0</span>
+<span class="n">class_T1</span> <span class="o">=</span> <span class="n">NAMES_T1</span>
+<span class="n">class_T2</span> <span class="o">=</span> <span class="n">NAMES_T2</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>tissue           voxels     M0  T1 (ms)  T2 (ms)
+grey matter        2427   0.80     1100     95.0
+white matter       2294   0.70      650     70.0
+CSF                 571   1.00     4000   2000.0
+</pre></div>
+</div>
+</section>
+<section id="simulation-per-class">
+<h2>Simulation per class<a class="headerlink" href="#simulation-per-class" title="Link to this heading">#</a></h2>
+<p>An inversion, then four hundred repetitions whose flip angle sweeps.
+<a class="reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><code class="xref py py-class docutils literal notranslate"><span class="pre">MRFSimulator</span></code></a> takes arrays of tissue properties,
+so the whole table is one call: three extended phase graph runs rather than
+sixteen thousand.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">schedule</span> <span class="o">=</span> <span class="mf">5.0</span> <span class="o">+</span> <span class="mf">55.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FRAMES</span></a><span class="p">))</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+<a href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">simulator</span></a> <span class="o">=</span> <a href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class"><span class="n">MRFSimulator</span></a><span class="p">(</span><span class="n">TR</span><span class="o">=</span><span class="mf">12.0</span><span class="p">,</span> <span class="n">TI</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">T1</span><span class="o">=</span><span class="n">class_T1</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">class_T2</span><span class="p">)</span>
+
+<span class="n">per_class</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><a href="../../torchsim.model.SignalModel.html#torchsim.model.SignalModel.simulate" title="torchsim.model.SignalModel.simulate" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-method"><span class="n">simulator</span><span class="o">.</span><span class="n">simulate</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">schedule</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>3 classes x 400 frames in 0.4s -&gt; (3, 400)
+</pre></div>
+</div>
+</section>
+<section id="whole-brain-volume">
+<h2>Whole-brain volume<a class="headerlink" href="#whole-brain-volume" title="Link to this heading">#</a></h2>
+<p>A voxel that is part grey matter and part CSF produces the sum of what the
+two do, weighted by how much of each is present – not the signal of their
+averaged relaxation times. The mixing happens on the signals, which is one
+matrix product against the per-class evolutions.</p>
+<p>Averaging the parameters and simulating once is wrong wherever a voxel is not
+pure: an inversion-prepared train is markedly nonlinear in T1.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">weights</span> <span class="o">=</span> <span class="p">(</span><span class="n">fractions</span> <span class="o">*</span> <span class="n">class_M0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">per_class</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+<span class="n">series</span> <span class="o">=</span> <span class="p">(</span><span class="n">weights</span> <span class="o">@</span> <span class="n">per_class</span><span class="p">)</span> <span class="o">*</span> <span class="n">brain</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+
+<span class="c1"># The maps that go out as ground truth are the mixture averages, which is what</span>
+<span class="c1"># a single-compartment fit of this data could return at best.</span>
+<span class="n">share</span> <span class="o">=</span> <span class="n">occupancy</span><span class="o">.</span><span class="n">clamp_min</span><span class="p">(</span><span class="mf">1e-6</span><span class="p">)</span>
+<span class="n">truth_M0</span> <span class="o">=</span> <span class="p">(</span><span class="n">fractions</span> <span class="o">@</span> <span class="n">class_M0</span><span class="p">)</span> <span class="o">*</span> <span class="n">brain</span>
+<span class="n">truth_T1</span> <span class="o">=</span> <span class="p">(</span><span class="n">fractions</span> <span class="o">@</span> <span class="n">class_T1</span><span class="p">)</span> <span class="o">/</span> <span class="n">share</span> <span class="o">*</span> <span class="n">brain</span>
+<span class="n">truth_T2</span> <span class="o">=</span> <span class="p">(</span><span class="n">fractions</span> <span class="o">@</span> <span class="n">class_T2</span><span class="p">)</span> <span class="o">/</span> <span class="n">share</span> <span class="o">*</span> <span class="n">brain</span>
+</pre></div>
+</div>
+</section>
+<section id="coils-and-encoding">
+<h2>Coils and encoding<a class="headerlink" href="#coils-and-encoding" title="Link to this heading">#</a></h2>
+<p>Birdcage sensitivities from SigPy, then one spiral arm per frame rotated by
+the golden angle. A single arm of 768 samples against a 128 x 128 matrix is
+twenty-one-fold undersampled, which is how MRF is run.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sensitivities</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">smri</span><span class="o">.</span><span class="n">birdcage_maps</span><span class="p">((</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">COILS</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SIZE</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SIZE</span></a><span class="p">)))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">complex64</span>
+<span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">trajectory</span></a> <span class="o">=</span> <span class="n">initialize_2D_spiral</span><span class="p">(</span>
+    <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FRAMES</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SAMPLES</span></a><span class="p">,</span> <span class="n">tilt</span><span class="o">=</span><span class="s2">"golden"</span><span class="p">,</span> <span class="n">nb_revolutions</span><span class="o">=</span><span class="mi">8</span>
+<span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.float32" title="numpy.float32" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-attribute"><span class="n">np</span><span class="o">.</span><span class="n">float32</span></a><span class="p">)</span>
+
+<a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">build</span></a> <span class="o">=</span> <span class="n">mrinufft</span><span class="o">.</span><span class="n">get_operator</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">backend</span></a><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">arms</span></a> <span class="o">=</span> <span class="p">[</span>
+    <a href="https://docs.python.org/3/library/abc.html#abc.ABC" title="abc.ABC" class="sphx-glr-backref-module-abc sphx-glr-backref-type-py-class"><span class="n">build</span></a><span class="p">(</span>
+        <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">trajectory</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">frame</span></a><span class="p">],</span> <span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SIZE</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SIZE</span></a><span class="p">),</span> <span class="n">n_coils</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">COILS</span></a><span class="p">,</span> <span class="n">squeeze_dims</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">frame</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FRAMES</span></a><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="n">coil_series</span> <span class="o">=</span> <span class="p">(</span><span class="n">sensitivities</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">series</span><span class="o">.</span><span class="n">movedim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)[</span><span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">device</span></a><span class="p">)</span>
+
+<span class="n">kspace</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+    <span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">arms</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">frame</span></a><span class="p">]</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="n">coil_series</span><span class="p">[:,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">frame</span></a><span class="p">][</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">frame</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FRAMES</span></a><span class="p">)]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>400 arms built in 3.8s
+forward NUFFT 3.6s -&gt; (400, 8, 768)
+</pre></div>
+</div>
+<p>Eight birdcage sensitivities, and one spiral arm per frame rotated so that
+consecutive frames sample different parts of k-space.</p>
+<img src="../../../_images/sphx_glr_01-synthetic-data_002.png" srcset="../../../_images/sphx_glr_01-synthetic-data_002.png" alt="coil 0, coil 1, coil 2, coil 3, 3 of 400 arms" class = "sphx-glr-single-img"/></section>
+<section id="reconstruction">
+<h2>Reconstruction<a class="headerlink" href="#reconstruction" title="Link to this heading">#</a></h2>
+<p>Adjoint per frame, then a sensitivity-weighted coil combination, available
+here because the maps are known. A real pipeline would estimate them.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">folded</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+    <span class="p">[</span><a href="https://docs.python.org/3/library/stdtypes.html#list" title="builtins.list" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">arms</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">frame</span></a><span class="p">]</span><span class="o">.</span><span class="n">adj_op</span><span class="p">(</span><span class="n">kspace</span><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">frame</span></a><span class="p">][</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">frame</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FRAMES</span></a><span class="p">)]</span>
+<span class="p">)</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">sensitivities</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">device</span></a><span class="p">)</span>
+<span class="n">combined</span> <span class="o">=</span> <span class="p">(</span><span class="n">folded</span> <span class="o">*</span> <span class="n">weights</span><span class="o">.</span><span class="n">conj</span><span class="p">()[</span><span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+    <span class="n">weights</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">square</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e-6</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>adjoint and combine 3.7s
+</pre></div>
+</div>
+</section>
+<section id="data-pair">
+<h2>Data pair<a class="headerlink" href="#data-pair" title="Link to this heading">#</a></h2>
+<p>Each frame is one spiral arm, so the aliasing is worse than the signal. What
+survives is the time course, and that is what a fingerprinting reconstruction
+reads.</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>per-frame error inside the brain :  60.7%
+time-course agreement            : median 0.893, tenth percentile 0.714
+</pre></div>
+</div>
+<p>Fifty percent wrong frame by frame, and the fingerprints still line up above
+0.86 for nine voxels in ten. That gap is the premise of the method: the input
+is what the scanner gives, artefacts and all, and the target is the curve
+underneath.</p>
+</section>
+<section id="phantom-summary">
+<h2>Phantom summary<a class="headerlink" href="#phantom-summary" title="Link to this heading">#</a></h2>
+<img src="../../../_images/sphx_glr_01-synthetic-data_003.png" srcset="../../../_images/sphx_glr_01-synthetic-data_003.png" alt="01 synthetic data" class = "sphx-glr-single-img"/></section>
+<section id="inspecting-the-pair">
+<h2>Inspecting the pair<a class="headerlink" href="#inspecting-the-pair" title="Link to this heading">#</a></h2>
+<img src="../../../_images/sphx_glr_01-synthetic-data_004.png" srcset="../../../_images/sphx_glr_01-synthetic-data_004.png" alt="frame 0, frame 200, one voxel" class = "sphx-glr-single-img"/></section>
+<section id="exporting">
+<h2>Exporting<a class="headerlink" href="#exporting" title="Link to this heading">#</a></h2>
+<p>The pair, the ground truth, the segmentation, and the schedule and trajectory
+that produced them. It goes to a temporary directory here so that a
+documentation build leaves no archive behind.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">contents</span></a> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"undersampled"</span><span class="p">:</span> <span class="n">undersampled</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+    <span class="s2">"reference"</span><span class="p">:</span> <span class="n">reference</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+    <span class="s2">"M0"</span><span class="p">:</span> <span class="n">truth_M0</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+    <span class="s2">"T1"</span><span class="p">:</span> <span class="n">truth_T1</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+    <span class="s2">"T2"</span><span class="p">:</span> <span class="n">truth_T2</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+    <span class="s2">"tissue_probabilities"</span><span class="p">:</span> <span class="n">fractions</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+    <span class="s2">"flip_angles_deg"</span><span class="p">:</span> <span class="n">schedule</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+    <span class="s2">"trajectory"</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">trajectory</span></a><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>synthetic_mrf.npz  56.6 MiB
+  undersampled     (400, 128, 128)      complex64
+  reference        (400, 128, 128)      complex64
+  M0               (128, 128)           float32
+  T1               (128, 128)           float32
+  T2               (128, 128)           float32
+  tissue_probabilities (128, 128, 3)        float32
+  flip_angles_deg  (400,)               float32
+  trajectory       (400, 768, 2)        float32
+</pre></div>
+</div>
+</section>
+<section id="command-line-use">
+<h2>Command-line use<a class="headerlink" href="#command-line-use" title="Link to this heading">#</a></h2>
+<p>Everything above is fixed except three inputs:</p>
+<ul class="simple">
+<li><p><strong>a T1-weighted NIfTI</strong>, which replaces the torchio subject and is what
+the segmentation was trained on, so the CSF map stops being the weak one;</p></li>
+<li><p><strong>a matfile</strong> carrying the trajectory and the flip-angle schedule, read
+instead of the spiral and the sine generated here;</p></li>
+<li><p><strong>an output path</strong>, replacing the temporary directory.</p></li>
+</ul>
+<p>The tissue table is the one thing decided rather than read. A relaxometry
+protocol on the same subject would fill it from data, which is what the
+parameter-inference notebooks do.</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 6.729 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-05-misc-01-synthetic-data-py">
+<div class="binder-badge docutils container">
+<a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/05-misc/01-synthetic-data.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo4.svg" style="width: 150px;" />
+</a>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/f9e00fc4a9f374cf15cf9e5ddb433454/01-synthetic-data.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">01-synthetic-data.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/f0e0c4a4782bdb9949376d63cba8226d/01-synthetic-data.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">01-synthetic-data.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../../../_downloads/f3d272494e00b3599045b45f92dd03ab/01-synthetic-data.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">01-synthetic-data.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Miscellaneous</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../../api/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API References</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subject">Subject</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tissue-classes">Tissue classes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-per-class">Simulation per class</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#whole-brain-volume">Whole-brain volume</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coils-and-encoding">Coils and encoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstruction">Reconstruction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pair">Data pair</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#phantom-summary">Phantom summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-the-pair">Inspecting the pair</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting">Exporting</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-line-use">Command-line use</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

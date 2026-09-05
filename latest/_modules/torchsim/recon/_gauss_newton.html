@@ -1,0 +1,1376 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>torchsim.recon._gauss_newton &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/torchsim/recon/_gauss_newton';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/_modules/torchsim/recon/_gauss_newton.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/epg.html">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../explanations/implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../generated/autoexamples/index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2F_modules/torchsim/recon/_gauss_newton.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for torchsim.recon._gauss_newton</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Inverting the forward operator, one linearized problem at a time.</span>
+
+<span class="sd">Every Newton-type method for a nonlinear inverse problem does the same thing:</span>
+<span class="sd">linearize where it stands, solve the linear problem that leaves, step, repeat.</span>
+
+<span class="sd">    x_{n+1} = x_n + argmin_d || DF(x_n) d + F(x_n) - y ||^2 + a_n R(x_n + d)</span>
+
+<span class="sd">What separates the methods is *how the linear problem is solved* and *where the</span>
+<span class="sd">damping comes from*, and both belong to the caller.</span>
+
+<span class="sd">The linear solve is a callable, and mostly it is somebody else's.</span>
+<span class="sd">:func:`iterative` takes any :class:`LeastSquares` -- anything minimizing</span>
+<span class="sd">``||A d - b||^2 + (1/g) ||d - z||^2`` from products with the Jacobian alone,</span>
+<span class="sd">which is exactly what a Gauss-Newton step leaves. Given nothing it reaches</span>
+<span class="sd">deepinv's ``least_squares``. There is no conjugate gradient written here and</span>
+<span class="sd">there should not be: a package that ships its own is one more copy of an</span>
+<span class="sd">algorithm nobody wanted three of.</span>
+
+<span class="sd">:func:`direct` is the exception, and only because it is not a general linear</span>
+<span class="sd">solver: where the operator is voxel-diagonal the problem is a stack of small</span>
+<span class="sd">independent least-squares systems, and one batched factorization over all of</span>
+<span class="sd">them is the Levenberg-Marquardt step itself. That factorization is</span>
+<span class="sd">:func:`torch.linalg.lstsq`.</span>
+
+<span class="sd">Anything with the same signature does, and wrapping an external proximal</span>
+<span class="sd">solver is how a regularizer enters -- which is the difference between an</span>
+<span class="sd">iteratively regularized Gauss-Newton solved by conjugate gradients and one</span>
+<span class="sd">solved by FISTA under an L1 prior.</span>
+
+<span class="sd">The damping is a policy. :class:`Schedule` lowers one number geometrically and</span>
+<span class="sd">accepts every step, which is the iteratively regularized Gauss-Newton the</span>
+<span class="sd">model-based reconstruction literature runs. :class:`TrustRegion` gives each</span>
+<span class="sd">voxel its own damping, accepts or rejects on whether the step actually helped,</span>
+<span class="sd">and retires voxels as they converge -- which is Levenberg-Marquardt. The</span>
+<span class="sd">second is the first with the bookkeeping that independent rows make possible,</span>
+<span class="sd">and the two land in the same place on a problem both can solve.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"GaussNewton"</span><span class="p">,</span>
+    <span class="s2">"LeastSquares"</span><span class="p">,</span>
+    <span class="s2">"Linearization"</span><span class="p">,</span>
+    <span class="s2">"Schedule"</span><span class="p">,</span>
+    <span class="s2">"Solution"</span><span class="p">,</span>
+    <span class="s2">"TrustRegion"</span><span class="p">,</span>
+    <span class="s2">"direct"</span><span class="p">,</span>
+    <span class="s2">"iterative"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">runtime_checkable</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="c1">#: Guards a division whose denominator the algorithm has already tested.</span>
+<span class="n">_TINY</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">tiny</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Linearization</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The forward operator's derivative at one point, as products with it.</span>
+
+<span class="sd">    A Gauss-Newton step never needs the Jacobian, only what it does to a</span>
+<span class="sd">    vector, so that is what this carries. :attr:`blocks` is the exception and</span>
+<span class="sd">    is filled in only where the operator is voxel-diagonal: there the Jacobian</span>
+<span class="sd">    really is a stack of small independent matrices and factorizing them</span>
+<span class="sd">    outright beats iterating.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    matvec : callable</span>
+<span class="sd">        ``d -&gt; J d``, from map space to measurement space.</span>
+<span class="sd">    rmatvec : callable</span>
+<span class="sd">        ``v -&gt; J^H v``, back again, real because the maps are.</span>
+<span class="sd">    blocks : torch.Tensor, optional</span>
+<span class="sd">        ``(voxels, channels, contrasts)`` where the operator is voxel-diagonal,</span>
+<span class="sd">        ``None`` where an encoding has mixed the voxels together.</span>
+<span class="sd">    """</span>
+
+    <span class="n">matvec</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span>
+    <span class="n">rmatvec</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span>
+    <span class="n">blocks</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Solution</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What a solve returned, and what it did to get there.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : torch.Tensor</span>
+<span class="sd">        The maps, as the variables that were solved for. Pass them through</span>
+<span class="sd">        :meth:`~torchsim.recon.ModelOperator.split` for the properties.</span>
+<span class="sd">    cost : torch.Tensor</span>
+<span class="sd">        The squared residual after each step, so convergence is read rather</span>
+<span class="sd">        than assumed.</span>
+<span class="sd">    damping : torch.Tensor</span>
+<span class="sd">        The damping each step ran at, averaged over the voxels where each</span>
+<span class="sd">        carries its own.</span>
+<span class="sd">    iterations : int</span>
+<span class="sd">        How many steps were taken.</span>
+<span class="sd">    unconverged : int</span>
+<span class="sd">        How many voxels were still moving when the loop stopped. Zero for a</span>
+<span class="sd">        solve that ran to its tolerance.</span>
+<span class="sd">    """</span>
+
+    <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="n">cost</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="n">damping</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="n">iterations</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">unconverged</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="c1"># %% inner solves</span>
+
+
+<span class="nd">@runtime_checkable</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LeastSquares</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A regularized linear least-squares solve, in deepinv's calling shape.</span>
+
+<span class="sd">    Minimize ``||A d - y||^2 + (1/gamma) ||d - z||^2`` given only products</span>
+<span class="sd">    with the operator and its adjoint. ``deepinv.optim.linear.least_squares``</span>
+<span class="sd">    satisfies this, and so does anything a caller writes to the same</span>
+<span class="sd">    signature; :func:`iterative` takes either.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : callable</span>
+<span class="sd">        The forward product, ``d -&gt; A d``.</span>
+<span class="sd">    AT : callable</span>
+<span class="sd">        The adjoint product, ``r -&gt; A^H r``.</span>
+<span class="sd">    y : torch.Tensor</span>
+<span class="sd">        The right-hand side.</span>
+<span class="sd">    z : torch.Tensor</span>
+<span class="sd">        What the regularizer pulls the solution towards.</span>
+<span class="sd">    gamma : float or torch.Tensor or None</span>
+<span class="sd">        The reciprocal of the damping, or ``None`` where there is none.</span>
+<span class="sd">    max_iter : int</span>
+<span class="sd">        Most iterations to take.</span>
+<span class="sd">    tol : float</span>
+<span class="sd">        Stop when the residual has fallen this far relative to the data.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">A</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
+        <span class="n">AT</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">z</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">gamma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the step ``d`` that minimizes the damped residual."""</span>
+
+
+<div class="viewcode-block" id="iterative">
+<a class="viewcode-back" href="../../../generated/torchsim.iterative.html#torchsim.iterative">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">iterative</span><span class="p">(</span>
+    <span class="n">solver</span><span class="p">:</span> <span class="n">LeastSquares</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""The inner solve, by a regularized linear least-squares routine.</span>
+
+<span class="sd">    A Gauss-Newton step leaves ``||A d - b||^2 + (1/g) ||d - z||^2`` once the</span>
+<span class="sd">    damping and its reference are in it, and asks only for products with the</span>
+<span class="sd">    Jacobian, so it does not care whether an encoding operator sits in front</span>
+<span class="sd">    of the model. Any :class:`LeastSquares` minimizes exactly that.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    solver : LeastSquares, optional</span>
+<span class="sd">        Anything matching :class:`LeastSquares`. The default is deepinv's</span>
+<span class="sd">        ``least_squares``, which is conjugate gradients. One of its others is</span>
+<span class="sd">        that same function with the argument bound::</span>
+
+<span class="sd">            from functools import partial</span>
+<span class="sd">            from deepinv.optim.linear import least_squares</span>
+
+<span class="sd">            iterative(partial(least_squares, solver="lsqr"))</span>
+
+<span class="sd">        Which one suits depends on the problem and is worth measuring:</span>
+<span class="sd">        conjugate gradients works on the normal equations, so on a small</span>
+<span class="sd">        well-scaled system it stops on a tolerance the squared condition</span>
+<span class="sd">        number has already spoiled, while LSQR and MINRES reach what a direct</span>
+<span class="sd">        solve reaches -- and on a large encoded problem inside a fixed</span>
+<span class="sd">        iteration budget the ordering reverses.</span>
+<span class="sd">    max_iter : int, optional</span>
+<span class="sd">        Most inner iterations per Gauss-Newton step.</span>
+<span class="sd">    tol : float, optional</span>
+<span class="sd">        Stop when the residual has fallen this far relative to the data.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    callable</span>
+<span class="sd">        An inner solve, to give :class:`GaussNewton` as ``solve=``.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ImportError</span>
+<span class="sd">        If no solver is given and deepinv is not installed. TorchSim does not</span>
+<span class="sd">        depend on it: pass a :class:`LeastSquares` of your own, or use</span>
+<span class="sd">        :func:`direct` where the model stands alone.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">solve</span><span class="p">(</span>
+        <span class="n">linearization</span><span class="p">:</span> <span class="n">Linearization</span><span class="p">,</span>
+        <span class="n">rhs</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">damping</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">reference</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="n">routine</span> <span class="o">=</span> <span class="n">solver</span>
+        <span class="k">if</span> <span class="n">routine</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">deepinv.optim.linear</span><span class="w"> </span><span class="kn">import</span> <span class="n">least_squares</span>
+            <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>  <span class="c1"># pragma: no cover - depends on env</span>
+                <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                    <span class="s2">"iterative() falls back to deepinv's least_squares, and "</span>
+                    <span class="s2">"TorchSim does not depend on deepinv. pip install "</span>
+                    <span class="s2">"deepinv, pass a LeastSquares of your own, or use "</span>
+                    <span class="s2">"direct() where the model stands alone."</span>
+                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
+            <span class="n">routine</span> <span class="o">=</span> <span class="n">least_squares</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">damping</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">((</span><span class="n">weight</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()):</span>
+            <span class="n">gamma</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">weight</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># A single weight goes over as a number. Some of deepinv's solvers</span>
+            <span class="c1"># take a scalar regularization and not a map of one.</span>
+            <span class="n">gamma</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">weight</span><span class="o">.</span><span class="n">reshape</span><span class="p">(()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gamma</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">torch</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">reference</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">routine</span><span class="p">(</span>
+            <span class="n">A</span><span class="o">=</span><span class="n">linearization</span><span class="o">.</span><span class="n">matvec</span><span class="p">,</span>
+            <span class="n">AT</span><span class="o">=</span><span class="n">linearization</span><span class="o">.</span><span class="n">rmatvec</span><span class="p">,</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">rhs</span><span class="p">,</span>
+            <span class="n">z</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
+            <span class="n">gamma</span><span class="o">=</span><span class="n">gamma</span><span class="p">,</span>
+            <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">,</span>
+            <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">solve</span></div>
+
+
+
+<div class="viewcode-block" id="direct">
+<a class="viewcode-back" href="../../../generated/torchsim.direct.html#torchsim.direct">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">direct</span><span class="p">(</span>
+    <span class="n">linearization</span><span class="p">:</span> <span class="n">Linearization</span><span class="p">,</span>
+    <span class="n">rhs</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">damping</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">reference</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Solve every voxel's linearized system outright, all of them at once.</span>
+
+<span class="sd">    Where nothing has mixed the voxels together the problem is a stack of</span>
+<span class="sd">    small independent least-squares systems, one per voxel, and a batched</span>
+<span class="sd">    factorization over the whole stack is the Levenberg-Marquardt step itself</span>
+<span class="sd">    -- not a general linear solver, which is why this is here and a conjugate</span>
+<span class="sd">    gradient is not.</span>
+
+<span class="sd">    The damping enters as extra rows rather than as a ridge on the normal</span>
+<span class="sd">    equations:</span>
+
+<span class="sd">        [ J^T        ] d  =  [ rhs           ]</span>
+<span class="sd">        [ sqrt(a) I  ]       [ sqrt(a) z     ]</span>
+
+<span class="sd">    which is the same minimizer without squaring the condition number, and</span>
+<span class="sd">    which has full column rank for any positive damping -- so there is no</span>
+<span class="sd">    singular case to detect and none to work around.</span>
+
+<span class="sd">    A complex contrast is two real measurements, because what is minimized is</span>
+<span class="sd">    the squared modulus.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    linearization : Linearization</span>
+<span class="sd">        The derivative, which must carry its blocks.</span>
+<span class="sd">    rhs : torch.Tensor</span>
+<span class="sd">        ``(voxels, contrasts)``, ``y - F(x)``.</span>
+<span class="sd">    damping : torch.Tensor</span>
+<span class="sd">        ``(voxels, 1)`` or one number.</span>
+<span class="sd">    reference : torch.Tensor</span>
+<span class="sd">        ``(voxels, channels)``, what the damping pulls towards.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    torch.Tensor</span>
+<span class="sd">        ``(voxels, channels)``.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the linearization carries no blocks, which is what an encoding</span>
+<span class="sd">        operator in front of the model leaves.</span>
+<span class="sd">    """</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="n">linearization</span><span class="o">.</span><span class="n">blocks</span>
+    <span class="k">if</span> <span class="n">blocks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"direct() needs the per-voxel Jacobian, which only a model with "</span>
+            <span class="s2">"no encoding in front of it has; use iterative() instead"</span>
+        <span class="p">)</span>
+    <span class="n">rows</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">_as_real</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">damping</span><span class="p">,</span> <span class="n">reference</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">sqrt</span><span class="p">()</span>
+    <span class="n">eye</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">rows</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">rows</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">rows</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">system</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">rows</span><span class="o">.</span><span class="n">mT</span><span class="p">,</span> <span class="n">root</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">eye</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">columns</span><span class="p">,</span> <span class="n">root</span> <span class="o">*</span> <span class="n">reference</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">target</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># %% damping policies</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Schedule</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One damping for the whole volume, lowered geometrically.</span>
+
+<span class="sd">    The iteratively regularized part of an iteratively regularized</span>
+<span class="sd">    Gauss-Newton: early steps are held close to the starting guess, where the</span>
+<span class="sd">    linearization is trustworthy, and the hold is released as the iterate</span>
+<span class="sd">    settles. Every step is accepted.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    initial : float</span>
+<span class="sd">        The first weight.</span>
+<span class="sd">    factor : float</span>
+<span class="sd">        What it is multiplied by after each step.</span>
+<span class="sd">    minimum : float</span>
+<span class="sd">        The floor, so late steps stay regularized rather than becoming a bare</span>
+<span class="sd">        Gauss-Newton on an ill-posed problem.</span>
+<span class="sd">    """</span>
+
+    <span class="n">initial</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mf">3.0</span>
+    <span class="n">minimum</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span>
+    <span class="c1">#: Damping pulls the step towards the starting guess, not towards nothing.</span>
+    <span class="n">anchored</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="c1">#: Every voxel shares one weight, so nothing is retired on its own.</span>
+    <span class="n">per_voxel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"initial must be positive, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">initial</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mf">0.0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">factor</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"factor must lower the damping, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">factor</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"minimum must be positive, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curvature</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The weight to start at, given the curvature at the starting point."""</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">curvature</span><span class="o">.</span><span class="n">device</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">judge</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">damping</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gain</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">singular</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Take the step, and lower the weight for the next one."""</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">gain</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">bool</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">damping</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">factor</span><span class="p">)</span><span class="o">.</span><span class="n">clamp_min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum</span><span class="p">),</span>
+        <span class="p">)</span>
+
+
+<div class="viewcode-block" id="TrustRegion">
+<a class="viewcode-back" href="../../../generated/torchsim.TrustRegion.html#torchsim.TrustRegion">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TrustRegion</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Each voxel its own damping, raised when a step does not pay.</span>
+
+<span class="sd">    Levenberg-Marquardt. A step is taken only where it actually lowered the</span>
+<span class="sd">    residual; where it did not, the damping goes up and the step is tried</span>
+<span class="sd">    again shorter. That needs the voxels to be independent, so it applies to a</span>
+<span class="sd">    model with no encoding in front of it.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tau : float</span>
+<span class="sd">        Sets the first damping, as this times the largest curvature the</span>
+<span class="sd">        starting point shows. Small where the guess is good.</span>
+<span class="sd">    """</span>
+
+    <span class="n">tau</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-2</span>
+    <span class="c1">#: Damping shortens the step; it does not pull it anywhere.</span>
+    <span class="n">anchored</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1">#: Each voxel carries its own weight and retires on its own.</span>
+    <span class="n">per_voxel</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">_rising</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"tau must be positive, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TrustRegion.begin">
+<a class="viewcode-back" href="../../../generated/torchsim.TrustRegion.html#torchsim.TrustRegion.begin">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">curvature</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Scale the first damping to the curvature the starting point shows."""</span>
+        <span class="n">damping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">*</span> <span class="n">curvature</span><span class="o">.</span><span class="n">diagonal</span><span class="p">(</span><span class="n">dim1</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim2</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rising</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">damping</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">damping</span></div>
+
+
+<div class="viewcode-block" id="TrustRegion.judge">
+<a class="viewcode-back" href="../../../generated/torchsim.TrustRegion.html#torchsim.TrustRegion.judge">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">judge</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">damping</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">gain</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">singular</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Accept where the step paid, and move the damping either way.</span>
+
+<span class="sd">        The Nielsen update: a step that predicted its own gain well lets the</span>
+<span class="sd">        damping fall a long way, one that barely paid lets it fall a little,</span>
+<span class="sd">        and a rejected step doubles it and doubles the doubling.</span>
+<span class="sd">        """</span>
+        <span class="n">better</span> <span class="o">=</span> <span class="p">(</span><span class="n">gain</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">singular</span>
+        <span class="n">rising</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rising</span>
+        <span class="n">lowered</span> <span class="o">=</span> <span class="n">damping</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">gain</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">clamp_min</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rising</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">better</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">rising</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="n">rising</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">better</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">better</span><span class="p">,</span> <span class="n">lowered</span><span class="p">,</span> <span class="n">damping</span> <span class="o">*</span> <span class="n">rising</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TrustRegion.retire">
+<a class="viewcode-back" href="../../../generated/torchsim.TrustRegion.html#torchsim.TrustRegion.retire">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">retire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keep</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Close up after the converged voxels have been written out."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rising</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rising</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span></div>
+</div>
+
+
+
+<span class="c1"># %% the loop</span>
+
+
+<div class="viewcode-block" id="GaussNewton">
+<a class="viewcode-back" href="../../../generated/torchsim.GaussNewton.html#torchsim.GaussNewton">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GaussNewton</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Solve a nonlinear inverse problem by repeated linearization.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    damping : Schedule or TrustRegion, optional</span>
+<span class="sd">        :class:`Schedule` for an iteratively regularized Gauss-Newton,</span>
+<span class="sd">        :class:`TrustRegion` for Levenberg-Marquardt.</span>
+<span class="sd">    solve : callable, optional</span>
+<span class="sd">        The inner solve, called as</span>
+<span class="sd">        ``solve(linearization, rhs, damping, reference)``. Left out, it is</span>
+<span class="sd">        :func:`direct` where the model stands alone and ``iterative()`` --</span>
+<span class="sd">        deepinv's conjugate gradients -- where an encoding operator does not</span>
+<span class="sd">        leave independent voxels. A closure around anything else is how a</span>
+<span class="sd">        regularizer enters.</span>
+<span class="sd">    max_iterations : int, optional</span>
+<span class="sd">        Most outer steps to take.</span>
+<span class="sd">    gradient_tolerance, step_tolerance : float, optional</span>
+<span class="sd">        A voxel is done when its gradient is flat or its step is short</span>
+<span class="sd">        relative to where it stands.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        loop = GaussNewton(Schedule(initial=1.0))</span>
+<span class="sd">        found = loop.minimize(operator, kspace, start, encoding=nufft)</span>
+<span class="sd">        maps = operator.split(found.x)</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If a per-voxel damping is asked for under an encoding operator, which</span>
+<span class="sd">        has mixed the voxels together and left no independent rows.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">damping</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">solve</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_iterations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+        <span class="n">gradient_tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span>
+        <span class="n">step_tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">max_iterations</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"max_iterations must be positive, got </span><span class="si">{</span><span class="n">max_iterations</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">damping</span> <span class="o">=</span> <span class="n">damping</span> <span class="k">if</span> <span class="n">damping</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">Schedule</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">solve</span> <span class="o">=</span> <span class="n">solve</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iterations</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_iterations</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gradient_tolerance</span> <span class="o">=</span> <span class="n">gradient_tolerance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">step_tolerance</span> <span class="o">=</span> <span class="n">step_tolerance</span>
+
+<div class="viewcode-block" id="GaussNewton.minimize">
+<a class="viewcode-back" href="../../../generated/torchsim.GaussNewton.html#torchsim.GaussNewton.minimize">[docs]</a>
+    <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">minimize</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">operator</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">measured</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">initial</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">encoding</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Solution</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Solve for the maps that explain ``measured``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        operator:</span>
+<span class="sd">            A :class:`~torchsim.recon.ModelOperator`.</span>
+<span class="sd">        measured:</span>
+<span class="sd">            The data. Without an encoding, ``(..., contrasts)`` -- the</span>
+<span class="sd">            contrast images themselves. With one, whatever the encoding</span>
+<span class="sd">            produces.</span>
+<span class="sd">        initial:</span>
+<span class="sd">            ``(..., channels)``, where to start. Build it with</span>
+<span class="sd">            :meth:`~torchsim.recon.ModelOperator.initial`.</span>
+<span class="sd">        encoding:</span>
+<span class="sd">            Anything with ``A`` and ``A_adjoint`` -- a deepinv</span>
+<span class="sd">            ``LinearPhysics``, an mri-nufft operator through its deepinv</span>
+<span class="sd">            bridge. It sees the contrast axis first, at axis 1, which is the</span>
+<span class="sd">            convention on that side of the line; the maps keep it last, which</span>
+<span class="sd">            is the convention on this one.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Solution</span>
+<span class="sd">        """</span>
+        <span class="n">solve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solve</span> <span class="ow">or</span> <span class="p">(</span><span class="n">direct</span> <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">iterative</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span> <span class="s2">"per_voxel"</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> steps each voxel on its own, "</span>
+                <span class="s2">"which an encoding operator has made impossible; use "</span>
+                <span class="s2">"Schedule() instead"</span>
+            <span class="p">)</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">initial</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># An encoding operator reads the maps as a picture, so the voxel axes</span>
+        <span class="c1"># stay as they were. With nothing in front of the model they are only</span>
+        <span class="c1"># a list, and flattening them is what lets a converged voxel drop out.</span>
+        <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">initial</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">initial</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">measured</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">start</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">initial</span><span class="p">,</span> <span class="n">measured</span>
+        <span class="n">retiring</span> <span class="o">=</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span> <span class="s2">"per_voxel"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">answer</span> <span class="o">=</span> <span class="n">start</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">live</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">start</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">start</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">start</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">residual</span><span class="p">,</span> <span class="n">linearization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_at</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="n">_cost</span><span class="p">(</span><span class="n">residual</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+        <span class="n">damping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="o">.</span><span class="n">begin</span><span class="p">(</span><span class="n">_curvature</span><span class="p">(</span><span class="n">linearization</span><span class="p">))</span>
+        <span class="n">history</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">cost</span><span class="o">.</span><span class="n">sum</span><span class="p">()]</span>
+        <span class="n">weights</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">iterations</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iterations</span><span class="p">):</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="n">linearization</span><span class="o">.</span><span class="n">rmatvec</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span>
+            <span class="n">flat</span> <span class="o">=</span> <span class="n">_per_voxel</span><span class="p">(</span><span class="n">gradient</span><span class="o">.</span><span class="n">abs</span><span class="p">(),</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">amax</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">gradient_tolerance</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">retiring</span><span class="p">:</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">live</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">residual</span><span class="p">,</span> <span class="n">linearization</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">damping</span> <span class="o">=</span> <span class="n">_retire</span><span class="p">(</span>
+                    <span class="o">~</span><span class="n">flat</span><span class="p">,</span>
+                    <span class="n">answer</span><span class="p">,</span>
+                    <span class="n">live</span><span class="p">,</span>
+                    <span class="n">x</span><span class="p">,</span>
+                    <span class="n">data</span><span class="p">,</span>
+                    <span class="n">residual</span><span class="p">,</span>
+                    <span class="n">linearization</span><span class="p">,</span>
+                    <span class="n">cost</span><span class="p">,</span>
+                    <span class="n">damping</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">gradient</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                    <span class="n">operator</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="o">~</span><span class="n">flat</span><span class="p">)</span>
+                <span class="c1"># Retirement closed the rows up under it.</span>
+                <span class="n">gradient</span> <span class="o">=</span> <span class="n">linearization</span><span class="o">.</span><span class="n">rmatvec</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">bool</span><span class="p">(</span><span class="n">flat</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
+                <span class="k">break</span>
+            <span class="n">iterations</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">damping</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+
+            <span class="n">reference</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">start</span><span class="p">[</span><span class="n">live</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span>
+                <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span> <span class="s2">"anchored"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+                <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">linearization</span><span class="p">,</span> <span class="o">-</span><span class="n">residual</span><span class="p">,</span> <span class="n">_shaped</span><span class="p">(</span><span class="n">damping</span><span class="p">),</span> <span class="n">reference</span><span class="p">)</span>
+            <span class="n">walked</span> <span class="o">=</span> <span class="n">_norm</span><span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+            <span class="n">short</span> <span class="o">=</span> <span class="n">walked</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_tolerance</span> <span class="o">*</span> <span class="p">(</span>
+                <span class="n">_norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">step_tolerance</span>
+            <span class="p">)</span>
+            <span class="n">singular</span> <span class="o">=</span> <span class="o">~</span><span class="n">_per_voxel</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">step</span><span class="p">),</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">all</span><span class="p">)</span>
+
+            <span class="n">candidate</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">step</span>
+            <span class="n">trial</span><span class="p">,</span> <span class="n">trial_linearization</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_at</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+            <span class="n">trial_cost</span> <span class="o">=</span> <span class="n">_cost</span><span class="p">(</span><span class="n">trial</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+            <span class="n">predicted</span> <span class="o">=</span> <span class="n">_per_voxel</span><span class="p">(</span>
+                <span class="n">step</span> <span class="o">*</span> <span class="p">(</span><span class="n">_shaped</span><span class="p">(</span><span class="n">damping</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span> <span class="o">-</span> <span class="n">gradient</span><span class="p">),</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span>
+            <span class="p">)</span>
+            <span class="n">gain</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+                <span class="n">predicted</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">cost</span> <span class="o">-</span> <span class="n">trial_cost</span><span class="p">)</span> <span class="o">/</span> <span class="n">predicted</span><span class="o">.</span><span class="n">clamp_min</span><span class="p">(</span><span class="n">_TINY</span><span class="p">),</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">predicted</span><span class="p">),</span>
+            <span class="p">)</span>
+            <span class="n">better</span><span class="p">,</span> <span class="n">damping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="o">.</span><span class="n">judge</span><span class="p">(</span><span class="n">damping</span><span class="p">,</span> <span class="n">gain</span><span class="p">,</span> <span class="n">singular</span><span class="p">)</span>
+
+            <span class="n">taken</span> <span class="o">=</span> <span class="n">better</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="k">if</span> <span class="n">better</span><span class="o">.</span><span class="n">ndim</span> <span class="k">else</span> <span class="n">better</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">taken</span><span class="p">,</span> <span class="n">candidate</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="n">residual</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">_spread</span><span class="p">(</span><span class="n">better</span><span class="p">,</span> <span class="n">trial</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="n">trial</span><span class="p">,</span> <span class="n">residual</span><span class="p">)</span>
+            <span class="n">linearization</span> <span class="o">=</span> <span class="n">_chosen</span><span class="p">(</span><span class="n">better</span><span class="p">,</span> <span class="n">trial_linearization</span><span class="p">,</span> <span class="n">linearization</span><span class="p">)</span>
+            <span class="n">cost</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">better</span><span class="p">,</span> <span class="n">trial_cost</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>
+            <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cost</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="n">retiring</span><span class="p">:</span>
+                <span class="n">staying</span> <span class="o">=</span> <span class="o">~</span><span class="p">(</span><span class="n">short</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">singular</span><span class="p">)</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">live</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">residual</span><span class="p">,</span> <span class="n">linearization</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">damping</span> <span class="o">=</span> <span class="n">_retire</span><span class="p">(</span>
+                    <span class="n">staying</span><span class="p">,</span>
+                    <span class="n">answer</span><span class="p">,</span>
+                    <span class="n">live</span><span class="p">,</span>
+                    <span class="n">x</span><span class="p">,</span>
+                    <span class="n">data</span><span class="p">,</span>
+                    <span class="n">residual</span><span class="p">,</span>
+                    <span class="n">linearization</span><span class="p">,</span>
+                    <span class="n">cost</span><span class="p">,</span>
+                    <span class="n">damping</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">(</span><span class="n">staying</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
+                    <span class="n">operator</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">staying</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">bool</span><span class="p">((</span><span class="n">short</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">singular</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
+                <span class="k">break</span>
+
+        <span class="n">unconverged</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">retiring</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">retiring</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">unconverged</span><span class="p">:</span>
+                <span class="n">answer</span><span class="p">[</span><span class="n">live</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">answer</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">return</span> <span class="n">Solution</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">answer</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">*</span><span class="n">shape</span><span class="p">,</span> <span class="n">answer</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">answer</span><span class="p">,</span>
+            <span class="n">cost</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">history</span><span class="p">),</span>
+            <span class="n">damping</span><span class="o">=</span><span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="k">if</span> <span class="n">weights</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">start</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="p">),</span>
+            <span class="n">iterations</span><span class="o">=</span><span class="n">iterations</span><span class="p">,</span>
+            <span class="n">unconverged</span><span class="o">=</span><span class="n">unconverged</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_at</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">operator</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Linearization</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""The residual at ``x`` and the derivative there."""</span>
+        <span class="n">predicted</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Promoted, never narrowed. A real model measured on complex data</span>
+            <span class="c1"># is a modelling error, but throwing the imaginary half away would</span>
+            <span class="c1"># hide it behind a plausible answer instead of a large residual.</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">promote_types</span><span class="p">(</span><span class="n">predicted</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="n">blocks</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">predicted</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="p">),</span> <span class="n">_diagonal</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">encoding</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">_forward</span><span class="p">(</span><span class="n">predicted</span><span class="p">))</span> <span class="o">-</span> <span class="n">data</span><span class="p">,</span>
+            <span class="n">Linearization</span><span class="p">(</span>
+                <span class="n">matvec</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">encoding</span><span class="o">.</span><span class="n">A</span><span class="p">(</span><span class="n">_forward</span><span class="p">(</span><span class="n">operator</span><span class="o">.</span><span class="n">A_jvp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d</span><span class="p">))),</span>
+                <span class="n">rmatvec</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">operator</span><span class="o">.</span><span class="n">A_vjp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">_backward</span><span class="p">(</span><span class="n">encoding</span><span class="o">.</span><span class="n">A_adjoint</span><span class="p">(</span><span class="n">v</span><span class="p">))),</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="c1"># %% private module subroutines</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_per_voxel</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">reduce</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The reduction the problem's shape calls for.</span>
+
+<span class="sd">    Over the channels where the voxels are independent, over all of them where</span>
+<span class="sd">    an encoding operator has tied them together.</span>
+
+<span class="sd">    Convergence, the gain ratio and the damping are per-voxel questions only</span>
+<span class="sd">    when the voxels are separate problems. Under an encoding there is one</span>
+<span class="sd">    problem, and one answer to each.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_norm</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The length of a step, per voxel or over the whole volume."""</span>
+    <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">vector_norm</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">vector_norm</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_diagonal</span><span class="p">(</span><span class="n">blocks</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Linearization</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The derivative of a voxel-diagonal operator, as products with it."""</span>
+    <span class="k">return</span> <span class="n">Linearization</span><span class="p">(</span>
+        <span class="n">matvec</span><span class="o">=</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"vpt,vp-&gt;vt"</span><span class="p">,</span> <span class="n">blocks</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">blocks</span><span class="o">.</span><span class="n">dtype</span><span class="p">)),</span>
+        <span class="n">rmatvec</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"vpt,vt-&gt;vp"</span><span class="p">,</span> <span class="n">blocks</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">blocks</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span><span class="o">.</span><span class="n">real</span>
+        <span class="p">),</span>
+        <span class="n">blocks</span><span class="o">=</span><span class="n">blocks</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_forward</span><span class="p">(</span><span class="n">contrasts</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Contrast-last, as the model gives it, to contrast-first as encoding wants."""</span>
+    <span class="k">return</span> <span class="n">contrasts</span><span class="o">.</span><span class="n">movedim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_backward</span><span class="p">(</span><span class="n">contrasts</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The way back."""</span>
+    <span class="k">return</span> <span class="n">contrasts</span><span class="o">.</span><span class="n">movedim</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_real</span><span class="p">(</span>
+    <span class="n">blocks</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""A complex contrast as the two real measurements it is."""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_complex</span><span class="p">(</span><span class="n">blocks</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">blocks</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">real</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_complex</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span> <span class="k">else</span> <span class="n">rhs</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">blocks</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">blocks</span><span class="o">.</span><span class="n">imag</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">rhs</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">rhs</span><span class="o">.</span><span class="n">imag</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_cost</span><span class="p">(</span><span class="n">residual</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">encoding</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The squared residual, per voxel where the voxels are independent."""</span>
+    <span class="n">squared</span> <span class="o">=</span> <span class="n">residual</span><span class="o">.</span><span class="n">real</span><span class="o">.</span><span class="n">square</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span>
+        <span class="n">residual</span><span class="o">.</span><span class="n">imag</span><span class="o">.</span><span class="n">square</span><span class="p">()</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_complex</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">squared</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">squared</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_curvature</span><span class="p">(</span><span class="n">linearization</span><span class="p">:</span> <span class="n">Linearization</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What the damping is scaled against at the starting point."""</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="n">linearization</span><span class="o">.</span><span class="n">blocks</span>
+    <span class="k">if</span> <span class="n">blocks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">blocks</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">blocks</span><span class="o">.</span><span class="n">imag</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">is_complex</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span>
+        <span class="k">else</span> <span class="n">blocks</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">rows</span> <span class="o">@</span> <span class="n">rows</span><span class="o">.</span><span class="n">mT</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_shaped</span><span class="p">(</span><span class="n">damping</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A per-voxel weight, shaped to broadcast against a map."""</span>
+    <span class="k">return</span> <span class="n">damping</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="k">if</span> <span class="n">damping</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">damping</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_spread</span><span class="p">(</span><span class="n">better</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""An accept flag, widened to whatever it is selecting between."""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">better</span><span class="o">.</span><span class="n">ndim</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">better</span>
+    <span class="k">return</span> <span class="n">better</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">better</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="p">,)</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_chosen</span><span class="p">(</span>
+    <span class="n">better</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">trial</span><span class="p">:</span> <span class="n">Linearization</span><span class="p">,</span> <span class="n">standing</span><span class="p">:</span> <span class="n">Linearization</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Linearization</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The derivative at wherever each voxel ended up.</span>
+
+<span class="sd">    A rejected step leaves that voxel where it was, so its old derivative</span>
+<span class="sd">    still stands and is kept rather than recomputed. Where there is no</span>
+<span class="sd">    per-voxel structure the whole step was taken or none of it was.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">standing</span><span class="o">.</span><span class="n">blocks</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">trial</span><span class="o">.</span><span class="n">blocks</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">trial</span> <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">better</span><span class="o">.</span><span class="n">all</span><span class="p">())</span> <span class="k">else</span> <span class="n">standing</span>
+    <span class="k">return</span> <span class="n">_diagonal</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">better</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">trial</span><span class="o">.</span><span class="n">blocks</span><span class="p">,</span> <span class="n">standing</span><span class="o">.</span><span class="n">blocks</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_retire</span><span class="p">(</span>
+    <span class="n">keep</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">answer</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">live</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">residual</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">linearization</span><span class="p">:</span> <span class="n">Linearization</span><span class="p">,</span>
+    <span class="n">cost</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">damping</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">policy</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Write finished voxels out and close the rest up.</span>
+
+<span class="sd">    Late iterations then cost what is left rather than what was started with,</span>
+<span class="sd">    which is most of the saving on a volume whose background converges at</span>
+<span class="sd">    once.</span>
+<span class="sd">    """</span>
+    <span class="n">done</span> <span class="o">=</span> <span class="o">~</span><span class="n">keep</span>
+    <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">done</span><span class="o">.</span><span class="n">any</span><span class="p">()):</span>
+        <span class="n">answer</span><span class="p">[</span><span class="n">live</span><span class="p">[</span><span class="n">done</span><span class="p">]]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">done</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">keep</span><span class="o">.</span><span class="n">all</span><span class="p">()):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">live</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">residual</span><span class="p">,</span> <span class="n">linearization</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">damping</span><span class="p">)</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="n">linearization</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">keep</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">policy</span><span class="p">,</span> <span class="s2">"retire"</span><span class="p">):</span>
+        <span class="n">policy</span><span class="o">.</span><span class="n">retire</span><span class="p">(</span><span class="n">keep</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span>
+        <span class="n">live</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span>
+        <span class="n">data</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span>
+        <span class="n">residual</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span>
+        <span class="n">_diagonal</span><span class="p">(</span><span class="n">blocks</span><span class="p">),</span>
+        <span class="n">cost</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span>
+        <span class="n">damping</span><span class="p">[</span><span class="n">keep</span><span class="p">],</span>
+    <span class="p">)</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

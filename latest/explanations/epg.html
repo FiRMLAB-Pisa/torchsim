@@ -1,0 +1,1053 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Extended phase graphs &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'explanations/epg';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/explanations/epg.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sequence description" href="description.html" />
+    <link rel="prev" title="Developer Guide" href="../developer_guide.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Explanation</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Extended phase graphs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="description.html">Sequence description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementation.html">How TorchSim runs it</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../generated/autoexamples/index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.model.SignalModel.html">SignalModel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.model.Simulator.html">Simulator</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/edit/main/explanations/epg.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2Fexplanations/epg.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/explanations/epg.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Extended phase graphs</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dephasing">Dephasing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-states">Configuration states</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-families-of-state">Three families of state</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rf-pulses">RF pulses</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradients">Gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxation-and-recovery">Relaxation and recovery</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-graph">Reading the graph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stimulated-echoes">Stimulated echoes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-orders-to-carry">Configuration orders to carry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffusion-and-flow">Diffusion and flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-pool">Second pool</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions">Assumptions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="extended-phase-graphs">
+<h1>Extended phase graphs<a class="headerlink" href="#extended-phase-graphs" title="Link to this heading">#</a></h1>
+<p>Three pulses generate five echoes, and a train of a hundred generates far more
+than a hundred. A refocused train, a gradient-echo steady state, a
+fingerprinting schedule: in each, what you sample is not one decaying
+magnetization but a sum over routes through the pulses and the gradients, each
+of which has spent a different amount of time transverse and a different amount
+parked along the field. The extended phase graph (EPG) is the accounting that
+keeps those routes straight, and it is what TorchSim evaluates. Weigel <a class="footnote-reference brackets" href="#id8" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> is
+the introduction to read alongside this one.</p>
+<p>The magnetization is decomposed into configuration states, and three operators
+act on them:</p>
+<ol class="arabic simple">
+<li><p><strong>Transition</strong> – an RF pulse, which mixes the transverse and longitudinal
+families within an order and never moves a state between orders.</p></li>
+<li><p><strong>Shift</strong> – a gradient, which moves transverse states between orders and
+mixes nothing.</p></li>
+<li><p><strong>Evolution</strong> – relaxation and precession between events. Decay reaches
+every state; recovery toward equilibrium reaches order zero alone.</p></li>
+</ol>
+<p>A sequence is those three alternating, and the signal is read off the states
+wherever it samples. This page is the physics; how it is realized – the
+events, the kernels, the derivatives – is <a class="reference internal" href="implementation.html"><span class="doc">How TorchSim runs it</span></a>.</p>
+<section id="dephasing">
+<h2>Dephasing<a class="headerlink" href="#dephasing" title="Link to this heading">#</a></h2>
+<p>A voxel is not one magnetization vector. It is an ensemble of isochromats, and
+a gradient gives each of them a Larmor frequency that depends on where it sits.
+Over an interval the phase they acquire is linear in position, so the ensemble
+winds into a helix, and the signal – which is the <em>sum</em> over the voxel – falls
+away as the helix tightens. Nothing has been lost: the magnetization is still
+there, wound up, and a gradient of the opposite sign will bring it back.</p>
+<figure class="align-default" id="id11">
+<a class="reference internal image-reference" href="../_images/dephasing_helix.png"><img alt="Isochromats fanning out in the transverse plane as a gradient winds them." src="../_images/dephasing_helix.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Isochromats across one voxel, in the transverse plane, after gradient areas
+winding zero, a quarter, one and three turns across it. The red arrow is
+their sum, which is all a receiver ever sees. Past one full turn the sum is
+effectively zero and stays there, while the ensemble underneath it is
+perfectly ordered.</span><a class="headerlink" href="#id11" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The winding is measured by <span class="math notranslate nohighlight">\(k = \gamma \int G\,\mathrm{d}t\)</span>, the same
+quantity as the k-space coordinate of imaging. It is the natural coordinate for
+this problem: a gradient does one thing to the ensemble, which is to move
+<span class="math notranslate nohighlight">\(k\)</span>.</p>
+</section>
+<section id="configuration-states">
+<h2>Configuration states<a class="headerlink" href="#configuration-states" title="Link to this heading">#</a></h2>
+<p>Because the phase is linear in position, the transverse magnetization across
+the voxel is a sum of spatial harmonics, and each harmonic is labelled by its
+winding <span class="math notranslate nohighlight">\(k\)</span>. Writing <span class="math notranslate nohighlight">\(M^{+}(r) = M_x + iM_y\)</span> and taking its Fourier
+transform over the voxel gives the <strong>configuration states</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\tilde F^{+}(k) = \int_V M^{+}(r)\, e^{-ikr}\, \mathrm{d}^3r ,
+\]</div>
+<p>and the states are the whole description: the spatial profile is recoverable
+from them, and the measured signal is exactly the coherent one,
+<span class="math notranslate nohighlight">\(\tilde F^{+}(0)\)</span>. This is the configuration-state treatment of echo
+trains introduced by Hennig <a class="footnote-reference brackets" href="#id7" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, in the notation of Weigel’s review <a class="footnote-reference brackets" href="#id8" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>,
+which the rest of this page follows.</p>
+<figure class="align-default" id="id12">
+<a class="reference internal image-reference" href="../_images/configuration_states.png"><img alt="A spatially modulated magnetization profile beside its few Fourier coefficients." src="../_images/configuration_states.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Left, the transverse magnetization across a voxel part-way through a
+sequence – the thing an isochromat summation would need thousands of
+samples to represent. Right, the same state as configuration amplitudes.
+A sequence that winds by whole turns populates only integer orders, so a
+handful of numbers carries the voxel exactly rather than approximately.</span><a class="headerlink" href="#id12" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>This is the move that makes EPG cheap. An isochromat simulation pays for
+spatial resolution it does not care about; the phase graph pays for the number
+of <em>orders the sequence actually populates</em>, which is small and which you can
+count in advance from the gradients.</p>
+</section>
+<section id="three-families-of-state">
+<h2>Three families of state<a class="headerlink" href="#three-families-of-state" title="Link to this heading">#</a></h2>
+<p>Transverse magnetization is complex, and its two conjugate halves behave
+differently under a gradient, so they are tracked separately as
+<span class="math notranslate nohighlight">\(\tilde F^{+}(k)\)</span> and <span class="math notranslate nohighlight">\(\tilde F^{-}(k)\)</span>. Longitudinal magnetization
+is modulated across the voxel too – a pulse can store a wound-up transverse
+state along <span class="math notranslate nohighlight">\(z\)</span>, where it neither dephases further nor decays with
+<span class="math notranslate nohighlight">\(T_2\)</span> – so it has configurations of its own, <span class="math notranslate nohighlight">\(\tilde Z(k)\)</span>. Those
+three families at each integer order are the entire state of a voxel.</p>
+<figure class="align-default" id="id13">
+<a class="reference internal image-reference" href="../_images/state_ladder.png"><img alt="A grid of F-plus, F-minus and Z states over dephasing orders zero to four." src="../_images/state_ladder.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The state of a voxel: three families over the integer dephasing orders. A
+gradient moves populations <em>along</em> the rows in opposite directions; an RF
+pulse mixes them <em>within</em> a column and never moves an order. At order zero
+the two transverse families are the same information, since
+<span class="math notranslate nohighlight">\(\tilde F^{+}(0)\)</span> and <span class="math notranslate nohighlight">\(\tilde F^{-}(0)\)</span> are complex conjugates
+of one another – which is why order zero needs a rule of its own in every
+implementation.</span><a class="headerlink" href="#id13" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The transition and shift operators act on that grid.</p>
+</section>
+<section id="rf-pulses">
+<h2>RF pulses<a class="headerlink" href="#rf-pulses" title="Link to this heading">#</a></h2>
+<p>A hard pulse of flip angle <span class="math notranslate nohighlight">\(\alpha\)</span> and phase <span class="math notranslate nohighlight">\(\varphi\)</span> acts
+identically on every order – it cannot move magnetization in space, only turn
+it – so it is one 3x3 matrix applied to each column:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}\tilde F^{+}\\ \tilde F^{-}\\ \tilde Z\end{pmatrix}
+\leftarrow
+\mathbf{T}(\alpha, \varphi)
+\begin{pmatrix}\tilde F^{+}\\ \tilde F^{-}\\ \tilde Z\end{pmatrix} .
+\end{split}\]</div>
+<figure class="align-default" id="id14">
+<a class="reference internal image-reference" href="../_images/rf_operator.png"><img alt="The magnitude of the EPG rotation matrix at 30, 90 and 180 degrees." src="../_images/rf_operator.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The magnitude of <span class="math notranslate nohighlight">\(\mathbf{T}\)</span> at three flip angles. A 180 degree pulse
+swaps the two transverse families outright – perfect refocusing – and
+inverts <span class="math notranslate nohighlight">\(\tilde Z\)</span>. A 90 degree pulse splits every state three ways: it
+refocuses half, leaves half dephasing, converts all longitudinal
+magnetization into transverse, and stores half of the transverse along
+<span class="math notranslate nohighlight">\(z\)</span>. A small pulse mostly leaves things where they were, which is why
+a low-flip train carries so many pathways at once.</span><a class="headerlink" href="#id14" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The off-diagonal entries are the entire reason echoes proliferate. Every pulse
+that is neither 0 nor 180 degrees splits each populated state into three, so
+the number of live pathways grows with each pulse until relaxation and
+truncation kill the weakest.</p>
+</section>
+<section id="gradients">
+<h2>Gradients<a class="headerlink" href="#gradients" title="Link to this heading">#</a></h2>
+<p>A gradient’s only effect is to change the winding, which in this basis is a
+shift by whole orders:</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde F^{+}(k) \rightarrow \tilde F^{+}(k + \Delta k), \qquad
+\tilde Z(k) \rightarrow \tilde Z(k),
+\]</div>
+<p>with the longitudinal states untouched, because they carry no phase to wind.</p>
+<figure class="align-default" id="id15">
+<a class="reference internal image-reference" href="../_images/shift_operator.png"><img alt="Transverse state populations before and after a one-order shift." src="../_images/shift_operator.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">One unbalanced gradient, before and after. Everything transverse moves up
+one order in <span class="math notranslate nohighlight">\(\tilde F^{+}\)</span> and down one in <span class="math notranslate nohighlight">\(\tilde F^{-}\)</span>. The
+order-zero entry is the interesting one: it is refilled from the conjugate
+of what was at order zero in the other family, which is the bookkeeping that
+makes rephasing come out right and is the single place a shift is not just a
+memory move.</span><a class="headerlink" href="#id15" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In TorchSim the shift is what an operator such as <code class="docutils literal notranslate"><span class="pre">Dephase</span></code> plays, and one
+shift is one crusher or one unbalanced readout gradient. Ideal spoiling –
+<code class="docutils literal notranslate"><span class="pre">Spoil</span></code> – is the other option: discard every transverse order instead of
+winding it on, which is what a spoiled gradient echo assumes its spoiler and
+its RF phase cycling achieve together.</p>
+</section>
+<section id="relaxation-and-recovery">
+<h2>Relaxation and recovery<a class="headerlink" href="#relaxation-and-recovery" title="Link to this heading">#</a></h2>
+<p>Between events, transverse states decay by <span class="math notranslate nohighlight">\(E_2 = e^{-\Delta t / T_2}\)</span>
+and longitudinal states by <span class="math notranslate nohighlight">\(E_1 = e^{-\Delta t / T_1}\)</span>. Recovery toward
+equilibrium, though, is <em>spatially uniform</em>: it adds magnetization with no
+modulation at all, so it enters <span class="math notranslate nohighlight">\(\tilde Z(0)\)</span> alone.</p>
+<figure class="align-default" id="id16">
+<a class="reference internal image-reference" href="../_images/relaxation.png"><img alt="Relaxation curves, and longitudinal state populations before and after an interval." src="../_images/relaxation.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Left, the two attenuation factors for white matter at 3 T. Right, what 100 ms
+of longitudinal relaxation does to a set of <span class="math notranslate nohighlight">\(\tilde Z\)</span> states: every
+order is scaled by <span class="math notranslate nohighlight">\(E_1\)</span>, and only order zero gains the
+<span class="math notranslate nohighlight">\(M_0(1 - E_1)\)</span> that regrowth supplies. A modulated longitudinal state
+decays toward zero, not toward equilibrium, because equilibrium has no
+modulation to relax into.</span><a class="headerlink" href="#id16" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="reading-the-graph">
+<h2>Reading the graph<a class="headerlink" href="#reading-the-graph" title="Link to this heading">#</a></h2>
+<p>Plotting <span class="math notranslate nohighlight">\(k\)</span> against time turns a sequence into a picture. Between pulses
+every transverse pathway moves at a constant rate set by the gradients;
+at each pulse it may continue, reverse, or be parked along <span class="math notranslate nohighlight">\(z\)</span> until a
+later pulse brings it back. <strong>Wherever a transverse pathway crosses</strong>
+<span class="math notranslate nohighlight">\(k = 0\)</span> <strong>there is an echo</strong>, and the sample is the sum of every pathway
+crossing at that moment.</p>
+<figure class="align-default" id="id17">
+<a class="reference internal image-reference" href="../_images/phase_graph.png"><img alt="A phase graph of a refocused train above the echo amplitudes TorchSim computes." src="../_images/phase_graph.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Above, the phase graph of six refocusing pulses: solid lines are transverse
+pathways, dotted lines are magnetization parked along <span class="math notranslate nohighlight">\(z\)</span> between
+pulses, dashed verticals are the pulses. Below, what TorchSim records at
+those crossings. From the fourth pulse on, the sampled signal contains
+direct spin echoes and stimulated echoes at once – pathways that spent one
+or more intervals longitudinal, and so were spared <span class="math notranslate nohighlight">\(T_2\)</span> decay while
+they were there.</span><a class="headerlink" href="#id17" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The diagram is what makes EPG a way of <em>thinking</em> and not only of computing.
+Refocusing angle, echo spacing, spoiler size and RF phase all change the graph
+in ways you can see before you simulate anything.</p>
+</section>
+<section id="stimulated-echoes">
+<h2>Stimulated echoes<a class="headerlink" href="#stimulated-echoes" title="Link to this heading">#</a></h2>
+<p>With anything other than exact 180 degree refocusing, an echo train is not a
+mono-exponential. Stimulated-echo pathways
+spend part of their life along <span class="math notranslate nohighlight">\(z\)</span>, so they arrive with less
+<span class="math notranslate nohighlight">\(T_2\)</span> decay than their echo time suggests, and the train picks up
+oscillations at its start and a long tail at its end.</p>
+<figure class="align-default" id="id18">
+<a class="reference internal image-reference" href="../_images/mono_exponential.png"><img alt="Echo trains at three refocusing angles, and the T2 a mono-exponential fit returns for each." src="../_images/mono_exponential.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Left, a 48-echo train at three refocusing angles beside <span class="math notranslate nohighlight">\(e^{-t/T_2}\)</span>.
+Right, the <span class="math notranslate nohighlight">\(T_2\)</span> a mono-exponential fit of each train returns. Only the
+180 degree train recovers the true value; the low-flip trains – which is
+what a real sequence plays, to stay inside SAR – are biased by tens of
+percent. This is the practical case for simulating the pathways rather than
+assuming the decay.</span><a class="headerlink" href="#id18" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="configuration-orders-to-carry">
+<h2>Configuration orders to carry<a class="headerlink" href="#configuration-orders-to-carry" title="Link to this heading">#</a></h2>
+<p>A sequence populates a bounded set of orders: each shift moves the ladder by
+one, so after <span class="math notranslate nohighlight">\(n\)</span> shifts nothing beyond order <span class="math notranslate nohighlight">\(n\)</span> exists, and
+attenuation makes the far orders negligible long before that. You choose how
+many to carry with <code class="docutils literal notranslate"><span class="pre">states=</span></code> (or <code class="docutils literal notranslate"><span class="pre">nstates=</span></code> per call), and TorchSim sizes it
+from the winding the sequence declares when you do not.</p>
+<figure class="align-default" id="id19">
+<a class="reference internal image-reference" href="../_images/truncation.png"><img alt="An unbalanced train simulated with different numbers of configuration orders, and the error of each." src="../_images/truncation.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Left, an unbalanced fingerprinting train carried with 2, 6 and 20 orders.
+Right, the largest error against a 60-order reference. The error falls
+geometrically: a handful of orders is qualitatively wrong, a dozen or two is
+right to well below the noise of any real measurement. Truncating is not an
+approximation you have to accept blindly – it is a convergence you can
+measure for your own sequence with two calls.</span><a class="headerlink" href="#id19" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="diffusion-and-flow">
+<h2>Diffusion and flow<a class="headerlink" href="#diffusion-and-flow" title="Link to this heading">#</a></h2>
+<p>A state at order <span class="math notranslate nohighlight">\(k\)</span> is wound up in space, and anything that moves spins
+around inside the voxel scrambles that winding. Over an interval a state
+accumulates a diffusion b-factor weighted by <span class="math notranslate nohighlight">\(k^2\)</span> while it is
+longitudinal, and by <span class="math notranslate nohighlight">\(k^2 + k + 1/3\)</span> while it is transverse and winding
+through the interval <a class="footnote-reference brackets" href="#id8" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>. Order zero is untouched, which is why diffusion enters
+through the <em>pathways</em> rather than as a single exponential on the signal.</p>
+<figure class="align-default" id="id20">
+<a class="reference internal image-reference" href="../_images/diffusion.png"><img alt="The b-factor weight per configuration order, and the diffusion attenuation of an echo train." src="../_images/diffusion.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Left, what one interval costs each order. Right, a 120 degree train played
+between crushers winding 20 turns across a millimetre voxel, at two
+diffusion coefficients, relative to the same train with no diffusion. The
+attenuation is neither exponential in time nor uniform across echoes,
+because the pathways contributing to each echo have spent different amounts
+of time at different orders. Coherent flow enters the same way but as a
+phase per order rather than an attenuation, and washout replaces the excited
+spins outright.</span><a class="headerlink" href="#id20" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Both effects need geometry the sequence has to declare – how far a crusher
+winds and across what voxel – because a dephasing order is only a b-factor
+once you know the gradient behind it.</p>
+</section>
+<section id="second-pool">
+<h2>Second pool<a class="headerlink" href="#second-pool" title="Link to this heading">#</a></h2>
+<p>Tissue is not one proton pool. TorchSim carries the two extensions of the EPG
+formalism that matter in practice, both from Malik et al <a class="footnote-reference brackets" href="#id9" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>: a <strong>semisolid
+pool</strong>
+that RF saturates through its absorption lineshape and that exchanges
+longitudinal magnetization with the free water (magnetization transfer), and a
+<strong>chemically exchanging pool</strong> that has transverse states of its own and sits
+at a frequency offset (Bloch-McConnell). Exchange couples states of the same
+family and the same order, so the phase-graph structure is unchanged: what
+changes is that relaxation and exchange are one combined operator, since the
+two do not commute.</p>
+<figure class="align-default" id="id21">
+<a class="reference internal image-reference" href="../_images/two_pool.png"><img alt="A fingerprinting trajectory with and without a bound pool, and its derivative." src="../_images/two_pool.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Left, a fingerprinting trajectory on white matter, with and without a bound
+pool holding 12% of the magnetization. The pool is never sampled – it has no
+transverse magnetization to detect – and it still moves the trajectory by a
+sizeable fraction of its peak, so a dictionary built from the single-pool
+model is wrong in a way no amount of matching recovers. Right, the
+derivative of the signal with respect to the bound fraction, which is what
+says whether the schedule can <em>estimate</em> it rather than merely be affected
+by it.</span><a class="headerlink" href="#id21" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="assumptions">
+<h2>Assumptions<a class="headerlink" href="#assumptions" title="Link to this heading">#</a></h2>
+<p>EPG is exact for what it models. It assumes the dephasing within a voxel is
+<strong>linear in position</strong>, so that a
+gradient is a shift; sequences whose gradients are unbalanced by non-integer
+amounts, or whose voxels contain their own strong field variation, need the
+orders to be interpreted with care. It treats an isochromat’s off-resonance as
+a constant precession rather than as a distribution, so a spread of field
+across the voxel is not something the states carry.</p>
+<p>TorchSim applies that spread to the samples instead. <code class="docutils literal notranslate"><span class="pre">t2_prime_ms</span></code> sets a
+Lorentzian population of frequencies, half-width <span class="math notranslate nohighlight">\(1 / T_2'\)</span> in angular
+frequency, whose average over the voxel is <span class="math notranslate nohighlight">\(e^{-|\tau| / T_2'}\)</span> in the time
+<span class="math notranslate nohighlight">\(\tau\)</span> a sample has gone
+unrefocused – so a gradient echo decays at <span class="math notranslate nohighlight">\(T_2^*\)</span>, a spin echo is left at
+<span class="math notranslate nohighlight">\(T_2\)</span>, and the decay grows and recovers either side of each echo. It asks the
+sequence to wind at one steady rate, which is the condition under which a
+configuration order stands for elapsed time as well as for area; a balanced
+train does not, and needs a spread of <code class="docutils literal notranslate"><span class="pre">b0_hz</span></code> across voxels as before.</p>
+<p>Pulses are instantaneous rotations unless you say otherwise. A real
+slice-selective pulse acts under its gradient, so what it does depends on
+position within the slice; TorchSim can carry that exactly by integrating the
+pulse ahead of time, which is the hybrid Bloch-EPG picture of Guenthner et al
+<a class="footnote-reference brackets" href="#id10" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a> and is described in <a class="reference internal" href="implementation.html"><span class="doc">How TorchSim runs it</span></a>.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+</section>
+</section>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id7" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<p>Hennig, J., “Multiecho imaging sequences with low refocusing flip
+angles”, Journal of Magnetic Resonance 78 (1988), pp. 397-407.
+<a class="reference external" href="https://doi.org/10.1016/0022-2364(88)90128-X">https://doi.org/10.1016/0022-2364(88)90128-X</a></p>
+</aside>
+<aside class="footnote brackets" id="id8" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id4">3</a>)</span>
+<p>Weigel, M., “Extended phase graphs: dephasing, RF pulses, and echoes -
+pure and simple”, Journal of Magnetic Resonance Imaging 41.2 (2015),
+pp. 266-295. <a class="reference external" href="https://doi.org/10.1002/jmri.24619">https://doi.org/10.1002/jmri.24619</a></p>
+</aside>
+<aside class="footnote brackets" id="id9" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">3</a><span class="fn-bracket">]</span></span>
+<p>Malik, S. J., Teixeira, R. P. A. G., Hajnal, J. V., “Extended phase
+graph formalism for systems with magnetization transfer and exchange”,
+Magnetic Resonance in Medicine 80.2 (2018), pp. 767-779.
+<a class="reference external" href="https://doi.org/10.1002/mrm.27040">https://doi.org/10.1002/mrm.27040</a></p>
+</aside>
+<aside class="footnote brackets" id="id10" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">4</a><span class="fn-bracket">]</span></span>
+<p>Guenthner, C., Amthor, T., Doneva, M., Kozerke, S., “A unifying view on
+extended phase graphs and Bloch simulations for quantitative MRI”,
+Scientific Reports 11 (2021), 21289.
+<a class="reference external" href="https://doi.org/10.1038/s41598-021-00233-6">https://doi.org/10.1038/s41598-021-00233-6</a></p>
+</aside>
+</aside>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../developer_guide.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Developer Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="description.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Sequence description</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dephasing">Dephasing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-states">Configuration states</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-families-of-state">Three families of state</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rf-pulses">RF pulses</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradients">Gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#relaxation-and-recovery">Relaxation and recovery</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-the-graph">Reading the graph</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stimulated-echoes">Stimulated echoes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-orders-to-carry">Configuration orders to carry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffusion-and-flow">Diffusion and flow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#second-pool">Second pool</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions">Assumptions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
