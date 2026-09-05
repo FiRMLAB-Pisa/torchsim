@@ -126,6 +126,10 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout --orphan docs-gallery
           git rm -r --cached . --quiet
+          # sphinx-gallery caches the indexes it resolves links against in a
+          # shelve, which is written in whichever dbm format this runner's
+          # interpreter has and is unreadable to one built without it.
+          find docs/generated -name 'searchindex*' -delete
           git add --force docs/generated
           git commit --quiet -m "Gallery executed from ${{ github.sha }}"
           git push --force origin docs-gallery

@@ -18,7 +18,9 @@ import dataclasses
 import importlib.util
 import os
 import re
+import shelve
 import sys
+import tempfile
 from pathlib import Path
 
 import sphinx.util.logging
@@ -360,20 +362,37 @@ def _say_what_is_not_executed(app) -> None:
             )
 
 
-def setup(app):
-    """Wire in the figure pass, and drop sphinx-gallery's code-link pass.
+def _cache_opens(app) -> bool:
+    """Whether the cache sphinx-gallery's code-link pass keeps opens here.
 
-    That pass caches the URLs it resolves with :mod:`shelve`, and some Python
-    distributions package ``dbm`` separately from the interpreter. The links
-    it would add are the only thing lost.
+    It holds the search indexes it resolves in a :mod:`shelve`, which reaches
+    for whichever ``dbm`` backend the interpreter was built with. Some Python
+    distributions package one separately, and a cache another backend wrote is
+    unreadable whatever this one has.
+    """
+    cache = Path(app.srcdir, "generated/autoexamples/searchindex")
+    try:
+        if cache.exists():
+            shelve.open(str(cache)).close()
+        else:
+            with tempfile.TemporaryDirectory() as elsewhere:
+                shelve.open(str(Path(elsewhere, "probe"))).close()
+    except Exception:
+        return False
+    return True
+
+
+def setup(app):
+    """Wire in the figure pass, and the passes that only sometimes can run.
+
+    sphinx-gallery's code-link pass is dropped where its cache will not open;
+    the links it would add are the only thing lost.
     """
     _hide_ignored_code_from_the_page_only()
     app.connect("builder-inited", _say_what_is_not_executed)
     app.connect("builder-inited", _draw_explanation_figures)
     app.connect("autodoc-skip-member", _skip_undocumented_specials)
-    try:
-        import dbm  # noqa: F401
-    except ImportError:
+    if not _cache_opens(app):
         from sphinx_gallery.docs_resolv import embed_code_links
 
         for listener in list(app.events.listeners.get("build-finished", [])):
