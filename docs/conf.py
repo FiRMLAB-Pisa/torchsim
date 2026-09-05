@@ -18,16 +18,36 @@ import dataclasses
 import importlib.util
 import os
 import re
+import shelve
 import sys
+import tempfile
 from pathlib import Path
 
 import sphinx.util.logging
 import torch
 from sphinx_gallery.sorting import ExplicitOrder
-from sphinx_gallery.utils import get_md5sum
 
 sys.path.insert(0, os.path.abspath("."))
 sys.path.insert(0, os.path.abspath("../.."))  # Source code dir relative to this file
+
+
+def _cores_allowed() -> int:
+    """How many cores this machine lets the build use.
+
+    A hosted builder is a slice of a much larger machine, and PyTorch sizes
+    its thread pool from the machine: left alone it starts a thread per host
+    core, and they spend the build contending for the few the quota allows.
+    """
+    try:
+        quota, period = Path("/sys/fs/cgroup/cpu.max").read_text().split()
+        if quota != "max":
+            return max(1, round(int(quota) / int(period)))
+    except (OSError, ValueError):
+        pass
+    return len(os.sched_getaffinity(0))
+
+
+torch.set_num_threads(min(torch.get_num_threads(), _cores_allowed()))
 
 # -- Project information -----------------------------------------------------
 
@@ -119,6 +139,14 @@ napoleon_use_admonition_for_references = True
 pygments_style = "sphinx"
 highlight_language = "python"
 
+#: Which of the published versions this build is: ``latest`` for the
+#: development branch, the tag for a release. One directory of the site per
+#: version, and the switcher marks the one being read.
+DOCS_VERSION = os.environ.get("TORCHSIM_DOCS_VERSION", "latest")
+
+#: Where the pages are served from.
+PAGES_URL = "https://firmlab-pisa.github.io/torchsim"
+
 # -- Options for Sphinx Gallery ----------------------------------------------
 
 #: The gallery's sections, in the order a reader should meet them.
@@ -159,11 +187,10 @@ GALLERY_SCRIPTS = [
 
 #: Which examples are not executed here, and what each one asked for. An
 #: example runs where everything it imports is installed, so an environment
-#: holding the ``examples`` extra executes the whole gallery and one holding
-#: ``doc`` alone executes what needs nothing but TorchSim. The hosted builder
-#: is the second: fetching a subject and segmenting it with a network asks for
-#: more memory and more minutes than it is given, so it publishes the output
-#: the Docs workflow executed and restored into ``generated/autoexamples``.
+#: holding the ``examples`` extra executes the whole gallery -- which is what
+#: the published pages are built with -- and one holding ``doc`` alone
+#: executes what needs nothing but TorchSim, which is what a branch is
+#: checked with while it waits.
 UNRUNNABLE = {
     script: missing
     for script in GALLERY_SCRIPTS
@@ -204,6 +231,9 @@ sphinx_gallery_conf = {
         ],
         "notebooks_dir": "examples",
         "use_jupyter_lab": True,
+        # The branch holds one directory per version, and the notebooks of
+        # this one are under its own.
+        "filepath_prefix": DOCS_VERSION,
     },
 }
 
@@ -232,7 +262,29 @@ html_theme_options = {
     "use_edit_page_button": True,
     "use_download_button": True,
     "home_page_in_toc": True,
+    # The list every published version is in, read by the switcher in the
+    # sidebar. A build served from anywhere else cannot fetch it and leaves
+    # the switcher out, which is what a local build wants anyway.
+    "switcher": {
+        "json_url": f"{PAGES_URL}/versions.json",
+        "version_match": DOCS_VERSION,
+    },
+    "show_version_warning_banner": True,
 }
+
+#: The theme's own sidebar, with the version switcher under the title.
+html_sidebars = {
+    "**": [
+        "navbar-logo.html",
+        "icon-links.html",
+        "version-switcher.html",
+        "search-button-field.html",
+        "sbt-sidebar-nav.html",
+    ]
+}
+
+#: One canonical address per page, under the version it belongs to.
+html_baseurl = f"{PAGES_URL}/{DOCS_VERSION}/"
 
 # html_logo = "_static/logos/mri-nufft.png"
 # html_favicon = "_static/logos/mri-nufft-icon.png"
@@ -327,53 +379,48 @@ def _draw_explanation_figures(app) -> None:
     render(os.path.join(app.srcdir, "generated", "figures"))
 
 
-def _restored(app, script: Path) -> bool:
-    """Whether the gallery holds output executed from ``script`` as it stands.
-
-    sphinx-gallery stamps a page it executed with the checksum of the source
-    it ran, and reuses the page whenever the two still agree. A page restored
-    from the Docs workflow carries that stamp; one rendered from its source
-    alone does not.
-    """
-    stamped = Path(app.srcdir, "generated/autoexamples", script.parent.name)
-    stamp = stamped / f"{script.name}.md5"
-    return stamp.is_file() and stamp.read_text().strip() == get_md5sum(script, mode="t")
-
-
 def _say_what_is_not_executed(app) -> None:
-    """Name each example this build does not run, and where its output stands."""
+    """Name each example this build renders without running, and what it needs."""
     logger = sphinx.util.logging.getLogger(__name__)
     for script, missing in UNRUNNABLE.items():
-        if _restored(app, script):
-            logger.info(
-                "[gallery] %s: publishing the output already executed for it "
-                "(no %s here)",
-                script.name,
-                ", ".join(missing),
-            )
+        logger.warning(
+            "[gallery] %s is built without its output: no %s",
+            script.name,
+            ", ".join(missing),
+        )
+
+
+def _cache_opens(app) -> bool:
+    """Whether the cache sphinx-gallery's code-link pass keeps opens here.
+
+    It holds the search indexes it resolves in a :mod:`shelve`, which reaches
+    for whichever ``dbm`` backend the interpreter was built with. Some Python
+    distributions package one separately, and a cache another backend wrote is
+    unreadable whatever this one has.
+    """
+    cache = Path(app.srcdir, "generated/autoexamples/searchindex")
+    try:
+        if cache.exists():
+            shelve.open(str(cache)).close()
         else:
-            logger.warning(
-                "[gallery] %s is published without its output: no %s, and no "
-                "executed copy of it under generated/autoexamples",
-                script.name,
-                ", ".join(missing),
-            )
+            with tempfile.TemporaryDirectory() as elsewhere:
+                shelve.open(str(Path(elsewhere, "probe"))).close()
+    except Exception:
+        return False
+    return True
 
 
 def setup(app):
-    """Wire in the figure pass, and drop sphinx-gallery's code-link pass.
+    """Wire in the figure pass, and the passes that only sometimes can run.
 
-    That pass caches the URLs it resolves with :mod:`shelve`, and some Python
-    distributions package ``dbm`` separately from the interpreter. The links
-    it would add are the only thing lost.
+    sphinx-gallery's code-link pass is dropped where its cache will not open;
+    the links it would add are the only thing lost.
     """
     _hide_ignored_code_from_the_page_only()
     app.connect("builder-inited", _say_what_is_not_executed)
     app.connect("builder-inited", _draw_explanation_figures)
     app.connect("autodoc-skip-member", _skip_undocumented_specials)
-    try:
-        import dbm  # noqa: F401
-    except ImportError:
+    if not _cache_opens(app):
         from sphinx_gallery.docs_resolv import embed_code_links
 
         for listener in list(app.events.listeners.get("build-finished", [])):

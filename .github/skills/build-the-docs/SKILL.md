@@ -25,22 +25,26 @@ output executed from the source as it stands is reused rather than re-run, and
 the build names each example it did not run and where its output came from. To
 build the pages without running any of them, pass `-D plot_gallery=0`.
 
-## Where the published gallery is executed
+## Where the published pages are built
 
-Read the Docs builds the published pages from `.readthedocs.yaml`, one version
-per release, with the `doc` extra and Sphinx alone: a subject to download, a
-segmentation network and a spiral encoding are more than that builder has.
+`.github/workflows/docs.yml` builds them, and GitHub Pages serves them from
+the `gh-pages` branch at <https://firmlab-pisa.github.io/torchsim/>.
 
-The Gallery job of `.github/workflows/docs.yml` is where the thirteen examples
-run. It installs the `examples` extra on a GitHub runner, builds the docs, and
-force-pushes `docs/generated` to the `docs-gallery` branch as a single commit.
-Read the Docs restores that branch before Sphinx starts, so every page is
-published with the figures and printed output it was executed with.
+Its **HTML** job runs on every branch and pull request with the `doc` extra:
+every page is written and the examples needing nothing but TorchSim are
+executed, in a few minutes, and the tree is uploaded as an artifact to read.
 
-The job runs on `main`, on a `v*.*.*` tag and on demand. An example whose
-source has moved on since the branch was written is published without its
-output and named in the build log with a warning — push to `main`, or run the
-workflow by hand, to refresh it.
+Its **Site** job runs on `main`, on a `v*.*.*` tag and on demand. It installs
+the `examples` extra, so all thirteen notebooks are executed, and hands what
+Sphinx wrote to `scripts/publish_docs.py`, which places it in the site:
+
+    site/latest/     the development branch
+    site/v1.2.3/     one directory per release, kept as it was published
+    site/index.html  a page sending a reader to the newest release
+    site/versions.json  the list the switcher in the sidebar reads
+
+`TORCHSIM_DOCS_VERSION` is what a build calls itself; it names the directory,
+the switcher's mark and the Binder path prefix, and defaults to `latest`.
 
 ## Markdown, and the two places it is not
 

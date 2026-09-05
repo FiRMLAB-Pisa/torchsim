@@ -7,7 +7,7 @@ TorchSim is a pure Pytorch-based MR simulator, including analytical and EPG mode
 [![Lint](https://github.com/FiRMLAB-Pisa/torchsim/actions/workflows/lint.yml/badge.svg)](https://github.com/FiRMLAB-Pisa/torchsim/actions/workflows/lint.yml)
 [![License](https://img.shields.io/github/license/FiRMLAB-Pisa/torchsim)](https://github.com/FiRMLAB-Pisa/torchsim/blob/main/LICENSE.txt)
 [![Codefactor](https://www.codefactor.io/repository/github/FiRMLAB-Pisa/torchsim/badge)](https://www.codefactor.io/repository/github/FiRMLAB-Pisa/torchsim)
-[![Documentation](https://readthedocs.org/projects/firmlab-torchsim/badge/?version=latest)](https://firmlab-torchsim.readthedocs.io/en/latest/)
+[![Documentation](https://github.com/FiRMLAB-Pisa/torchsim/actions/workflows/docs.yml/badge.svg)](https://firmlab-pisa.github.io/torchsim/)
 [![PyPi](https://img.shields.io/pypi/v/torchsim)](https://pypi.org/project/torchsim)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![PythonVersion](https://img.shields.io/badge/Python-%3E=3.10-blue?logo=python&logoColor=white)](https://python.org)

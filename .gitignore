@@ -30,6 +30,8 @@ htmlcov/
 
 # Documentation output
 docs/build/
+# Where the doctrees land when Sphinx is run the way Read the Docs runs it.
+docs/_build/
 docs/generated/
 docs_build/
 # Written by sphinx-gallery on every build.
