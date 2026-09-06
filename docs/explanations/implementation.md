@@ -178,7 +178,7 @@ direction depends on what you are differentiating.
 **With respect to tissue**, forward mode wins. Voxels are independent, so one
 directional derivative covers every voxel at once, and the cost is one pass per
 *property* -- not per voxel, not per echo. That is
-{meth}`~torchsim.model.SignalModel.jacobian`, and it is what a dictionary fit, a
+{meth}`~torchsim.model.Simulator.jacobian`, and it is what a dictionary fit, a
 Cramer-Rao bound and a model-based reconstruction all consume. Inside the
 kernels it is dual arithmetic: each quantity carries a tangent beside it, and
 every operator differentiates itself.

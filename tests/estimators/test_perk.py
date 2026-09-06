@@ -8,7 +8,7 @@ import pytest
 import torch
 
 from torchsim.estimators import PERK, DictionaryMatcher
-from torchsim.model import SignalModel
+from torchsim.model import Simulator
 from torchsim.simulators import MultiEchoSimulator
 
 
@@ -76,7 +76,7 @@ def test_perk_estimation_is_differentiable() -> None:
     assert torch.isfinite(measured.grad).all()
 
 
-class _Counted(SignalModel):
+class _Counted(Simulator):
     """A model whose signal is its property and its square, and that counts."""
 
     properties = ("x",)

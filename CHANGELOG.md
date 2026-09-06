@@ -4,6 +4,32 @@
 
 ### Changed
 
+- **`Simulator` is the only base class.** `SignalModel` is gone as a public
+  name. Everything it declared -- `properties`, `evaluate`, and the forward
+  and reverse derivative modes over them -- `Simulator` already carried, and
+  the shipped closed forms were already written that way: `SPGRSimulator`,
+  `bSSFPSimulator` and the three relaxometry models implement `evaluate` and
+  no `layout` at all. So a signal that has to be played implements `layout`, a
+  signal with a closed form implements `evaluate`, and both are a `Simulator`
+  -- which is the one type the estimators, the model-based operator and the
+  sequence designer take.
+
+  Every setting the constructor takes now has a value at the class level, so a
+  model that composes others and writes a constructor of its own -- never
+  reaching `Simulator.__init__` -- still answers `simulate()`. It names its
+  properties in the class body, as a plain sequence of strings, where a model
+  with physics of its own names them in its `SpinPhysics`.
+
+  A class body naming `record`, `execution`, `across_slice`,
+  `crusher_dephasing_rad` or `voxel_size_m` is now read by the constructor as
+  `states` and `repetitions` already were, and a call still overrides it. That
+  is what `MPRAGESimulator` and `MP2RAGESimulator` were each saying in a
+  constructor of their own.
+
+  A closed form is handed the protocol the constructor fixed, along with
+  whatever the call added, so `evaluate(self, properties, *, TE)` reads `TE`
+  whichever side gave it.
+
 - **A stream is read through the simulator you hand it to.** The MRD transport
   carries RF pulses and ADC windows and no gradients, so a description says
   what was played and not how the sequence dephased between one event and the

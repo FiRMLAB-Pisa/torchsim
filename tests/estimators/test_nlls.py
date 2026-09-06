@@ -255,9 +255,9 @@ def test_an_equality_constraint_is_written_into_the_model() -> None:
     restoring it after each step, so the constraint holds at every iterate
     and not merely at the answer.
     """
-    from torchsim.model import SignalModel
+    from torchsim.model import Simulator
 
-    class FatWater(SignalModel):
+    class FatWater(Simulator):
         """Two species at their own frequencies, in known proportion."""
 
         properties = ("fat_fraction", "M0")

@@ -415,16 +415,16 @@ figure.suptitle("BrainWeb subject 0, slice 90")
 # %%
 #
 # The two blocks are one experiment and are fitted as one: a
-# :class:`~torchsim.model.SignalModel` that plays each and concatenates what
+# :class:`~torchsim.model.Simulator` that plays each and concatenates what
 # they record. The fit is the one thing held fixed between the protocols --
 # the same nonlinear least squares over the same four unknowns, from the same
 # guess.
 #
 from torchsim.estimators import NonlinearLeastSquares
-from torchsim.model import SignalModel
+from torchsim.model import Simulator
 
 
-class JointRelaxometry(SignalModel):
+class JointRelaxometry(Simulator):
     """Both blocks at fixed flip angles, as one signal model."""
 
     properties = ("T1", "T2", "M0", "B0")

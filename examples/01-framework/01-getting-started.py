@@ -160,7 +160,7 @@ key(figure, ncols=3)
 # --------------------------------------------
 #
 # Torchsim allows to efficiently evaluate the derivative
-# of the signal wrt input parameters, via :meth:`~torchsim.model.SignalModel.jacobian`.
+# of the signal wrt input parameters, via :meth:`~torchsim.model.Simulator.jacobian`.
 # The desired derivatives can be specified by string:
 #
 signal, dT2 = simulator.jacobian("T2", flip=flip)  # dT2 is (3, 48) too

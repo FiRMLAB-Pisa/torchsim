@@ -12,7 +12,7 @@ import pytest
 import torch
 
 import torchsim
-from torchsim.model import SignalModel
+from torchsim.model import Simulator
 
 FLIP = np.ones(7) * 120.0
 ECHOES = 7
@@ -78,7 +78,7 @@ def test_the_answer_comes_back_in_the_array_library_it_was_asked_in() -> None:
     assert np.array_equal(signal, same.numpy())
 
 
-class _DecayModel(SignalModel):
+class _DecayModel(Simulator):
     """The smallest model there is: one property, one closed form."""
 
     properties = ("decay",)

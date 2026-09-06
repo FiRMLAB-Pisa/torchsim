@@ -538,7 +538,7 @@ scalebar(error, axes[1, 1:], f"|error|, {label}")
 # -------------------------
 #
 # The model is the only thing above that names a relaxation time, and it is an
-# ordinary :class:`~torchsim.model.SignalModel` -- the same object the fitting
+# ordinary :class:`~torchsim.model.Simulator` -- the same object the fitting
 # and sequence-design notebooks use. Water-fat separation, T2* with a field
 # map, a Look-Locker inversion recovery: each is a different ``evaluate``, and
 # the operator, the loop and the encoding are unchanged.

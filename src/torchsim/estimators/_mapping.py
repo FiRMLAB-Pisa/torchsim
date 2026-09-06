@@ -34,7 +34,7 @@ from typing import Any
 import torch
 
 from .._subspace import Subspace
-from ..model import SignalModel
+from ..model import Simulator
 
 #: How many samples are simulated at once while a training set is drawn.
 _CHUNK = 4096
@@ -60,14 +60,14 @@ class Estimator(torch.nn.Module):
 
     Parameters
     ----------
-    acquisition : SignalModel, optional
+    acquisition : Simulator, optional
         The sequence being inverted, with any tissue property that is neither
         unknown nor measured already fixed on it. Left out where the estimator
         is given signals directly.
 
     Attributes
     ----------
-    acquisition : SignalModel or None
+    acquisition : Simulator or None
         The sequence being inverted.
     noise_std : float or torch.Tensor
         The noise :meth:`fit` was told the measurement has.
@@ -77,7 +77,7 @@ class Estimator(torch.nn.Module):
         The seed the training draw used, if one was given.
     """
 
-    def __init__(self, acquisition: SignalModel | None = None) -> None:
+    def __init__(self, acquisition: Simulator | None = None) -> None:
         super().__init__()
         self.acquisition = acquisition
         self.noise_std: float | torch.Tensor = 0.0

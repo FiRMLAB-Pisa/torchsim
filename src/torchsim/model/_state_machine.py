@@ -82,9 +82,13 @@ from ..sequence._parameters import PROPERTY_NAMES, PUBLIC_PROPERTIES
 from ..sequence._simulation import RecordMode, target_device
 from ..sequence._transition import across_the_slice
 from ._binding import Packing, bind, run_key
-from ._signal import SignalModel, _moved
+from ._signal import _moved, _SignalModel
 
 _EMPTY: Mapping[str, Any] = MappingProxyType({})
+
+# Stands for a setting the caller did not name, so that the class body is
+# what decides -- None being a value several of them take.
+_UNSET: Any = object()
 
 # What a caller may name that describes the run rather than the sequence. Each
 # has an attribute of the same name, set once at construction.
@@ -138,6 +142,11 @@ def realised(
         return description
     events, _played_s = compose(*parts)
     return replace(description, events=events)
+
+
+def _named(given: Any, declared: Any) -> Any:
+    """The value the caller named, or the one the class body declares."""
+    return declared if given is _UNSET else given
 
 
 def _accepted(handler: Any, **offered: Any) -> dict[str, Any]:
@@ -323,25 +332,30 @@ class SpinPhysics:
         return pairs
 
 
-class Simulator(SignalModel):
+class Simulator(_SignalModel):
     """A protocol: what a sequence plays, and the physics behind it.
 
-    Subclasses set :attr:`model` and implement :meth:`layout`, which returns
-    the operators of one repetition in the order they are played.
+    The one thing anything downstream takes. Parameter inference, model-based
+    reconstruction and sequence design are written against this and never ask
+    how the signal is arrived at.
 
-    **The constructor takes the keywords**
-    :meth:`~torchsim.model.SignalModel.simulate` **takes, and fixes them; a
-    call overrides.** So a sequence is written once with the tissue it
+    Subclasses set :attr:`model` and implement :meth:`layout`, which returns
+    the operators of one repetition in the order they are played. A protocol
+    with a closed form -- a steady state that needs no state machine --
+    implements :meth:`evaluate` instead and never reaches :meth:`layout`; its
+    :attr:`model` then carries only the property declaration, since there are
+    no events for operators to realize.
+
+    **The constructor takes the keywords** :meth:`simulate` **takes, and fixes
+    them; a call overrides.** So a sequence is written once with the tissue it
     is being asked about already on it, and what is left to give per call is
     whatever is actually varying -- the design under optimization, the map
     being fitted.
 
-    A protocol with a closed form -- a steady state that needs no state
-    machine -- overrides :meth:`evaluate` instead and never reaches
-    :meth:`layout`. Its :attr:`model` then carries only the property
-    declaration, since there are no events for operators to realize. Both kinds
-    are constructed and called the same way, which is what lets parameter
-    inference and sequence optimization take either.
+    A model that composes others rather than declaring physics of its own
+    names its properties in the class body and writes whatever constructor
+    suits it: every setting has a value at the class level, so one that never
+    reaches this constructor still answers :meth:`simulate`.
 
     Attributes
     ----------
@@ -359,6 +373,24 @@ class Simulator(SignalModel):
     # once and never again; a sequence whose own physics says otherwise
     # overrides this.
     repetitions: int = 1
+    record: RecordMode = "all"
+    execution: str | torch.device | Sequence[Any] | None = None
+    across_slice: Any = None
+    crusher_dephasing_rad: float = 0.0
+    voxel_size_m: float | None = None
+
+    # Every attribute the constructor sets has a value here as well, so a
+    # closed form that writes an __init__ of its own -- taking the two blocks
+    # it concatenates, say -- still answers simulate() without chaining to
+    # this one. What such a subclass declares in its class body is then the
+    # whole of what it is.
+    protocol: Mapping[str, Any] = _EMPTY
+    shims: Mapping[int, ShimDefinition] = MappingProxyType({})
+    _brought: Any = None
+    _described: SequenceDescription | None = None
+    _packing: Packing | None = None
+    _refused: Sequence[Any] = ()
+    _resolving: bool = True
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
         """Read handlers named in the class body into the model.
@@ -380,11 +412,17 @@ class Simulator(SignalModel):
         named = {
             slot: cls.__dict__[slot] for slot in _HANDLER_SLOTS if slot in cls.__dict__
         }
-        if not named or "model" in cls.__dict__:
-            return
-        cls.model = replace(cls.model, operators=replace(cls.model.operators, **named))
-        for slot in named:
-            delattr(cls, slot)
+        if named and "model" not in cls.__dict__:
+            cls.model = replace(
+                cls.model, operators=replace(cls.model.operators, **named)
+            )
+            for slot in named:
+                delattr(cls, slot)
+        # The physics names what the model exposes, unless the class body did
+        # -- which is what a model composing others, with no physics of its
+        # own, does.
+        if "properties" not in cls.__dict__:
+            cls.properties = cls.model.properties
 
     def __init__(
         self,
@@ -392,14 +430,14 @@ class Simulator(SignalModel):
         model: SpinPhysics | None = None,
         states: int | None = None,
         repetitions: int | str | None = None,
-        record: RecordMode = "all",
-        execution: str | torch.device | Sequence[Any] | None = None,
+        record: RecordMode = _UNSET,
+        execution: str | torch.device | Sequence[Any] | None = _UNSET,
         pulse: RfDefinition | None = None,
         shims: Mapping[int, ShimDefinition] | None = None,
-        across_slice: Any = None,
+        across_slice: Any = _UNSET,
         resolve: bool = True,
-        crusher_dephasing_rad: float = 0.0,
-        voxel_size_m: float | None = None,
+        crusher_dephasing_rad: float = _UNSET,
+        voxel_size_m: float | None = _UNSET,
         **protocol: Any,
     ) -> None:
         """Bind the physics, the protocol and any tissue this simulator plays.
@@ -457,24 +495,30 @@ class Simulator(SignalModel):
         self.model = model if model is not None else type(self).model
         if pulse is not None:
             self.model = replace(self.model, definitions={0: replace(pulse, id=0)})
-        # Bound here rather than looked up per event: after this, what the
-        # protocol produces is an ordinary description and no trigger is
-        # consulted again.
-        self.operators = self.model.operators
-        self.properties = self.model.properties
+        if model is not None:
+            # A physics given here names the properties; otherwise the class
+            # body already said them, outright or through its own physics.
+            self.properties = self.model.properties
         self.states = states if states is not None else type(self).states
         self.repetitions = (
             repetitions if repetitions is not None else type(self).repetitions
         )
-        self.record = record
-        self.execution = execution
+        # Each falls back to what the class body says, which is where a
+        # sequence that always records one shot or always spans one slice
+        # states it once rather than in a constructor of its own.
+        self.record = _named(record, type(self).record)
+        self.execution = _named(execution, type(self).execution)
+        self.crusher_dephasing_rad = _named(
+            crusher_dephasing_rad, type(self).crusher_dephasing_rad
+        )
+        self.voxel_size_m = _named(voxel_size_m, type(self).voxel_size_m)
         self.shims = dict(shims) if shims else {}
-        self.across_slice = across_the_slice(across_slice)
-        self.crusher_dephasing_rad = crusher_dephasing_rad
-        self.voxel_size_m = voxel_size_m
+        self.across_slice = across_the_slice(
+            _named(across_slice, type(self).across_slice)
+        )
         self._resolving = bool(resolve)
-        self._packing: Packing | None = None
-        self._refused: list[Any] = []
+        self._packing = None
+        self._refused = ()
         # Read once, so a layout can be written in torch whatever the caller
         # brought, and so the answer knows where to go back to.
         self._brought = brought(protocol.values())
@@ -491,7 +535,7 @@ class Simulator(SignalModel):
                 if name not in declared and name not in RUN_SETTINGS
             }
         )
-        self._described: SequenceDescription | None = None
+        self._described = None
 
     def bind(self, **values: Any) -> Simulator:
         """This simulator with more fixed on it, values or settings alike.
@@ -511,6 +555,16 @@ class Simulator(SignalModel):
         for name, value in settings.items():
             setattr(held, "states" if name == "nstates" else name, value)
         return held
+
+    @property
+    def operators(self) -> EventOperators:
+        """What plays each kind of event, from this simulator's physics.
+
+        A layout reads its operators here. Each is resolved while a
+        description is being assembled and never again: what the layout
+        produces carries its own action word, and the run consults no slot.
+        """
+        return self.model.operators
 
     @property
     def variables(self) -> tuple[str, ...]:
@@ -553,7 +607,7 @@ class Simulator(SignalModel):
         # Whatever was resolved was resolved somewhere else, and holds tensors
         # that live there.
         moved._packing = None
-        moved._refused = []
+        moved._refused = ()
         return moved
 
     def _structure(
@@ -591,10 +645,20 @@ class Simulator(SignalModel):
             return self.describe(**played), None
         packing = bind(self, played, device=where, **settings)
         if packing is None:
-            self._refused.append(key)
+            self._refused = (*self._refused, key)
             return self.describe(**played), None
         self._packing = packing
         return packing.description, packing.pack(played)
+
+    def _split(self, values: Mapping[str, Any]) -> tuple[dict, dict]:
+        """Tell the property arguments from the sequence ones.
+
+        The protocol the constructor fixed joins the sequence arguments here,
+        so a closed form reads everything it was written with from what it is
+        handed, whichever side gave it. A call naming one again wins.
+        """
+        held, sequence = super()._split(values)
+        return held, {**self.protocol, **sequence}
 
     def _backend(self, values: Mapping[str, Any]) -> Any:
         """Return the caller's array library, from the call or the constructor.

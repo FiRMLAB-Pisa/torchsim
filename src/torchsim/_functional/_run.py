@@ -9,11 +9,11 @@ from typing import Any
 
 import torch
 
-from ..model import SignalModel
+from ..model import Simulator
 
 
 def evaluated(
-    model: SignalModel,
+    model: Simulator,
     diff: str | Sequence[str] | None,
     device: str | torch.device | None = None,
     **values: Any,

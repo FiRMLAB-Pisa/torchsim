@@ -63,11 +63,6 @@ class MP2RAGESimulator(Simulator):
     states = 1
     record = "acquired"
 
-    def __init__(self, **settings: Any) -> None:
-        """Record only the shot that samples the k-space centre of each block."""
-        settings.setdefault("record", type(self).record)
-        super().__init__(**settings)
-
     def evaluate(self, properties: Mapping[str, Any], **sequence: Any) -> torch.Tensor:
         """Evaluate the closed form, no state machine and no description."""
         return self._signal(properties, **arrays(self.played(**sequence)))

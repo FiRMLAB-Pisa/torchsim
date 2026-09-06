@@ -28,12 +28,12 @@ class LookupTable(Estimator):
 
     Parameters
     ----------
-    acquisition : SignalModel, optional
+    acquisition : Simulator, optional
         The sequence being inverted: a simulator that ships with TorchSim, one
         written by subclassing :class:`~torchsim.model.Simulator`, or any other
-        :class:`~torchsim.model.SignalModel`. Every tissue property that is
+        :class:`~torchsim.model.Simulator`. Every tissue property that is
         neither unknown nor measured separately is fixed on it beforehand, with
-        the constructor or :meth:`~torchsim.model.SignalModel.bind`. Leave it
+        the constructor or :meth:`~torchsim.model.Simulator.bind`. Leave it
         out to fit from signals handed to :meth:`fit` directly.
     combine : callable, optional
         Reduce a model's contrasts to the one number the curve is in, called

@@ -5,12 +5,12 @@ description: Write a new simulator, signal model, or sequence operator in TorchS
 
 # Add a sequence to TorchSim
 
-**There are two base classes and you write exactly one of them.**
-`SignalModel` is the interface; nothing downstream ever asks which kind it is.
+**There is one base class, `Simulator`, written in one of two ways.** Nothing
+downstream ever asks which way.
 
 ## A signal that has to be played
 
-Write a `Simulator`: a train of pulses whose magnetization state carries from
+Implement `layout()`: a train of pulses whose magnetization state carries from
 one event to the next, which is almost every quantitative sequence.
 
 1. Set `model` to a `SpinPhysics` — what a voxel holds, so which tissue
@@ -32,9 +32,12 @@ and gradient-echo trains, `BALANCED` for a fully refocused steady state,
 
 ## A signal with a closed form
 
-Subclass `SignalModel` directly and implement `evaluate()` — a mono-exponential
-decay, an inversion-recovery curve. There is nothing to play and no state to
-carry, so there is no `SpinPhysics` and no `layout`.
+Implement `evaluate()` instead — a mono-exponential decay, an
+inversion-recovery curve, an Ernst steady state. There is nothing to play and
+no state to carry, so there is no `layout` and the `SpinPhysics` carries only
+the property declaration. `SPGRSimulator` is written this way; `MP2RAGESimulator`
+carries both, the closed form a lookup table is built from and the layout a
+description arriving from a scanner is compared against.
 
 ## An operator of your own
 

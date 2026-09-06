@@ -60,7 +60,7 @@ class ModelOperator(torch.nn.Module):
 
     Parameters
     ----------
-    acquisition : SignalModel
+    acquisition : Simulator
         The sequence being inverted, with every property that is not being
         solved for already fixed on it. A property bound as a map -- a
         measured B1, a known T1 -- is one value per voxel and rides along.

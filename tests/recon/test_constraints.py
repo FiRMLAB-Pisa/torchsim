@@ -9,7 +9,7 @@ from typing import Any
 import pytest
 import torch
 
-from torchsim.model import SignalModel
+from torchsim.model import Simulator
 from torchsim.recon import (
     GaussNewton,
     ModelOperator,
@@ -32,7 +32,7 @@ TE_MS = torch.linspace(1.2, 12.0, 10)
 FAT_HZ = -434.0
 
 
-class FatWater(SignalModel):
+class FatWater(Simulator):
     """A gradient echo whose water and fat fractions must sum to one.
 
     Written on the fat fraction alone: water is ``1 - f`` inside the model, so

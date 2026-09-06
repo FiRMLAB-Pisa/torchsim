@@ -1,10 +1,10 @@
-"""Authoring a signal model.
+"""What a signal model owes, and what it is spared.
 
 A model says three things: which properties it exposes, how it turns them into
 a signal, and nothing else. Which kernel runs, how the work is cut across
 memory and devices, and how derivatives are taken belong below.
 
-Two rules earn their place here.
+Three rules earn their place here.
 
 **A property stays as the caller gave it.** A model reaching the fused state
 machine gets the terms it needs and no more, and the kernels decide that from
@@ -34,7 +34,7 @@ only hide it.
 
 from __future__ import annotations
 
-__all__ = ["SignalModel"]
+__all__ = ["_SignalModel"]
 
 from abc import ABC, abstractmethod
 from collections.abc import Mapping, Sequence
@@ -50,10 +50,12 @@ from ..sequence._parameters import PUBLIC_PROPERTIES
 _NOTHING: Mapping[str, Any] = MappingProxyType({})
 
 
-class SignalModel(ABC):
-    """One signal model: declared properties, and a signal.
+class _SignalModel(ABC):
+    """What every model owes, and the two derivative modes over it.
 
-    Subclasses set :attr:`properties` and implement :meth:`evaluate`.
+    The interface :class:`~torchsim.model.Simulator` presents, and everything
+    downstream consumes: declared properties, and a signal. What a model has
+    to supply is :attr:`properties` and :meth:`evaluate`.
 
     **The constructor takes the keywords** :meth:`simulate` **takes, and fixes
     them; a call overrides.** :meth:`bind` fixes more on a copy, so what a
@@ -71,7 +73,7 @@ class SignalModel(ABC):
         takes them by. A call may name any of them again, and the call wins.
     """
 
-    properties: Mapping[str, str] | Sequence[str] = ()
+    properties: Mapping[str, str | None] | Sequence[str] = ()
     bound: Mapping[str, Any] = _NOTHING
 
     def __init__(self, **values: Any) -> None:
@@ -127,7 +129,7 @@ class SignalModel(ABC):
 
         Returns
         -------
-        SignalModel
+        Simulator
             A copy. This one is left as it was.
         """
         held = shallow_copy(self)
@@ -144,7 +146,7 @@ class SignalModel(ABC):
 
         Returns
         -------
-        SignalModel
+        Simulator
             A copy. This one is left where it was.
         """
         moved = shallow_copy(self)

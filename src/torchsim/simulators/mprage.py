@@ -43,11 +43,6 @@ class MPRAGESimulator(Simulator):
     states = 1
     record = "acquired"
 
-    def __init__(self, **settings: Any) -> None:
-        """Record only the shot that samples the k-space centre."""
-        settings.setdefault("record", type(self).record)
-        super().__init__(**settings)
-
     def layout(
         self,
         *,

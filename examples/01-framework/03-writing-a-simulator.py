@@ -205,7 +205,7 @@ plt.ylabel("signal magnitude [a.u.]")
 # derivative per property yields every voxel's derivative at once, and the cost
 # is one pass per property rather than per voxel.
 #
-# That is what :meth:`~torchsim.model.SignalModel.jacobian` does. A single name
+# That is what :meth:`~torchsim.model.Simulator.jacobian` does. A single name
 # collapses the parameter axis; a sequence of names keeps it.
 #
 signal, jacobian = sequence.jacobian(("T1", "T2"), T1=1000.0, T2=100.0)

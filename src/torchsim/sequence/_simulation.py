@@ -237,7 +237,7 @@ class EpgEngine:
     hand, or one that arrived from a scanner. A
     :class:`~torchsim.model.Simulator` wraps this and is what most sequences
     are written as -- it fixes tissue and protocol on itself, and adds
-    :meth:`~torchsim.model.SignalModel.jacobian`, binding and device
+    :meth:`~torchsim.model.Simulator.jacobian`, binding and device
     placement. Nothing here does any of that: give it a description and a
     tissue, get a :class:`SimulationResult` back.
 

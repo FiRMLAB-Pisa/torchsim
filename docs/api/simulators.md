@@ -1,7 +1,7 @@
 # Simulators
 
 The sequences that ship with TorchSim. A constructor takes the keywords
-{meth}`~torchsim.model.SignalModel.simulate` takes and fixes them, so a
+{meth}`~torchsim.model.Simulator.simulate` takes and fixes them, so a
 sequence and the tissue it is being asked about are written down together and
 what is left to give at the call is whatever is actually varying.
 

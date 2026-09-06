@@ -14,7 +14,7 @@ back through the same door.
 **What does not survive the round trip is the autograd graph.** A gradient
 needs the tensor it was taken with respect to, so a cost differentiated with
 :meth:`torch.Tensor.backward` has to be built on torch inputs. Forward-mode
-derivatives are unaffected -- :meth:`~torchsim.model.SignalModel.jacobian`
+derivatives are unaffected -- :meth:`~torchsim.model.Simulator.jacobian`
 takes them internally and hands back plain arrays in whatever the caller
 brought.
 """
