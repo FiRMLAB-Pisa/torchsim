@@ -91,8 +91,9 @@ _EMPTY: Mapping[str, Any] = MappingProxyType({})
 _UNSET: Any = object()
 
 # What a caller may name that describes the run rather than the sequence, at
-# the constructor, on bind() or at the call. Each is spelled the same in all
-# three, and "device" is the one a run takes without holding.
+# the constructor, on bind() or at the call, each spelled the same in all
+# three. Two are not held under the name they arrive by: "device" belongs to
+# one launch, and "pulse" is substituted into the physics.
 RUN_SETTINGS = (
     "states",
     "repetitions",
