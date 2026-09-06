@@ -30,6 +30,17 @@
   whatever the call added, so `evaluate(self, properties, *, TE)` reads `TE`
   whichever side gave it.
 
+- **`Simulator` refuses to be instantiated.** It names no physics, no
+  handlers, and neither a layout nor a closed form, so a sequence is what a
+  subclass says. `Simulator(...)` now raises rather than building something
+  that fails at the first call.
+
+- **The orders to carry are `states` everywhere a model is asked.** The
+  constructor, a class body, `bind()` and the call all take the one name, as
+  do `fse_sim` and `mrf_sim`. `nstates` stays `EpgEngine.simulate`'s own
+  spelling, and a simulator given it says so rather than holding it quietly as
+  a protocol argument.
+
 - **A stream is read through the simulator you hand it to.** The MRD transport
   carries RF pulses and ADC windows and no gradients, so a description says
   what was played and not how the sequence dephased between one event and the

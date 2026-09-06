@@ -19,7 +19,7 @@ def mrf_sim(
     inv_efficiency: float | npt.ArrayLike = 1.0,
     M0: float | npt.ArrayLike = 1.0,
     TI: float = 0.0,
-    nstates: int = 10,
+    states: int = 10,
     nreps: int = 1,
     device: str | torch.device = None,
 ) -> torch.Tensor | tuple[torch.Tensor, torch.Tensor]:
@@ -48,7 +48,7 @@ def mrf_sim(
     TI : float | npt.ArrayLike, optional
         Inversion time in milliseconds.
         The default is ``0.0``.
-    nstates : int, optional
+    states : int, optional
         Number of EPG states to be retained.
         The default is ``10``.
     nreps : int, optional
@@ -80,6 +80,6 @@ def mrf_sim(
         flip=flip,
         TR=TR,
         TI=TI,
-        nstates=nstates,
+        states=states,
         repetitions=nreps,
     )

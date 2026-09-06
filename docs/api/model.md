@@ -87,3 +87,45 @@ to a copy, and a call overrides either.
 
    Simulator
 ```
+
+## The physics behind it
+
+{class}`SpinPhysics` is the other half: which tissue properties a voxel has,
+and so which terms the kernels carry, together with what each kind of event is
+realized as. {class}`EventOperators` holds one slot per role a sequence is
+written in terms of, and a class body that names `excitation`, `readout` or
+any of the other four is assigning into it.
+
+The two are separate so either can change without the other -- an MRF timing
+given a selective excitation, or a refocused train whose readout spoils rather
+than winds, is an assignment and not a new model.
+
+```{eval-rst}
+.. autosummary::
+   :toctree: ../generated
+   :nosignatures:
+
+   SpinPhysics
+   EventOperators
+```
+
+Four tables are supplied, and a `SpinPhysics` names one rather than filling
+the slots itself:
+
+| | Readout | Refocusing |
+| --- | --- | --- |
+| {data}`SPOILED` | ideal transverse spoiling after the sample | crushed |
+| {data}`UNBALANCED` | one unbalanced gradient after the sample | crushed |
+| {data}`BALANCED` | the repetition rewinds after the sample | uncrushed |
+| {data}`REFOCUSED` | the sample at the echo centre | crushed |
+
+```{eval-rst}
+.. autodata:: torchsim.model.SPOILED
+   :no-value:
+.. autodata:: torchsim.model.UNBALANCED
+   :no-value:
+.. autodata:: torchsim.model.BALANCED
+   :no-value:
+.. autodata:: torchsim.model.REFOCUSED
+   :no-value:
+```

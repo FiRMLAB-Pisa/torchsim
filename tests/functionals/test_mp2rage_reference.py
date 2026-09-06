@@ -244,7 +244,7 @@ def played(description, **properties):
     the sign the closed form writes directly.
     """
     replayed = Simulator.from_description(
-        description, MP2RAGESimulator.model, record="echo", nstates=1
+        description, MP2RAGESimulator.model, record="echo", states=1
     )
     signal = replayed.simulate(**properties, repetitions=REPETITIONS)
     return (1j * signal.reshape(-1, 2)).real

@@ -211,3 +211,35 @@ def test_a_simulator_says_what_it_is_written_in() -> None:
     assert "B0" in model.accepts and "B0" not in model.exposes
     assert not set(model.variables) & set(model.accepts)
     assert all(isinstance(name, str) for name in model.variables)
+
+
+def test_the_base_class_is_not_a_sequence() -> None:
+    """Nothing about a sequence is settled until a subclass settles it.
+
+    ``Simulator`` names no physics, no handlers, and neither a layout nor a
+    closed form, so an instance of it could only fail at the first call.
+    """
+    with pytest.raises(TypeError, match="subclass it"):
+        Simulator(**SEQUENCE)
+
+    assert Relaxation(**SEQUENCE).simulate(T1=T1, T2=T2).numel()
+
+
+def test_the_orders_to_carry_are_one_name_at_every_surface() -> None:
+    """``states`` on the constructor, on ``bind`` and at the call.
+
+    A run setting held quietly under another name would become a protocol
+    argument, and a closed form taking ``**sequence`` would ignore it and
+    answer with the wrong number of orders rather than saying so.
+    """
+    assert Relaxation(**SEQUENCE, states=6).states == 6
+    assert Relaxation(**SEQUENCE).bind(states=6).states == 6
+    assert Relaxation(**SEQUENCE, states=6).simulate(T1=T1, T2=T2, states=4).numel()
+
+    for asked in (
+        lambda: Relaxation(**SEQUENCE, nstates=6),
+        lambda: Relaxation(**SEQUENCE).bind(nstates=6),
+        lambda: Relaxation(**SEQUENCE).simulate(T1=T1, T2=T2, nstates=6),
+    ):
+        with pytest.raises(TypeError, match="takes it as 'states'"):
+            asked()

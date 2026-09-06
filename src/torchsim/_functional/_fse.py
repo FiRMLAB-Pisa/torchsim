@@ -21,7 +21,7 @@ def fse_sim(
     diff: str | tuple[str] = None,
     B1: float | npt.ArrayLike = 1.0,
     M0: float | npt.ArrayLike = 1.0,
-    nstates: int = 10,
+    states: int = 10,
     device: str | torch.device = None,
 ) -> torch.Tensor | tuple[torch.Tensor, torch.Tensor]:
     """
@@ -61,7 +61,7 @@ def fse_sim(
     TI : float | npt.ArrayLike, optional
         Inversion time in milliseconds.
         The default is ``0.0``.
-    nstates : int, optional
+    states : int, optional
         Number of EPG states to be retained.
         The default is ``10``.
     device : str | torch.device, optional
@@ -92,5 +92,5 @@ def fse_sim(
         TR=TR,
         exc_flip=exc_flip,
         exc_phase=exc_phase,
-        nstates=nstates,
+        states=states,
     )

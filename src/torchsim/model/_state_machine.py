@@ -90,10 +90,11 @@ _EMPTY: Mapping[str, Any] = MappingProxyType({})
 # what decides -- None being a value several of them take.
 _UNSET: Any = object()
 
-# What a caller may name that describes the run rather than the sequence. Each
-# has an attribute of the same name, set once at construction.
+# What a caller may name that describes the run rather than the sequence, at
+# the constructor, on bind() or at the call. Each is spelled the same in all
+# three, and "device" is the one a run takes without holding.
 RUN_SETTINGS = (
-    "nstates",
+    "states",
     "repetitions",
     "record",
     "device",
@@ -142,6 +143,25 @@ def realised(
         return description
     events, _played_s = compose(*parts)
     return replace(description, events=events)
+
+
+#: The engine's spelling for a setting this layer takes under another name.
+_RENAMED = MappingProxyType({"nstates": "states"})
+
+
+def _no_renamed(values: Mapping[str, Any]) -> None:
+    """Refuse a run setting under the name the engine takes it by.
+
+    Held quietly instead, it would become a protocol argument and reach a
+    layout that has no parameter for it -- or a closed form that ignores it,
+    and answers with the wrong number of orders.
+    """
+    for given in _RENAMED.keys() & values.keys():
+        raise TypeError(
+            f"{given!r} is EpgEngine's name for this setting; a simulator "
+            f"takes it as {_RENAMED[given]!r}, on the constructor, on bind() "
+            f"or at the call"
+        )
 
 
 def _named(given: Any, declared: Any) -> Any:
@@ -392,6 +412,20 @@ class Simulator(_SignalModel):
     _refused: Sequence[Any] = ()
     _resolving: bool = True
 
+    def __new__(cls, *args: Any, **kwargs: Any) -> Simulator:
+        """Refuse the base class itself.
+
+        Nothing is named here: no physics, no handlers, and neither a layout
+        nor a closed form. A sequence is what a subclass says.
+        """
+        if cls is Simulator:
+            raise TypeError(
+                "Simulator is what a sequence is written against, not a "
+                "sequence: subclass it and implement layout() for a train of "
+                "events, or evaluate() for a closed form"
+            )
+        return super().__new__(cls)
+
     def __init_subclass__(cls, **kwargs: Any) -> None:
         """Read handlers named in the class body into the model.
 
@@ -492,6 +526,7 @@ class Simulator(_SignalModel):
             The sequence arguments :meth:`layout` reads, and any tissue
             property to fix, under the names :attr:`properties` declares.
         """
+        _no_renamed(protocol)
         self.model = model if model is not None else type(self).model
         if pulse is not None:
             self.model = replace(self.model, definitions={0: replace(pulse, id=0)})
@@ -545,6 +580,7 @@ class Simulator(_SignalModel):
         how many orders to carry -- is applied to the copy instead, because it
         changes what is simulated rather than what is simulated with.
         """
+        _no_renamed(values)
         settings = {name: values.pop(name) for name in RUN_SETTINGS if name in values}
         held = super().bind(**values)
         pulse = settings.pop("pulse", None)
@@ -553,7 +589,7 @@ class Simulator(_SignalModel):
         if "across_slice" in settings:
             held.across_slice = across_the_slice(settings.pop("across_slice"))
         for name, value in settings.items():
-            setattr(held, "states" if name == "nstates" else name, value)
+            setattr(held, name, value)
         return held
 
     @property
@@ -657,6 +693,7 @@ class Simulator(_SignalModel):
         so a closed form reads everything it was written with from what it is
         handed, whichever side gave it. A call naming one again wins.
         """
+        _no_renamed(values)
         held, sequence = super()._split(values)
         return held, {**self.protocol, **sequence}
 
@@ -832,12 +869,12 @@ class Simulator(_SignalModel):
     def evaluate(self, properties: Mapping[str, Any], **sequence: Any) -> torch.Tensor:
         """Run one simulation of the described protocol.
 
-        ``nstates``, ``repetitions``, ``record``, ``device`` and ``execution``
+        ``states``, ``repetitions``, ``record``, ``device`` and ``execution``
         describe the run and are taken here, each falling back to what the
         constructor was given; everything else overrides a protocol argument.
         """
         given = dict(sequence)
-        states = given.pop("nstates", self.states)
+        states = given.pop("states", self.states)
         settings = {
             "repetitions": given.pop("repetitions", self.repetitions),
             "record": given.pop("record", self.record),
