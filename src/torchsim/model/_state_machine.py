@@ -420,18 +420,28 @@ class Simulator(SignalModel):
             holds no structure fixed across calls.
         record:
             Which ADCs the signal holds.
-        shims:
-            The transmit shims the pulses are driven on, by id, for a layout
-            whose operators name a ``shim_id``. One channel driven alike when
-            not given.
         execution:
             Where to run -- ``"auto"`` to decide per call against what the
             devices have free, ``"cpu"``, or a device or list of devices.
             ``None`` follows whatever :func:`~torchsim.sequence.execution`
             block is in scope, which is what lets a caller decide instead.
+        pulse:
+            The waveform the events drive, taking the place of the ideal hard
+            rotation the shipped operators name. Giving one is what makes the
+            layout's pulses shaped; where across the slice to work them out is
+            ``across_slice``.
+        shims:
+            The transmit shims the pulses are driven on, by id, for a layout
+            whose operators name a ``shim_id``. One channel driven alike when
+            not given.
+        across_slice:
+            How many positions across the slice to integrate a shaped pulse
+            at, or an ``exact_slice_profile()`` saying which. ``None`` works
+            it out at the slice centre alone, which is the hard-pulse answer.
         resolve:
-            Whether to hold the protocol's structure fixed across calls; see
-            :meth:`resolved`. A loop that plays the same sequence with
+            Whether to hold the protocol's structure fixed across calls, so
+            that a call which changes only numbers rebinds them onto events
+            already packed. A loop that plays the same sequence with
             different numbers -- a design, a dictionary sweep -- is worth
             roughly eight times the whole call this way. Turning it off
             rebuilds the event stream every call, which is slower and agrees
