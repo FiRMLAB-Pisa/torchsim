@@ -697,6 +697,69 @@ def _shimmed(voxels: int, states: int) -> None:
     assert second <= WIDE_TOLERANCE, f"shimmed second order: {second:.2e}"
 
 
+def _profiled(voxels: int, states: int) -> None:
+    """A shaped pulse turned through by its table, against the oracle.
+
+    The kernels ask whether a profile is read at all as a compile-time
+    question and how many knots it holds as an ordinary number, so a launch
+    that answered the first from the second would read the table with the
+    wrong bound. Nothing else here drives a profile, and the tissue is spread
+    across the slice positions the table samples, which is a layout only this
+    case exercises.
+    """
+    install()
+    import math
+
+    import numpy as np
+
+    from torchsim import rf_definition
+    from torchsim.sequence import _builders, _epg_triton
+    from torchsim.sequence._accelerators import _across_the_table
+    from torchsim.sequence._transition import (
+        SliceTables,
+        exact_slice_profile,
+        transition_table,
+    )
+    from utils.packed_reference import simulate_packed
+
+    grid = np.linspace(-2.0, 2.0, 128)
+    envelope = np.sinc(grid) * (0.54 + 0.46 * np.cos(np.pi * grid / 2.0))
+    pulse = rf_definition(
+        envelope.astype(np.complex128), dwell_s=4e-6, bandwidth_hz=2000.0
+    )
+
+    echoes = 4
+    events, outputs = _events(
+        _builders.fse_description(torch.full((echoes,), math.radians(150.0)), 8e-3)
+    )
+    asked = exact_slice_profile(3)
+    table = transition_table(
+        pulse,
+        asked.positions(),
+        bins=asked.bins,
+        theta_max=asked.theta_max,
+        rf_raster_time_s=1e-6,
+    )
+    profile = SliceTables.alone(table, int(events[1].numel()), events[1].device)
+    tissue = _across_the_table(_tissue(voxels), profile.points)
+    shape = dict(state_count=states, output_count=outputs)
+
+    signal = _epg_triton.simulate(tissue, events, profile=profile, **shape)
+    expected = simulate_packed(
+        tissue, events, profile=table, locations=profile.points, **shape
+    )
+    forward = float((signal - expected).abs().max() / expected.abs().max())
+    print(f"  profiled forward    {forward:.2e}")
+    assert forward <= ORACLE_TOLERANCE, f"profiled forward drifted: {forward:.2e}"
+
+    # A table that moved nothing would agree with the oracle and prove neither
+    # of them read it.
+    plain = _epg_triton.simulate(tissue, events, **shape)
+    moved = float((signal - plain).abs().max() / plain.abs().max())
+    print(f"  profiled moves it   {moved:.2e}")
+    assert moved > 1e-3, f"the profile changed nothing: {moved:.2e}"
+
+
 def _narrowed(voxels: int, states: int) -> None:
     """A tissue whose optional properties are one value each, kept that way.
 
@@ -784,6 +847,9 @@ def _case(name: str) -> None:
         return
     if name == "shimmed":
         _shimmed(3, 4)
+        return
+    if name == "profiled":
+        _profiled(3, 4)
         return
     if name == "washed":
         _washed(3, 4)

@@ -3935,7 +3935,7 @@ def _two_pool_transverse_step_jvp(
 
 
 @triton.jit
-def _lineshape_at(lineshape, offset_hz, bins: tl.constexpr, step):
+def _lineshape_at(lineshape, offset_hz, bins, step):
     """How well the bound pool absorbs a pulse this far off its resonance.
 
     Cubic Hermite between the two knots bracketing the offset, taken in
@@ -4073,7 +4073,7 @@ def _two_pool_step_jvp(
 
 
 @triton.jit
-def _lineshape_at_slope(lineshape, offset_hz, bins: tl.constexpr, step):
+def _lineshape_at_slope(lineshape, offset_hz, bins, step):
     """The lineshape and its derivative in the *signed* offset.
 
     The table covers the magnitude, so the slope changes sign with the offset;
@@ -4108,7 +4108,7 @@ def _lineshape_at_slope(lineshape, offset_hz, bins: tl.constexpr, step):
 
 
 @triton.jit
-def _lineshape_at_curve(lineshape, offset_hz, bins: tl.constexpr, step):
+def _lineshape_at_curve(lineshape, offset_hz, bins, step):
     """The lineshape, its slope and its curvature, from the same cubic.
 
     The table covers the magnitude, so the slope changes sign with the offset
@@ -4606,7 +4606,7 @@ def _dynamic_pair_at(pairs, pair_index, event_base, event, atom, atom_count, mas
 
 
 @triton.jit
-def _profile_pair(profile, row, theta, bins: tl.constexpr, step):
+def _profile_pair(profile, row, theta, bins, step):
     """The Cayley-Klein pair the transition table holds at this flip angle.
 
     Cubic Hermite between the two knots bracketing ``theta``, clamped at both
@@ -4637,7 +4637,7 @@ def _profile_pair(profile, row, theta, bins: tl.constexpr, step):
 
 
 @triton.jit
-def _profile_pair_slope(profile, row, theta, bins: tl.constexpr, step):
+def _profile_pair_slope(profile, row, theta, bins, step):
     """The pair and its derivative in the flip angle, from the same cubic.
 
     The derivative of a Hermite segment is another polynomial in the same four
@@ -4676,7 +4676,7 @@ def _profile_pair_slope(profile, row, theta, bins: tl.constexpr, step):
 
 
 @triton.jit
-def _profile_pair_curve(profile, row, theta, bins: tl.constexpr, step):
+def _profile_pair_curve(profile, row, theta, bins, step):
     """The pair, its slope and its curvature in the flip angle.
 
     The second-order pass differentiates the read twice, and a Hermite segment
@@ -5165,7 +5165,7 @@ def _profiled_pair_dual(
     alpha_tangent,
     phi_value,
     phi_tangent,
-    bins: tl.constexpr,
+    bins,
     step,
 ):
     """The pair a shaped pulse turns through, and its slope, as duals.
@@ -5656,7 +5656,7 @@ def _rotation_coefficients(a, b, c, d, p1r, p1i, p2r, p2i, pcr, pci):
     return t00, t01, t02, t12, t20, t21, t22
 
 
-@triton.jit
+@triton.jit(do_not_specialize=["profile_bins", "lineshape_bins"])
 def _epg_vjp_kernel(
     t1,
     t2,
@@ -5719,9 +5719,11 @@ def _epg_vjp_kernel(
     atom_stride: tl.constexpr,
     shimmed: tl.constexpr,
     locations: tl.constexpr,
-    profile_bins: tl.constexpr,
+    profiled: tl.constexpr,
+    profile_bins,
     dynamic: tl.constexpr,
-    lineshape_bins: tl.constexpr,
+    broadened: tl.constexpr,
+    lineshape_bins,
     pools: tl.constexpr,
     narrow: tl.constexpr,
     tabulated: tl.constexpr,
@@ -6186,7 +6188,7 @@ def _epg_vjp_kernel(
         turned_mi = b0_[1] + b1_[1] + b2[1]
         turned_zr = c0[0] + c1[0] + c2[0]
         turned_zi = c0[1] + c1[1] + c2[1]
-        if profile_bins > 0 or dynamic:
+        if profiled or dynamic:
             if dynamic:
                 pair = _dynamic_pair_at(
                     pairs,
@@ -6246,7 +6248,7 @@ def _epg_vjp_kernel(
             spun_pr, spun_pi = e0[0] + e1_[0] + e2_[0], e0[1] + e1_[1] + e2_[1]
             spun_mr, spun_mi = f0[0] + f1[0] + f2[0], f0[1] + f1[1] + f2[1]
             spun_zr, spun_zi = h0[0] + h1[0] + h2[0], h0[1] + h1[1] + h2[1]
-            if profile_bins > 0 or dynamic:
+            if profiled or dynamic:
                 (
                     spun_pr,
                     spun_pi,
@@ -7033,7 +7035,7 @@ def _epg_vjp_kernel(
         ur, ui = -(u2[1] - u1[1]), u2[0] - u1[0]
         phi_v += zbvr * ur + zbvi * ui
 
-        if profile_bins > 0 or dynamic:
+        if profiled or dynamic:
             slope_ar, slope_ai, slope_br, slope_bi = 0.0, 0.0, 0.0, 0.0
             if dynamic:
                 pair = _dynamic_pair_at(
@@ -7177,7 +7179,7 @@ def _epg_vjp_kernel(
                     alpha_v += pool_pair_br * slope_br + pool_pair_bi * slope_bi
                 phi_v += pool_pair_br * shaped_bi - pool_pair_bi * shaped_br
 
-        if (pools == 2 or pools == 3) and profile_bins == 0 and not dynamic:
+        if (pools == 2 or pools == 3) and not profiled and not dynamic:
             # The same pulse turns the exchanging pool, so its cotangent adds to
             # the flip and phase the free pool already left.
             row0 = _complex_mul(d00[0], d00[1], sbpvr, sbpvi)
@@ -7232,7 +7234,7 @@ def _epg_vjp_kernel(
         back_mi = q0[1] + q1[1] + q2[1]
         back_zr = w0[0] + w1[0] + w2[0]
         back_zi = w0[1] + w1[1] + w2[1]
-        if profile_bins > 0 or dynamic:
+        if profiled or dynamic:
             # A shaped pulse turned the states, so its own adjoint is what
             # goes back rather than the instant rotation's.
             back_pr, back_pi = shaped_pbr, shaped_pbi
@@ -7286,7 +7288,7 @@ def _epg_vjp_kernel(
             pool_back_mi = q0[1] + q1[1] + q2[1]
             pool_back_zr = w0[0] + w1[0] + w2[0]
             pool_back_zi = w0[1] + w1[1] + w2[1]
-            if profile_bins > 0 or dynamic:
+            if profiled or dynamic:
                 # A shaped pulse turned this pool too, so its own adjoint is
                 # what goes back rather than the instant rotation's.
                 pool_back_pr, pool_back_pi = pool_shaped_pbr, pool_shaped_pbi
@@ -8442,7 +8444,7 @@ def _epg_vjp_kernel(
             )
 
 
-@triton.jit
+@triton.jit(do_not_specialize=["profile_bins", "lineshape_bins"])
 def _epg_vjp_jvp_kernel(
     t1,
     t2,
@@ -8533,7 +8535,8 @@ def _epg_vjp_jvp_kernel(
     shim_rows,
     shimmed: tl.constexpr,
     locations: tl.constexpr,
-    profile_bins: tl.constexpr,
+    profiled: tl.constexpr,
+    profile_bins,
     dynamic: tl.constexpr,
     directed: tl.constexpr,
     off_axis: tl.constexpr,
@@ -8542,7 +8545,8 @@ def _epg_vjp_jvp_kernel(
     transmit: tl.constexpr,
     density: tl.constexpr,
     inverting: tl.constexpr,
-    lineshape_bins: tl.constexpr,
+    broadened: tl.constexpr,
+    lineshape_bins,
     pools: tl.constexpr,
     narrow: tl.constexpr,
     tabulated: tl.constexpr,
@@ -9343,7 +9347,7 @@ def _epg_vjp_jvp_kernel(
         turned_zvi = c0[1] + c1[1] + c2[1]
         turned_ztr = c0[2] + c1[2] + c2[2]
         turned_zti = c0[3] + c1[3] + c2[3]
-        if profile_bins > 0 or dynamic:
+        if profiled or dynamic:
             if dynamic:
                 shaped_a, shaped_b = _dynamic_pair_dual_at(
                     pairs,
@@ -9430,7 +9434,7 @@ def _epg_vjp_jvp_kernel(
             spun_zvi = h0[1] + h1[1] + h2[1]
             spun_ztr = h0[2] + h1[2] + h2[2]
             spun_zti = h0[3] + h1[3] + h2[3]
-            if profile_bins > 0 or dynamic:
+            if profiled or dynamic:
                 (
                     spun_pvr,
                     spun_pvi,
@@ -10460,7 +10464,7 @@ def _epg_vjp_jvp_kernel(
         sat_alpha_t = zero
         sat_b0_v = zero
         sat_b0_t = zero
-        if lineshape_bins > 0:
+        if broadened:
             # The pulse scales every order of the bound pool by one real
             # number, so its cotangent is a single sum over the states it
             # multiplied. The lineshape's own slope is differentiated too,
@@ -10559,7 +10563,7 @@ def _epg_vjp_jvp_kernel(
         alpha_b_t = empty
         phi_b_v = empty
         phi_b_t = empty
-        if profile_bins == 0 and not dynamic:
+        if not profiled and not dynamic:
             d00, d01, d02, d12, d20, d21, d22 = _rotation_block(
                 -0.5 * sin_value,
                 -0.5 * sin_tangent,
@@ -10768,7 +10772,7 @@ def _epg_vjp_jvp_kernel(
                 phi_b_v += part_v
                 phi_b_t += part_t
 
-        if profile_bins > 0 or dynamic:
+        if profiled or dynamic:
             shaped_slope_a = (empty, empty, empty, empty)
             shaped_slope_b = (empty, empty, empty, empty)
             if dynamic:
@@ -11011,7 +11015,7 @@ def _epg_vjp_jvp_kernel(
                 w0[2] + w1[2] + w2[2],
                 w0[3] + w1[3] + w2[3],
             )
-            if profile_bins > 0 or dynamic:
+            if profiled or dynamic:
                 back_ub = shaped_ub
                 back_wb = shaped_wb
                 back_bb = shaped_bb
@@ -11027,7 +11031,7 @@ def _epg_vjp_jvp_kernel(
             bbvi = tl.where(rotate, back_bb[1], bbvi)
             bbtr = tl.where(rotate, back_bb[2], bbtr)
             bbti = tl.where(rotate, back_bb[3], bbti)
-        if profile_bins > 0 or dynamic:
+        if profiled or dynamic:
             back_pb = shaped_pb
             back_mb = shaped_mb
             back_zb = shaped_zb
@@ -14610,7 +14614,7 @@ def _rotate_flip_phase(
     )
 
 
-@triton.jit
+@triton.jit(do_not_specialize=["profile_bins", "lineshape_bins"])
 def _epg_kernel(
     t1,
     t2,
@@ -14661,9 +14665,11 @@ def _epg_kernel(
     shim_rows,
     shimmed: tl.constexpr,
     locations: tl.constexpr,
-    profile_bins: tl.constexpr,
+    profiled: tl.constexpr,
+    profile_bins,
     dynamic: tl.constexpr,
-    lineshape_bins: tl.constexpr,
+    broadened: tl.constexpr,
+    lineshape_bins,
     pools: tl.constexpr,
     narrow: tl.constexpr,
     tabulated: tl.constexpr,
@@ -15091,7 +15097,7 @@ def _epg_kernel(
             _event_value(phase, event_base, event, active_atom, single_train)
             + atom_b1_phase
         )
-        if profile_bins > 0 or dynamic:
+        if profiled or dynamic:
             # Either pair is built at zero RF phase, which turns the rotation
             # axis and so reaches ``b`` alone.
             if dynamic:
@@ -15183,7 +15189,7 @@ def _epg_kernel(
                 bound_real,
                 bound_imag,
             )
-            if profile_bins > 0 or dynamic:
+            if profiled or dynamic:
                 # The same pulse, the same rotation: a chemical shift moves
                 # where a pool precesses, not what a pulse does to it.
                 (
@@ -15205,7 +15211,7 @@ def _epg_kernel(
                     bound_real,
                     bound_imag,
                 )
-        if profile_bins > 0 or dynamic:
+        if profiled or dynamic:
             rotated_pr = shaped_pr
             rotated_pi = shaped_pi
             rotated_mr = shaped_mr
@@ -15410,7 +15416,7 @@ def _rotate_flip_phase_jvp(
     )
 
 
-@triton.jit
+@triton.jit(do_not_specialize=["profile_bins", "lineshape_bins"])
 def _epg_jvp_kernel(
     t1,
     t2,
@@ -15486,9 +15492,11 @@ def _epg_jvp_kernel(
     shim_rows,
     shimmed: tl.constexpr,
     locations: tl.constexpr,
-    profile_bins: tl.constexpr,
+    profiled: tl.constexpr,
+    profile_bins,
     dynamic: tl.constexpr,
-    lineshape_bins: tl.constexpr,
+    broadened: tl.constexpr,
+    lineshape_bins,
     pools: tl.constexpr,
     narrow: tl.constexpr,
     tabulated: tl.constexpr,
@@ -16397,7 +16405,7 @@ def _epg_jvp_kernel(
                 dci = tl.where(saturating, absorbed * (dci + ci * d_exponent), dci)
                 cr = tl.where(saturating, absorbed * cr, cr)
                 ci = tl.where(saturating, absorbed * ci, ci)
-        if profile_bins > 0 or dynamic:
+        if profiled or dynamic:
             if dynamic:
                 # The array was resolved outside the kernel, so a direction
                 # along it arrives already carried through the pulse integral.
@@ -16606,7 +16614,7 @@ def _epg_jvp_kernel(
                 dbr,
                 dbi,
             )
-        if profile_bins > 0 or dynamic:
+        if profiled or dynamic:
             rotated_pr = shaped_pr
             rotated_pi = shaped_pi
             rotated_mr = shaped_mr
@@ -17252,8 +17260,10 @@ def simulate_into(
         shim_rows=shims,
         shimmed=shims > 1,
         locations=1 if profile is None else profile.points,
+        profiled=profile is not None and profile.bins > 0,
         profile_bins=0 if profile is None else profile.bins,
         dynamic=dynamic is not None,
+        broadened=lineshape is not None and lineshape.bins > 0,
         lineshape_bins=0 if lineshape is None else lineshape.bins,
         pools=pools,
         narrow=narrow,
@@ -17475,8 +17485,10 @@ def simulate_jvp_into(
         shim_rows=shims,
         shimmed=shims > 1,
         locations=1 if profile is None else profile.points,
+        profiled=profile is not None and profile.bins > 0,
         profile_bins=0 if profile is None else profile.bins,
         dynamic=dynamic is not None,
+        broadened=lineshape is not None and lineshape.bins > 0,
         lineshape_bins=0 if lineshape is None else lineshape.bins,
         pools=pools,
         narrow=narrow,
@@ -17684,8 +17696,10 @@ def simulate_vjp(
             atom_stride=_atom_stride(tissue),
             shimmed=shims > 1,
             locations=locations,
+            profiled=profile is not None and profile.bins > 0,
             profile_bins=0 if profile is None else profile.bins,
             dynamic=dynamic is not None,
+            broadened=lineshape is not None and lineshape.bins > 0,
             lineshape_bins=0 if lineshape is None else lineshape.bins,
             pools=pools,
             narrow=narrow,
@@ -18113,8 +18127,10 @@ def simulate_vjp_into(
             atom_stride=_atom_stride(tissue),
             shimmed=False,
             locations=1,
+            profiled=False,
             profile_bins=0,
             dynamic=False,
+            broadened=False,
             lineshape_bins=0,
             pools=0,
             narrow=False,
@@ -18408,9 +18424,11 @@ def simulate_vjp_jvp_into(
                 shim_rows=_shim_count(tissue),
                 shimmed=_shim_count(tissue) > 1,
                 locations=1 if profile is None else profile.points,
+                profiled=profile is not None and profile.bins > 0,
                 profile_bins=0 if profile is None else profile.bins,
                 dynamic=dynamic is not None,
                 directed=dynamic_direction is not None,
+                broadened=lineshape is not None and lineshape.bins > 0,
                 lineshape_bins=0 if lineshape is None else lineshape.bins,
                 pools=pools,
                 narrow=narrow,

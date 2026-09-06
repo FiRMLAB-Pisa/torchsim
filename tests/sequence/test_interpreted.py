@@ -52,6 +52,7 @@ def _run(case: str) -> subprocess.CompletedProcess[str]:
         "streamed",
         "washed",
         "shimmed",
+        "profiled",
         "one_pool",
         "two_pools",
         "real",
@@ -79,6 +80,9 @@ def test_the_kernels_agree_with_what_they_specialize(case: str) -> None:
     interval a washout, so a pooled row has to carry its own attenuation
     rather than one. ``shimmed`` drives a transmit row per shim, which is
     what tells the three-pool row index from the shim row it sits beside.
+    ``profiled`` turns a shaped pulse through its own table, which is the
+    one launch that answers whether a table is read separately from how
+    many knots it holds.
     ``one_pool`` and ``two_pools`` reach the pool models the table cases
     never do, against the packed reference and against the
     forward-over-reverse pass. ``real`` reaches the real-subspace kernels,

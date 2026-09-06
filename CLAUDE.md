@@ -69,6 +69,17 @@ on a card goes from minutes to the better part of an hour, almost all of it one
 MLIR pass. Know that before letting a formatter touch that file, and say which
 number you are quoting.
 
+**Most of what the cache holds is never loaded.** Each specialization is
+written out as its `.ttir`, `.ttgir`, `.llir` and `.ptx` beside the `.cubin`
+and the metadata a launch actually reads, and on a kernel this size the
+intermediate IR is the bulk of the bytes. `TRITON_STORE_BINARY_ONLY=1` writes
+the binary and its metadata alone; every compilation stage still runs, so
+neither the generated code nor the set of specializations changes.
+`TRITON_DISABLE_LINE_INFO=1` drops the source locations embedded in both,
+which costs line attribution under `ncu`. Set `TRITON_CACHE_DIR` to somewhere
+you keep and the compile is paid once per edit of the kernel file rather than
+once per checkout.
+
 **The `interpreted` marker is deselected by default.** Those tests run a Triton
 kernel through Triton's CPU interpreter — no GPU, no compile, about a minute
 each. `TRITON_INTERPRET=1` does the same thing by hand for a script. It is how

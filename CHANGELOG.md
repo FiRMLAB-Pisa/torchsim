@@ -41,6 +41,14 @@
   spelling, and a simulator given it says so rather than holding it quietly as
   a protocol argument.
 
+- **A profile's knot count is a number, not a compilation.** The Triton
+  kernels branch on whether a slice-profile or a lineshape table is read at
+  all, never on how many knots it holds, so the count is passed at run time
+  and the yes-or-no stays `tl.constexpr`. Every feature gate, block shape and
+  unrolled range is untouched, and a launch that reads no table compiles
+  exactly what it did. The C++ kernels already carried both counts as plain
+  values, so the two sides now say the same thing.
+
 - **A stream is read through the simulator you hand it to.** The MRD transport
   carries RF pulses and ADC windows and no gradients, so a description says
   what was played and not how the sequence dephased between one event and the
