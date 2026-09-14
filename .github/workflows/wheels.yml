@@ -70,7 +70,7 @@ jobs:
       # Which interpreters, which architectures and what each wheel is tested
       # with are all in [tool.cibuildwheel] in pyproject.toml, so a local
       # `cibuildwheel` run and this one agree.
-      - uses: pypa/cibuildwheel@v4.2.0
+      - uses: pypa/cibuildwheel@v4.2.1
 
       # cibuildwheel installs a wheel with its dependencies before it tests
       # it, and PyTorch publishes no musllinux wheel for that to resolve. The
