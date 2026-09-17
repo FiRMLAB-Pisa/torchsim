@@ -188,10 +188,13 @@ class ModelOperator(torch.nn.Module):
         shape : sequence of int, optional
             The voxel shape. Empty gives one voxel.
         values : float or array-like, optional
-            ``{name: value}`` in the property's own units. An unknown left out
-            starts at the middle of its bound, and a one-sided or absent bound
-            has no middle, so it must be given. The amplitude starts at one
-            unless ``amplitude=`` says otherwise.
+            ``{name: value}`` in the property's own units, one value or one
+            per voxel -- a map broadcasts against ``shape``, which is what
+            turns known parameters into a state and makes this the inverse of
+            :meth:`split`. An unknown left out starts at the middle of its
+            bound, and a one-sided or absent bound has no middle, so it must
+            be given. The amplitude starts at one unless ``amplitude=`` says
+            otherwise.
 
         Returns
         -------
@@ -211,20 +214,23 @@ class ModelOperator(torch.nn.Module):
         for name in self.unknown:
             low, high = bound_of(self.bounds, name)
             if name in values:
-                start = float(values[name])
+                start = torch.as_tensor(values[name], dtype=torch.float32)
             elif low is not None and high is not None:
-                start = 0.5 * (low + high)
+                start = torch.tensor(0.5 * (low + high))
             else:
                 raise ValueError(
                     f"{name} has no two-sided bound, so give it a starting value"
                 )
-            if (low is not None and start <= low) or (
-                high is not None and start >= high
-            ):
+            start = torch.broadcast_to(start, tuple(shape)).to(torch.float32)
+            outside = (low is not None and bool((start <= low).any())) or (
+                high is not None and bool((start >= high).any())
+            )
+            if outside:
                 raise ValueError(
-                    f"{name}: {start} is not strictly inside its bound ({low}, {high})"
+                    f"{name}: {start.min() if low is not None else start.max()} "
+                    f"is not strictly inside its bound ({low}, {high})"
                 )
-            columns.append(torch.full(tuple(shape), start))
+            columns.append(start)
         natural = torch.stack(columns, dim=-1)
         scale = torch.tensor(self.scale)
         free = to_free(natural, self.bounds, self.unknown) / scale
