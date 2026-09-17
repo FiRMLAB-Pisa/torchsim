@@ -4,6 +4,13 @@
 
 ### Added
 
+- **The rotation a shaped pulse performs is public.** `compose_spinor` composes
+  a pulse's Cayley-Klein pair sample by sample in torch, under a held or moving
+  gradient and for a field of each voxel's own, with derivatives reaching the
+  samples -- so a pulse can be designed by gradient descent through the Bloch
+  equation. A gallery example designs a 90 degree excitation that holds across
+  a range of B1 that way.
+
 - **A sequence in memory reads as the file it would write.**
   `read_pulseq_description`, `SequenceDescription.from_pulseq` and
   `Simulator.from_pulseq` take a sequence object as well as a path: pypulseq's

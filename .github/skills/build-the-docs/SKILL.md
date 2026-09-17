@@ -35,7 +35,7 @@ every page is written and the examples needing nothing but TorchSim are
 executed, in a few minutes, and the tree is uploaded as an artifact to read.
 
 Its **Site** job runs on `main`, on a `v*.*.*` tag and on demand. It installs
-the `examples` extra, so all thirteen notebooks are executed, and hands what
+the `examples` extra, so every notebook is executed, and hands what
 Sphinx wrote to `scripts/publish_docs.py`, which places it in the site:
 
     site/latest/     the development branch
