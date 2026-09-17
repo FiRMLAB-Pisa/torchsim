@@ -651,35 +651,29 @@ under the home directory.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.PosixPath" title="pathlib.PosixPath"><span class="n">CACHE</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-method reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path.home" title="pathlib.Path.home"><span class="n">Path</span><span class="o">.</span><span class="n">home</span></a><span class="p">(</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">.cache</span><span class="s2">&quot;</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">torchsim</span><span class="s2">&quot;</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">ixi-tiny</span><span class="s2">&quot;</span><span class="w">
 </span><span class="n">subject</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">tio</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">IXITiny</span></a><span class="p">(</span><span class="nb">str</span><span class="p">(</span><a class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.PosixPath" title="pathlib.PosixPath"><span class="n">CACHE</span></a><span class="p">)</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Downloading https://www.dropbox.com/s/ogxjwjxdv5mieah/ixi_tiny.zip?dl=1 to /tmp/tmp7mz8mh5l.zip
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Downloading https://www.dropbox.com/s/ogxjwjxdv5mieah/ixi_tiny.zip?dl=1 to /tmp/tmpgovb10bv.zip
 
 0it [00:00, ?it/s]
   0%|          | 0/233926107 [00:01&lt;?, ?it/s]
-  1%|▏         | 3088384/233926107 [00:01&lt;00:07, 30830430.92it/s]
-  7%|▋         | 15663104/233926107 [00:01&lt;00:02, 85571726.89it/s]
- 11%|█         | 26181632/233926107 [00:01&lt;00:02, 87525069.99it/s]
- 16%|█▌        | 36601856/233926107 [00:01&lt;00:02, 93774392.48it/s]
- 19%|█▉        | 45178880/233926107 [00:01&lt;00:02, 86827872.00it/s]
- 24%|██▍       | 55656448/233926107 [00:02&lt;00:02, 87933119.10it/s]
- 28%|██▊       | 65937408/233926107 [00:02&lt;00:01, 92458238.32it/s]
- 32%|███▏      | 74989568/233926107 [00:02&lt;00:01, 87945578.15it/s]
- 36%|███▋      | 85131264/233926107 [00:02&lt;00:01, 87588249.64it/s]
- 41%|████      | 95666176/233926107 [00:02&lt;00:01, 88466057.00it/s]
- 45%|████▍     | 105127936/233926107 [00:02&lt;00:01, 86462120.19it/s]
- 49%|████▊     | 113745920/233926107 [00:02&lt;00:01, 76307938.02it/s]
- 55%|█████▍    | 127541248/233926107 [00:02&lt;00:01, 88780029.57it/s]
- 58%|█████▊    | 136585216/233926107 [00:02&lt;00:01, 85998524.74it/s]
- 62%|██████▏   | 145760256/233926107 [00:03&lt;00:01, 87372852.91it/s]
- 66%|██████▌   | 154591232/233926107 [00:03&lt;00:01, 49643038.52it/s]
- 70%|███████   | 164855808/233926107 [00:03&lt;00:01, 59283346.36it/s]
- 74%|███████▍  | 173473792/233926107 [00:03&lt;00:00, 63132578.82it/s]
- 79%|███████▊  | 183902208/233926107 [00:03&lt;00:00, 72306835.59it/s]
- 82%|████████▏ | 192503808/233926107 [00:03&lt;00:00, 73333103.24it/s]
- 87%|████████▋ | 202948608/233926107 [00:03&lt;00:00, 77714350.19it/s]
- 91%|█████████ | 213401600/233926107 [00:04&lt;00:00, 84562566.56it/s]
- 95%|█████████▌| 222478336/233926107 [00:04&lt;00:00, 83137002.92it/s]
- 99%|█████████▉| 232423424/233926107 [00:04&lt;00:00, 83649967.04it/s]
-233930752it [00:05, 40426585.97it/s]
+  0%|          | 688128/233926107 [00:01&lt;00:33, 6880909.24it/s]
+  3%|▎         | 7602176/233926107 [00:01&lt;00:05, 43482847.18it/s]
+ 11%|█▏        | 26755072/233926107 [00:01&lt;00:01, 111031510.79it/s]
+ 18%|█▊        | 42696704/233926107 [00:01&lt;00:01, 128421343.84it/s]
+ 24%|██▍       | 55975936/233926107 [00:01&lt;00:01, 125886125.13it/s]
+ 29%|██▉       | 67837952/233926107 [00:02&lt;00:01, 101927399.81it/s]
+ 34%|███▍      | 79699968/233926107 [00:02&lt;00:01, 105849438.75it/s]
+ 40%|███▉      | 93331456/233926107 [00:02&lt;00:01, 112331318.30it/s]
+ 45%|████▍     | 104701952/233926107 [00:02&lt;00:01, 80353633.41it/s]
+ 53%|█████▎    | 122888192/233926107 [00:02&lt;00:01, 103190854.37it/s]
+ 59%|█████▉    | 138608640/233926107 [00:02&lt;00:00, 116328827.19it/s]
+ 65%|██████▌   | 152371200/233926107 [00:02&lt;00:00, 118278011.72it/s]
+ 71%|███████   | 165273600/233926107 [00:02&lt;00:00, 110918923.16it/s]
+ 77%|███████▋  | 179953664/233926107 [00:03&lt;00:00, 120115091.74it/s]
+ 82%|████████▏ | 192692224/233926107 [00:03&lt;00:00, 98054138.07it/s]
+ 87%|████████▋ | 203603968/233926107 [00:03&lt;00:00, 82279798.67it/s]
+ 92%|█████████▏| 215023616/233926107 [00:03&lt;00:00, 89136959.14it/s]
+ 98%|█████████▊| 229982208/233926107 [00:03&lt;00:00, 103358565.55it/s]
+233930752it [00:03, 61039419.81it/s]
 </pre></div>
 </div>
 </section>
@@ -808,8 +802,8 @@ twenty-one-fold undersampled, which is how MRF is run.</p>
 </span>    <span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="list"><span class="n">arms</span></a><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">frame</span></a><span class="p">]</span><span class="o">.</span><span class="n">op</span><span class="p">(</span><span class="n">coil_series</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">frame</span></a><span class="p">]</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span><span class="p">)</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">frame</span></a> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">FRAMES</span></a><span class="p">)</span><span class="p">]</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>400 arms built in 2.9s
-forward NUFFT 3.2s -&gt; (400, 8, 768)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>400 arms built in 3.7s
+forward NUFFT 3.5s -&gt; (400, 8, 768)
 </pre></div>
 </div>
 <p>Eight birdcage sensitivities, and one spiral arm per frame rotated so that
@@ -827,7 +821,7 @@ here because the maps are known. A real pipeline would estimate them.</p>
 </span>    <span class="n">weights</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="p">)</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>adjoint and combine 3.3s
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>adjoint and combine 3.6s
 </pre></div>
 </div>
 </section>
@@ -892,7 +886,7 @@ instead of the spiral and the sine generated here;</p></li>
 <p>The tissue table is the one thing decided rather than read. A relaxometry
 protocol on the same subject would fill it from data, which is what the
 parameter-inference notebooks do.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 58.178 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 6.690 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-05-misc-01-synthetic-data-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/05-misc/01-synthetic-data.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo4.svg" style="width: 150px;" />

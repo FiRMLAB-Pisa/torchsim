@@ -789,7 +789,7 @@ wavelet prior is a change to that one argument.</p>
 </span><span class="c1"># No fit afterwards: the maps are what was solved for.</span><span class="w">
 </span><span class="n">modelled</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-method reference internal" href="../../torchsim.ModelOperator.html#torchsim.ModelOperator.split" title="torchsim.ModelOperator.split"><span class="n">operator</span><span class="o">.</span><span class="n">split</span></a><span class="p">(</span><span class="n">found</span><span class="o">.</span><span class="n">x</span><span class="p">)</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">T2</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>model-based                  2.2s   T2 error  17.1 ms (12.6%)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>model-based                  2.8s   T2 error  17.1 ms (12.6%)
 residual 5.529e+03 -&gt; 5.577e-01, damping 1e-03 -&gt; 8e-06
 </pre></div>
 </div>
@@ -809,10 +809,10 @@ iteration.</p>
 </span><span class="n">adjoint_image</span> <span class="o">=</span> <span class="n">encoding</span><span class="o">.</span><span class="n">A_adjoint</span><span class="p">(</span><span class="n">kspace</span><span class="p">)</span><span class="o">.</span><span class="n">movedim</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>per conjugate-gradient step, 3 channels solved for:
-  model    J  v      2.4 ms
-  model    J^H v     1.0 ms
-  encoding A         4.2 ms
-  encoding A^H       4.0 ms
+  model    J  v      3.6 ms
+  model    J^H v     1.3 ms
+  encoding A         5.2 ms
+  encoding A^H       5.0 ms
 the Jacobian this avoids holding: 1.7 MiB, against 0.6 MiB for a signal
 </pre></div>
 </div>
@@ -827,7 +827,7 @@ ordinary <a class="reference internal" href="../../torchsim.model.Simulator.html
 and sequence-design notebooks use. Water-fat separation, T2* with a field
 map, a Look-Locker inversion recovery: each is a different <code class="docutils literal notranslate"><span class="pre">evaluate</span></code>, and
 the operator, the loop and the encoding are unchanged.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.044 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.858 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-04-model-based-imaging-02-nonlinear-inversion-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/04-model-based-imaging/02-nonlinear-inversion.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo3.svg" style="width: 150px;" />

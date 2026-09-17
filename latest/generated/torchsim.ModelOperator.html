@@ -709,10 +709,13 @@ complex where one is carried.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>shape</strong> (<em>sequence</em><em> of </em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – The voxel shape. Empty gives one voxel.</p></li>
-<li><p><strong>values</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">value}</span></code> in the property’s own units. An unknown left out
-starts at the middle of its bound, and a one-sided or absent bound
-has no middle, so it must be given. The amplitude starts at one
-unless <code class="docutils literal notranslate"><span class="pre">amplitude=</span></code> says otherwise.</p></li>
+<li><p><strong>values</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">value}</span></code> in the property’s own units, one value or one
+per voxel – a map broadcasts against <code class="docutils literal notranslate"><span class="pre">shape</span></code>, which is what
+turns known parameters into a state and makes this the inverse of
+<a class="reference internal" href="#torchsim.ModelOperator.split" title="torchsim.ModelOperator.split"><code class="xref py py-meth docutils literal notranslate"><span class="pre">split()</span></code></a>. An unknown left out starts at the middle of its
+bound, and a one-sided or absent bound has no middle, so it must
+be given. The amplitude starts at one unless <code class="docutils literal notranslate"><span class="pre">amplitude=</span></code> says
+otherwise.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

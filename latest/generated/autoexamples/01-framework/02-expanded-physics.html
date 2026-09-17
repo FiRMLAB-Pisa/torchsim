@@ -632,7 +632,7 @@ makes ignoring it a bias in both.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">transmit</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">]</span><span class="p">)</span><span class="w">
 </span><span class="n">scaled</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><span class="n">fingerprinting</span></a><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="o">*</span><span class="o">*</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">WATER</span></a><span class="p">,</span> <span class="n">B1</span><span class="o">=</span><span class="n">transmit</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../../_images/sphx_glr_02-expanded-physics_001.png" srcset="../../../_images/sphx_glr_02-expanded-physics_001.png" alt="a transmit error reshapes the trajectory" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f171cdf5e80&gt;]
+<img src="../../../_images/sphx_glr_02-expanded-physics_001.png" srcset="../../../_images/sphx_glr_02-expanded-physics_001.png" alt="a transmit error reshapes the trajectory" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f1a2163f1a0&gt;]
 </pre></div>
 </div>
 </section>
@@ -683,7 +683,7 @@ machine sees it, so a single pair of per-voxel buffers reaches the kernels.</p>
 <img src="../../../_images/sphx_glr_02-expanded-physics_002.png" srcset="../../../_images/sphx_glr_02-expanded-physics_002.png" alt="four channels a quarter turn apart, and the shim that finds them" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  driven alike     [0.0, 0.0, 0.0]
   counter-rotated  [0.8234, 0.8765, 0.8949]
 
-[&lt;matplotlib.legend.Legend object at 0x7f171f48e420&gt;]
+[&lt;matplotlib.legend.Legend object at 0x7f1a21621af0&gt;]
 </pre></div>
 </div>
 <p>A shim belongs to the pulse rather than to the sequence: each RF event names
@@ -880,7 +880,7 @@ is left out of the kernel that is compiled and run.</p>
 <p>Every term above is one the kernels already carry. A term they do not – a
 third free pool, a gradient moment that varies down the train – is a change
 to the engine rather than a name in a call.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 19.619 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 28.969 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-01-framework-02-expanded-physics-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/01-framework/02-expanded-physics.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo.svg" style="width: 150px;" />

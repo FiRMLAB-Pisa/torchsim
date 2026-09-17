@@ -792,14 +792,14 @@ on a different operator, and one operator now serves every echo.</p>
 </span><span class="p">)</span><span class="w">
 </span><span class="n">linear</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-method reference internal" href="../../torchsim.Estimator.html#torchsim.Estimator.from_coefficients" title="torchsim.Estimator.from_coefficients"><span class="n">mapping</span><span class="o">.</span><span class="n">from_coefficients</span></a><span class="p">(</span><span class="n">coefficients</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">movedim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="p">)</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">T2</span><span class="s2">&quot;</span><span class="p">]</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>iterative subspace           0.3s   T2 error  16.9 ms (13.1%)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>iterative subspace           0.4s   T2 error  16.9 ms (13.1%)
 
 tensor([[ 51.9840,  73.3066,  67.2144,  ...,  86.2525,  60.3607,  35.2305],
         [ 20.0000,  23.0461,  30.6613,  ..., 102.2445,  41.3226,  70.2605],
         [ 30.6613,  66.4529, 121.2826,  ...,  64.1683,  65.6914,  71.7836],
         ...,
         [ 33.7074,  20.0000, 105.2906,  ...,  76.3527,  50.4609,  81.6834],
-        [ 82.4449, 160.8818, 157.0742,  ..., 110.6212,  50.4609,  38.2766],
+        [ 82.4449, 161.6433, 157.0742,  ..., 110.6212,  50.4609,  38.2766],
         [ 93.1062,  84.7295, 110.6212,  ..., 115.9519, 205.0501, 119.7595]])
 </pre></div>
 </div>
@@ -822,7 +822,7 @@ because the basis must span the product of the ranges. Both cases put the
 model inside the operator, which is the nonlinear route.</p>
 <p>The rank is not a guess: <a class="reference internal" href="../../torchsim.Subspace.html#torchsim.Subspace.retained" title="torchsim.Subspace.retained"><code class="xref py py-attr docutils literal notranslate"><span class="pre">retained</span></code></a> says what a
 basis keeps before anything is projected through it.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.686 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.907 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-04-model-based-imaging-01-linear-subspace-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/04-model-based-imaging/01-linear-subspace.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo3.svg" style="width: 150px;" />

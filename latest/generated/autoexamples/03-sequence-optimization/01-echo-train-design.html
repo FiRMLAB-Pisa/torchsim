@@ -750,7 +750,7 @@ will play, and <a class="reference internal" href="../../torchsim.Bounded.html#t
 </span><span class="w">
 </span><span class="n">one</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-method reference internal" href="../../torchsim.SequenceDesign.html#torchsim.SequenceDesign.minimize" title="torchsim.SequenceDesign.minimize"><span class="n">design</span><span class="o">.</span><span class="n">minimize</span></a><span class="p">(</span><span class="n">iterations</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>one train of 120 echoes designed in 0.06 s, 2.5 ms per iteration
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>one train of 120 echoes designed in 0.08 s, 3.3 ms per iteration
 </pre></div>
 </div>
 <p>What it did:</p>
@@ -909,7 +909,7 @@ time there.</p>
 </span><span class="w">
 </span><span class="n">many</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-method reference internal" href="../../torchsim.SequenceDesign.html#torchsim.SequenceDesign.minimize" title="torchsim.SequenceDesign.minimize"><span class="n">design</span><span class="o">.</span><span class="n">minimize</span></a><span class="p">(</span><span class="n">iterations</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>a whole protocol designed in 0.37 s, 9.3 ms per iteration
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>a whole protocol designed in 0.45 s, 11.3 ms per iteration
 </pre></div>
 </div>
 <p>Covering this matrix with the trains the prescription asks for takes a shot
@@ -934,7 +934,7 @@ RF power                       22.51 -&gt; 19.89  (budget 22.51)
 the centre of k-space; shots between them read the same curve at their own
 radius, which keeps k-space free of the discontinuities a shot-by-shot design
 would leave.</p>
-<img src="../../../_images/sphx_glr_01-echo-train-design_003.png" srcset="../../../_images/sphx_glr_01-echo-train-design_003.png" alt="designed trains, train length, scan 4.9/5 min, cartilage, synovial fluid, contrast" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f17116df3b0&gt;, &lt;matplotlib.legend.Legend object at 0x7f17178bd250&gt;, &lt;matplotlib.legend.Legend object at 0x7f17175e4b00&gt;]
+<img src="../../../_images/sphx_glr_01-echo-train-design_003.png" srcset="../../../_images/sphx_glr_01-echo-train-design_003.png" alt="designed trains, train length, scan 4.9/5 min, cartilage, synovial fluid, contrast" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f1a19f98050&gt;, &lt;matplotlib.legend.Legend object at 0x7f1a12400560&gt;, &lt;matplotlib.legend.Legend object at 0x7f1a20a5dcd0&gt;]
 </pre></div>
 </div>
 </section>
@@ -958,7 +958,7 @@ International Society for Magnetic Resonance in Medicine (2025),
 abstract 566-05-007.</p>
 </aside>
 </aside>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.756 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.427 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-03-sequence-optimization-01-echo-train-design-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/03-sequence-optimization/01-echo-train-design.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo2.svg" style="width: 150px;" />

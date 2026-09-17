@@ -681,10 +681,13 @@
 <span class="sd">        shape : sequence of int, optional</span>
 <span class="sd">            The voxel shape. Empty gives one voxel.</span>
 <span class="sd">        values : float or array-like, optional</span>
-<span class="sd">            ``{name: value}`` in the property's own units. An unknown left out</span>
-<span class="sd">            starts at the middle of its bound, and a one-sided or absent bound</span>
-<span class="sd">            has no middle, so it must be given. The amplitude starts at one</span>
-<span class="sd">            unless ``amplitude=`` says otherwise.</span>
+<span class="sd">            ``{name: value}`` in the property's own units, one value or one</span>
+<span class="sd">            per voxel -- a map broadcasts against ``shape``, which is what</span>
+<span class="sd">            turns known parameters into a state and makes this the inverse of</span>
+<span class="sd">            :meth:`split`. An unknown left out starts at the middle of its</span>
+<span class="sd">            bound, and a one-sided or absent bound has no middle, so it must</span>
+<span class="sd">            be given. The amplitude starts at one unless ``amplitude=`` says</span>
+<span class="sd">            otherwise.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -704,20 +707,23 @@
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unknown</span><span class="p">:</span>
             <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="n">bound_of</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
-                <span class="n">start</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">low</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">high</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">start</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="n">high</span><span class="p">)</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="n">high</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no two-sided bound, so give it a starting value"</span>
                 <span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">low</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="n">low</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
-                <span class="n">high</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">high</span>
-            <span class="p">):</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="n">outside</span> <span class="o">=</span> <span class="p">(</span><span class="n">low</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">((</span><span class="n">start</span> <span class="o">&lt;=</span> <span class="n">low</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()))</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">high</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">bool</span><span class="p">((</span><span class="n">start</span> <span class="o">&gt;=</span> <span class="n">high</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">outside</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2"> is not strictly inside its bound (</span><span class="si">{</span><span class="n">low</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">high</span><span class="si">}</span><span class="s2">)"</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">start</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">low</span><span class="w"> </span><span class="ow">is</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="kc">None</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="n">start</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2"> "</span>
+                    <span class="sa">f</span><span class="s2">"is not strictly inside its bound (</span><span class="si">{</span><span class="n">low</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">high</span><span class="si">}</span><span class="s2">)"</span>
                 <span class="p">)</span>
-            <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">),</span> <span class="n">start</span><span class="p">))</span>
+            <span class="n">columns</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
         <span class="n">natural</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
         <span class="n">free</span> <span class="o">=</span> <span class="n">to_free</span><span class="p">(</span><span class="n">natural</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unknown</span><span class="p">)</span> <span class="o">/</span> <span class="n">scale</span>

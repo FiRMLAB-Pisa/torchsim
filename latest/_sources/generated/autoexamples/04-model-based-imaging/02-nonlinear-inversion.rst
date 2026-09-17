@@ -424,7 +424,7 @@ wavelet prior is a change to that one argument.
 
  .. code-block:: none
 
-    model-based                  2.2s   T2 error  17.1 ms (12.6%)
+    model-based                  2.8s   T2 error  17.1 ms (12.6%)
     residual 5.529e+03 -> 5.577e-01, damping 1e-03 -> 8e-06
 
 
@@ -465,10 +465,10 @@ iteration.
  .. code-block:: none
 
     per conjugate-gradient step, 3 channels solved for:
-      model    J  v      2.4 ms
-      model    J^H v     1.0 ms
-      encoding A         4.2 ms
-      encoding A^H       4.0 ms
+      model    J  v      3.6 ms
+      model    J^H v     1.3 ms
+      encoding A         5.2 ms
+      encoding A^H       5.0 ms
     the Jacobian this avoids holding: 1.7 MiB, against 0.6 MiB for a signal
 
 
@@ -509,7 +509,7 @@ the operator, the loop and the encoding are unchanged.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.044 seconds)
+   **Total running time of the script:** (0 minutes 3.858 seconds)
 
 
 .. _sphx_glr_download_generated_autoexamples_04-model-based-imaging_02-nonlinear-inversion.py:

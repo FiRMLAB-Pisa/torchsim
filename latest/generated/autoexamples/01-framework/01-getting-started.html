@@ -618,7 +618,7 @@ if we pass a list of T2s but just a single T1, the same T1 is used for all atoms
 will affect the resulting signal evolution</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">signal60</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator"><span class="n">simulator</span></a><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">ECHOES</span></a><span class="p">,</span><span class="p">)</span><span class="p">,</span> <span class="mf">60.0</span><span class="p">)</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../../_images/sphx_glr_01-getting-started_001.png" srcset="../../../_images/sphx_glr_01-getting-started_001.png" alt="a 180 degree train, a 60 degree train" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f1728b6fdd0&gt;
+<img src="../../../_images/sphx_glr_01-getting-started_001.png" srcset="../../../_images/sphx_glr_01-getting-started_001.png" alt="a 180 degree train, a 60 degree train" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7f1a221c6e70&gt;
 </pre></div>
 </div>
 </section>
@@ -739,8 +739,8 @@ minutes or hours.</p>
 </span>        <a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator" title="torchsim.simulators.FSESimulator"><span class="n">candidate</span></a><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">)</span><span class="w">
 </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">  </span><span class="si">{</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="str"><span class="n">name</span></a><span class="si">:</span><span class="s2">14s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="mf">1e3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><a class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function reference external" href="https://docs.python.org/3/library/time.html#time.perf_counter" title="time.perf_counter"><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span></a><span class="p">(</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">start</span></a><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">20</span><span class="si">:</span><span class="s2">6.2f</span><span class="si">}</span><span class="s2"> ms a call</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>held             0.68 ms a call
-rebuilt anew    11.70 ms a call
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>held             0.94 ms a call
+rebuilt anew    13.99 ms a call
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">execution</span></code> says where the work goes. <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code> weighs the problem against
@@ -798,7 +798,7 @@ to check that a layout laid down what you meant.</p>
 <li><img src="../../../_images/sphx_glr_01-getting-started_002.png" srcset="../../../_images/sphx_glr_01-getting-started_002.png" alt="01 getting started" class = "sphx-glr-multi-img"/></li>
 <li><img src="../../../_images/sphx_glr_01-getting-started_003.png" srcset="../../../_images/sphx_glr_01-getting-started_003.png" alt="the first 6 echoes of the description above" class = "sphx-glr-multi-img"/></li>
 </ul>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f171ef5e420&gt;]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f1a219cf9e0&gt;]
 </pre></div>
 </div>
 <p>A description normally arrives; it is not typed. Writing one by hand once is
@@ -854,7 +854,7 @@ them. <a class="reference internal" href="../../torchsim.simulators.FSESimulator
 between one train and the next in closed form, which is not an event and so
 is not in the stream. The shape of the train is the same; the driven
 equilibrium the shipped object adds does not come along.</p>
-<img src="../../../_images/sphx_glr_01-getting-started_004.png" srcset="../../../_images/sphx_glr_01-getting-started_004.png" alt="white matter, the same train both ways" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f171ef4e420&gt;]
+<img src="../../../_images/sphx_glr_01-getting-started_004.png" srcset="../../../_images/sphx_glr_01-getting-started_004.png" alt="white matter, the same train both ways" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f1a2160e420&gt;]
 </pre></div>
 </div>
 </section>
@@ -890,7 +890,7 @@ respect to the schedule instead is what designs a protocol, and is the
 subject of the sequence optimization notebooks.</p>
 <p>When the sequence you want is not one of the ones that ship, the next
 notebooks say what to write instead.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 6.367 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 8.722 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-01-framework-01-getting-started-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/01-framework/01-getting-started.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo.svg" style="width: 150px;" />
