@@ -202,3 +202,31 @@ def _watching(operator: ModelOperator, seen: list) -> ModelOperator:
     watched = _Watched.__new__(_Watched)
     watched.__dict__.update(operator.__dict__)
     return watched
+
+
+# %% a state built from known maps
+
+
+def test_initial_takes_a_map_per_voxel() -> None:
+    """``initial`` is the inverse of ``split``, so it has to accept known maps.
+
+    A dictionary is a state whose voxels carry the parameters it was built
+    over -- what a subspace basis is estimated from, and what a matching table
+    is -- and one starting scalar cannot express it.
+    """
+    operator = ModelOperator(
+        MultiEchoSimulator(TE=TE_MS), "T2", bounds={"T2": (10.0, 500.0)}
+    )
+    values = torch.tensor([20.0, 60.0, 180.0])
+
+    recovered = operator.split(operator.initial((3,), T2=values))["T2"]
+
+    torch.testing.assert_close(recovered, values, rtol=1e-4, atol=1e-2)
+
+
+def test_initial_rejects_a_map_that_leaves_the_bound() -> None:
+    operator = ModelOperator(
+        MultiEchoSimulator(TE=TE_MS), "T2", bounds={"T2": (10.0, 500.0)}
+    )
+    with pytest.raises(ValueError, match="not strictly inside its bound"):
+        operator.initial((2,), T2=torch.tensor([50.0, 900.0]))
