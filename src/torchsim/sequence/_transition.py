@@ -170,12 +170,18 @@ def compose_spinor(
 
     Returns
     -------
-        ``(a, b)`` shaped like the turn.
+    a, b : torch.Tensor
+        Complex128, shaped like the turn. Each sample turns the magnetisation
+        right-handedly about ``(drive.real, drive.imag, turn_z)`` by that
+        vector's length, so a spin starting along ``+z`` ends with
+        ``Mxy = -2 conj(a b)`` and ``Mz = |a|^2 - |b|^2``. A real drive of
+        area ``t`` on resonance gives ``(cos(t/2), -i sin(t/2))``.
 
     Raises
     ------
-        ValueError: if a moving gradient runs out before the pulse does, or
-            the other way about.
+    ValueError
+        If a moving gradient runs out before the pulse does, or the other way
+        about.
     """
     held = isinstance(turn_z, torch.Tensor)
     if held:

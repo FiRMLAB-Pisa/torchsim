@@ -13,6 +13,7 @@ __all__ = [
     "Dephase",
     "Excitation",
     "rf_definition",
+    "compose_spinor",
     "Inversion",
     "offload",
     "Readout",
@@ -74,4 +75,8 @@ from ._simulation import (
     TissueProperties,  # noqa: F401
     simulate_subspace,  # noqa: F401
 )
-from ._transition import ExactSliceProfile, exact_slice_profile  # noqa: F401
+from ._transition import (
+    ExactSliceProfile,  # noqa: F401
+    compose_spinor,
+    exact_slice_profile,  # noqa: F401
+)

@@ -112,7 +112,7 @@ jobs:
             --extra-index-url https://pypi.org/simple
 
       # Everything else the notebooks import while they run, which is the
-      # ``examples`` extra, so that every one of the thirteen is executed.
+      # ``examples`` extra, so that every one of them is executed.
       - name: Build the extensions and install
         run: python -m pip install ".[doc,examples]"
 

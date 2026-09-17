@@ -199,7 +199,7 @@ stands is reused rather than re-run.
 
 `.github/workflows/docs.yml` builds the published pages and GitHub Pages
 serves them from `gh-pages`: its HTML job checks every branch with the `doc`
-extra, and its Site job executes all thirteen examples with the `examples`
+extra, and its Site job executes every example with the `examples`
 extra and hands the tree to `scripts/publish_docs.py`, which keeps one
 directory per version -- `latest` for `main`, its own for each `v*.*.*` tag --
 beside the list the version switcher reads.
