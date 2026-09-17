@@ -52,6 +52,10 @@ selective excitation is integrated over the slice rather than scaled, and
 {class}`ShimDefinition` gives the amplitude and phase each channel is driven
 at. A simulator takes them as `pulse=` and `shims=`.
 
+{func}`compose_spinor` is the rotation a shaped pulse leaves on each spin,
+composed sample by sample in torch so that derivatives reach the samples: how
+a pulse's own samples are designed rather than chosen.
+
 ```{eval-rst}
 .. autosummary::
    :toctree: ../generated
@@ -59,6 +63,7 @@ at. A simulator takes them as `pulse=` and `shims=`.
 
    rf_definition
    ShimDefinition
+   compose_spinor
 ```
 
 ## Description

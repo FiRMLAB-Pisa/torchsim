@@ -13,10 +13,13 @@ near it, and that the pulse's own sample times are what say how long it lasts.
 
 from __future__ import annotations
 
+import math
+
 import numpy as np
 import pytest
 import torch
 
+from torchsim import compose_spinor
 from torchsim.sequence._description import RfDefinition, RfShape
 from torchsim.sequence._transition import transition_table
 
@@ -438,3 +441,37 @@ def test_a_small_flip_is_the_transform_of_the_envelope(table) -> None:
     spread = max(abs(ratio - ratios[0]) for ratio in ratios)
     assert spread < 1e-3, "one constant of proportionality across the slice"
     assert abs(abs(ratios[0]) - 1.0) < 1e-3, "and the drive is the flip it names"
+
+
+def test_the_public_composer_turns_a_hard_pulse_by_its_area():
+    """On resonance a hard pulse is the pair ``(cos(t/2), -i sin(t/2))``."""
+    drive = torch.full((100,), 1.2 / 100, dtype=torch.complex128)
+    a, b = compose_spinor(drive, torch.zeros(1, dtype=torch.float64))
+    assert abs(complex(a[0]) - math.cos(0.6)) < 1e-12
+    assert abs(complex(b[0]) + 1j * math.sin(0.6)) < 1e-12
+
+
+def test_the_pair_is_the_right_handed_turn_about_each_samples_field():
+    """``Mxy = -2 conj(a b)`` and ``Mz = |a|^2 - |b|^2``, from ``+z``.
+
+    Held to Rodrigues' rotation of the magnetisation about each sample's
+    ``(Re drive, Im drive, turn_z)``, applied in the order they play.
+    """
+    generator = torch.Generator().manual_seed(0)
+    drive = 0.05 * torch.randn(64, dtype=torch.complex128, generator=generator)
+    turn_z = torch.linspace(-0.1, 0.1, 9, dtype=torch.float64)
+    a, b = compose_spinor(drive, turn_z)
+    for spin, turn in enumerate(turn_z):
+        m = np.array([0.0, 0.0, 1.0])
+        for sample in drive:
+            field = np.array([sample.real.item(), sample.imag.item(), turn.item()])
+            angle = np.linalg.norm(field)
+            axis = field / angle
+            m = (
+                m * math.cos(angle)
+                + np.cross(axis, m) * math.sin(angle)
+                + axis * (axis @ m) * (1.0 - math.cos(angle))
+            )
+        a_spin, b_spin = complex(a[spin]), complex(b[spin])
+        assert abs(complex(m[0], m[1]) + 2 * (a_spin * b_spin).conjugate()) < 1e-12
+        assert abs(m[2] - (abs(a_spin) ** 2 - abs(b_spin) ** 2)) < 1e-12
