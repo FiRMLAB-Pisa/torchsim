@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.rf_definition.html">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.SequenceDescription.html">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -660,16 +661,16 @@ the closed form has no parameter for.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>TI</strong> (<em>array-like</em>) – The two inversion times in milliseconds, each measured to the
 sampled shot of its block.</p></li>
-<li><p><strong>flip</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em>) – Excitation flip angle in degrees, one per block or one shared.</p></li>
-<li><p><strong>TRspgr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em>) – Repetition time in milliseconds of one readout.</p></li>
-<li><p><strong>TRmp2rage</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em>) – Repetition time in milliseconds of the whole inversion block.</p></li>
-<li><p><strong>nshots</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> or </em><em>array-like</em>) – Readouts per block, either the total – halved for each block –
+<li><p><strong>flip</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em>) – Excitation flip angle in degrees, one per block or one shared.</p></li>
+<li><p><strong>TRspgr</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em>) – Repetition time in milliseconds of one readout.</p></li>
+<li><p><strong>TRmp2rage</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em>) – Repetition time in milliseconds of the whole inversion block.</p></li>
+<li><p><strong>nshots</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> or </em><em>array-like</em>) – Readouts per block, either the total – halved for each block –
 or <code class="docutils literal notranslate"><span class="pre">(before,</span> <span class="pre">after)</span></code> the sampled shot.</p></li>
-<li><p><strong>phases</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em><em>, </em><em>optional</em>) – Excitation phases in degrees, one per block or one shared.</p></li>
+<li><p><strong>phases</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em><em>, </em><em>optional</em>) – Excitation phases in degrees, one per block or one shared.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If either inversion time falls before its block’s first
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If either inversion time falls before its block’s first
     excitation, or if the second block does not fit inside the
     repetition time.</p>
 </dd>

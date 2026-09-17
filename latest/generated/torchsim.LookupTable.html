@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.rf_definition.html">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.SequenceDescription.html">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -598,7 +599,7 @@ as <code class="docutils literal notranslate"><span class="pre">combine(signals)
 the sequence, not of the table, so it is stated here rather than
 assumed – for MP2RAGE it is the unified image. A model with a single
 contrast needs none.</p></li>
-<li><p><strong>monotonic</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Restrict the table to the longest monotonic run of the curve. A
+<li><p><strong>monotonic</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Restrict the table to the longest monotonic run of the curve. A
 signal curve that turns back on itself has no inverse where it turns,
 and the turning points lie outside the range of interest.</p></li>
 </ul>

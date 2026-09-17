@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.SequenceDescription.html">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -583,17 +584,17 @@ pulse keeps the axis it turns about.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>waveform</strong> (<em>array-like</em>) – The complex envelope, <code class="docutils literal notranslate"><span class="pre">(samples,)</span></code> or <code class="docutils literal notranslate"><span class="pre">(channels,</span> <span class="pre">samples)</span></code>.</p></li>
-<li><p><strong>dwell_s</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – How long one sample is held, in seconds.</p></li>
-<li><p><strong>bandwidth_hz</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – The pulse’s bandwidth, which the slice select is quoted against. Zero
+<li><p><strong>dwell_s</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – How long one sample is held, in seconds.</p></li>
+<li><p><strong>bandwidth_hz</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – The pulse’s bandwidth, which the slice select is quoted against. Zero
 – the default – is a pulse that selects nothing and stays on the
 instant operator, and a non-zero one is what makes a pulse slice
 selective. There is no separate flag for that, here or in the stream a
 description arrives on.</p></li>
-<li><p><strong>definition_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – The identifier events name this pulse by.</p></li>
-<li><p><strong>band_frequency_offsets_hz</strong> (<em>sequence</em><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Where each band sits, for a multiband pulse. One band at zero when not
+<li><p><strong>definition_id</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – The identifier events name this pulse by.</p></li>
+<li><p><strong>band_frequency_offsets_hz</strong> (<em>sequence</em><em> of </em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Where each band sits, for a multiband pulse. One band at zero when not
 given.</p></li>
-<li><p><strong>band_bandwidth_hz</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – The bandwidth of one band, defaulting to <code class="docutils literal notranslate"><span class="pre">bandwidth_hz</span></code>.</p></li>
-<li><p><strong>rf_raster_time_s</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – The raster the sample times are written against, which is the one the
+<li><p><strong>band_bandwidth_hz</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – The bandwidth of one band, defaulting to <code class="docutils literal notranslate"><span class="pre">bandwidth_hz</span></code>.</p></li>
+<li><p><strong>rf_raster_time_s</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – The raster the sample times are written against, which is the one the
 run will read them back with. Sample times are carried in units of it
 rather than in seconds, so a pulse whose dwell is not the raster still
 says how long it lasts.</p></li>
@@ -607,7 +608,7 @@ radians.</p>
 <dd class="field-odd"><p>RfDefinition</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the envelope is empty, if <code class="docutils literal notranslate"><span class="pre">dwell_s</span></code> is not positive, or if the
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the envelope is empty, if <code class="docutils literal notranslate"><span class="pre">dwell_s</span></code> is not positive, or if the
     waveform integrates to nothing and so has no flip angle to be read
     against.</p>
 </dd>

@@ -345,11 +345,11 @@ Accuracy comes from a constraint across the echoes, which is the model.
 
     adjoint per echo             0.0s   T2 error  30.6 ms (20.6%)
 
-    tensor([[ 52.7455,  61.8838,  58.0762,  ...,  97.6754,  74.0681,  63.4068],
+    tensor([[ 52.7455,  61.8838,  58.0762,  ...,  96.9138,  74.0681,  63.4068],
             [ 47.4148,  49.6994,  50.4609,  ...,  91.5832,  66.4529,  77.8758],
             [ 52.7455,  60.3607,  74.0681,  ...,  76.3527,  71.0220,  78.6373],
             ...,
-            [ 71.0220,  80.1603, 105.2906,  ...,  74.8297,  51.9840,  64.1683],
+            [ 71.0220,  80.1603, 106.0521,  ...,  74.8297,  51.9840,  64.1683],
             [103.0060, 123.5671, 128.1363,  ...,  93.8677,  64.9299,  56.5531],
             [122.0441, 109.0982, 111.3828,  ...,  82.4449,  81.6834,  69.4990]])
 
@@ -424,8 +424,8 @@ wavelet prior is a change to that one argument.
 
  .. code-block:: none
 
-    model-based                  2.5s   T2 error  17.1 ms (12.6%)
-    residual 5.529e+03 -> 5.578e-01, damping 1e-03 -> 8e-06
+    model-based                  2.2s   T2 error  17.1 ms (12.6%)
+    residual 5.529e+03 -> 5.577e-01, damping 1e-03 -> 8e-06
 
 
 
@@ -465,10 +465,10 @@ iteration.
  .. code-block:: none
 
     per conjugate-gradient step, 3 channels solved for:
-      model    J  v      3.0 ms
-      model    J^H v     1.2 ms
-      encoding A         4.6 ms
-      encoding A^H       4.5 ms
+      model    J  v      2.4 ms
+      model    J^H v     1.0 ms
+      encoding A         4.2 ms
+      encoding A^H       4.0 ms
     the Jacobian this avoids holding: 1.7 MiB, against 0.6 MiB for a signal
 
 
@@ -509,7 +509,7 @@ the operator, the loop and the encoding are unchanged.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.618 seconds)
+   **Total running time of the script:** (0 minutes 3.044 seconds)
 
 
 .. _sphx_glr_download_generated_autoexamples_04-model-based-imaging_02-nonlinear-inversion.py:

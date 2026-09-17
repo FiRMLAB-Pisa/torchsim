@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.rf_definition.html">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.SequenceDescription.html">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -580,7 +581,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="torchsim.Subspace">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torchsim.</span></span><span class="sig-name descname"><span class="pre">Subspace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">singular_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dictionary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/_subspace.html#Subspace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.Subspace" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>A temporal basis fitted to a set of signals.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="torchsim.Subspace.basis">
@@ -716,7 +717,7 @@ simulated dictionary and a training set are the same input.</p></li>
 <dd class="field-even"><p><a class="reference internal" href="#torchsim.Subspace" title="torchsim.Subspace">Subspace</a></p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">rank</span></code> is not positive, or exceeds what the signals span.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">rank</span></code> is not positive, or exceeds what the signals span.</p>
 </dd>
 </dl>
 </dd></dl>

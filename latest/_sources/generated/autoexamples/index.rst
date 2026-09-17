@@ -237,10 +237,14 @@ for already fixed on it; a cost, which is a plain function of what that
 simulator records; and a :class:`~torchsim.SequenceDesign`, which holds the
 parameters inside the limits the scanner will play and runs the loop.
 
-Only the cost changes between the two examples here. One asks for a picture --
-sharp where sharpness is decided, with contrast where contrast is decided --
-and the other asks for precision, choosing flip angles so that T1 and T2 are
-estimated as tightly as the scan time allows.
+Only the cost changes between the first two examples here. One asks for a
+picture -- sharp where sharpness is decided, with contrast where contrast is
+decided -- and the other asks for precision, choosing flip angles so that T1
+and T2 are estimated as tightly as the scan time allows.
+
+The third designs no protocol parameter at all but the samples of an RF pulse,
+through a Bloch simulation of the slice it excites, so that the excitation
+holds where the transmit field does not.
 
 
 .. raw:: html
@@ -285,6 +289,23 @@ estimated as tightly as the scan time allows.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Designing a joint relaxometry protocol</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The scope of this notebook is to design the samples of an RF pulse directly, by gradient descent through a Bloch simulation of what they do [1]_.">
+
+.. only:: html
+
+  .. image:: /generated/autoexamples/03-sequence-optimization/images/thumb/sphx_glr_03-rf-pulse-design_thumb.png
+    :alt:
+
+  :doc:`/generated/autoexamples/03-sequence-optimization/03-rf-pulse-design`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Designing an RF pulse by optimal control</div>
     </div>
 
 

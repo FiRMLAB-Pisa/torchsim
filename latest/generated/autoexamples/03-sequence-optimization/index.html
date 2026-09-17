@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -289,6 +289,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.rf_definition.html">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.SequenceDescription.html">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -556,16 +557,22 @@ given.</p>
 for already fixed on it; a cost, which is a plain function of what that
 simulator records; and a <a class="reference internal" href="../../torchsim.SequenceDesign.html#torchsim.SequenceDesign" title="torchsim.SequenceDesign"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequenceDesign</span></code></a>, which holds the
 parameters inside the limits the scanner will play and runs the loop.</p>
-<p>Only the cost changes between the two examples here. One asks for a picture –
-sharp where sharpness is decided, with contrast where contrast is decided –
-and the other asks for precision, choosing flip angles so that T1 and T2 are
-estimated as tightly as the scan time allows.</p>
+<p>Only the cost changes between the first two examples here. One asks for a
+picture – sharp where sharpness is decided, with contrast where contrast is
+decided – and the other asks for precision, choosing flip angles so that T1
+and T2 are estimated as tightly as the scan time allows.</p>
+<p>The third designs no protocol parameter at all but the samples of an RF pulse,
+through a Bloch simulation of the slice it excites, so that the excitation
+holds where the transmit field does not.</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="The scope of this notebook is to design refocusing flip angles for image quality rather than for precision: first a single echo train, then a whole segmented 3D protocol in which each shot carries its own repetition time, echo train length and angles."><img alt="" src="../../../_images/sphx_glr_01-echo-train-design_thumb.png" />
 <p><a class="reference internal" href="01-echo-train-design.html"><span class="doc">Designing echo trains for image quality</span></a></p>
   <div class="sphx-glr-thumbnail-title">Designing echo trains for image quality</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="The scope of this notebook is to choose the flip angles of a DESPOT protocol so that a joint fit of T1 and T2 is as precise as possible [1]_."><img alt="" src="../../../_images/sphx_glr_02-joint-relaxometry_thumb.png" />
 <p><a class="reference internal" href="02-joint-relaxometry.html"><span class="doc">Designing a joint relaxometry protocol</span></a></p>
   <div class="sphx-glr-thumbnail-title">Designing a joint relaxometry protocol</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The scope of this notebook is to design the samples of an RF pulse directly, by gradient descent through a Bloch simulation of what they do [1]_."><img alt="" src="../../../_images/sphx_glr_03-rf-pulse-design_thumb.png" />
+<p><a class="reference internal" href="03-rf-pulse-design.html"><span class="doc">Designing an RF pulse by optimal control</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Designing an RF pulse by optimal control</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 </section>

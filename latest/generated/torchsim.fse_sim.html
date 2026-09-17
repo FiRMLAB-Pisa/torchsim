@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.rf_definition.html">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.SequenceDescription.html">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -572,28 +573,28 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>flip</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em>) – Refocusing flip angle train in degrees.</p></li>
-<li><p><strong>ESP</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Echo spacing in milliseconds.</p></li>
-<li><p><strong>phases</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em><em>, </em><em>optional</em>) – Refocusing flip angle phases in degrees.
+<li><p><strong>flip</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em>) – Refocusing flip angle train in degrees.</p></li>
+<li><p><strong>ESP</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Echo spacing in milliseconds.</p></li>
+<li><p><strong>phases</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em><em>, </em><em>optional</em>) – Refocusing flip angle phases in degrees.
 The default is <code class="docutils literal notranslate"><span class="pre">90.0</span></code>.</p></li>
-<li><p><strong>TR</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em><em>, </em><em>optional</em>) – Repetition time in milliseconds.
+<li><p><strong>TR</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em><em>, </em><em>optional</em>) – Repetition time in milliseconds.
 The default is <code class="docutils literal notranslate"><span class="pre">1e6</span></code>.</p></li>
-<li><p><strong>exc_flip</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Excitation flip angle train in degrees.
+<li><p><strong>exc_flip</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Excitation flip angle train in degrees.
 The default is <code class="docutils literal notranslate"><span class="pre">90.0</span></code>.</p></li>
-<li><p><strong>exc_phase</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Excitation flip angle phase in degrees.
+<li><p><strong>exc_phase</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Excitation flip angle phase in degrees.
 The default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
-<li><p><strong>T1</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em>) – Longitudinal relaxation time in milliseconds.</p></li>
-<li><p><strong>T2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em>) – Transverse relaxation time in milliseconds.</p></li>
-<li><p><strong>diff</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – Arguments to get the signal derivative with respect to.
+<li><p><strong>T1</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em>) – Longitudinal relaxation time in milliseconds.</p></li>
+<li><p><strong>T2</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em>) – Transverse relaxation time in milliseconds.</p></li>
+<li><p><strong>diff</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em><em>, </em><em>optional</em>) – Arguments to get the signal derivative with respect to.
 The default is <code class="docutils literal notranslate"><span class="pre">None</span></code> (no differentation).</p></li>
-<li><p><strong>B1</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em><em>, </em><em>optional</em>) – Flip angle scaling map, default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
-<li><p><strong>inv_efficiency</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em><em>, </em><em>optional</em>) – Inversion efficiency map, default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
-<li><p><strong>M0</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em><em>, </em><em>optional</em>) – Proton density scaling factor, default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
-<li><p><strong>TI</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em><em>, </em><em>optional</em>) – Inversion time in milliseconds.
+<li><p><strong>B1</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em><em>, </em><em>optional</em>) – Flip angle scaling map, default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p><strong>inv_efficiency</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em><em>, </em><em>optional</em>) – Inversion efficiency map, default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p><strong>M0</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em><em>, </em><em>optional</em>) – Proton density scaling factor, default is <code class="docutils literal notranslate"><span class="pre">1.0</span></code>.</p></li>
+<li><p><strong>TI</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>npt.ArrayLike</em><em>, </em><em>optional</em>) – Inversion time in milliseconds.
 The default is <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
-<li><p><strong>states</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Number of EPG states to be retained.
+<li><p><strong>states</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Number of EPG states to be retained.
 The default is <code class="docutils literal notranslate"><span class="pre">10</span></code>.</p></li>
-<li><p><strong>device</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>torch.device</em><em>, </em><em>optional</em>) – Computational device for simulation.
+<li><p><strong>device</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>torch.device</em><em>, </em><em>optional</em>) – Computational device for simulation.
 The default is <code class="docutils literal notranslate"><span class="pre">None</span></code> (infer from input).</p></li>
 </ul>
 </dd>

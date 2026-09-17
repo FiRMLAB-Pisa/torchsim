@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.rf_definition.html">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.SequenceDescription.html">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -587,21 +588,20 @@ can carry.</p>
         </div>
         <p>The operators the new ones are composed from, and the simulator that plays
 them.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">torchsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">,</span>
-    <a href="../../torchsim.Dephase.html#torchsim.Dephase" title="torchsim.Dephase" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Dephase</span></a><span class="p">,</span>
-    <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Excitation</span></a><span class="p">,</span>
-    <a href="../../torchsim.Readout.html#torchsim.Readout" title="torchsim.Readout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Readout</span></a><span class="p">,</span>
-    <a href="../../torchsim.Refocusing.html#torchsim.Refocusing" title="torchsim.Refocusing" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Refocusing</span></a><span class="p">,</span>
-    <a href="../../torchsim.SSFPEchoReadout.html#torchsim.SSFPEchoReadout" title="torchsim.SSFPEchoReadout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">SSFPEchoReadout</span></a><span class="p">,</span>
-    <a href="../../torchsim.SSFPFidReadout.html#torchsim.SSFPFidReadout" title="torchsim.SSFPFidReadout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">SSFPFidReadout</span></a><span class="p">,</span>
-    <a href="../../torchsim.Spoil.html#torchsim.Spoil" title="torchsim.Spoil" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Spoil</span></a><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torchsim.model</span><span class="w"> </span><span class="kn">import</span> <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">Simulator</span></a>
-</pre></div>
-</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span><span class="w">
+</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">torchsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay"><span class="n">Delay</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Dephase.html#torchsim.Dephase" title="torchsim.Dephase"><span class="n">Dephase</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation"><span class="n">Excitation</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Readout.html#torchsim.Readout" title="torchsim.Readout"><span class="n">Readout</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Refocusing.html#torchsim.Refocusing" title="torchsim.Refocusing"><span class="n">Refocusing</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.SSFPEchoReadout.html#torchsim.SSFPEchoReadout" title="torchsim.SSFPEchoReadout"><span class="n">SSFPEchoReadout</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.SSFPFidReadout.html#torchsim.SSFPFidReadout" title="torchsim.SSFPFidReadout"><span class="n">SSFPFidReadout</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Spoil.html#torchsim.Spoil" title="torchsim.Spoil"><span class="n">Spoil</span></a><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">torchsim</span><span class="nn">.</span><span class="nn">model</span><span class="w"> </span><span class="kn">import</span> <a class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><span class="n">Simulator</span></a><span class="w">
+</span></pre></div></div>
 <section id="composing-existing-operators">
 <h2>Composing existing operators<a class="headerlink" href="#composing-existing-operators" title="Link to this heading">#</a></h2>
 <p>A T2 preparation tips the magnetization into the transverse plane, lets it
@@ -613,67 +613,65 @@ that is what an operator is.</p>
 <p>The Refocusing pulse is asked for uncrushed: a T2 preparation refocuses
 rather than dephases, and the crusher pair <a class="reference internal" href="../../torchsim.Refocusing.html#torchsim.Refocusing" title="torchsim.Refocusing"><code class="xref py py-func docutils literal notranslate"><span class="pre">Refocusing()</span></code></a> adds
 by default would spoil the echo it exists to form.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">t2_preparation</span><span class="p">(</span><span class="n">echo_time_s</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">spoil_s</span><span class="o">=</span><span class="mf">2e-3</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Return a T2 preparation that weights the magnetization by its own decay.</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="k">def</span><span class="w"> </span><span class="nf">t2_preparation</span><span class="p">(</span><span class="n">echo_time_s</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">spoil_s</span><span class="o">=</span><span class="mf">2e-3</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a T2 preparation that weights the magnetization by its own decay.
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    echo_time_s:</span>
-<span class="sd">        How long the magnetization spends in the transverse plane.</span>
-<span class="sd">    spoil_s:</span>
-<span class="sd">        The spoiler after the tip-up, which removes what did not return.</span>
-<span class="sd">    """</span>
-    <span class="n">half</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">echo_time_s</span>
-    <span class="k">return</span> <span class="p">(</span>
-        <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Excitation</span></a><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">)</span>
-        <span class="o">@</span> <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">(</span><span class="n">half</span><span class="p">)</span>
-        <span class="o">@</span> <a href="../../torchsim.Refocusing.html#torchsim.Refocusing" title="torchsim.Refocusing" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Refocusing</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="n">crushed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="o">@</span> <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">(</span><span class="n">half</span><span class="p">)</span>
-        <span class="o">@</span> <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Excitation</span></a><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">)</span>
-        <span class="o">@</span> <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">(</span><span class="n">spoil_s</span><span class="p">)</span>
-        <span class="o">@</span> <a href="../../torchsim.Spoil.html#torchsim.Spoil" title="torchsim.Spoil" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Spoil</span></a><span class="p">()</span>
-    <span class="p">)</span>
-</pre></div>
-</div>
+    Parameters
+    ----------
+    echo_time_s:
+        How long the magnetization spends in the transverse plane.
+    spoil_s:
+        The spoiler after the tip-up, which removes what did not return.
+    &quot;&quot;&quot;</span><span class="w">
+</span>    <span class="n">half</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">echo_time_s</span><span class="w">
+</span>    <span class="k">return</span> <span class="p">(</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation"><span class="n">Excitation</span></a><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">)</span><span class="w">
+</span>        <span class="o">&#64;</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay"><span class="n">Delay</span></a><span class="p">(</span><span class="n">half</span><span class="p">)</span><span class="w">
+</span>        <span class="o">&#64;</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Refocusing.html#torchsim.Refocusing" title="torchsim.Refocusing"><span class="n">Refocusing</span></a><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="n">crushed</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="w">
+</span>        <span class="o">&#64;</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay"><span class="n">Delay</span></a><span class="p">(</span><span class="n">half</span><span class="p">)</span><span class="w">
+</span>        <span class="o">&#64;</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation"><span class="n">Excitation</span></a><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">)</span><span class="w">
+</span>        <span class="o">&#64;</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay"><span class="n">Delay</span></a><span class="p">(</span><span class="n">spoil_s</span><span class="p">)</span><span class="w">
+</span>        <span class="o">&#64;</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Spoil.html#torchsim.Spoil" title="torchsim.Spoil"><span class="n">Spoil</span></a><span class="p">(</span><span class="p">)</span><span class="w">
+</span>    <span class="p">)</span><span class="w">
+</span></pre></div></div>
 </section>
 <section id="using-the-operator">
 <h2>Using the operator<a class="headerlink" href="#using-the-operator" title="Link to this heading">#</a></h2>
 <p>A new operator goes into a layout beside the shipped ones. The preparation
 leaves the weighted magnetization along z, so the train that follows excites
 it as it would any other longitudinal magnetization.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">T2PreparedFSE</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">Simulator</span></a><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""A T2 preparation, then a refocused train.</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="k">class</span><span class="w"> </span><a class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><span class="nc">T2PreparedFSE</span></a><span class="p">(</span><a class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><span class="n">Simulator</span></a><span class="p">)</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;A T2 preparation, then a refocused train.
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    TE_prep : float</span>
-<span class="sd">        How long the preparation holds the magnetization transverse, in</span>
-<span class="sd">        milliseconds.</span>
-<span class="sd">    ESP : float</span>
-<span class="sd">        The echo spacing, in milliseconds.</span>
-<span class="sd">    ETL : int</span>
-<span class="sd">        How many echoes are recorded.</span>
-<span class="sd">    """</span>
-
-    <span class="n">states</span> <span class="o">=</span> <span class="mi">8</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">TE_prep</span><span class="p">,</span> <span class="n">ESP</span><span class="p">,</span> <span class="n">ETL</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Return the operators of the whole train, in order."""</span>
-        <span class="n">half</span> <span class="o">=</span> <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">ESP</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)</span>
-        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">t2_preparation</span><span class="p">(</span><span class="n">TE_prep</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">excitation</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">),</span>
-        <span class="p">]</span>
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ETL</span><span class="p">):</span>
-            <span class="n">parts</span> <span class="o">+=</span> <span class="p">[</span>
-                <span class="n">half</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">refocusing</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">),</span>
-                <span class="n">half</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">),</span>
-            <span class="p">]</span>
-        <span class="k">return</span> <span class="n">parts</span>
-</pre></div>
-</div>
+    Parameters
+    ----------
+    TE_prep : float
+        How long the preparation holds the magnetization transverse, in
+        milliseconds.
+    ESP : float
+        The echo spacing, in milliseconds.
+    ETL : int
+        How many echoes are recorded.
+    &quot;&quot;&quot;</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">states</span> <span class="o">=</span> <span class="mi">8</span><span class="w">
+</span><span class="w">
+</span>    <span class="k">def</span><span class="w"> </span><span class="nf">layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">TE_prep</span><span class="p">,</span> <span class="n">ESP</span><span class="p">,</span> <span class="n">ETL</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the operators of the whole train, in order.&quot;&quot;&quot;</span><span class="w">
+</span>        <span class="n">half</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay"><span class="n">Delay</span></a><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">ESP</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)</span><span class="w">
+</span>        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="w">
+</span>            <span class="n">t2_preparation</span><span class="p">(</span><span class="n">TE_prep</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>            <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">excitation</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="p">]</span><span class="w">
+</span>        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ETL</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>            <span class="n">parts</span> <span class="o">+</span><span class="o">=</span> <span class="p">[</span><span class="w">
+</span>                <span class="n">half</span><span class="p">,</span><span class="w">
+</span>                <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">refocusing</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="mf">0.5</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">)</span><span class="p">,</span><span class="w">
+</span>                <span class="n">half</span><span class="p">,</span><span class="w">
+</span>                <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a><span class="p">)</span><span class="p">,</span><span class="w">
+</span>            <span class="p">]</span><span class="w">
+</span>        <span class="k">return</span> <span class="n">parts</span><span class="w">
+</span></pre></div></div>
 </section>
 <section id="validation">
 <h2>Validation<a class="headerlink" href="#validation" title="Link to this heading">#</a></h2>
@@ -681,22 +679,21 @@ it as it would any other longitudinal magnetization.</p>
 it rather than assert it: sweep the preparation time and hold the first
 recorded echo against <code class="docutils literal notranslate"><span class="pre">exp(-TE</span> <span class="pre">/</span> <span class="pre">T2)</span></code>, which is what a T2 preparation is
 for.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">T2_MS</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">40.0</span><span class="p">,</span> <span class="mf">80.0</span><span class="p">,</span> <span class="mf">160.0</span><span class="p">])</span>
-<span class="n">prep_times_ms</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">120.0</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
-
-<span class="n">prepared</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
-    <span class="p">[</span>
-        <a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">T2PreparedFSE</span></a><span class="p">(</span><span class="n">TE_prep</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">prep_ms</span><span class="p">),</span> <span class="n">ESP</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">ETL</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">T1</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="o">.</span><span class="n">abs</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">prep_ms</span> <span class="ow">in</span> <span class="n">prep_times_ms</span>
-    <span class="p">],</span>
-    <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">weighting</span> <span class="o">=</span> <span class="n">prepared</span> <span class="o">/</span> <span class="n">prepared</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">expected</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">prep_times_ms</span> <span class="o">/</span> <span class="n">T2_MS</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span>
-</pre></div>
-</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">T2_MS</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="p">[</span><span class="mf">40.0</span><span class="p">,</span> <span class="mf">80.0</span><span class="p">,</span> <span class="mf">160.0</span><span class="p">]</span><span class="p">)</span><span class="w">
+</span><span class="n">prep_times_ms</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">120.0</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">prepared</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="w">
+</span>    <span class="p">[</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><span class="n">T2PreparedFSE</span></a><span class="p">(</span><span class="n">TE_prep</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">prep_ms</span><span class="p">)</span><span class="p">,</span> <span class="n">ESP</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">ETL</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">
+</span>        <span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">T1</span><span class="o">=</span><span class="mf">1000.0</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">)</span><span class="p">[</span><span class="o">.</span><span class="o">.</span><span class="o">.</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="w">
+</span>        <span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span>        <span class="k">for</span> <span class="n">prep_ms</span> <span class="ow">in</span> <span class="n">prep_times_ms</span><span class="w">
+</span>    <span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">dim</span><span class="o">=</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">weighting</span> <span class="o">=</span> <span class="n">prepared</span> <span class="o">/</span> <span class="n">prepared</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="p">:</span><span class="mi">1</span><span class="p">]</span><span class="w">
+</span><span class="n">expected</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">prep_times_ms</span> <span class="o">/</span> <span class="n">T2_MS</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
 <img src="../../../_images/sphx_glr_04-custom-operator_001.png" srcset="../../../_images/sphx_glr_04-custom-operator_001.png" alt="simulated, against the closed form (solid)" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>worst departure from exp(-TE/T2): 0.0018985345959663391
 </pre></div>
 </div>
@@ -714,61 +711,59 @@ previous excitation – an echo, and far more strongly T2-weighted.</p>
 <p>TorchSim ships each of those separately. Taking both in one repetition is a
 double-echo steady state, and writing it is putting the winding between two
 samples rather than on one side of them.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">dess_readout</span><span class="p">(</span><span class="n">phase_rad</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">duration_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Return the two samples an unbalanced repetition can carry.</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="k">def</span><span class="w"> </span><span class="nf">dess_readout</span><span class="p">(</span><span class="n">phase_rad</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">duration_s</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the two samples an unbalanced repetition can carry.
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    phase_rad : float, optional</span>
-<span class="sd">        The receiver phase both samples are taken at.</span>
-<span class="sd">    duration_s : float, optional</span>
-<span class="sd">        What is left of the repetition after the second sample.</span>
-<span class="sd">    """</span>
-    <span class="k">return</span> <a href="../../torchsim.Readout.html#torchsim.Readout" title="torchsim.Readout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Readout</span></a><span class="p">(</span><span class="n">phase_rad</span><span class="p">)</span> <span class="o">@</span> <a href="../../torchsim.Dephase.html#torchsim.Dephase" title="torchsim.Dephase" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Dephase</span></a><span class="p">()</span> <span class="o">@</span> <a href="../../torchsim.Readout.html#torchsim.Readout" title="torchsim.Readout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Readout</span></a><span class="p">(</span><span class="n">phase_rad</span><span class="p">)</span> <span class="o">@</span> <a href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Delay</span></a><span class="p">(</span><span class="n">duration_s</span><span class="p">)</span>
-</pre></div>
-</div>
+    Parameters
+    ----------
+    phase_rad : float, optional
+        The receiver phase both samples are taken at.
+    duration_s : float, optional
+        What is left of the repetition after the second sample.
+    &quot;&quot;&quot;</span><span class="w">
+</span>    <span class="k">return</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Readout.html#torchsim.Readout" title="torchsim.Readout"><span class="n">Readout</span></a><span class="p">(</span><span class="n">phase_rad</span><span class="p">)</span> <span class="o">&#64;</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Dephase.html#torchsim.Dephase" title="torchsim.Dephase"><span class="n">Dephase</span></a><span class="p">(</span><span class="p">)</span> <span class="o">&#64;</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Readout.html#torchsim.Readout" title="torchsim.Readout"><span class="n">Readout</span></a><span class="p">(</span><span class="n">phase_rad</span><span class="p">)</span> <span class="o">&#64;</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay"><span class="n">Delay</span></a><span class="p">(</span><span class="n">duration_s</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
 <p>Whether that is the right arrangement is not a matter of opinion: the first
 sample has to be what an SSFP-FID train records and the second what an
 SSFP-Echo train records, since those are the same two samples taken one at a
 time. So the check is to run all three.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FLIP_DEG</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">TR_MS</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">REPETITIONS</span></a> <span class="o">=</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mi">64</span>
-<span class="n">T2_MS</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">40.0</span><span class="p">,</span> <span class="mf">80.0</span><span class="p">,</span> <span class="mf">160.0</span><span class="p">])</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">DESS</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">Simulator</span></a><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""A steady-state train taking both samples each repetition can carry."""</span>
-
-    <span class="n">excitation</span> <span class="o">=</span> <a href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">Excitation</span></a>
-    <span class="n">readout</span> <span class="o">=</span> <span class="n">dess_readout</span>
-    <span class="n">states</span> <span class="o">=</span> <span class="mi">24</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">flip</span><span class="p">,</span> <span class="n">TR</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Return the operators of one repetition, in order."""</span>
-        <span class="k">return</span> <span class="p">[</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">excitation</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">flip</span><span class="p">))),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span><span class="n">duration_s</span><span class="o">=</span><span class="n">TR</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">),</span>
-        <span class="p">]</span>
-
-
-<span class="c1"># Naming a different readout is the whole of the difference between the three.</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">SSFPFid</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">DESS</span></a><span class="p">):</span>
-    <span class="n">readout</span> <span class="o">=</span> <a href="../../torchsim.SSFPFidReadout.html#torchsim.SSFPFidReadout" title="torchsim.SSFPFidReadout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">SSFPFidReadout</span></a>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">SSFPEcho</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">DESS</span></a><span class="p">):</span>
-    <span class="n">readout</span> <span class="o">=</span> <a href="../../torchsim.SSFPEchoReadout.html#torchsim.SSFPEchoReadout" title="torchsim.SSFPEchoReadout" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function"><span class="n">SSFPEchoReadout</span></a>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">played</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1_ms</span></a><span class="o">=</span><span class="mf">1000.0</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Return what one train records, over the three T2 values."""</span>
-    <span class="n">train</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span><span class="n">flip</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">FLIP_DEG</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">TR_MS</span></a><span class="p">,</span> <span class="n">repetitions</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">REPETITIONS</span></a><span class="p">)</span>
-    <span class="k">return</span> <span class="n">train</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">T1</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1_ms</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">)</span>
-
-
-<span class="n">both</span> <span class="o">=</span> <span class="n">played</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">DESS</span></a><span class="p">)</span>
-<span class="n">fid</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="n">both</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">both</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
-</pre></div>
-</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">FLIP_DEG</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">TR_MS</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">REPETITIONS</span></a> <span class="o">=</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mf">20.0</span><span class="p">,</span> <span class="mi">64</span><span class="w">
+</span><span class="n">T2_MS</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="p">[</span><span class="mf">40.0</span><span class="p">,</span> <span class="mf">80.0</span><span class="p">,</span> <span class="mf">160.0</span><span class="p">]</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">class</span><span class="w"> </span><a class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><span class="nc">DESS</span></a><span class="p">(</span><a class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><span class="n">Simulator</span></a><span class="p">)</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;A steady-state train taking both samples each repetition can carry.&quot;&quot;&quot;</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">excitation</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.Excitation.html#torchsim.Excitation" title="torchsim.Excitation"><span class="n">Excitation</span></a><span class="w">
+</span>    <span class="n">readout</span> <span class="o">=</span> <span class="n">dess_readout</span><span class="w">
+</span>    <span class="n">states</span> <span class="o">=</span> <span class="mi">24</span><span class="w">
+</span><span class="w">
+</span>    <span class="k">def</span><span class="w"> </span><span class="nf">layout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">flip</span><span class="p">,</span> <span class="n">TR</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the operators of one repetition, in order.&quot;&quot;&quot;</span><span class="w">
+</span>        <span class="k">return</span> <span class="p">[</span><span class="w">
+</span>            <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">excitation</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">flip</span><span class="p">)</span><span class="p">)</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>            <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span><span class="n">duration_s</span><span class="o">=</span><span class="n">TR</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="p">]</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="c1"># Naming a different readout is the whole of the difference between the three.</span><span class="w">
+</span><span class="k">class</span><span class="w"> </span><a class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><span class="nc">SSFPFid</span></a><span class="p">(</span><a class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><span class="n">DESS</span></a><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="n">readout</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.SSFPFidReadout.html#torchsim.SSFPFidReadout" title="torchsim.SSFPFidReadout"><span class="n">SSFPFidReadout</span></a><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">class</span><span class="w"> </span><a class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><span class="nc">SSFPEcho</span></a><span class="p">(</span><a class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><span class="n">DESS</span></a><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="n">readout</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-function reference internal" href="../../torchsim.SSFPEchoReadout.html#torchsim.SSFPEchoReadout" title="torchsim.SSFPEchoReadout"><span class="n">SSFPEchoReadout</span></a><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">def</span><span class="w"> </span><span class="nf">played</span><span class="p">(</span><span class="n">sequence</span><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">t1_ms</span></a><span class="o">=</span><span class="mf">1000.0</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return what one train records, over the three T2 values.&quot;&quot;&quot;</span><span class="w">
+</span>    <span class="n">train</span> <span class="o">=</span> <span class="n">sequence</span><span class="p">(</span><span class="n">flip</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">FLIP_DEG</span></a><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">TR_MS</span></a><span class="p">,</span> <span class="n">repetitions</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">REPETITIONS</span></a><span class="p">)</span><span class="w">
+</span>    <span class="k">return</span> <span class="n">train</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">T1</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">t1_ms</span></a><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">T2_MS</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="n">both</span> <span class="o">=</span> <span class="n">played</span><span class="p">(</span><a class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><span class="n">DESS</span></a><span class="p">)</span><span class="w">
+</span><span class="n">fid</span><span class="p">,</span> <span class="n">echo</span> <span class="o">=</span> <span class="n">both</span><span class="p">[</span><span class="o">.</span><span class="o">.</span><span class="o">.</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="p">,</span> <span class="n">both</span><span class="p">[</span><span class="o">.</span><span class="o">.</span><span class="o">.</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="w">
+</span></pre></div></div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>first sample against SSFPFidReadout:  0.0e+00
 second sample against SSFPEchoReadout: 0.0e+00
 </pre></div>
@@ -779,12 +774,11 @@ each is the sample the sequence that takes it alone would have recorded.</p>
 repetition in the transverse plane, so it carries T2 where the free induction
 decay carries a mixture – and the ratio of the two is a T2 contrast that
 needs no separate measurement to normalize.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ratios</span></a> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1_ms</span></a> <span class="ow">in</span> <span class="p">(</span><span class="mf">600.0</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">):</span>
-    <span class="n">recorded</span> <span class="o">=</span> <span class="n">played</span><span class="p">(</span><a href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator" class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class"><span class="n">DESS</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1_ms</span></a><span class="p">)</span>
-    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ratios</span></a><span class="p">[</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">t1_ms</span></a><span class="p">]</span> <span class="o">=</span> <span class="n">recorded</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">][:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">/</span> <span class="n">recorded</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">][:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
-</pre></div>
-</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">ratios</span></a> <span class="o">=</span> <span class="p">{</span><span class="p">}</span><span class="w">
+</span><span class="k">for</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">t1_ms</span></a> <span class="ow">in</span> <span class="p">(</span><span class="mf">600.0</span><span class="p">,</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="mf">2000.0</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="n">recorded</span> <span class="o">=</span> <span class="n">played</span><span class="p">(</span><a class="sphx-glr-backref-module-torchsim-model sphx-glr-backref-type-py-class reference internal" href="../../torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><span class="n">DESS</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">t1_ms</span></a><span class="p">)</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">ratios</span></a><span class="p">[</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">t1_ms</span></a><span class="p">]</span> <span class="o">=</span> <span class="n">recorded</span><span class="p">[</span><span class="o">.</span><span class="o">.</span><span class="o">.</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="p">)</span> <span class="o">/</span> <span class="n">recorded</span><span class="p">[</span><span class="o">.</span><span class="o">.</span><span class="o">.</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
 <ul class="sphx-glr-horizontal">
 <li><img src="../../../_images/sphx_glr_04-custom-operator_002.png" srcset="../../../_images/sphx_glr_04-custom-operator_002.png" alt="the two samples one repetition takes (echo dashed)" class = "sphx-glr-multi-img"/></li>
 <li><img src="../../../_images/sphx_glr_04-custom-operator_003.png" srcset="../../../_images/sphx_glr_04-custom-operator_003.png" alt="their ratio rises with T2, and moves far less with T1" class = "sphx-glr-multi-img"/></li>
@@ -807,7 +801,7 @@ of its own, or a crusher of twice its neighbour’s area have no spelling here.
 Those need a per-event gradient moment through the packed layout and every
 kernel, which is a change to the engine rather than to an operator written on
 top of it.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.479 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.462 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-01-framework-04-custom-operator-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/01-framework/04-custom-operator.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo.svg" style="width: 150px;" />

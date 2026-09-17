@@ -1,0 +1,1380 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>torchsim.sequence._transition &#8212; TorchSim Documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/torchsim/sequence/_transition';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/_modules/torchsim/sequence/_transition.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../../_static/searchtools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script src="../../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">TorchSim Documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../index.html">
+                    TorchSim
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Guides</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../user_guide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer_guide.html">Developer Guide</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../generated/autoexamples/index.html">Examples</a></li>
+
+
+
+
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API References</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/index.html">API References</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/model.html">Signal models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.model.Simulator.html">Simulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.model.SpinPhysics.html">SpinPhysics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.model.EventOperators.html">EventOperators</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/simulators.html">Simulators</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.bSSFPSimulator.html">bSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.SPGRSimulator.html">SPGRSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MP2RAGESimulator.html">MP2RAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.spgr_sim.html">spgr_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.fse_sim.html">fse_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mprage_sim.html">mprage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mp2rage_sim.html">mp2rage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mpnrage_sim.html">mpnrage_sim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.mrf_sim.html">mrf_sim</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/sequence.html">Sequences</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Operator.html">Operator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Excitation.html">Excitation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Refocusing.html">Refocusing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Inversion.html">Inversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Readout.html">Readout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Delay.html">Delay</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Dephase.html">Dephase</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Spoil.html">Spoil</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.bSSFPReadout.html">bSSFPReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SSFPFidReadout.html">SSFPFidReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SSFPEchoReadout.html">SSFPEchoReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SPGRReadout.html">SPGRReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.FSEReadout.html">FSEReadout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.rf_definition.html">rf_definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.compose_spinor.html">compose_spinor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SequenceDescription.html">SequenceDescription</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Estimator.html">Estimator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.DictionaryMatcher.html">DictionaryMatcher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.LookupTable.html">LookupTable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.NonlinearLeastSquares.html">NonlinearLeastSquares</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.PERK.html">PERK</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/recon.html">Model-based reconstruction</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.ModelOperator.html">ModelOperator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.GaussNewton.html">GaussNewton</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.TrustRegion.html">TrustRegion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.direct.html">direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.iterative.html">iterative</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Subspace.html">Subspace</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/optim.html">Sequence design</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Bounded.html">Bounded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SequenceDesign.html">SequenceDesign</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.crlb.html">crlb</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../../api/execution.html">Running a simulation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.execution.html">execution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.offload.html">offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.utils.b1rms.html">b1rms</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Miscellaneous</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/related.html">Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/contributors.html">Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/code_of_conduct.html">Code of Conduct</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../misc/license.html">License</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2F_modules/torchsim/sequence/_transition.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for torchsim.sequence._transition</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""The rotation a shaped pulse performs, worked out ahead of time.</span>
+
+<span class="sd">The state machine treats a pulse as instantaneous. A real one has a duration,</span>
+<span class="sd">and under a slice-select gradient the spins it acts on are off-resonance by an</span>
+<span class="sd">amount that grows with distance from the slice centre, so what it does to a</span>
+<span class="sd">spin is a rotation about an axis that is neither transverse nor the same</span>
+<span class="sd">everywhere. A flip angle and a phase cannot name that rotation; the</span>
+<span class="sd">Cayley-Klein pair ``(a, b)`` can, and that pair is what the kernels turn</span>
+<span class="sd">the states through.</span>
+
+<span class="sd">Working the pair out during the simulation would mean integrating the pulse</span>
+<span class="sd">once per voxel per event. It is tabulated here instead, and the table is small</span>
+<span class="sd">because of what the rotation actually depends on:</span>
+
+<span class="sd">* **Flip angle and transmit scaling enter only through their product.** During</span>
+<span class="sd">  the pulse the effective field is ``(w1(t) * s, 0, gamma * G * z)`` and only</span>
+<span class="sd">  the transverse part carries ``s``, so a nominal flip of 180 degrees at</span>
+<span class="sd">  ``B1 = 0.7`` is the same rotation as 126 degrees at ``B1 = 1``. One axis, not</span>
+<span class="sd">  two.</span>
+<span class="sd">* **The RF phase factors out.** Turning the whole pulse by ``phi`` turns the</span>
+<span class="sd">  rotation axis with it, which is ``b -&gt; b * exp(-1j * phi)``. So the table is</span>
+<span class="sd">  built for zero phase and the phase applied to the result, exactly as the</span>
+<span class="sd">  instantaneous operator applies it.</span>
+
+<span class="sd">That leaves a table over slice position and effective flip angle. Sampled with</span>
+<span class="sd">its own slope and read back by cubic Hermite interpolation, 64 bins carry it to</span>
+<span class="sd">about 1e-8, which is far below what float32 states resolve.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">"ExactSliceProfile"</span><span class="p">,</span>
+    <span class="s2">"SliceTables"</span><span class="p">,</span>
+    <span class="s2">"TransitionTable"</span><span class="p">,</span>
+    <span class="s2">"compose_spinor"</span><span class="p">,</span>
+    <span class="s2">"dynamic_pair"</span><span class="p">,</span>
+    <span class="s2">"exact_slice_profile"</span><span class="p">,</span>
+    <span class="s2">"transition_table"</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Iterator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">repeat</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">._description</span><span class="w"> </span><span class="kn">import</span> <span class="n">RfDefinition</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TransitionTable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A pulse's rotation, sampled over slice position and effective flip.</span>
+
+<span class="sd">    ``a`` and ``b`` hold the Cayley-Klein pair at every knot, shaped</span>
+<span class="sd">    ``(points, bins)``; ``slope_a`` and ``slope_b`` hold its derivative in the</span>
+<span class="sd">    flip angle there. The flip axis runs from zero to ``theta_max`` radians in</span>
+<span class="sd">    ``bins`` evenly spaced knots.</span>
+<span class="sd">    """</span>
+
+    <span class="n">a</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="n">b</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="n">slope_a</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="n">slope_b</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="n">theta_max</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""How many slice positions the table carries."""</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bins</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""How many flip-angle knots each position carries."""</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Flip angle between neighbouring knots, in radians."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta_max</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">packed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The table laid out as the kernels index it.</span>
+
+<span class="sd">        ``(points, bins, 8)``: the pair then its slope, real before imaginary,</span>
+<span class="sd">        so the two knots a Hermite read needs are sixteen contiguous floats.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">real</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">real</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">slope_a</span><span class="o">.</span><span class="n">real</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">slope_a</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">slope_b</span><span class="o">.</span><span class="n">real</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">slope_b</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">at</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">theta</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""The pair at a flip angle between the knots, by cubic Hermite.</span>
+
+<span class="sd">        ``position`` indexes the slice axis and ``theta`` is the effective flip</span>
+<span class="sd">        in radians, clamped to the grid. Cubic rather than linear because the</span>
+<span class="sd">        second-order pass differentiates this twice, and because storing the</span>
+<span class="sd">        slope makes the cubic cost the same two loads.</span>
+
+<span class="sd">        Returns the pair; the caller applies the RF phase to ``b``.</span>
+<span class="sd">        """</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta_max</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">scaled</span> <span class="o">=</span> <span class="p">(</span><span class="n">theta</span> <span class="o">/</span> <span class="n">step</span><span class="p">)</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">lower</span> <span class="o">=</span> <span class="n">scaled</span><span class="o">.</span><span class="n">floor</span><span class="p">()</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">-</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">scaled</span> <span class="o">-</span> <span class="n">lower</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">lower</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+
+        <span class="c1"># Hermite basis on the unit interval.</span>
+        <span class="n">u2</span> <span class="o">=</span> <span class="n">u</span> <span class="o">*</span> <span class="n">u</span>
+        <span class="n">u3</span> <span class="o">=</span> <span class="n">u2</span> <span class="o">*</span> <span class="n">u</span>
+        <span class="n">h00</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">u3</span> <span class="o">-</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">u2</span> <span class="o">+</span> <span class="mf">1.0</span>
+        <span class="n">h10</span> <span class="o">=</span> <span class="n">u3</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">u2</span> <span class="o">+</span> <span class="n">u</span>
+        <span class="n">h01</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">u3</span> <span class="o">+</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">u2</span>
+        <span class="n">h11</span> <span class="o">=</span> <span class="n">u3</span> <span class="o">-</span> <span class="n">u2</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">blend</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">slopes</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+            <span class="n">near</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">position</span><span class="p">,</span> <span class="n">index</span><span class="p">]</span>
+            <span class="n">far</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="n">position</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">near_slope</span> <span class="o">=</span> <span class="n">slopes</span><span class="p">[</span><span class="n">position</span><span class="p">,</span> <span class="n">index</span><span class="p">]</span>
+            <span class="n">far_slope</span> <span class="o">=</span> <span class="n">slopes</span><span class="p">[</span><span class="n">position</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">h00</span> <span class="o">*</span> <span class="n">near</span>
+                <span class="o">+</span> <span class="n">h10</span> <span class="o">*</span> <span class="n">step</span> <span class="o">*</span> <span class="n">near_slope</span>
+                <span class="o">+</span> <span class="n">h01</span> <span class="o">*</span> <span class="n">far</span>
+                <span class="o">+</span> <span class="n">h11</span> <span class="o">*</span> <span class="n">step</span> <span class="o">*</span> <span class="n">far_slope</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">blend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slope_a</span><span class="p">),</span> <span class="n">blend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">slope_b</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="compose_spinor">
+<a class="viewcode-back" href="../../../generated/torchsim.compose_spinor.html#torchsim.compose_spinor">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compose_spinor</span><span class="p">(</span>
+    <span class="n">drive</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">turn_z</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""The Cayley-Klein pair a shaped pulse leaves, sample by sample.</span>
+
+<span class="sd">    One SU(2) element per raster sample, composed in the order the scanner</span>
+<span class="sd">    plays them. Each is the rotation about the effective field a spin sees</span>
+<span class="sd">    while that sample lasts: the RF in the transverse plane, the gradient</span>
+<span class="sd">    along z.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    drive</span>
+<span class="sd">        The transverse field per sample, radians turned per sample. A tensor</span>
+<span class="sd">        with the sample axis first, or any iterable of per-sample tensors --</span>
+<span class="sd">        which is how a per-voxel field is composed without ever holding one</span>
+<span class="sd">        for every sample at once.</span>
+<span class="sd">    turn_z</span>
+<span class="sd">        The longitudinal turn per sample, radians, one per spin. A tensor is</span>
+<span class="sd">        the turn every sample makes -- a gradient the scanner holds -- and an</span>
+<span class="sd">        iterable of per-sample tensors is one it moves, in the same form</span>
+<span class="sd">        ``drive`` takes.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    a, b : torch.Tensor</span>
+<span class="sd">        Complex128, shaped like the turn. Each sample turns the magnetisation</span>
+<span class="sd">        right-handedly about ``(drive.real, drive.imag, turn_z)`` by that</span>
+<span class="sd">        vector's length, so a spin starting along ``+z`` ends with</span>
+<span class="sd">        ``Mxy = -2 conj(a b)`` and ``Mz = |a|^2 - |b|^2``. A real drive of</span>
+<span class="sd">        area ``t`` on resonance gives ``(cos(t/2), -i sin(t/2))``.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If a moving gradient runs out before the pulse does, or the other way</span>
+<span class="sd">        about.</span>
+<span class="sd">    """</span>
+    <span class="n">held</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">turn_z</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">held</span><span class="p">:</span>
+        <span class="n">turns</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">=</span> <span class="n">repeat</span><span class="p">(</span><span class="n">turn_z</span><span class="p">)</span>
+        <span class="n">spins</span> <span class="o">=</span> <span class="n">turn_z</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">turns</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">turn_z</span><span class="p">)</span>
+        <span class="n">spins</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">turns</span><span class="p">)</span>
+        <span class="n">turns</span> <span class="o">=</span> <span class="n">chain</span><span class="p">((</span><span class="n">spins</span><span class="p">,),</span> <span class="n">turns</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">spins</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">drive</span><span class="p">,</span> <span class="n">turns</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">if</span> <span class="n">held</span> <span class="k">else</span> <span class="nb">zip</span><span class="p">(</span><span class="n">drive</span><span class="p">,</span> <span class="n">turns</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sample</span><span class="p">,</span> <span class="n">turn</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">:</span>
+        <span class="n">turn_x</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">real</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">spins</span><span class="p">)</span>
+        <span class="n">turn_y</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">imag</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">spins</span><span class="p">)</span>
+        <span class="n">turn</span> <span class="o">=</span> <span class="n">turn</span><span class="o">.</span><span class="n">expand_as</span><span class="p">(</span><span class="n">spins</span><span class="p">)</span>
+        <span class="c1"># Both coefficients are smooth functions of the squared angle, and are</span>
+        <span class="c1"># taken that way near the origin: a spin at the slice centre under no</span>
+        <span class="c1"># flip sits at exactly zero, where the square root is continuous but</span>
+        <span class="c1"># its derivative is not, and what reads this carries derivatives.</span>
+        <span class="n">square</span> <span class="o">=</span> <span class="n">turn_x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">turn_y</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">turn</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">turning</span> <span class="o">=</span> <span class="n">square</span> <span class="o">&gt;</span> <span class="mf">1e-18</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">turning</span><span class="p">,</span> <span class="n">square</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">square</span><span class="p">)))</span>
+        <span class="n">half</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">angle</span>
+        <span class="n">cosine</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">turning</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">half</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">square</span> <span class="o">/</span> <span class="mf">8.0</span> <span class="o">+</span> <span class="n">square</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mf">384.0</span>
+        <span class="p">)</span>
+        <span class="c1"># sin(angle / 2) / angle, which is 1/2 at the origin.</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+            <span class="n">turning</span><span class="p">,</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">half</span><span class="p">)</span> <span class="o">/</span> <span class="n">angle</span><span class="p">,</span>
+            <span class="mf">0.5</span> <span class="o">-</span> <span class="n">square</span> <span class="o">/</span> <span class="mf">48.0</span> <span class="o">+</span> <span class="n">square</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mf">3840.0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">step_a</span> <span class="o">=</span> <span class="n">cosine</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">turn</span> <span class="o">*</span> <span class="n">scale</span>
+        <span class="n">step_b</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">turn_x</span> <span class="o">-</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">turn_y</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">step_a</span> <span class="o">*</span> <span class="n">a</span> <span class="o">-</span> <span class="n">step_b</span> <span class="o">*</span> <span class="n">b</span><span class="o">.</span><span class="n">conj</span><span class="p">(),</span> <span class="n">step_b</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">conj</span><span class="p">()</span> <span class="o">+</span> <span class="n">step_a</span> <span class="o">*</span> <span class="n">b</span>
+    <span class="k">return</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span></div>
+
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DynamicPairs</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The rotation each pulse performs, voxel by voxel.</span>
+
+<span class="sd">    ``a`` and ``b`` hold the Cayley-Klein pair shaped ``(rows, voxels)``, and</span>
+<span class="sd">    ``index`` says which row an event reads -- packed alongside the events, in</span>
+<span class="sd">    their order, exactly as the shim row and the profile row are. Events that</span>
+<span class="sd">    drive no pulse carry any row; nothing reads it.</span>
+
+<span class="sd">    A row is one pulse rather than one shape. A static array's rotation depends</span>
+<span class="sd">    on the array through a single complex scalar, which is what lets one table</span>
+<span class="sd">    over effective flip cover every pulse sharing a shape; this one depends on</span>
+<span class="sd">    the whole per-channel vector as it varies, so pulses differing in anything</span>
+<span class="sd">    at all share nothing.</span>
+
+<span class="sd">    The pair is built at zero RF phase, so the event's own phase turns the axis</span>
+<span class="sd">    afterwards -- ``b -&gt; b exp(-i phi)`` -- which is what lets phase cycling</span>
+<span class="sd">    reuse a row rather than re-integrate it.</span>
+<span class="sd">    """</span>
+
+    <span class="n">a</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="n">b</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+    <span class="n">index</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"the pair's halves are shaped </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2"> and "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"a dynamic pair is one row per pulse of one entry per voxel, "</span>
+                <span class="sa">f</span><span class="s2">"so it is two-dimensional, not </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">ndim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"the index names a row per event, for one train or for each, "</span>
+                <span class="sa">f</span><span class="s2">"so it is one- or two-dimensional, not </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">max</span><span class="p">())</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rows</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"the index reaches row </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">max</span><span class="p">())</span><span class="si">}</span><span class="s2"> of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rows</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rows</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""How many pulses the set carries a rotation for."""</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">voxels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""How many voxels each row covers."""</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""The pair one pulse performs, one entry per voxel."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">[</span><span class="n">row</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">[</span><span class="n">row</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">rows_per_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_count</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">event_count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The row each event of each train reads, as the kernels index it.</span>
+
+<span class="sd">        The kernels read this at ``train * event_count + event``, so it has to</span>
+<span class="sd">        span every train -- a shorter buffer is read past its end rather than</span>
+<span class="sd">        wrapped. An index given for one train is taken to mean that every train</span>
+<span class="sd">        reads the same rows, which is what a set of pulses shared across a</span>
+<span class="sd">        batch is; one given per train is flattened in place.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">            ValueError: if the index fits neither shape.</span>
+<span class="sd">        """</span>
+        <span class="n">flat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">flat</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="n">train_count</span> <span class="o">*</span> <span class="n">event_count</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">flat</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">flat</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="n">event_count</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">flat</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">train_count</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"the index names </span><span class="si">{</span><span class="n">flat</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span><span class="si">}</span><span class="s2"> rows, but this launch reads one "</span>
+            <span class="sa">f</span><span class="s2">"per event of every train -- </span><span class="si">{</span><span class="n">event_count</span><span class="si">}</span><span class="s2"> or "</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">train_count</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">event_count</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_packed</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DynamicPairs</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The set a packed buffer describes, ``(rows, voxels, 4)``.</span>
+
+<span class="sd">        The inverse of :meth:`packed`, which is what lets the pair cross a</span>
+<span class="sd">        kernel boundary as one differentiable tensor and come back as a pair.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">a</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">complex</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+            <span class="n">b</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">complex</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span>
+            <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">packed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The pair laid out as the kernels index it.</span>
+
+<span class="sd">        ``(rows, voxels, 4)``: the pair, real before imaginary, so what a</span>
+<span class="sd">        single read needs is four contiguous floats.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">imag</span><span class="p">),</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_sample_steps</span><span class="p">(</span>
+    <span class="n">definition</span><span class="p">:</span> <span class="n">RfDefinition</span><span class="p">,</span>
+    <span class="n">rf_raster_time_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""How long each sample is held, and what a spin off centre accrues in it.</span>
+
+<span class="sd">    Returns ``(dwell, steps)`` in seconds: ``dwell`` is what the pulse's own</span>
+<span class="sd">    sample times say each sample lasts, and ``steps`` is that under the</span>
+<span class="sd">    gradient played across it, so a gradient the scanner switches off</span>
+<span class="sd">    contributes no position-dependent turn however long the sample.</span>
+<span class="sd">    """</span>
+    <span class="n">dwell</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span>
+        <span class="n">definition</span><span class="o">.</span><span class="n">sample_durations</span><span class="p">(</span><span class="n">rf_raster_time_s</span><span class="o">=</span><span class="n">rf_raster_time_s</span><span class="p">),</span>
+        <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+        <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">waveform</span> <span class="o">=</span> <span class="n">definition</span><span class="o">.</span><span class="n">gradient_waveform</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">waveform</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dwell</span><span class="p">,</span> <span class="n">dwell</span>
+    <span class="n">moving</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dwell</span><span class="p">,</span> <span class="n">dwell</span> <span class="o">*</span> <span class="n">moving</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_longitudinal</span><span class="p">(</span>
+    <span class="n">detune</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="n">rate</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">steps</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The longitudinal turn per sample: off-resonance, and where the spin sits.</span>
+
+<span class="sd">    ``rate`` is what a spin at its position turns per second of pulse. Where</span>
+<span class="sd">    every sample accrues alike the two add once and the result is handed over</span>
+<span class="sd">    as one tensor; otherwise it is an iterable, which is the second form</span>
+<span class="sd">    :func:`compose_spinor` takes.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">rate</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">detune</span>
+    <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">steps</span> <span class="o">==</span> <span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
+        <span class="k">return</span> <span class="n">detune</span> <span class="o">+</span> <span class="n">rate</span> <span class="o">*</span> <span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">detune</span> <span class="o">+</span> <span class="n">rate</span> <span class="o">*</span> <span class="n">step</span> <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dynamic_pair</span><span class="p">(</span>
+    <span class="n">definition</span><span class="p">:</span> <span class="n">RfDefinition</span><span class="p">,</span>
+    <span class="n">sensitivities</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">weights</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">flip</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">off_resonance_hz</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">positions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">rf_raster_time_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""The rotation a dynamically shimmed pulse performs, voxel by voxel.</span>
+
+<span class="sd">    A static array reduces to one flip angle and one phase because its channel</span>
+<span class="sd">    weights are constant while the pulse plays, so the spatial factor comes</span>
+<span class="sd">    outside the pulse integral. Weights that vary during the pulse -- kT-points,</span>
+<span class="sd">    spokes -- do not factor that way: the field a voxel sees changes direction</span>
+<span class="sd">    as well as size, and what the pulse leaves is a rotation about an axis the</span>
+<span class="sd">    voxel has to itself. That rotation is this pair.</span>
+
+<span class="sd">    There is no table to build. A static pulse's rotation depends on the array</span>
+<span class="sd">    only through one complex scalar, which is why one grid covers every voxel;</span>
+<span class="sd">    here it depends on the whole per-channel vector, so the integral is taken</span>
+<span class="sd">    per voxel and the field is formed one sample at a time rather than held for</span>
+<span class="sd">    every sample at once.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    definition</span>
+<span class="sd">        The pulse. Its complex envelope is played sample by sample at</span>
+<span class="sd">        ``rf_raster_time_s`` and normalized by its own integral, so a voxel the</span>
+<span class="sd">        array puts unit field on turns through exactly ``flip``. A per-channel</span>
+<span class="sd">        envelope is the drive itself; a single one is the waveform every</span>
+<span class="sd">        channel plays, and ``weights`` says how hard each drives it.</span>
+<span class="sd">    sensitivities</span>
+<span class="sd">        Complex per-channel transmit sensitivities, ``(voxels, channels)``.</span>
+<span class="sd">    weights</span>
+<span class="sd">        Complex channel weights, ``(channels, samples)`` while the pulse plays,</span>
+<span class="sd">        or ``(channels,)`` for a weight they hold. Unity when not given.</span>
+<span class="sd">    flip</span>
+<span class="sd">        The nominal flip the event drives, in radians. Scales every channel</span>
+<span class="sd">        alike and so still factors out of the array.</span>
+<span class="sd">    off_resonance_hz</span>
+<span class="sd">        What each voxel is off resonance by while the pulse plays. Zero when</span>
+<span class="sd">        not given.</span>
+<span class="sd">    positions</span>
+<span class="sd">        Where across the slice to integrate, in units of the slice thickness,</span>
+<span class="sd">        so that the passband is ``[-0.5, 0.5]``. The slice-select gradient is</span>
+<span class="sd">        taken to hold for the whole pulse, which makes position times the</span>
+<span class="sd">        definition's bandwidth the offset in Hz it adds. One location when not</span>
+<span class="sd">        given.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        ``(a, b)`` in ``complex64``, one entry per voxel and location with</span>
+<span class="sd">        **locations fastest** -- ``voxel * locations + location``, which is how</span>
+<span class="sd">        the kernels index an atom across a slice.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">        ValueError: if the pulse has no samples, if it integrates to nothing,</span>
+<span class="sd">            or if the envelope, the weights and the sensitivities disagree on</span>
+<span class="sd">            the channel count.</span>
+<span class="sd">    """</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">sensitivities</span><span class="o">.</span><span class="n">device</span>
+    <span class="n">envelope</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span>
+        <span class="n">definition</span><span class="o">.</span><span class="n">complex_envelope</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">complex128</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">envelope</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="n">definition</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> has an empty envelope"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">envelope</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">envelope</span> <span class="o">=</span> <span class="n">envelope</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+    <span class="n">dwell</span><span class="p">,</span> <span class="n">steps</span> <span class="o">=</span> <span class="n">_sample_steps</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="n">rf_raster_time_s</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+    <span class="n">envelope</span> <span class="o">=</span> <span class="n">envelope</span> <span class="o">*</span> <span class="n">dwell</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">area</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">envelope</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="n">definition</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> integrates to nothing, so it has no "</span>
+            <span class="sa">f</span><span class="s2">"flip angle to drive"</span>
+        <span class="p">)</span>
+    <span class="n">shape</span> <span class="o">=</span> <span class="n">envelope</span> <span class="o">/</span> <span class="n">area</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">sensitivities</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">sensitivities</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">complex128</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">weights</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">shape</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># One waveform every channel plays: the weights are what makes the</span>
+        <span class="c1"># channels differ, which is the static array this generalizes.</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">channels</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">channels</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"the pulse drives </span><span class="si">{</span><span class="n">channels</span><span class="si">}</span><span class="s2"> channels and the weights </span><span class="si">{</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">sensitivities</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">channels</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"the weights drive </span><span class="si">{</span><span class="n">channels</span><span class="si">}</span><span class="s2"> channels and the "</span>
+            <span class="sa">f</span><span class="s2">"sensitivities map </span><span class="si">{</span><span class="n">sensitivities</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">samples</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"the weights carry </span><span class="si">{</span><span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> samples and the pulse </span><span class="si">{</span><span class="n">samples</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">)</span>
+
+    <span class="n">voxels</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sensitivities</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">positions</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">locations</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">across</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">across</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+            <span class="o">-</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="n">locations</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">across</span><span class="o">.</span><span class="n">numel</span><span class="p">())</span>
+        <span class="n">across</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">definition</span><span class="o">.</span><span class="n">bandwidth_hz</span><span class="p">)</span> <span class="o">*</span> <span class="n">across</span>
+
+    <span class="n">detune</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">voxels</span> <span class="o">*</span> <span class="n">locations</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">off_resonance_hz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">detune</span> <span class="o">=</span> <span class="n">detune</span> <span class="o">+</span> <span class="p">(</span>
+            <span class="mf">2.0</span>
+            <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span>
+            <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">off_resonance_hz</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="o">*</span> <span class="n">rf_raster_time_s</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">voxels</span><span class="p">)</span><span class="o">.</span><span class="n">repeat_interleave</span><span class="p">(</span><span class="n">locations</span><span class="p">)</span>
+    <span class="n">placed</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">across</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">across</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">voxels</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">locations</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># A voxel's transmit does not depend on where in the slice it sits.</span>
+        <span class="n">sensitivities</span> <span class="o">=</span> <span class="n">sensitivities</span><span class="o">.</span><span class="n">repeat_interleave</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">driven</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">flip</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">field</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="n">held</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
+            <span class="n">column</span> <span class="o">=</span> <span class="n">shape</span><span class="p">[:,</span> <span class="n">sample</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span><span class="p">[:,</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">held</span> <span class="k">else</span> <span class="n">sample</span><span class="p">]</span>
+            <span class="k">yield</span> <span class="n">driven</span> <span class="o">*</span> <span class="p">(</span><span class="n">sensitivities</span> <span class="o">@</span> <span class="n">column</span><span class="p">)</span>
+
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">compose_spinor</span><span class="p">(</span><span class="n">field</span><span class="p">(),</span> <span class="n">_longitudinal</span><span class="p">(</span><span class="n">detune</span><span class="p">,</span> <span class="n">placed</span><span class="p">,</span> <span class="n">steps</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">placed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Referenced to the middle of the pulse, as a table is and for the same</span>
+        <span class="c1"># reason: the event this stands in for is instantaneous, so the turn</span>
+        <span class="c1"># the slice-select gradient leaves belongs either side of it.</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">placed</span> <span class="o">*</span> <span class="n">steps</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">complex128</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">a</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">complex64</span><span class="p">),</span> <span class="n">b</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">complex64</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">transition_table</span><span class="p">(</span>
+    <span class="n">definition</span><span class="p">:</span> <span class="n">RfDefinition</span><span class="p">,</span>
+    <span class="n">positions</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="n">theta_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+    <span class="n">rf_raster_time_s</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+    <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TransitionTable</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Integrate a pulse into the rotation it performs, over a grid.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    definition</span>
+<span class="sd">        The pulse. Its complex envelope is played sample by sample at</span>
+<span class="sd">        ``rf_raster_time_s``, and its ``bandwidth_hz`` sets how fast</span>
+<span class="sd">        off-resonance grows away from the slice centre.</span>
+<span class="sd">    positions</span>
+<span class="sd">        Where across the slice to sample, in units of the slice thickness, so</span>
+<span class="sd">        that the passband is ``[-0.5, 0.5]``.</span>
+<span class="sd">    bins</span>
+<span class="sd">        Knots along the flip axis. 64 carries a sinc to about 1e-8.</span>
+<span class="sd">    theta_max</span>
+<span class="sd">        Largest effective flip the table covers, in radians. A pulse driven</span>
+<span class="sd">        past this reads the last knot.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        The table, with slopes taken by forward-mode differentiation of the</span>
+<span class="sd">        same integration rather than by differencing it.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">        ValueError: if the pulse has no samples, or ``bins`` is below two.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">bins</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"a Hermite table needs at least two knots, got </span><span class="si">{</span><span class="n">bins</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># Integrated in double and stored in single: the product runs once per</span>
+    <span class="c1"># raster sample, so rounding accumulates over thousands of steps to reach a</span>
+    <span class="c1"># table everything downstream is measured against.</span>
+    <span class="n">envelope</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span>
+        <span class="n">definition</span><span class="o">.</span><span class="n">complex_envelope</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">complex128</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">envelope</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="n">definition</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> has an empty envelope"</span><span class="p">)</span>
+    <span class="c1"># Divided by its own integral, which is how RfDefinition.flip_angle reads a</span>
+    <span class="c1"># pulse: the magnitude of the integral sets the flip and its angle sets the</span>
+    <span class="c1"># axis. Normalizing by the complex sum puts both right -- an on-resonance</span>
+    <span class="c1"># spin turns through exactly theta, about the axis at zero -- so the grid</span>
+    <span class="c1"># axis is the same flip angle the packed events carry.</span>
+    <span class="n">dwell</span><span class="p">,</span> <span class="n">steps</span> <span class="o">=</span> <span class="n">_sample_steps</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="n">rf_raster_time_s</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+    <span class="n">envelope</span> <span class="o">=</span> <span class="n">envelope</span> <span class="o">*</span> <span class="n">dwell</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="n">envelope</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">area</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">envelope</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"RF definition </span><span class="si">{</span><span class="n">definition</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> integrates to nothing, so it has no "</span>
+            <span class="sa">f</span><span class="s2">"flip angle to tabulate against"</span>
+        <span class="p">)</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">envelope</span> <span class="o">/</span> <span class="n">area</span>
+
+    <span class="n">positions</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">theta_max</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+
+    <span class="c1"># What a spin at each position turns per second of pulse. The pulse selects</span>
+    <span class="c1"># one slice thickness across its bandwidth, so position measured in</span>
+    <span class="c1"># thicknesses times bandwidth is the offset in Hz.</span>
+    <span class="n">rate</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">definition</span><span class="o">.</span><span class="n">bandwidth_hz</span><span class="p">)</span> <span class="o">*</span> <span class="n">positions</span>
+
+    <span class="c1"># The turn that gradient leaves a spin holding over the whole pulse.</span>
+    <span class="n">carried</span> <span class="o">=</span> <span class="p">(</span><span class="n">rate</span> <span class="o">*</span> <span class="n">steps</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">complex128</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">integrate</span><span class="p">(</span><span class="n">flip</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""The pair the whole pulse leaves, at every (position, flip)."""</span>
+        <span class="n">wide</span> <span class="o">=</span> <span class="p">(</span><span class="n">positions</span><span class="o">.</span><span class="n">numel</span><span class="p">(),</span> <span class="n">flip</span><span class="o">.</span><span class="n">numel</span><span class="p">())</span>
+        <span class="n">turn_z</span> <span class="o">=</span> <span class="n">_longitudinal</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">),</span>
+            <span class="n">rate</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">wide</span><span class="p">),</span>
+            <span class="n">steps</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">turn_z</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+            <span class="n">turn_z</span> <span class="o">=</span> <span class="p">(</span><span class="n">turn</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">wide</span><span class="p">)</span> <span class="k">for</span> <span class="n">turn</span> <span class="ow">in</span> <span class="n">turn_z</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">compose_spinor</span><span class="p">(</span><span class="n">weight</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">flip</span><span class="p">,</span> <span class="n">turn_z</span><span class="p">)</span>
+        <span class="c1"># Referenced to the middle of the pulse, because that is where the</span>
+        <span class="c1"># instantaneous event the table stands in for sits. What a spin accrues</span>
+        <span class="c1"># under the slice-select gradient either side of that instant belongs</span>
+        <span class="c1"># to the gradient -- and is what the rephaser rewinds -- so a rotation</span>
+        <span class="c1"># referenced to the end of the pulse carries a phase that grows across</span>
+        <span class="c1"># the slice, and averaging over the slice then cancels the signal</span>
+        <span class="c1"># rather than shaping it.</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.5</span><span class="n">j</span> <span class="o">*</span> <span class="n">carried</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">wide</span><span class="p">),</span> <span class="n">b</span>
+
+    <span class="n">values</span><span class="p">,</span> <span class="n">slopes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">jvp</span><span class="p">(</span><span class="n">integrate</span><span class="p">,</span> <span class="p">(</span><span class="n">theta</span><span class="p">,),</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">theta</span><span class="p">),))</span>
+    <span class="k">return</span> <span class="n">TransitionTable</span><span class="p">(</span>
+        <span class="n">a</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">complex64</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">(),</span>
+        <span class="n">b</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">complex64</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">(),</span>
+        <span class="n">slope_a</span><span class="o">=</span><span class="n">slopes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">complex64</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">(),</span>
+        <span class="n">slope_b</span><span class="o">=</span><span class="n">slopes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">complex64</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">(),</span>
+        <span class="n">theta_max</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">theta_max</span><span class="p">),</span>
+    <span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExactSliceProfile</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Where across the slice a sequence's pulse is to be integrated.</span>
+
+<span class="sd">    Passed as ``slice_profile=``. The table is built from the sequence's own RF</span>
+<span class="sd">    definition when the simulation runs, because that is where the pulse and</span>
+<span class="sd">    its raster are known -- a caller names positions, never a response.</span>
+
+<span class="sd">    ``points`` are the slice positions sampled, in units of the slice</span>
+<span class="sd">    thickness, so the passband is ``[-0.5, 0.5]``. An integer asks for that</span>
+<span class="sd">    many evenly spaced across ``extent`` thicknesses; a tensor names them.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    points : int or torch.Tensor</span>
+<span class="sd">        Slice positions, or how many to space evenly across ``extent``.</span>
+<span class="sd">    extent : float</span>
+<span class="sd">        How many slice thicknesses the sampled positions span.</span>
+<span class="sd">    bins : int</span>
+<span class="sd">        Knots along the flip-angle axis. 64 carries a sinc to about 1e-8.</span>
+<span class="sd">    theta_max : float</span>
+<span class="sd">        Largest effective flip the table covers, in radians. A sequence that</span>
+<span class="sd">        drives a pulse past this is refused rather than saturated.</span>
+<span class="sd">    """</span>
+
+    <span class="n">points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="mi">21</span>
+    <span class="n">extent</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span>
+    <span class="n">bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span>
+    <span class="n">theta_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">positions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Where across the slice the table is sampled."""</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"a slice needs at least one position, got </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="n">half</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">extent</span>
+            <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">half</span><span class="p">,</span> <span class="n">half</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">exact_slice_profile</span><span class="p">(</span>
+    <span class="n">points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">=</span> <span class="mi">21</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">extent</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="n">theta_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExactSliceProfile</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Ask for a pulse to be integrated across the slice.</span>
+
+<span class="sd">    A slice profile is a Bloch response, so it is not proportional to the pulse</span>
+<span class="sd">    driving it and cannot be carried as a scaling on the flip angle. This names</span>
+<span class="sd">    the positions at which the rotation the pulse actually performs is worked</span>
+<span class="sd">    out, which is right at any transmit scaling.</span>
+
+<span class="sd">    A definition carrying a waveform worth integrating is tabulated whether or</span>
+<span class="sd">    not this is passed; what this adds is where across the slice to sample it,</span>
+<span class="sd">    and it puts a pulse that would otherwise be played hard on the same route.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    points : int or torch.Tensor, optional</span>
+<span class="sd">        Slice positions, or how many to space evenly across ``extent``.</span>
+<span class="sd">    extent : float, optional</span>
+<span class="sd">        How many slice thicknesses the sampled positions span.</span>
+<span class="sd">    bins : int, optional</span>
+<span class="sd">        Knots along the flip-angle axis. 64 carries a sinc to about 1e-8.</span>
+<span class="sd">    theta_max : float, optional</span>
+<span class="sd">        Largest effective flip the table covers, in radians. A sequence that</span>
+<span class="sd">        drives a pulse past this is refused rather than saturated.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ExactSliceProfile</span>
+<span class="sd">        The request, resolved against the sequence's RF definition at</span>
+<span class="sd">        simulation time.</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="n">ExactSliceProfile</span><span class="p">(</span>
+        <span class="n">points</span><span class="o">=</span><span class="n">points</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">theta_max</span><span class="o">=</span><span class="n">theta_max</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">across_the_slice</span><span class="p">(</span><span class="n">asked</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExactSliceProfile</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Where across the slice to work a shaped pulse out, from what was asked.</span>
+
+<span class="sd">    How many positions to sample is the common way to ask and is spelled as</span>
+<span class="sd">    one; :func:`exact_slice_profile` is there for the rest -- which positions,</span>
+<span class="sd">    how wide, how finely to tabulate -- and passes through.</span>
+
+<span class="sd">    Nothing else is taken. A response is not proportional to the pulse driving</span>
+<span class="sd">    it, so an array of flip-angle scalings is not a slice profile, and it is</span>
+<span class="sd">    close enough to a list of positions that guessing between them would</span>
+<span class="sd">    sometimes be wrong in silence.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">        TypeError: if ``asked`` is neither a count nor a profile.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">asked</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">asked</span><span class="p">,</span> <span class="n">ExactSliceProfile</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">asked</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">asked</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">asked</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"across_slice says where across the slice to integrate the "</span>
+            <span class="sa">f</span><span class="s2">"sequence's own pulse: how many positions, or "</span>
+            <span class="sa">f</span><span class="s2">"exact_slice_profile() to say which. Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">asked</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. "</span>
+            <span class="sa">f</span><span class="s2">"An array of flip-angle scalings treats a Bloch response as "</span>
+            <span class="sa">f</span><span class="s2">"proportional to the pulse driving it, which it is not; give the "</span>
+            <span class="sa">f</span><span class="s2">"RF definition its waveform instead"</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">exact_slice_profile</span><span class="p">(</span><span class="n">asked</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SliceTables</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""The tables a sequence reads, and which pulse reads which.</span>
+
+<span class="sd">    A table is indexed by slice position and effective flip angle, so one</span>
+<span class="sd">    covers every pulse sharing a shape however they differ in flip. Pulses of</span>
+<span class="sd">    different shapes need one each, and ``index`` says which an event reads --</span>
+<span class="sd">    packed alongside the events, in their order, exactly as the shim row is.</span>
+
+<span class="sd">    Every table spans the same positions and the same flip grid, because they</span>
+<span class="sd">    are built together from one request.</span>
+<span class="sd">    """</span>
+
+    <span class="n">tables</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">TransitionTable</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="n">index</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"a slice table set holds at least one table"</span><span class="p">)</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">table</span><span class="o">.</span><span class="n">points</span> <span class="o">!=</span> <span class="n">first</span><span class="o">.</span><span class="n">points</span>
+                <span class="ow">or</span> <span class="n">table</span><span class="o">.</span><span class="n">bins</span> <span class="o">!=</span> <span class="n">first</span><span class="o">.</span><span class="n">bins</span>
+                <span class="ow">or</span> <span class="n">table</span><span class="o">.</span><span class="n">theta_max</span> <span class="o">!=</span> <span class="n">first</span><span class="o">.</span><span class="n">theta_max</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"slice tables are stacked into one buffer, so they must "</span>
+                    <span class="s2">"span the same positions and the same flip grid"</span>
+                <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">alone</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="n">TransitionTable</span><span class="p">,</span> <span class="n">events</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SliceTables</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""One table every pulse reads, which is the single-shape case."""</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">tables</span><span class="o">=</span><span class="p">(</span><span class="n">table</span><span class="p">,),</span>
+            <span class="n">index</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">events</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shapes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""How many distinct pulse shapes the set holds."""</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">points</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""How many slice positions each table carries."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">points</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bins</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""How many flip-angle knots each position carries."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bins</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Flip angle between neighbouring knots, in radians."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">step</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">theta_max</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Largest effective flip the tables cover, in radians."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">theta_max</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">packed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Every table stacked, laid out as the kernels index them.</span>
+
+<span class="sd">        ``(shapes * points, bins, 8)``, so a pulse's row is its shape times the</span>
+<span class="sd">        position count plus the voxel's position.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">packed</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The per-event table index, on the device the kernels run on."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By TorchSim Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, TorchSim Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

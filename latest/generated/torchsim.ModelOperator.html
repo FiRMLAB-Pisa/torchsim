@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.rf_definition.html">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.SequenceDescription.html">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -592,7 +593,7 @@ convention deepinv and mri-nufft use, and it is the only place it flips.</p>
 <li><p><strong>acquisition</strong> (<a class="reference internal" href="torchsim.model.Simulator.html#torchsim.model.Simulator" title="torchsim.model.Simulator"><em>Simulator</em></a>) – The sequence being inverted, with every property that is not being
 solved for already fixed on it. A property bound as a map – a
 measured B1, a known T1 – is one value per voxel and rides along.</p></li>
-<li><p><strong>unknown</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – The property names being solved for, in the order their channels
+<li><p><strong>unknown</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – The property names being solved for, in the order their channels
 appear. At least one.</p></li>
 <li><p><strong>bounds</strong> (<em>mapping</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">(low,</span> <span class="pre">high)}</span></code>, either end <code class="docutils literal notranslate"><span class="pre">None</span></code> for unbounded. A bound is
 kept by solving for a transformed variable, so no iterate is ever
@@ -603,7 +604,7 @@ puts the parameter on a scale of order one whatever its units, which
 is the preconditioning a mixed parameter set needs.</p></li>
 <li><p><strong>scale</strong> (<em>mapping</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">value}</span></code>, the size of a step in a parameter left unbounded.
 Bounded parameters are already scaled by their interval.</p></li>
-<li><p><strong>amplitude</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to carry a complex amplitude multiplying the model output.
+<li><p><strong>amplitude</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to carry a complex amplitude multiplying the model output.
 On, which is what a reconstruction wants; off for a fit whose model
 already exposes its own proton density.</p></li>
 <li><p><strong>subspace</strong> (<a class="reference internal" href="torchsim.Subspace.html#torchsim.Subspace" title="torchsim.Subspace"><em>Subspace</em></a><em>, </em><em>optional</em>) – A <a class="reference internal" href="torchsim.Subspace.html#torchsim.Subspace" title="torchsim.Subspace"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subspace</span></code></a> the prediction is projected through, for
@@ -636,7 +637,7 @@ holds identically at every Gauss-Newton iterate, to the bit, rather than
 being restored after each one.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If nothing is unknown, if a bound or a scale names something that is
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If nothing is unknown, if a bound or a scale names something that is
     not unknown, or if a bound is not increasing.</p>
 </dd>
 </dl>
@@ -695,7 +696,7 @@ being restored after each one.</p>
 complex where one is carried.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -707,8 +708,8 @@ complex where one is carried.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>shape</strong> (<em>sequence</em><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – The voxel shape. Empty gives one voxel.</p></li>
-<li><p><strong>values</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">value}</span></code> in the property’s own units. An unknown left out
+<li><p><strong>shape</strong> (<em>sequence</em><em> of </em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – The voxel shape. Empty gives one voxel.</p></li>
+<li><p><strong>values</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>array-like</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">value}</span></code> in the property’s own units. An unknown left out
 starts at the middle of its bound, and a one-sided or absent bound
 has no middle, so it must be given. The amplitude starts at one
 unless <code class="docutils literal notranslate"><span class="pre">amplitude=</span></code> says otherwise.</p></li>
@@ -721,7 +722,7 @@ unless <code class="docutils literal notranslate"><span class="pre">amplitude=</
 <dd class="field-odd"><p>torch.Tensor</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If a property with no two-sided bound is left out, or if a value
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If a property with no two-sided bound is left out, or if a value
     sits on a bound – a value on a bound has no unconstrained image.</p>
 </dd>
 </dl>
@@ -848,14 +849,14 @@ operator – <code class="docutils literal notranslate"><span class="pre">encodi
 <code class="docutils literal notranslate"><span class="pre">ComposedPhysics</span></code> every deepinv optimizer and prior applies to.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>, </em><em>optional</em>) – Passed to <code class="xref py py-class docutils literal notranslate"><span class="pre">deepinv.physics.Physics</span></code>, so a noise model can
+<dd class="field-odd"><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>, </em><em>optional</em>) – Passed to <code class="xref py py-class docutils literal notranslate"><span class="pre">deepinv.physics.Physics</span></code>, so a noise model can
 be given.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>deepinv.physics.Physics</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ImportError" title="(in Python v3.14)"><strong>ImportError</strong></a> – If deepinv is not installed. TorchSim does not depend on it.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ImportError" title="(in Python v3.14)"><strong>ImportError</strong></a> – If deepinv is not installed. TorchSim does not depend on it.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

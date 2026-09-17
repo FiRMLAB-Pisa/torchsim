@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.rf_definition.html">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.SequenceDescription.html">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -620,7 +621,7 @@ is given signals directly.</p>
 <dd><p>The noise <a class="reference internal" href="#torchsim.Estimator.fit" title="torchsim.Estimator.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> was told the measurement has.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a> or torch.Tensor</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a> or torch.Tensor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -631,7 +632,7 @@ is given signals directly.</p>
 <dd><p>The rank <a class="reference internal" href="#torchsim.Estimator.fit" title="torchsim.Estimator.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> was asked to compress to, if any.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> or None</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)">int</a> or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -642,7 +643,7 @@ is given signals directly.</p>
 <dd><p>The seed the training draw used, if one was given.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a> or None</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)">int</a> or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -712,11 +713,11 @@ way to name one that collides with a keyword here.</p></li>
 simulator, so the training signals carry their effect, and the
 measured maps are given again to <a class="reference internal" href="#torchsim.Estimator.map" title="torchsim.Estimator.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a>. A tensor alongside
 <code class="docutils literal notranslate"><span class="pre">signals</span></code>, where the columns are given outright.</p></li>
-<li><p><strong>noise_std</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>torch.Tensor</em><em>, </em><em>optional</em>) – Standard deviation of the noise added to the training signals, in
+<li><p><strong>noise_std</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>torch.Tensor</em><em>, </em><em>optional</em>) – Standard deviation of the noise added to the training signals, in
 the units the signal is in – a fully relaxed voxel is 1. This is
 what teaches a method how far to trust a measurement, so it should
 be the noise the scan actually has.</p></li>
-<li><p><strong>rank</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Fit a temporal <a class="reference internal" href="torchsim.Subspace.html#torchsim.Subspace" title="torchsim.Subspace"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subspace</span></code></a> of this rank to the
+<li><p><strong>rank</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Fit a temporal <a class="reference internal" href="torchsim.Subspace.html#torchsim.Subspace" title="torchsim.Subspace"><code class="xref py py-class docutils literal notranslate"><span class="pre">Subspace</span></code></a> of this rank to the
 training signals and work in it. Every contrast dropped is
 arithmetic neither training nor mapping has to do;
 <a class="reference internal" href="#torchsim.Estimator.subspace" title="torchsim.Estimator.subspace"><code class="xref py py-attr docutils literal notranslate"><span class="pre">subspace</span></code></a> reports what the compression kept.</p></li>
@@ -726,11 +727,11 @@ the one another estimator carries, or one
 reconstruction and the estimator that reads its coefficients agree
 on the basis by construction. Not with <code class="docutils literal notranslate"><span class="pre">rank</span></code>, which asks for a
 basis to be fitted.</p></li>
-<li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Seed for the training draw.</p></li>
-<li><p><strong>samples</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – How many tissues to draw. Stating a property as an array of values
+<li><p><strong>seed</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Seed for the training draw.</p></li>
+<li><p><strong>samples</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – How many tissues to draw. Stating a property as an array of values
 fixes this, so it may be left out; where everything is a range to
 draw from, it defaults to ten thousand.</p></li>
-<li><p><strong>chunk</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – How many to simulate at a time.</p></li>
+<li><p><strong>chunk</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – How many to simulate at a time.</p></li>
 <li><p><strong>signals</strong> (<em>torch.Tensor</em><em>, </em><em>optional</em>) – <code class="docutils literal notranslate"><span class="pre">(samples,</span> <span class="pre">contrasts)</span></code> given outright, instead of simulated. The
 acquisition is then not consulted and <a class="reference internal" href="#torchsim.Estimator.map" title="torchsim.Estimator.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a> returns a tensor
 rather than named maps, unless names were given as well.</p></li>
@@ -743,9 +744,9 @@ rather than named maps, unless names were given as well.</p></li>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If nothing is given to fit from: no signals, and no acquisition to
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If nothing is given to fit from: no signals, and no acquisition to
     simulate them.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If a name is both unknown and known, if a range is not a pair, if
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If a name is both unknown and known, if a range is not a pair, if
     <code class="docutils literal notranslate"><span class="pre">rank</span></code> is not positive, or if both <code class="docutils literal notranslate"><span class="pre">rank</span></code> and <code class="docutils literal notranslate"><span class="pre">subspace</span></code> are
     given.</p></li>
 </ul>
@@ -764,8 +765,8 @@ wanting the training signals themselves calls after fitting.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>samples</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – How many tissues to draw.</p></li>
-<li><p><strong>chunk</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – How many to simulate at a time.</p></li>
+<li><p><strong>samples</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – How many tissues to draw.</p></li>
+<li><p><strong>chunk</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – How many to simulate at a time.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -773,13 +774,13 @@ wanting the training signals themselves calls after fitting.</p>
 is measured separately.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a></p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If the estimator has no acquisition, or was never told what is
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If the estimator has no acquisition, or was never told what is
     unknown.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">samples</span></code> or <code class="docutils literal notranslate"><span class="pre">chunk</span></code> is not positive, or if an array given
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">samples</span></code> or <code class="docutils literal notranslate"><span class="pre">chunk</span></code> is not positive, or if an array given
     for a property has a different length.</p></li>
 </ul>
 </dd>
@@ -797,7 +798,7 @@ is measured separately.</p>
 comes back on the maps unchanged.</p></li>
 <li><p><strong>known</strong> (<em>mapping</em><em> or </em><em>torch.Tensor</em><em>, </em><em>optional</em>) – The measured maps, under the names the estimator was given. Each
 is broadcast to the voxel shape.</p></li>
-<li><p><strong>uncertainty</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Also return the standard deviation the noise leaves on each map.
+<li><p><strong>uncertainty</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – Also return the standard deviation the noise leaves on each map.
 See <a class="reference internal" href="#torchsim.Estimator.uncertainty_of" title="torchsim.Estimator.uncertainty_of"><code class="xref py py-meth docutils literal notranslate"><span class="pre">uncertainty_of()</span></code></a> for what that number is and what it is
 not. Not every method can state one.</p></li>
 </ul>
@@ -810,13 +811,13 @@ With <code class="docutils literal notranslate"><span class="pre">uncertainty=Tr
 standard deviations beside them.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a> or torch.Tensor</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a> or torch.Tensor</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If the estimator has not been fitted.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.14)"><strong>NotImplementedError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">uncertainty</span></code> is asked of a method that does not state one.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If a measured map is missing, or has the wrong voxel count.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If the estimator has not been fitted.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#NotImplementedError" title="(in Python v3.14)"><strong>NotImplementedError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">uncertainty</span></code> is asked of a method that does not state one.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If a measured map is missing, or has the wrong voxel count.</p></li>
 </ul>
 </dd>
 </dl>
@@ -853,10 +854,10 @@ truth the acquisition is responsible for.</p>
 <dd class="field-even"><p>One standard deviation per unknown, shaped like the maps.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a> or torch.Tensor</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a> or torch.Tensor</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.14)"><strong>NotImplementedError</strong></a> – If this method does not state one.</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#NotImplementedError" title="(in Python v3.14)"><strong>NotImplementedError</strong></a> – If this method does not state one.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -882,13 +883,13 @@ reconstruction was given.</p>
 axis.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If the estimator has not been fitted, or was fitted without a
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – If the estimator has not been fitted, or was fitted without a
     rank, in which case there is no basis for these to be in.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the last axis is not the rank of that basis.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – If the last axis is not the rank of that basis.</p></li>
 </ul>
 </dd>
 </dl>

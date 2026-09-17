@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -66,7 +66,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Parameter estimation" href="../api/estimators.html" />
-    <link rel="prev" title="ShimDefinition" href="torchsim.ShimDefinition.html" />
+    <link rel="prev" title="compose_spinor" href="torchsim.compose_spinor.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.rf_definition.html">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -581,7 +582,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="torchsim.SequenceDescription">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">torchsim.</span></span><span class="sig-name descname"><span class="pre">SequenceDescription</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subsequence_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tr_duration_us</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">events</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_definitions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shim_definitions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crusher_dephasing_rad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voxel_size_m</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rf_raster_time_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/torchsim/sequence/_description.html#SequenceDescription"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#torchsim.SequenceDescription" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Event stream and RF resources for one sequence or subsequence.</p>
 <p><code class="docutils literal notranslate"><span class="pre">crusher_dephasing_rad</span></code> is the dephasing the sequence’s unbalanced
 gradient winds across one voxel of <code class="docutils literal notranslate"><span class="pre">voxel_size_m</span></code>. Their ratio sets the
@@ -599,7 +600,7 @@ cross.</p>
 <dd><p>Which subsequence of a multi-part acquisition this is.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)">int</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -611,7 +612,7 @@ cross.</p>
 microseconds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a> or torch.Tensor</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a> or torch.Tensor</p>
 </dd>
 </dl>
 </dd></dl>
@@ -622,7 +623,7 @@ microseconds.</p>
 <dd><p>The stream itself, in the order it is played.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a> of SequenceEvent</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a> of SequenceEvent</p>
 </dd>
 </dl>
 </dd></dl>
@@ -633,7 +634,7 @@ microseconds.</p>
 <dd><p><code class="docutils literal notranslate"><span class="pre">{id:</span> <span class="pre">RfDefinition}</span></code> – the pulses the RF events name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -644,7 +645,7 @@ microseconds.</p>
 <dd><p><code class="docutils literal notranslate"><span class="pre">{id:</span> <span class="pre">ShimDefinition}</span></code> – the transmit shims the RF events drive.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -656,7 +657,7 @@ microseconds.</p>
 gradient.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -668,7 +669,7 @@ gradient.</p>
 across. <code class="docutils literal notranslate"><span class="pre">None</span></code> declares no voxel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a>, optional</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a>, optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -681,7 +682,7 @@ it, so a stream carrying shapes on a 2 microsecond raster and read on a
 1 microsecond one turns half the angle it should.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)">float</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)">float</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -714,11 +715,11 @@ in the same object one that arrived would be read into.</p>
 <li><p><strong>rf_definitions</strong> (<em>mapping</em><em>, </em><em>optional</em>) – The pulses the events drive, by id. One ideal pulse under id zero
 when not given, which is what an operator naming no shape asks for.</p></li>
 <li><p><strong>shim_definitions</strong> (<em>mapping</em><em>, </em><em>optional</em>) – The transmit shims the pulses are driven on, by id.</p></li>
-<li><p><strong>subsequence_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Which subsequence of a scan this is.</p></li>
-<li><p><strong>crusher_dephasing_rad</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – The turn one crusher puts across a voxel. Diffusion and flow are
+<li><p><strong>subsequence_index</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Which subsequence of a scan this is.</p></li>
+<li><p><strong>crusher_dephasing_rad</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – The turn one crusher puts across a voxel. Diffusion and flow are
 read off it and are zero without it.</p></li>
-<li><p><strong>voxel_size_m</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – The distance that turn is put across.</p></li>
-<li><p><strong>start_s</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>torch.Tensor</em><em>, </em><em>optional</em>) – When the first operator starts.</p></li>
+<li><p><strong>voxel_size_m</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – The distance that turn is put across.</p></li>
+<li><p><strong>start_s</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> or </em><em>torch.Tensor</em><em>, </em><em>optional</em>) – When the first operator starts.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -734,7 +735,7 @@ read off it and are zero without it.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>source</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Path</em><em> or </em><em>sequence</em>) – A <code class="docutils literal notranslate"><span class="pre">.seq</span></code> file, or a sequence in memory with pypulseq’s reading
+<li><p><strong>source</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Path</em><em> or </em><em>sequence</em>) – A <code class="docutils literal notranslate"><span class="pre">.seq</span></code> file, or a sequence in memory with pypulseq’s reading
 interface – pypulseq’s own <code class="docutils literal notranslate"><span class="pre">Sequence</span></code>, or pypulseqpp’s.</p></li>
 <li><p><strong>settings</strong> (<em>Any</em>) – <code class="docutils literal notranslate"><span class="pre">tr_index</span></code> to name which repetition to read, and the
 <code class="docutils literal notranslate"><span class="pre">subsequence_index</span></code>, <code class="docutils literal notranslate"><span class="pre">crusher_dephasing_rad</span></code> and
@@ -757,8 +758,8 @@ turns.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>axis</strong> (<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.11.1)"><em>matplotlib.axes.Axes</em></a><em>, </em><em>optional</em>) – Where to draw. A new figure when not given.</p></li>
-<li><p><strong>upto_s</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Stop after this much of the stream, for a repetition long enough
+<li><p><strong>axis</strong> (<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.11.2)"><em>matplotlib.axes.Axes</em></a><em>, </em><em>optional</em>) – Where to draw. A new figure when not given.</p></li>
+<li><p><strong>upto_s</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – Stop after this much of the stream, for a repetition long enough
 that all of it is a smear.</p></li>
 </ul>
 </dd>
@@ -766,7 +767,7 @@ that all of it is a smear.</p></li>
 <dd class="field-even"><p>The axis drawn on.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ImportError" title="(in Python v3.14)"><strong>ImportError</strong></a> – if matplotlib is not installed, which is not a: dependency of this package.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ImportError" title="(in Python v3.14)"><strong>ImportError</strong></a> – if matplotlib is not installed, which is not a: dependency of this package.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -793,12 +794,12 @@ that all of it is a smear.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="torchsim.ShimDefinition.html"
+       href="torchsim.compose_spinor.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">ShimDefinition</p>
+        <p class="prev-next-title">compose_spinor</p>
       </div>
     </a>
     <a class="right-next"

@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.rf_definition.html">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.SequenceDescription.html">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -594,19 +595,18 @@ the same slice.</p>
         <p>The problem is stated over a simulator carrying the sequence and filled in
 by an estimator. <a class="reference internal" href="../../torchsim.execution.html#torchsim.execution" title="torchsim.execution"><code class="xref py py-func docutils literal notranslate"><span class="pre">execution()</span></code></a> decides where that work runs,
 and the timings below are taken inside it.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">torchsim</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torchsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Subspace</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torchsim.estimators</span><span class="w"> </span><span class="kn">import</span> <a href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class"><span class="n">DictionaryMatcher</span></a>
-<span class="kn">from</span><span class="w"> </span><span class="nn">torchsim.simulators</span><span class="w"> </span><span class="kn">import</span> <a href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class"><span class="n">MRFSimulator</span></a>
-</pre></div>
-</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="w">
+</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span><span class="w">
+</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">torchsim</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">torchsim</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
+</span>    <span class="n">Subspace</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">torchsim</span><span class="nn">.</span><span class="nn">estimators</span><span class="w"> </span><span class="kn">import</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class reference internal" href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher"><span class="n">DictionaryMatcher</span></a><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">torchsim</span><span class="nn">.</span><span class="nn">simulators</span><span class="w"> </span><span class="kn">import</span> <a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><span class="n">MRFSimulator</span></a><span class="w">
+</span></pre></div></div>
 <section id="phantom">
 <h2>Phantom<a class="headerlink" href="#phantom" title="Link to this heading">#</a></h2>
 <p>BrainWeb subject 0, slice 90: an axial slice at 1 mm through the lateral
@@ -620,169 +620,169 @@ continuum and not four values.</p>
 Downloading phantom_1.0mm_normal_bck: 0.00B [00:00, ?B/s]
 
 
-Downloading phantom_1.0mm_normal_bck: 1.00kB [00:00, 7.24kB/s]
+Downloading phantom_1.0mm_normal_bck: 1.00kB [00:00, 7.30kB/s]
 
 
-Downloading phantom_1.0mm_normal_bck: 40.1kB [00:00, 175kB/s]
+Downloading phantom_1.0mm_normal_bck: 40.1kB [00:00, 172kB/s]
 
 
-Downloading phantom_1.0mm_normal_bck: 177kB [00:00, 569kB/s]
+Downloading phantom_1.0mm_normal_bck: 177kB [00:00, 554kB/s]
 
 
-Downloading phantom_1.0mm_normal_bck: 441kB [00:00, 1.14MB/s]
+Downloading phantom_1.0mm_normal_bck: 415kB [00:00, 1.03MB/s]
 
 
-Downloading phantom_1.0mm_normal_bck: 937kB [00:00, 2.08MB/s]
+Downloading phantom_1.0mm_normal_bck: 841kB [00:00, 1.79MB/s]
 
 
-Downloading phantom_1.0mm_normal_bck: 1.30MB [00:00, 2.59MB/s]
+Downloading phantom_1.0mm_normal_bck: 1.41MB [00:00, 2.92MB/s]
 
 
-Downloading phantom_1.0mm_normal_bck: 1.58MB [00:00, 2.54MB/s]
+Downloading phantom_1.0mm_normal_bck: 1.71MB [00:00, 2.77MB/s]
 
 
-Downloading phantom_1.0mm_normal_bck: 1.83MB [00:01, 2.53MB/s]
+Downloading phantom_1.0mm_normal_bck: 1.99MB [00:01, 2.55MB/s]
 
 
-Downloading phantom_1.0mm_normal_bck: 2.07MB [00:01, 2.46MB/s]
+Downloading phantom_1.0mm_normal_bck: 2.24MB [00:01, 2.50MB/s]
 
 
 
 
-Downloading tissues:  10%|█         | 1/10 [00:02&lt;00:20,  2.28s/it]
+Downloading tissues:  10%|█         | 1/10 [00:02&lt;00:18,  2.09s/it]
 
 
 Downloading phantom_1.0mm_normal_csf: 0.00B [00:00, ?B/s]
 
 
-Downloading phantom_1.0mm_normal_csf: 8.81kB [00:00, 62.4kB/s]
+Downloading phantom_1.0mm_normal_csf: 8.81kB [00:00, 58.9kB/s]
 
 
-Downloading phantom_1.0mm_normal_csf: 105kB [00:00, 442kB/s]
+Downloading phantom_1.0mm_normal_csf: 105kB [00:00, 435kB/s]
 
 
-Downloading phantom_1.0mm_normal_csf: 271kB [00:00, 914kB/s]
-
-
-Downloading phantom_1.0mm_normal_csf: 457kB [00:00, 1.25MB/s]
+Downloading phantom_1.0mm_normal_csf: 328kB [00:00, 1.00MB/s]
 
 
 
 
-Downloading tissues:  20%|██        | 2/10 [00:03&lt;00:13,  1.69s/it]
+Downloading tissues:  20%|██        | 2/10 [00:03&lt;00:12,  1.56s/it]
 
 
 Downloading phantom_1.0mm_normal_gry: 0.00B [00:00, ?B/s]
 
 
-Downloading phantom_1.0mm_normal_gry: 8.81kB [00:00, 56.7kB/s]
+Downloading phantom_1.0mm_normal_gry: 1.00kB [00:00, 9.75kB/s]
 
 
-Downloading phantom_1.0mm_normal_gry: 105kB [00:00, 430kB/s]
+Downloading phantom_1.0mm_normal_gry: 40.8kB [00:00, 195kB/s]
 
 
-Downloading phantom_1.0mm_normal_gry: 360kB [00:00, 1.16MB/s]
+Downloading phantom_1.0mm_normal_gry: 200kB [00:00, 666kB/s]
 
 
-Downloading phantom_1.0mm_normal_gry: 881kB [00:00, 2.22MB/s]
+Downloading phantom_1.0mm_normal_gry: 544kB [00:00, 1.42MB/s]
 
 
 
 
-Downloading tissues:  30%|███       | 3/10 [00:04&lt;00:09,  1.41s/it]
+Downloading tissues:  30%|███       | 3/10 [00:04&lt;00:09,  1.42s/it]
 
 
 Downloading phantom_1.0mm_normal_wht: 0.00B [00:00, ?B/s]
 
 
-Downloading phantom_1.0mm_normal_wht: 8.81kB [00:00, 56.9kB/s]
+Downloading phantom_1.0mm_normal_wht: 8.81kB [00:00, 53.4kB/s]
 
 
-Downloading phantom_1.0mm_normal_wht: 105kB [00:00, 426kB/s]
+Downloading phantom_1.0mm_normal_wht: 105kB [00:00, 407kB/s]
 
 
-Downloading phantom_1.0mm_normal_wht: 272kB [00:00, 796kB/s]
+Downloading phantom_1.0mm_normal_wht: 360kB [00:00, 1.05MB/s]
 
 
 
 
-Downloading tissues:  40%|████      | 4/10 [00:05&lt;00:08,  1.35s/it]
+Downloading tissues:  40%|████      | 4/10 [00:05&lt;00:07,  1.32s/it]
 
 
 Downloading phantom_1.0mm_normal_fat: 0.00B [00:00, ?B/s]
 
 
-Downloading phantom_1.0mm_normal_fat: 8.81kB [00:00, 68.2kB/s]
+Downloading phantom_1.0mm_normal_fat: 8.81kB [00:00, 60.9kB/s]
 
 
-Downloading phantom_1.0mm_normal_fat: 88.8kB [00:00, 428kB/s]
+Downloading phantom_1.0mm_normal_fat: 88.8kB [00:00, 429kB/s]
 
 
-Downloading phantom_1.0mm_normal_fat: 265kB [00:00, 859kB/s]
+Downloading phantom_1.0mm_normal_fat: 185kB [00:00, 633kB/s]
+
+
+Downloading phantom_1.0mm_normal_fat: 433kB [00:00, 1.31MB/s]
 
 
 
 
-Downloading tissues:  50%|█████     | 5/10 [00:06&lt;00:06,  1.22s/it]
+Downloading tissues:  50%|█████     | 5/10 [00:06&lt;00:06,  1.21s/it]
 
 
 Downloading phantom_1.0mm_normal_m-s: 0.00B [00:00, ?B/s]
 
 
-Downloading phantom_1.0mm_normal_m-s: 1.00kB [00:00, 8.61kB/s]
+Downloading phantom_1.0mm_normal_m-s: 1.00kB [00:00, 10.2kB/s]
 
 
-Downloading phantom_1.0mm_normal_m-s: 40.1kB [00:00, 189kB/s]
+Downloading phantom_1.0mm_normal_m-s: 40.1kB [00:00, 194kB/s]
 
 
-Downloading phantom_1.0mm_normal_m-s: 175kB [00:00, 642kB/s]
+Downloading phantom_1.0mm_normal_m-s: 183kB [00:00, 612kB/s]
 
 
-Downloading phantom_1.0mm_normal_m-s: 456kB [00:00, 1.19MB/s]
+Downloading phantom_1.0mm_normal_m-s: 457kB [00:00, 1.18MB/s]
 
 
-Downloading phantom_1.0mm_normal_m-s: 953kB [00:00, 2.14MB/s]
+Downloading phantom_1.0mm_normal_m-s: 992kB [00:00, 2.20MB/s]
 
 
-Downloading phantom_1.0mm_normal_m-s: 1.87MB [00:00, 3.92MB/s]
+Downloading phantom_1.0mm_normal_m-s: 1.91MB [00:00, 4.22MB/s]
 
 
-Downloading phantom_1.0mm_normal_m-s: 2.45MB [00:00, 4.21MB/s]
+Downloading phantom_1.0mm_normal_m-s: 2.34MB [00:00, 4.07MB/s]
 
 
 
 
-Downloading tissues:  60%|██████    | 6/10 [00:08&lt;00:05,  1.32s/it]
+Downloading tissues:  60%|██████    | 6/10 [00:08&lt;00:05,  1.36s/it]
 
 
 Downloading phantom_1.0mm_normal_skn: 0.00B [00:00, ?B/s]
 
 
-Downloading phantom_1.0mm_normal_skn: 1.00kB [00:00, 8.16kB/s]
+Downloading phantom_1.0mm_normal_skn: 1.00kB [00:00, 8.34kB/s]
 
 
-Downloading phantom_1.0mm_normal_skn: 40.4kB [00:00, 183kB/s]
+Downloading phantom_1.0mm_normal_skn: 40.1kB [00:00, 180kB/s]
 
 
-Downloading phantom_1.0mm_normal_skn: 191kB [00:00, 628kB/s]
+Downloading phantom_1.0mm_normal_skn: 183kB [00:00, 586kB/s]
 
 
-Downloading phantom_1.0mm_normal_skn: 465kB [00:00, 1.21MB/s]
+Downloading phantom_1.0mm_normal_skn: 473kB [00:00, 1.20MB/s]
 
 
-Downloading phantom_1.0mm_normal_skn: 969kB [00:00, 2.17MB/s]
+Downloading phantom_1.0mm_normal_skn: 0.99MB [00:00, 2.22MB/s]
 
 
-Downloading phantom_1.0mm_normal_skn: 1.72MB [00:00, 3.80MB/s]
+Downloading phantom_1.0mm_normal_skn: 1.89MB [00:00, 4.02MB/s]
 
 
-Downloading phantom_1.0mm_normal_skn: 2.13MB [00:00, 3.80MB/s]
+Downloading phantom_1.0mm_normal_skn: 2.30MB [00:00, 3.96MB/s]
 
 
-Downloading phantom_1.0mm_normal_skn: 2.51MB [00:00, 3.73MB/s]
+Downloading phantom_1.0mm_normal_skn: 2.69MB [00:01, 3.65MB/s]
 
 
-Downloading phantom_1.0mm_normal_skn: 2.88MB [00:01, 3.39MB/s]
+Downloading phantom_1.0mm_normal_skn: 3.05MB [00:01, 3.27MB/s]
 
 
 
@@ -793,61 +793,61 @@ Downloading tissues:  70%|███████   | 7/10 [00:10&lt;00:04,  1.48s
 Downloading phantom_1.0mm_normal_skl: 0.00B [00:00, ?B/s]
 
 
-Downloading phantom_1.0mm_normal_skl: 8.81kB [00:00, 60.5kB/s]
+Downloading phantom_1.0mm_normal_skl: 1.00kB [00:00, 9.28kB/s]
 
 
-Downloading phantom_1.0mm_normal_skl: 105kB [00:00, 436kB/s]
+Downloading phantom_1.0mm_normal_skl: 40.8kB [00:00, 192kB/s]
 
 
-Downloading phantom_1.0mm_normal_skl: 273kB [00:00, 809kB/s]
+Downloading phantom_1.0mm_normal_skl: 177kB [00:00, 581kB/s]
 
 
-Downloading phantom_1.0mm_normal_skl: 609kB [00:00, 1.48MB/s]
+Downloading phantom_1.0mm_normal_skl: 441kB [00:00, 941kB/s]
 
 
 
 
-Downloading tissues:  80%|████████  | 8/10 [00:11&lt;00:02,  1.35s/it]
+Downloading tissues:  80%|████████  | 8/10 [00:11&lt;00:02,  1.40s/it]
 
 
 Downloading phantom_1.0mm_normal_gli: 0.00B [00:00, ?B/s]
 
 
-Downloading phantom_1.0mm_normal_gli: 1.00kB [00:00, 7.87kB/s]
+Downloading phantom_1.0mm_normal_gli: 1.00kB [00:00, 7.60kB/s]
 
 
 
 
-Downloading tissues:  90%|█████████ | 9/10 [00:12&lt;00:01,  1.20s/it]
+Downloading tissues:  90%|█████████ | 9/10 [00:12&lt;00:01,  1.18s/it]
 
 
 Downloading phantom_1.0mm_normal_mit: 0.00B [00:00, ?B/s]
 
 
-Downloading phantom_1.0mm_normal_mit: 1.00kB [00:00, 8.69kB/s]
+Downloading phantom_1.0mm_normal_mit: 1.00kB [00:00, 7.82kB/s]
 
 
-Downloading phantom_1.0mm_normal_mit: 40.8kB [00:00, 189kB/s]
+Downloading phantom_1.0mm_normal_mit: 40.1kB [00:00, 176kB/s]
 
 
-Downloading phantom_1.0mm_normal_mit: 177kB [00:00, 589kB/s]
+Downloading phantom_1.0mm_normal_mit: 183kB [00:00, 580kB/s]
 
 
-Downloading phantom_1.0mm_normal_mit: 425kB [00:00, 1.09MB/s]
+Downloading phantom_1.0mm_normal_mit: 441kB [00:00, 1.10MB/s]
 
 
-Downloading phantom_1.0mm_normal_mit: 833kB [00:00, 1.79MB/s]
+Downloading phantom_1.0mm_normal_mit: 945kB [00:00, 2.04MB/s]
 
 
-Downloading phantom_1.0mm_normal_mit: 1.41MB [00:00, 2.74MB/s]
+Downloading phantom_1.0mm_normal_mit: 1.67MB [00:00, 3.55MB/s]
 
 
-Downloading phantom_1.0mm_normal_mit: 2.09MB [00:00, 3.89MB/s]
+Downloading phantom_1.0mm_normal_mit: 2.04MB [00:00, 3.47MB/s]
 
 
 
 
-Downloading tissues: 100%|██████████| 10/10 [00:13&lt;00:00,  1.34s/it]
+Downloading tissues: 100%|██████████| 10/10 [00:13&lt;00:00,  1.33s/it]
 
 
 Text(0.5, 0.9878790357573323, 'BrainWeb subject 0, slice 90')
@@ -859,42 +859,39 @@ Text(0.5, 0.9878790357573323, 'BrainWeb subject 0, slice 90')
 <p>Four hundred repetitions after an inversion, at a fixed repetition time and a
 flip angle that varies smoothly along the train. A schedule that jumped about
 would give trajectories differing by noise rather than by physics.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">CONTRASTS</span></a> <span class="o">=</span> <span class="mi">400</span>
-<a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">TR_MS</span></a> <span class="o">=</span> <span class="mf">10.0</span>
-<a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">TI_MS</span></a> <span class="o">=</span> <span class="mf">20.0</span>
-
-<span class="n">repetition</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">CONTRASTS</span></a><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-<span class="n">flip</span> <span class="o">=</span> <span class="mf">10.0</span> <span class="o">+</span> <span class="mf">50.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">*</span> <span class="n">repetition</span> <span class="o">/</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">CONTRASTS</span></a><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-
-<a href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">simulator</span></a> <span class="o">=</span> <a href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class"><span class="n">MRFSimulator</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">TR_MS</span></a><span class="p">,</span> <span class="n">TI</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">TI_MS</span></a><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">M0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-</pre></div>
-</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">CONTRASTS</span></a> <span class="o">=</span> <span class="mi">400</span><span class="w">
+</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">TR_MS</span></a> <span class="o">=</span> <span class="mf">10.0</span><span class="w">
+</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">TI_MS</span></a> <span class="o">=</span> <span class="mf">20.0</span><span class="w">
+</span><span class="w">
+</span><span class="n">repetition</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">CONTRASTS</span></a><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="w">
+</span><span class="n">flip</span> <span class="o">=</span> <span class="mf">10.0</span> <span class="o">+</span> <span class="mf">50.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">torch</span><span class="o">.</span><span class="n">pi</span></a> <span class="o">*</span> <span class="n">repetition</span> <span class="o">/</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">CONTRASTS</span></a><span class="p">)</span> <span class="o">*</span><span class="o">*</span> <span class="mi">2</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><span class="n">simulator</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><span class="n">MRFSimulator</span></a><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">flip</span><span class="p">,</span> <span class="n">TR</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">TR_MS</span></a><span class="p">,</span> <span class="n">TI</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">TI_MS</span></a><span class="p">,</span> <span class="n">states</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">M0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
 <p>The readouts wind the states on rather than rewinding them, so the trajectory
 comes back real to within 3e-8. That halves both the dictionary and the
 arithmetic that searches it.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fingerprints</span> <span class="o">=</span> <a href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">simulator</span></a><span class="o">.</span><span class="n">simulate</span><span class="p">(</span>
-    <span class="n">T1</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">500.0</span><span class="p">,</span> <span class="mf">833.0</span><span class="p">,</span> <span class="mf">2569.0</span><span class="p">]),</span> <span class="n">T2</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">70.0</span><span class="p">,</span> <span class="mf">83.0</span><span class="p">,</span> <span class="mf">329.0</span><span class="p">])</span>
-<span class="p">)</span><span class="o">.</span><span class="n">real</span>
-</pre></div>
-</div>
-<img src="../../../_images/sphx_glr_01-dictionary-matching_002.png" srcset="../../../_images/sphx_glr_01-dictionary-matching_002.png" alt="the schedule, fingerprints" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f84205061e0&gt;]
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">fingerprints</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><span class="n">simulator</span></a><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="w">
+</span>    <span class="n">T1</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="p">[</span><span class="mf">500.0</span><span class="p">,</span> <span class="mf">833.0</span><span class="p">,</span> <span class="mf">2569.0</span><span class="p">]</span><span class="p">)</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="p">[</span><span class="mf">70.0</span><span class="p">,</span> <span class="mf">83.0</span><span class="p">,</span> <span class="mf">329.0</span><span class="p">]</span><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="w">
+</span></pre></div></div>
+<img src="../../../_images/sphx_glr_01-dictionary-matching_002.png" srcset="../../../_images/sphx_glr_01-dictionary-matching_002.png" alt="the schedule, fingerprints" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f1717fcba70&gt;]
 </pre></div>
 </div>
 <p>The measurement, with noise at 2% of the peak fingerprint. The estimators are
 told the same number: one trained for more noise than the scan has learns to
 distrust the data and answers with the prior.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">NOISE_STD</span></a> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mf">0.02</span> <span class="o">*</span> <span class="n">fingerprints</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
-
-<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">truth</span></a> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"T1"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_true</span></a><span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mask</span></a><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()),</span>
-    <span class="s2">"T2"</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T2_true</span></a><span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mask</span></a><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()),</span>
-<span class="p">}</span>
-<span class="n">density</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">M0_true</span></a><span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">mask</span></a><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
-<span class="n">clean</span> <span class="o">=</span> <a href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">simulator</span></a><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="o">**</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">truth</span></a><span class="p">)</span><span class="o">.</span><span class="n">real</span> <span class="o">*</span> <span class="n">density</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
-<span class="n">generator</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Generator</span><span class="p">()</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">measured</span> <span class="o">=</span> <span class="n">clean</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">NOISE_STD</span></a> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">clean</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">generator</span><span class="o">=</span><span class="n">generator</span><span class="p">)</span>
-</pre></div>
-</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">NOISE_STD</span></a> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mf">0.02</span> <span class="o">*</span> <span class="n">fingerprints</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">truth</span></a> <span class="o">=</span> <span class="p">{</span><span class="w">
+</span>    <span class="s2">&quot;</span><span class="s2">T1</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">T1_true</span></a><span class="p">[</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">mask</span></a><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>    <span class="s2">&quot;</span><span class="s2">T2</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">T2_true</span></a><span class="p">[</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">mask</span></a><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="n">density</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">M0_true</span></a><span class="p">[</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray"><span class="n">mask</span></a><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="n">clean</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><span class="n">simulator</span></a><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="o">*</span><span class="o">*</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">truth</span></a><span class="p">)</span><span class="o">.</span><span class="n">real</span> <span class="o">*</span> <span class="n">density</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span><span class="w">
+</span><span class="n">generator</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Generator</span><span class="p">(</span><span class="p">)</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span><span class="w">
+</span><span class="n">measured</span> <span class="o">=</span> <span class="n">clean</span> <span class="o">+</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">NOISE_STD</span></a> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">clean</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">generator</span><span class="o">=</span><span class="n">generator</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
 </section>
 <section id="problem-statement">
 <h2>Problem statement<a class="headerlink" href="#problem-statement" title="Link to this heading">#</a></h2>
@@ -902,34 +899,32 @@ distrust the data and answers with the prior.</p>
 times span more than a decade, so the grid is logarithmic: uniform spacing
 would spend most of it on long T1, where the trajectories are nearly
 parallel.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_RANGE</span></a> <span class="o">=</span> <span class="p">(</span><span class="mf">200.0</span><span class="p">,</span> <span class="mf">5000.0</span><span class="p">)</span>
-<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T2_RANGE</span></a> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">600.0</span><span class="p">)</span>
-<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SAMPLES</span></a> <span class="o">=</span> <span class="mi">20_000</span>
-<span class="n">prior</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Generator</span><span class="p">()</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
-</pre></div>
-</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="tuple"><span class="n">T1_RANGE</span></a> <span class="o">=</span> <span class="p">(</span><span class="mf">200.0</span><span class="p">,</span> <span class="mf">5000.0</span><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="tuple"><span class="n">T2_RANGE</span></a> <span class="o">=</span> <span class="p">(</span><span class="mf">20.0</span><span class="p">,</span> <span class="mf">600.0</span><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">SAMPLES</span></a> <span class="o">=</span> <span class="mi">20_000</span><span class="w">
+</span><span class="n">prior</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Generator</span><span class="p">(</span><span class="p">)</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
 </section>
 <section id="subspace-rank">
 <h2>Subspace rank<a class="headerlink" href="#subspace-rank" title="Link to this heading">#</a></h2>
 <p>A basis fitted to simulated trajectories says how much of their energy each
 rank keeps. One minus that fraction is the relative squared error of
 projecting through the basis and back.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">training_signals</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span>
-    <a href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class"><span class="n">DictionaryMatcher</span></a><span class="p">(</span><a href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">simulator</span></a><span class="p">)</span>
-    <span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-        <span class="n">T1</span><span class="o">=</span><span class="n">log_uniform</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_RANGE</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SAMPLES</span></a><span class="p">),</span>
-        <span class="n">T2</span><span class="o">=</span><span class="n">log_uniform</span><span class="p">(</span><span class="o">*</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T2_RANGE</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SAMPLES</span></a><span class="p">),</span>
-        <span class="n">noise_std</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">NOISE_STD</span></a><span class="p">,</span>
-        <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="o">.</span><span class="n">training_set</span><span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">SAMPLES</span></a><span class="p">)</span>
-<span class="p">)</span>
-<span class="n">training_signals</span> <span class="o">=</span> <span class="n">training_signals</span><span class="o">.</span><span class="n">real</span>
-
-<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">RANK</span></a> <span class="o">=</span> <span class="mi">4</span>
-</pre></div>
-</div>
-<img src="../../../_images/sphx_glr_01-dictionary-matching_003.png" srcset="../../../_images/sphx_glr_01-dictionary-matching_003.png" alt="what projecting through the basis loses" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f8418aaa810&gt;]
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">training_signals</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="p">(</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class reference internal" href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher"><span class="n">DictionaryMatcher</span></a><span class="p">(</span><a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><span class="n">simulator</span></a><span class="p">)</span><span class="w">
+</span>    <span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="w">
+</span>        <span class="n">T1</span><span class="o">=</span><span class="n">log_uniform</span><span class="p">(</span><span class="o">*</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="tuple"><span class="n">T1_RANGE</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">SAMPLES</span></a><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="n">T2</span><span class="o">=</span><span class="n">log_uniform</span><span class="p">(</span><span class="o">*</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="tuple"><span class="n">T2_RANGE</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">SAMPLES</span></a><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="n">noise_std</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="float"><span class="n">NOISE_STD</span></a><span class="p">,</span><span class="w">
+</span>        <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w">
+</span>    <span class="p">)</span><span class="w">
+</span>    <span class="o">.</span><span class="n">training_set</span><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">SAMPLES</span></a><span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">training_signals</span> <span class="o">=</span> <span class="n">training_signals</span><span class="o">.</span><span class="n">real</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">RANK</span></a> <span class="o">=</span> <span class="mi">4</span><span class="w">
+</span></pre></div></div>
+<img src="../../../_images/sphx_glr_01-dictionary-matching_003.png" srcset="../../../_images/sphx_glr_01-dictionary-matching_003.png" alt="what projecting through the basis loses" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7f1717a03e60&gt;]
 </pre></div>
 </div>
 <p>Four directions out of four hundred leave less outside the basis than the
@@ -941,28 +936,26 @@ noise puts in, and every contrast dropped is arithmetic the match avoids.</p>
 the grids: twenty thousand atoms for two parameters, on a grid fine enough
 that the spacing is not what limits the answer. A third parameter multiplies
 it again.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">T1_GRID</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_RANGE</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T1_RANGE</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">200</span><span class="p">)</span>
-<span class="n">T2_GRID</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T2_RANGE</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">T2_RANGE</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">grid_t1</span><span class="p">,</span> <span class="n">grid_t2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">T1_GRID</span><span class="p">,</span> <span class="n">T2_GRID</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">"ij"</span><span class="p">)</span>
-
-<a href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">full</span></a> <span class="o">=</span> <a href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class"><span class="n">DictionaryMatcher</span></a><span class="p">(</span><a href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">simulator</span></a><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-    <span class="n">T1</span><span class="o">=</span><span class="n">grid_t1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">T2</span><span class="o">=</span><span class="n">grid_t2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span>
-<span class="p">)</span>
-
-<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">maps</span></a> <span class="o">=</span> <a href="../../torchsim.Estimator.html#torchsim.Estimator.map" title="torchsim.Estimator.map" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-method"><span class="n">full</span><span class="o">.</span><span class="n">map</span></a><span class="p">(</span><span class="n">measured</span><span class="p">)</span>  <span class="c1"># {"T1": ..., "T2": ...}, one value per voxel</span>
-</pre></div>
-</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">T1_GRID</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="tuple"><span class="n">T1_RANGE</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="tuple"><span class="n">T1_RANGE</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">)</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span><span class="w">
+</span><span class="n">T2_GRID</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="tuple"><span class="n">T2_RANGE</span></a><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span><span class="p">,</span> <a class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.html#numpy.ufunc" title="numpy.ufunc"><span class="n">np</span><span class="o">.</span><span class="n">log10</span></a><span class="p">(</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="tuple"><span class="n">T2_RANGE</span></a><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">)</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span><span class="w">
+</span><span class="n">grid_t1</span><span class="p">,</span> <span class="n">grid_t2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">T1_GRID</span><span class="p">,</span> <span class="n">T2_GRID</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">ij</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher"><span class="n">full</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class reference internal" href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher"><span class="n">DictionaryMatcher</span></a><span class="p">(</span><a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><span class="n">simulator</span></a><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="w">
+</span>    <span class="n">T1</span><span class="o">=</span><span class="n">grid_t1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">grid_t2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">maps</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-method reference internal" href="../../torchsim.Estimator.html#torchsim.Estimator.map" title="torchsim.Estimator.map"><span class="n">full</span><span class="o">.</span><span class="n">map</span></a><span class="p">(</span><span class="n">measured</span><span class="p">)</span>  <span class="c1"># {&quot;T1&quot;: ..., &quot;T2&quot;: ...}, one value per voxel</span><span class="w">
+</span></pre></div></div>
 </section>
 <section id="matching-in-the-subspace">
 <h2>Matching in the subspace<a class="headerlink" href="#matching-in-the-subspace" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">rank</span></code> is the whole change. The dictionary is fitted, projected and stored
 in four directions instead of four hundred, and the measurement is projected
 the same way before scoring.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">low</span></a> <span class="o">=</span> <a href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class"><span class="n">DictionaryMatcher</span></a><span class="p">(</span><a href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">simulator</span></a><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-    <span class="n">T1</span><span class="o">=</span><span class="n">grid_t1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">T2</span><span class="o">=</span><span class="n">grid_t2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">RANK</span></a>
-<span class="p">)</span>
-</pre></div>
-</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher"><span class="n">low</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class reference internal" href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher"><span class="n">DictionaryMatcher</span></a><span class="p">(</span><a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><span class="n">simulator</span></a><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="w">
+</span>    <span class="n">T1</span><span class="o">=</span><span class="n">grid_t1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">grid_t2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">RANK</span></a><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
 </section>
 <section id="clustered-dictionary">
 <h2>Clustered dictionary<a class="headerlink" href="#clustered-dictionary" title="Link to this heading">#</a></h2>
@@ -972,16 +965,15 @@ a voxel scored against one representative per group rules out most groups
 before any atom inside them is touched.</p>
 <p>The clustering is done in the compressed basis, so a group is entered without
 leaving the space the measurement is already in.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">GROUPS</span></a> <span class="o">=</span> <span class="mi">32</span>
-
-<a href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">grouped</span></a> <span class="o">=</span> <a href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher" class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class"><span class="n">DictionaryMatcher</span></a><span class="p">(</span><a href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator" class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">simulator</span></a><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">GROUPS</span></a><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-    <span class="n">T1</span><span class="o">=</span><span class="n">grid_t1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
-    <span class="n">T2</span><span class="o">=</span><span class="n">grid_t2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
-    <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-    <span class="n">rank</span><span class="o">=</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">RANK</span></a><span class="p">,</span>
-<span class="p">)</span>
-</pre></div>
-</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">GROUPS</span></a> <span class="o">=</span> <span class="mi">32</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher"><span class="n">grouped</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class reference internal" href="../../torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher" title="torchsim.DictionaryMatcher"><span class="n">DictionaryMatcher</span></a><span class="p">(</span><a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><span class="n">simulator</span></a><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">GROUPS</span></a><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="w">
+</span>    <span class="n">T1</span><span class="o">=</span><span class="n">grid_t1</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>    <span class="n">T2</span><span class="o">=</span><span class="n">grid_t2</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>    <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="w">
+</span>    <span class="n">rank</span><span class="o">=</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">RANK</span></a><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>32 groups of 625 atoms; 1.4 still open per voxel
 </pre></div>
 </div>
@@ -994,9 +986,9 @@ card, which decides whether a volume fits or has to be streamed, and a dash
 on a machine with no card.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>method                         train     map     model      peak      T1      T2      M0
 ----------------------------------------------------------------------------------------
-match, 400 contrasts            6.2s   5.58s 122.3 MiB        --    0.6%    1.6%    0.4%
-match, rank 4                   0.9s   2.10s   1.4 MiB        --    0.6%    1.6%    0.4%
-match, rank 4 + groups          0.9s   0.08s   1.4 MiB        --    0.6%    1.6%    0.4%
+match, 400 contrasts            8.0s   7.52s 122.3 MiB        --    0.6%    1.6%    0.4%
+match, rank 4                   1.0s   1.51s   1.4 MiB        --    0.6%    1.6%    0.4%
+match, rank 4 + groups          1.0s   0.08s   1.4 MiB        --    0.6%    1.6%    0.4%
 </pre></div>
 </div>
 </section>
@@ -1006,7 +998,7 @@ match, rank 4 + groups          0.9s   0.08s   1.4 MiB        --    0.6%    1.6%
 <li><img src="../../../_images/sphx_glr_01-dictionary-matching_004.png" srcset="../../../_images/sphx_glr_01-dictionary-matching_004.png" alt="truth, full, rank 4, + groups" class = "sphx-glr-multi-img"/></li>
 <li><img src="../../../_images/sphx_glr_01-dictionary-matching_005.png" srcset="../../../_images/sphx_glr_01-dictionary-matching_005.png" alt="Δ full, Δ rank 4, Δ + groups" class = "sphx-glr-multi-img"/></li>
 </ul>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 51.634 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 57.296 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-02-parameter-inference-01-dictionary-matching-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/02-parameter-inference/01-dictionary-matching.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo1.svg" style="width: 150px;" />

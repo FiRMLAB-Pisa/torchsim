@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.rf_definition.html">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="torchsim.SequenceDescription.html">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -587,17 +588,17 @@ out to fit from signals handed to <code class="xref py py-meth docutils literal 
 give an <code class="docutils literal notranslate"><span class="pre">acquisition</span></code> instead, and the atoms are simulated from it.</p></li>
 <li><p><strong>parameters</strong> (<em>torch.Tensor</em><em>, </em><em>optional</em>) – Parameter values shaped <code class="docutils literal notranslate"><span class="pre">(n_atoms,</span> <span class="pre">n_parameters)</span></code>. If provided, a
 call returns parameter estimates; otherwise it returns atom indices.</p></li>
-<li><p><strong>query_chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Maximum measured signals compared at once.</p></li>
-<li><p><strong>dictionary_chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Maximum dictionary atoms compared at once.</p></li>
-<li><p><strong>top_k</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Number of candidates retained by <a class="reference internal" href="#torchsim.DictionaryMatcher.match" title="torchsim.DictionaryMatcher.match"><code class="xref py py-meth docutils literal notranslate"><span class="pre">match()</span></code></a>. The first is the
+<li><p><strong>query_chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Maximum measured signals compared at once.</p></li>
+<li><p><strong>dictionary_chunk_size</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Maximum dictionary atoms compared at once.</p></li>
+<li><p><strong>top_k</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Number of candidates retained by <a class="reference internal" href="#torchsim.DictionaryMatcher.match" title="torchsim.DictionaryMatcher.match"><code class="xref py py-meth docutils literal notranslate"><span class="pre">match()</span></code></a>. The first is the
 conventional dictionary-matching estimate.</p></li>
-<li><p><strong>groups</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Cluster the dictionary into this many groups and match against their
+<li><p><strong>groups</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>, </em><em>optional</em>) – Cluster the dictionary into this many groups and match against their
 representative signals first, ruling out whole groups before any atom
 in them is scored. Read <a class="reference internal" href="#torchsim.DictionaryMatcher.grouping" title="torchsim.DictionaryMatcher.grouping"><code class="xref py py-attr docutils literal notranslate"><span class="pre">grouping</span></code></a> afterwards: its <code class="docutils literal notranslate"><span class="pre">condition</span></code>
 says whether the representatives are still distinct enough to prune
 with, and its <code class="docutils literal notranslate"><span class="pre">compression</span></code> says how much shorter an inner product
 inside a group is.</p></li>
-<li><p><strong>prune</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – How far below its best group score a voxel still considers a group,
+<li><p><strong>prune</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>, </em><em>optional</em>) – How far below its best group score a voxel still considers a group,
 as a fraction of that score. Larger keeps more groups and costs more.
 The default is the value Cauley et al. <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> tuned on 280 groups of
 700 atoms; on a smaller dictionary or a coarser parameter grid it can rule

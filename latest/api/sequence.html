@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
@@ -293,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.FSEReadout.html">FSEReadout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.rf_definition.html">rf_definition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.ShimDefinition.html">ShimDefinition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SequenceDescription.html">SequenceDescription</a></li>
 </ul>
 </details></li>
@@ -636,6 +637,9 @@ takes a complex envelope instead – one row per transmit channel – so a
 selective excitation is integrated over the slice rather than scaled, and
 <a class="reference internal" href="../generated/torchsim.ShimDefinition.html#torchsim.ShimDefinition" title="torchsim.ShimDefinition"><code class="xref py py-class docutils literal notranslate"><span class="pre">ShimDefinition</span></code></a> gives the amplitude and phase each channel is driven
 at. A simulator takes them as <code class="docutils literal notranslate"><span class="pre">pulse=</span></code> and <code class="docutils literal notranslate"><span class="pre">shims=</span></code>.</p>
+<p><a class="reference internal" href="../generated/torchsim.compose_spinor.html#torchsim.compose_spinor" title="torchsim.compose_spinor"><code class="xref py py-func docutils literal notranslate"><span class="pre">compose_spinor()</span></code></a> is the rotation a shaped pulse leaves on each spin,
+composed sample by sample in torch so that derivatives reach the samples: how
+a pulse’s own samples are designed rather than chosen.</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.rf_definition.html#torchsim.rf_definition" title="torchsim.rf_definition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rf_definition</span></code></a></p></td>
@@ -643,6 +647,9 @@ at. A simulator takes them as <code class="docutils literal notranslate"><span c
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../generated/torchsim.ShimDefinition.html#torchsim.ShimDefinition" title="torchsim.ShimDefinition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ShimDefinition</span></code></a></p></td>
 <td><p>One transmit-shim definition: a complex weight per channel.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.compose_spinor.html#torchsim.compose_spinor" title="torchsim.compose_spinor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compose_spinor</span></code></a></p></td>
+<td><p>The Cayley-Klein pair a shaped pulse leaves, sample by sample.</p></td>
 </tr>
 </tbody>
 </table>
