@@ -30,7 +30,7 @@ from torchsim.sequence._accelerators import (
 )
 from torchsim.sequence._parameters import NO_GEOMETRY, Geometry
 
-__all__ = ["simulate_packed"]
+__all__ = ["simulate_packed", "simulate_packed_pools"]
 
 
 def simulate_packed(
@@ -595,3 +595,218 @@ def _rotate(
         t10 * old_plus + t00 * old_minus + t12 * old_z,
         t20 * old_plus + t21 * old_minus + cosine * old_z,
     )
+
+
+def simulate_packed_pools(
+    tissue: tuple[torch.Tensor, ...],
+    pools: torch.Tensor,
+    events: tuple[torch.Tensor, ...],
+    *,
+    state_count: int,
+    output_count: int,
+    geometry: Geometry = NO_GEOMETRY,
+    profile: Any = None,
+    dynamic: Any = None,
+    locations: int = 1,
+    lineshape: Any = None,
+) -> torch.Tensor:
+    """Run one echo train of free water beside any number of exchanging pools.
+
+    The same state machine as :func:`simulate_packed`, with the exchanging
+    pools stacked along an axis of their own: each carries ``F+``, ``F-`` and
+    ``Z``, exchanges with the free water alone, and is rotated, inverted,
+    shifted and spoiled as the free water is. Given a ``lineshape``, a
+    semisolid pool rides beside them with ``Z`` alone, exchanging with the
+    free water through the tissue's bound-pool properties and saturated by
+    every pulse. Both generators are written out here and exponentiated with
+    ``torch.matrix_exp``, and the recovery is the affine solution
+    ``(e^{At} - I) A^-1 c`` with ``c`` the pools' own ``R1`` times their
+    fractions, so no identity the tables rely on is assumed.
+
+    Parameters
+    ----------
+    tissue
+        The prepared tissue properties in packing order, one entry per voxel.
+        Pool B's own five are ignored in favour of ``pools``.
+    pools
+        ``(pools, 5, voxels)``: fraction, exchange rate in Hz, T1 and T2 in ms,
+        and chemical shift in Hz, per exchanging pool.
+    events, state_count, output_count, geometry, profile, dynamic, locations
+        As :func:`simulate_packed` takes them.
+    lineshape
+        A :class:`~torchsim.sequence._lineshape.LineshapeTable` for a
+        semisolid pool, or ``None`` for none.
+
+    Returns
+    -------
+    torch.Tensor
+        Complex signal of shape ``(voxels, recorded echoes)``.
+    """
+    (
+        t1,
+        t2,
+        m0,
+        b1,
+        b1_phase,
+        b0,
+        inversion_efficiency,
+        damping,
+        velocity,
+        bound_fraction,
+        bound_exchange,
+        t1_bound,
+        *_pool_b,
+    ) = tissue
+    atom_count = t1.numel()
+    fraction, exchange, t1_pools, t2_pools, shift_hz = pools.double().unbind(1)
+    count = fraction.shape[0]
+    semisolid = lineshape is not None
+    semisolid_fraction = bound_fraction.double() if semisolid else 0.0
+    free = 1.0 - fraction.sum(0) - semisolid_fraction
+    outward = exchange * fraction
+    inward = exchange * free
+    n = 1 + count + int(semisolid)
+    rates = torch.zeros((atom_count, n, n), dtype=torch.float64)
+    rates[:, 0, 0] = -outward.sum(0) - 1000.0 / t1.double()
+    rates[:, 0, 1 : 1 + count] = inward.T
+    rates[:, 1 : 1 + count, 0] = outward.T
+    idx = torch.arange(1, 1 + count)
+    rates[:, idx, idx] = (-inward - 1000.0 / t1_pools).T
+    equilibrium = [free, *fraction]
+    relaxation = [1000.0 / t1.double(), *(1000.0 / t1_pools)]
+    if semisolid:
+        rate = bound_exchange.double()
+        rates[:, 0, 0] -= rate * semisolid_fraction
+        rates[:, 0, n - 1] = rate * free
+        rates[:, n - 1, 0] = rate * semisolid_fraction
+        rates[:, n - 1, n - 1] = -rate * free - 1000.0 / t1_bound.double()
+        equilibrium.append(semisolid_fraction)
+        relaxation.append(1000.0 / t1_bound.double())
+    equilibrium = torch.stack(equilibrium, dim=-1)
+    source = equilibrium * torch.stack(relaxation, dim=-1)
+    m = 1 + count
+    across = torch.zeros((atom_count, m, m), dtype=torch.complex128)
+    across[:, 0, 0] = -outward.sum(0) - 1000.0 / t2.double()
+    across[:, 0, 1:] = inward.T.to(torch.complex128)
+    across[:, 1:, 0] = outward.T.to(torch.complex128)
+    across[:, idx, idx] = (-inward - 1000.0 / t2_pools - 2j * torch.pi * shift_hz).T.to(
+        torch.complex128
+    )
+
+    transmit = b1.reshape(-1, atom_count)
+    transmit_phase = b1_phase.reshape(-1, atom_count)
+    flow = velocity * geometry.flow_scale
+    washout = velocity.abs() * geometry.washout_scale
+    (
+        duration,
+        kind,
+        flip,
+        phase,
+        action,
+        _output_index,
+        shim_index,
+        saturation,
+        rf_frequency,
+    ) = events
+    order = torch.arange(state_count, dtype=torch.float32)
+    longitudinal_weight = order.square()
+    transverse_weight = order.square() + order + 1.0 / 3.0
+    shape = (atom_count, state_count)
+    plus = [torch.zeros(shape, dtype=torch.complex64) for _ in range(m)]
+    minus = [torch.zeros(shape, dtype=torch.complex64) for _ in range(m)]
+    z = [
+        _at_order_zero(torch.zeros(shape, dtype=torch.complex64), equilibrium[:, p])
+        for p in range(n)
+    ]
+    slice_index = torch.arange(atom_count) % locations if profile is not None else None
+    signals = []
+    identity = torch.eye(n, dtype=torch.float64)
+    settled = torch.linalg.solve(rates, source)
+    for event in range(kind.numel()):
+        dt = duration[event]
+        wout = (1.0 - (washout * dt).clamp(max=1.0)).double()
+        b_factor = (damping * dt)[:, None]
+        transverse_damping = torch.exp(-b_factor * transverse_weight[None, :])
+        longitudinal_damping = torch.exp(-b_factor * longitudinal_weight[None, :])
+        turn = (flow * dt)[:, None]
+        transverse_phase = torch.exp(-1j * turn * (order + 0.5)[None, :])
+        longitudinal_phase = torch.exp(-1j * turn * order[None, :])
+        operator = torch.matrix_exp(across * dt) * wout[:, None, None]
+        shared = (
+            torch.exp(-2j * torch.pi * b0 * dt)[:, None]
+            * transverse_damping
+            * transverse_phase
+        )
+        stacked_plus = torch.stack(plus, dim=1).to(torch.complex128)
+        stacked_minus = torch.stack(minus, dim=1).to(torch.complex128)
+        new_plus = torch.einsum("vij,vjs->vis", operator, stacked_plus)
+        new_minus = torch.einsum("vij,vjs->vis", operator.conj(), stacked_minus)
+        plus = [(new_plus[:, p] * shared).to(torch.complex64) for p in range(m)]
+        minus = [
+            (new_minus[:, p] * shared.conj()).to(torch.complex64) for p in range(m)
+        ]
+        exponential = torch.matrix_exp(rates * dt)
+        restored = ((exponential - identity) @ settled[..., None])[..., 0]
+        restored = wout[:, None] * restored + (1.0 - wout[:, None]) * equilibrium
+        stacked_z = torch.stack(z, dim=1).to(torch.complex128)
+        mixed = torch.einsum(
+            "vij,vjs->vis",
+            (exponential * wout[:, None, None]).to(torch.complex128),
+            stacked_z,
+        )
+        carried = longitudinal_damping * longitudinal_phase
+        z = [
+            (mixed[:, p] * carried).to(torch.complex64)
+            + _at_order_zero(z[p], restored[:, p])
+            for p in range(n)
+        ]
+
+        event_action = int(action[event])
+        if event_action & _PRE_SHIFT:
+            for p in range(m):
+                plus[p], minus[p] = _shift(plus[p], minus[p])
+        event_kind = int(kind[event])
+        if event_kind == 1:
+            if event_action & _INVERSION:
+                for p in range(m):
+                    z[p] = -inversion_efficiency[:, None] * z[p]
+            else:
+                row = int(shim_index[event])
+                alpha = flip[event] * transmit[row]
+                phi = phase[event] + transmit_phase[row]
+                if semisolid:
+                    absorbed = torch.exp(
+                        saturation[event]
+                        * alpha.square()
+                        * lineshape.at(rf_frequency[event] - b0)
+                    )
+                    z[n - 1] = z[n - 1] * absorbed[:, None]
+                for p in range(m):
+                    if profile is None and dynamic is None:
+                        plus[p], minus[p], z[p] = _rotate(
+                            plus[p], minus[p], z[p], alpha, phi
+                        )
+                    else:
+                        if dynamic is None:
+                            spinor_a, spinor_b = profile.at(slice_index, alpha)
+                        else:
+                            spinor_a, spinor_b = dynamic.at(int(dynamic.index[event]))
+                        spun = spinor_b * torch.exp(-1j * phi)
+                        plus[p], minus[p], z[p] = _rotate_spinor(
+                            plus[p], minus[p], z[p], spinor_a, spun
+                        )
+        elif event_kind == 2 and event_action & _RECORD:
+            recorded = sum(value[:, 0] for value in plus)
+            signals.append(m0 * recorded * torch.exp(-1j * phase[event]))
+        if event_action & _POST_SHIFT:
+            for p in range(m):
+                plus[p], minus[p] = _shift(plus[p], minus[p])
+        if event_action & _SPOIL_AFTER:
+            plus = [torch.zeros_like(value) for value in plus]
+            minus = [torch.zeros_like(value) for value in minus]
+        elif event_action & _SHIFT_AFTER:
+            for p in range(m):
+                plus[p], minus[p] = _shift(plus[p], minus[p])
+    if not signals:
+        return torch.empty((atom_count, output_count), dtype=torch.complex64)
+    return torch.stack(signals, dim=-1)

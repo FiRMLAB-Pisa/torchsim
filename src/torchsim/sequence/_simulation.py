@@ -27,14 +27,15 @@ from ._description import (
 )
 from ._lineshape import lineshape_reaching
 from ._parameters import (
+    POOL_NAMES,
     PROPERTY_NAMES,
     PROPERTY_PARAMETERS,
     SAMPLE_NAMES,
     TISSUE_COUNT,
     TISSUE_NAMES,
+    exchange_pool_count,
     features_of,
     wants_bound_pool,
-    wants_exchange_pool,
 )
 from ._transition import ExactSliceProfile, across_the_slice
 from ._transmit import shim_rows, transmit_field
@@ -63,6 +64,12 @@ _TRANSMIT = frozenset((TISSUE_NAMES.index("b1"), TISSUE_NAMES.index("b1_phase_ra
 # What every voxel gets a value of whatever else the tissue declares: the two
 # relaxation times are the floor of the model rather than a term it switches on.
 _ALWAYS_PER_VOXEL = frozenset(("t1_ms", "t2_ms"))
+
+# Which fraction gates each exchanging pool, pool B's first.
+_POOL_FRACTIONS = (
+    "pool_b_fraction",
+    *(name for name in POOL_NAMES if name.endswith("_fraction")),
+)
 
 # The tissue buffers the kernels invert into a rate.
 _RELAXATION_TIMES = tuple(
@@ -129,6 +136,11 @@ class TissueProperties:
     other. Only the longitudinal axis sees all three, and the fractions share
     the voxel with the free water, so they cannot sum past one.
 
+    Pools ``c``, ``d`` and ``e`` are further chemically exchanging pools on
+    pool B's terms, up to the four BART's Bloch-McConnell model carries beside
+    the free water: each exchanges with the free water alone, and every
+    fraction, the semisolid one included, shares the voxel with it.
+
     ``t2_prime_ms`` is the spread of the field *within* the voxel, where
     ``b0_hz`` is where the voxel as a whole sits. A Lorentzian spread of that
     half-width damps a sample by ``exp(-|tau| / T2')`` in the time ``tau`` it
@@ -173,6 +185,15 @@ class TissueProperties:
         Its relaxation times, in milliseconds.
     pool_b_shift_hz : float or array-like, optional
         How far it sits off the free water, in Hz.
+    pool_c_fraction, pool_d_fraction, pool_e_fraction : float or array-like, optional
+        Shares of the magnetization held by further chemically exchanging
+        pools, each the gate on its pool.
+    pool_c_exchange_hz, pool_d_exchange_hz, pool_e_exchange_hz : float or array-like, optional
+        Their exchange rates with the free water, in Hz.
+    t1_pool_c_ms, t2_pool_c_ms, t1_pool_d_ms, t2_pool_d_ms, t1_pool_e_ms, t2_pool_e_ms : float or array-like, optional
+        Their relaxation times, in milliseconds.
+    pool_c_shift_hz, pool_d_shift_hz, pool_e_shift_hz : float or array-like, optional
+        How far each sits off the free water, in Hz.
     t2_prime_ms : float or array-like, optional
         The Lorentzian field spread across the voxel, as the reciprocal of its
         angular half-width, in milliseconds. Infinite by default, which is no
@@ -196,6 +217,21 @@ class TissueProperties:
     t1_pool_b_ms: Any = 1000.0
     t2_pool_b_ms: Any = 100.0
     pool_b_shift_hz: Any = 0.0
+    pool_c_fraction: Any = 0.0
+    pool_c_exchange_hz: Any = 0.0
+    t1_pool_c_ms: Any = 1000.0
+    t2_pool_c_ms: Any = 100.0
+    pool_c_shift_hz: Any = 0.0
+    pool_d_fraction: Any = 0.0
+    pool_d_exchange_hz: Any = 0.0
+    t1_pool_d_ms: Any = 1000.0
+    t2_pool_d_ms: Any = 100.0
+    pool_d_shift_hz: Any = 0.0
+    pool_e_fraction: Any = 0.0
+    pool_e_exchange_hz: Any = 0.0
+    t1_pool_e_ms: Any = 1000.0
+    t2_pool_e_ms: Any = 100.0
+    pool_e_shift_hz: Any = 0.0
     t2_prime_ms: Any = float("inf")
 
 
@@ -405,8 +441,13 @@ class EpgEngine:
             else (None,)
         )
         bound_pool = wants_bound_pool(tissue.bound_fraction)
-        exchange_pool = wants_exchange_pool(tissue.pool_b_fraction)
-        _within_one_voxel(tissue.bound_fraction, tissue.pool_b_fraction)
+        pools = exchange_pool_count(tissue)
+        exchange_pool = pools > 0
+        _within_one_voxel(
+            tissue.bound_fraction,
+            *(getattr(tissue, name) for name in _POOL_FRACTIONS[:pools]),
+        )
+        extra_pools = _prepare_pools(tissue, output_shape, where) if pools > 1 else None
 
         if nstates is None:
             winding = repetitions * self.shifts_per_repetition(description)
@@ -433,6 +474,8 @@ class EpgEngine:
             transmit=sensitivities,
             packed=events,
             record_every=_every,
+            pools=pools,
+            extra_pools=extra_pools,
         )
         if accelerated is None:
             raise RuntimeError(
@@ -714,29 +757,49 @@ def _prepare_samples(
     )
 
 
+def _prepare_pools(
+    tissue: TissueProperties, shape: torch.Size, device: torch.device
+) -> tuple[torch.Tensor, ...]:
+    """Pools C to E as one flat buffer per property, laid out per voxel.
+
+    No kernel reads these: they are the table's to form operators from, so
+    they are laid out however the tissue's other properties were.
+    """
+    flat = []
+    for name in POOL_NAMES:
+        value = _as_float_tensor(getattr(tissue, name), device).expand(shape)
+        value = value.reshape(-1).contiguous()
+        if name.endswith("_ms"):
+            value = value.clamp_min(MINIMUM_RELAXATION_TIME_MS)
+        flat.append(value)
+    return tuple(flat)
+
+
 def _as_float_tensor(value: Any, device: torch.device) -> torch.Tensor:
     if isinstance(value, torch.Tensor):
         return value.to(device=device, dtype=torch.float32)
     return torch.as_tensor(value, dtype=torch.float32, device=device)
 
 
-def _within_one_voxel(bound_fraction: Any, pool_b_fraction: Any) -> None:
+def _within_one_voxel(bound_fraction: Any, *pool_fractions: Any) -> None:
     """Refuse fractions that give away more of the voxel than there is.
 
-    The free water is whatever the two second pools leave, so their fractions
-    have to sum to at most one. Past that the free pool starts at a negative
+    The free water is whatever the other pools leave, so their fractions have
+    to sum to at most one. Past that the free pool starts at a negative
     magnetization, which every pass afterwards would carry as though it meant
     something.
 
     Raises
     ------
-        ValueError: if the two fractions sum past one anywhere.
+        ValueError: if the fractions sum past one anywhere.
     """
-    total = torch.as_tensor(bound_fraction) + torch.as_tensor(pool_b_fraction)
+    total = torch.as_tensor(bound_fraction)
+    for fraction in pool_fractions:
+        total = total + torch.as_tensor(fraction)
     if bool((total > 1.0).any()):
         raise ValueError(
-            "bound_fraction and pool_b_fraction share the voxel with the free "
-            "water, so they cannot sum past one"
+            "the semisolid and exchanging pool fractions share the voxel with "
+            "the free water, so they cannot sum past one"
         )
 
 

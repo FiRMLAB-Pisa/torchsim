@@ -26,6 +26,7 @@ from .._execution import (
     stream_chunks,
     without_policy,
 )
+from . import _pools
 from ._calibration import crossover, detection
 from ._description import (
     EventType,
@@ -58,6 +59,7 @@ from ._parameters import (
 from ._parameters import (
     TISSUE_COUNT as _TISSUE_COUNT,
 )
+from ._pools import PoolLayout, PoolTables, pools_of
 from ._transition import (
     DynamicPairs,
     ExactSliceProfile,
@@ -586,6 +588,8 @@ def simulate_native(
     transmit: torch.Tensor | None = None,
     packed: _PackedEvents | None = None,
     record_every: bool = False,
+    pools: int = 0,
+    extra_pools: tuple[torch.Tensor, ...] | None = None,
 ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor] | None:
     """Run a fused CPU/CUDA state machine with explicit AD rules.
 
@@ -606,6 +610,11 @@ def simulate_native(
     geometry, how far it winds -- so the two must describe the same sequence;
     what is skipped is walking the events again to rebuild what only their
     values changed.
+
+    ``pools`` counts the chemically exchanging pools the tissue carries from
+    pool B on, and ``extra_pools`` holds the prepared buffers of pools C to E.
+    From :data:`~torchsim.sequence._pools.TABULATE_FROM` pools on, the kernels
+    read their operators from a table rather than forming them.
     """
     device = prepared_tissue[0].device
     if device.type not in {"cpu", "cuda"} or not _backend_available(device):
@@ -681,6 +690,18 @@ def simulate_native(
         tissue = _across_the_table(tissue, locations)
     else:
         locations = 1
+    pool_values = None
+    pool_index = None
+    if exchanging and pools >= _pools.TABULATE_FROM:
+        if extra_pools is not None and locations > 1:
+            extra_pools = _across_the_table(extra_pools, locations)
+        pool_values, pool_index, exchanging = _pools.tabulate(
+            tissue,
+            extra_pools,
+            packed.duration,
+            exchanging=pools,
+            semisolid=lineshape is not None,
+        )
     threads = int(os.environ.get("TORCHSIM_NUM_THREADS", str(torch.get_num_threads())))
     signal = _NativeEpg.apply(
         *tissue,
@@ -703,6 +724,8 @@ def simulate_native(
         lineshape,
         exchanging,
         features,
+        pool_values,
+        pool_index,
     )
     leading = (packed.train_count,) if packed.is_batched else ()
     if locations > 1:
@@ -1297,6 +1320,29 @@ def _wanted(needs_input_grad: tuple[bool, ...]) -> tuple[bool, ...]:
     return tuple(bool(needs_input_grad[index]) for index in _FLOAT_INPUTS)
 
 
+def _extras(results: Sequence[Any], dynamic: bool, tabulated: bool) -> tuple[Any, Any]:
+    """The pair's and the pools' entries past the differentiable inputs'.
+
+    Each is present only for a run that carries it, the pair's first.
+    """
+    rest = list(results[len(_FLOAT_INPUTS) :])
+    pair = rest.pop(0) if dynamic and rest else None
+    pools = rest.pop(0) if tabulated and rest else None
+    return pair, pools
+
+
+def _needs(ctx: Any, index: int) -> bool:
+    """Whether an input past the ones every call passes wants a gradient."""
+    return len(ctx.needs_input_grad) > index and bool(ctx.needs_input_grad[index])
+
+
+def _directed(pools: PoolTables | None, direction: Any) -> PoolTables | None:
+    """The tables, carrying a direction along them for a pass that follows one."""
+    if pools is None:
+        return None
+    return replace(pools, direction=_followed(direction, pools.values))
+
+
 class _LastDerivative(torch.autograd.Function):
     """An identity whose own derivative is refused.
 
@@ -1385,8 +1431,10 @@ class _NativeEpg(torch.autograd.Function):
         pair_values: torch.Tensor | None,
         pair_index: torch.Tensor | None,
         lineshape: Any,
-        exchanging: bool,
+        exchanging: bool | PoolLayout,
         features: frozenset[str] | None,
+        pool_values: torch.Tensor | None = None,
+        pool_index: torch.Tensor | None = None,
     ) -> torch.Tensor:
         tissue = (
             t1,
@@ -1430,6 +1478,7 @@ class _NativeEpg(torch.autograd.Function):
             lineshape=lineshape,
             exchanging=exchanging,
             features=features,
+            pools=pools_of(pool_values, pool_index, exchanging),
         )
 
     @staticmethod
@@ -1447,6 +1496,12 @@ class _NativeEpg(torch.autograd.Function):
         ctx.lineshape = inputs[_PACKED_COUNT + 7]
         ctx.exchanging = inputs[_PACKED_COUNT + 8]
         ctx.features = inputs[_PACKED_COUNT + 9]
+        ctx.pool_values = (
+            inputs[_PACKED_COUNT + 10] if len(inputs) > _PACKED_COUNT + 10 else None
+        )
+        ctx.pool_index = (
+            inputs[_PACKED_COUNT + 11] if len(inputs) > _PACKED_COUNT + 11 else None
+        )
 
     @staticmethod
     def jvp(ctx: Any, *tangents: torch.Tensor | None) -> torch.Tensor:
@@ -1471,6 +1526,14 @@ class _NativeEpg(torch.autograd.Function):
             ctx.lineshape,
             ctx.exchanging,
             ctx.features,
+            ctx.pool_values,
+            ctx.pool_index,
+            _followed(
+                tangents[_PACKED_COUNT + 10]
+                if len(tangents) > _PACKED_COUNT + 10
+                else None,
+                ctx.pool_values,
+            ),
         )
 
     @staticmethod
@@ -1491,16 +1554,15 @@ class _NativeEpg(torch.autograd.Function):
             ctx.lineshape,
             ctx.exchanging,
             ctx.features,
+            ctx.pool_values,
+            ctx.pool_index,
         )
-        # The rotation is worked out before the kernels run, so what they
-        # return for it is a cotangent on the pair itself; autograd carries it
-        # the rest of the way to the flip and the sensitivities it was
-        # integrated from.
-        pair_grad = (
-            fused[len(_FLOAT_INPUTS)]
-            if len(fused) > len(_FLOAT_INPUTS)
-            and ctx.needs_input_grad[_PACKED_COUNT + 5]
-            else None
+        # The rotation and the pool operators are worked out before the
+        # kernels run, so what they return for either is a cotangent on the
+        # table itself; autograd carries it the rest of the way to what the
+        # table was formed from.
+        pair_grad, pool_grad = _extras(
+            fused, ctx.pair_values is not None, ctx.pool_values is not None
         )
         return (
             *_spread(fused[: len(_FLOAT_INPUTS)], ctx.needs_input_grad),
@@ -1509,10 +1571,12 @@ class _NativeEpg(torch.autograd.Function):
             None,
             None,
             None,
-            pair_grad,
+            pair_grad if ctx.needs_input_grad[_PACKED_COUNT + 5] else None,
             None,
             None,
             None,
+            None,
+            pool_grad if _needs(ctx, _PACKED_COUNT + 10) else None,
             None,
         )
 
@@ -1552,6 +1616,11 @@ class _NativeEpgVjp(torch.autograd.Function):
             lineshape=inputs[_SEED_INPUT + 9],
             exchanging=inputs[_SEED_INPUT + 10],
             features=inputs[_SEED_INPUT + 11],
+            pools=pools_of(
+                inputs[_SEED_INPUT + 12],
+                inputs[_SEED_INPUT + 13],
+                inputs[_SEED_INPUT + 10],
+            ),
         )
 
     @staticmethod
@@ -1569,21 +1638,25 @@ class _NativeEpgVjp(torch.autograd.Function):
         ctx.lineshape = inputs[_SEED_INPUT + 9]
         ctx.exchanging = inputs[_SEED_INPUT + 10]
         ctx.features = inputs[_SEED_INPUT + 11]
+        ctx.pool_values = inputs[_SEED_INPUT + 12]
+        ctx.pool_index = inputs[_SEED_INPUT + 13]
 
     @staticmethod
     def backward(ctx: Any, *cotangents: torch.Tensor | None) -> tuple[Any, ...]:
         saved = ctx.saved_tensors
         primal, seed = saved[:_PACKED_COUNT], saved[_SEED_INPUT]
         dynamic = _pairs_of(ctx.pair_values, ctx.pair_index)
-        pair_direction = None
-        if dynamic is not None:
-            # The pair's own cotangent is the last of them, and it is a
-            # direction along the pair exactly as the others are along the
-            # buffers they belong to.
-            cotangents, pair_direction = (
-                cotangents[: len(_FLOAT_INPUTS)],
-                _followed(cotangents[len(_FLOAT_INPUTS)], ctx.pair_values),
-            )
+        pools = pools_of(ctx.pool_values, ctx.pool_index, ctx.exchanging)
+        # The pair's and the pools' own cotangents follow the others, and each
+        # is a direction along its table exactly as the others are along the
+        # buffers they belong to.
+        pair_direction, pool_direction = _extras(
+            cotangents, dynamic is not None, pools is not None
+        )
+        cotangents = cotangents[: len(_FLOAT_INPUTS)]
+        pair_direction = _followed(pair_direction, ctx.pair_values)
+        if pools is not None:
+            pools = replace(pools, direction=_followed(pool_direction, ctx.pool_values))
         directions = tuple(
             torch.zeros_like(primal[index])
             if cotangent is None
@@ -1607,6 +1680,7 @@ class _NativeEpgVjp(torch.autograd.Function):
             lineshape=ctx.lineshape,
             exchanging=ctx.exchanging,
             features=ctx.features,
+            pools=pools,
         )
         seed_grad = None
         if ctx.needs_input_grad[_SEED_INPUT]:
@@ -1625,12 +1699,10 @@ class _NativeEpgVjp(torch.autograd.Function):
                 lineshape=ctx.lineshape,
                 exchanging=ctx.exchanging,
                 features=ctx.features,
+                pools=pools,
             )
-        pair_curvature = (
-            curvature[len(_FLOAT_INPUTS)]
-            if len(curvature) > len(_FLOAT_INPUTS)
-            and ctx.needs_input_grad[_SEED_INPUT + 7]
-            else None
+        pair_curvature, pool_curvature = _extras(
+            curvature, dynamic is not None, pools is not None
         )
         guarded = _last(
             (
@@ -1647,10 +1719,12 @@ class _NativeEpgVjp(torch.autograd.Function):
             None,
             None,
             None,
-            pair_curvature,
+            pair_curvature if ctx.needs_input_grad[_SEED_INPUT + 7] else None,
             None,
             None,
             None,
+            None,
+            pool_curvature if _needs(ctx, _SEED_INPUT + 12) else None,
             None,
         )
 
@@ -1677,6 +1751,14 @@ class _NativeEpgJvp(torch.autograd.Function):
             lineshape=inputs[_TANGENT_END + 8],
             exchanging=inputs[_TANGENT_END + 9],
             features=inputs[_TANGENT_END + 10],
+            pools=_directed(
+                pools_of(
+                    inputs[_TANGENT_END + 11],
+                    inputs[_TANGENT_END + 12],
+                    inputs[_TANGENT_END + 9],
+                ),
+                inputs[_TANGENT_END + 13],
+            ),
         )
 
     @staticmethod
@@ -1692,6 +1774,10 @@ class _NativeEpgJvp(torch.autograd.Function):
         ctx.lineshape = inputs[_TANGENT_END + 8]
         ctx.exchanging = inputs[_TANGENT_END + 9]
         ctx.features = inputs[_TANGENT_END + 10]
+        ctx.pool_values = inputs[_TANGENT_END + 11]
+        ctx.pool_index = inputs[_TANGENT_END + 12]
+        ctx.pool_direction = inputs[_TANGENT_END + 13]
+        ctx.threads = inputs[_TANGENT_END + 2]
 
     @staticmethod
     def backward(ctx: Any, grad_output: torch.Tensor) -> tuple[Any, ...]:
@@ -1721,19 +1807,14 @@ class _NativeEpgJvp(torch.autograd.Function):
             lineshape=ctx.lineshape,
             exchanging=ctx.exchanging,
             features=ctx.features,
+            pools=_directed(
+                pools_of(ctx.pool_values, ctx.pool_index, ctx.exchanging),
+                ctx.pool_direction,
+            ),
         )
-        pair_curvature = (
-            primal_grads[len(_FLOAT_INPUTS)]
-            if len(primal_grads) > len(_FLOAT_INPUTS)
-            and ctx.needs_input_grad[_TANGENT_END + 5]
-            else None
-        )
-        pair_slope = (
-            tangent_grads[len(_FLOAT_INPUTS)]
-            if len(tangent_grads) > len(_FLOAT_INPUTS)
-            and ctx.needs_input_grad[_TANGENT_END + 7]
-            else None
-        )
+        dynamic, tabulated = ctx.pair_values is not None, ctx.pool_values is not None
+        pair_curvature, pool_curvature = _extras(primal_grads, dynamic, tabulated)
+        pair_slope, pool_slope = _extras(tangent_grads, dynamic, tabulated)
         directions = tuple(
             gradient if ctx.needs_input_grad[_PACKED_COUNT + offset] else None
             for offset, gradient in enumerate(tangent_grads[: len(_FLOAT_INPUTS)])
@@ -1752,12 +1833,15 @@ class _NativeEpgJvp(torch.autograd.Function):
             None,
             None,
             None,
-            pair_curvature,
+            pair_curvature if ctx.needs_input_grad[_TANGENT_END + 5] else None,
             None,
-            pair_slope,
+            pair_slope if ctx.needs_input_grad[_TANGENT_END + 7] else None,
             None,
             None,
             None,
+            pool_curvature if _needs(ctx, _TANGENT_END + 11) else None,
+            None,
+            pool_slope if _needs(ctx, _TANGENT_END + 13) else None,
         )
 
     @staticmethod
@@ -2176,6 +2260,23 @@ def _carries_the_pair(dynamic: Any, route: str) -> None:
         )
 
 
+def _carries_the_pools(pools: PoolTables | None, route: str) -> None:
+    """Refuse a route that cannot take the pool tables with it.
+
+    The tables are per voxel, so a route that cuts the volume up or moves a
+    piece of it at a time has to cut them the same way.
+
+    Raises
+    ------
+        NotImplementedError: if a tabulated tissue reaches such a route.
+    """
+    if pools is not None:
+        raise NotImplementedError(
+            f"a tissue with more than one exchanging pool carries its "
+            f"operators per voxel, which the {route} route does not cut yet"
+        )
+
+
 def _moved_dynamic(dynamic: Any, device: torch.device) -> Any:
     """The per-voxel rotations on another device, whichever shape they came in.
 
@@ -2205,8 +2306,11 @@ def _bound_pointers(
     pair_direction: torch.Tensor | None = None,
     pair_gradient: torch.Tensor | None = None,
     pair_curvature: torch.Tensor | None = None,
+    pools: PoolTables | None = None,
+    pool_gradient: torch.Tensor | None = None,
+    pool_curvature: torch.Tensor | None = None,
 ) -> tuple[int, ...]:
-    """The profiled addresses, the per-voxel rotations, then the lineshape.
+    """The buffers, the pool tables, the profile, the rotations, the lineshape.
 
     A sequence with no bound pool passes a null on the end, which is what
     selects the single-pool kernel.
@@ -2215,17 +2319,70 @@ def _bound_pointers(
     dynamic = _dynamic_pointers(
         pairs, pair_rows, pair_direction, pair_gradient, pair_curvature
     )
-    if absorption is None:
-        return (*profiled, *dynamic, 0)
-    return (*profiled, *dynamic, *_pointers((absorption,)))
+    tabulated = _pool_pointers(pools, pool_gradient, pool_curvature)
+    lineshape = (0,) if absorption is None else _pointers((absorption,))
+    return (*profiled[:-2], *tabulated, *profiled[-2:], *dynamic, *lineshape)
+
+
+def _pool_pointers(
+    pools: PoolTables | None,
+    gradient: torch.Tensor | None,
+    curvature: torch.Tensor | None,
+) -> tuple[int, ...]:
+    """The pool table, its per-event index, a direction and two cotangents.
+
+    Nulls for a run that is not tabulated.
+    """
+    if pools is None:
+        return (0, 0, 0, 0, 0)
+    held = _pointers((pools.values, pools.index))
+    tail = tuple(
+        0 if value is None else _pointers((value,))[0]
+        for value in (pools.direction, gradient, curvature)
+    )
+    return (*held, *tail)
+
+
+def _pool_cotangent(
+    pools: PoolTables | None, events: tuple[torch.Tensor, ...]
+) -> torch.Tensor | None:
+    """Room for a table's cotangent, a table per train so each has one writer."""
+    if pools is None:
+        return None
+    return torch.zeros(
+        (_train_count(events), *pools.values.shape),
+        dtype=pools.values.dtype,
+        device=pools.values.device,
+    )
+
+
+def _extra_cotangents(
+    pair: torch.Tensor | None, pools: torch.Tensor | None
+) -> tuple[torch.Tensor, ...]:
+    """The pair's and the table's cotangents, for the runs that carry them."""
+    return (
+        *(() if pair is None else (pair,)),
+        *(() if pools is None else (pools.sum(0),)),
+    )
+
+
+def _pool_counts(pools: PoolTables | None) -> tuple[int, int, int]:
+    """The exchanging pools, the rows and the blocks a table holds."""
+    if pools is None:
+        return (0, 0, 0)
+    layout = pools.layout
+    return (layout.exchanging, layout.rows, layout.blocks)
 
 
 # Which pools a kernel is to carry, as the extension's own enum reads it.
 _POOL_ONE, _POOL_SEMISOLID, _POOL_EXCHANGING, _POOL_THREE = 0, 1, 2, 3
+_POOL_TABULATED, _POOL_TABULATED_SATURATED = 4, 5
 
 
-def _pool_kind(lineshape: Any, exchanging: bool) -> int:
+def _pool_kind(lineshape: Any, exchanging: bool | PoolLayout) -> int:
     """Which pools the kernels are to carry beside the free water."""
+    if isinstance(exchanging, PoolLayout):
+        return _POOL_TABULATED_SATURATED if exchanging.semisolid else _POOL_TABULATED
     if lineshape is not None and exchanging:
         return _POOL_THREE
     if exchanging:
@@ -3108,9 +3265,10 @@ def _run_packed(
     geometry: Geometry = NO_GEOMETRY,
     profile: Any = None,
     lineshape: Any = None,
-    exchanging: bool = False,
+    exchanging: bool | PoolLayout = False,
     dynamic: Any = None,
     features: frozenset[str] | None = None,
+    pools: PoolTables | None = None,
 ) -> torch.Tensor:
     """Run the forward state machine.
 
@@ -3147,6 +3305,7 @@ def _run_packed(
     forced = offloading()
     if forced is not None and tissue[0].device.type == "cpu":
         _carries_the_pair(dynamic, "streamed")
+        _carries_the_pools(pools, "streamed")
         return _run_offloaded(
             tissue,
             events,
@@ -3164,6 +3323,7 @@ def _run_packed(
     streaming = choice is not None and choice.where == "stream"
     if streaming and tissue[0].device.type == "cpu":
         _carries_the_pair(dynamic, "streamed")
+        _carries_the_pools(pools, "streamed")
         return _run_offloaded(
             tissue,
             events,
@@ -3178,6 +3338,7 @@ def _run_packed(
             features,
         )
     if choice is not None and choice.where != "stream" and _elsewhere(choice, tissue):
+        _carries_the_pools(pools, "moved")
         home = _home(choice)
         with _using(choice.devices):
             moved = _run_packed(
@@ -3201,6 +3362,7 @@ def _run_packed(
         shards = _shard_bounds(_train_count(events))
         if shards:
             _carries_the_pair(dynamic, "sharded")
+            _carries_the_pools(pools, "sharded")
             # Every launch is asynchronous, so issuing them all before touching
             # a result lets the devices run at the same time.
             parts = [
@@ -3234,6 +3396,7 @@ def _run_packed(
             exchanging=exchanging,
             dynamic=dynamic,
             features=features,
+            pools=pools,
         )
     from torchsim import _epg_cpu
 
@@ -3256,7 +3419,9 @@ def _run_packed(
         else dynamic.rows_per_event(_train_count(events), events[1].numel())
     )
     _epg_cpu.simulate(
-        _bound_pointers(pointers, table, table_rows, absorption, pairs, pair_rows),
+        _bound_pointers(
+            pointers, table, table_rows, absorption, pairs, pair_rows, pools=pools
+        ),
         tissue[0].numel(),
         trains,
         events[1].numel(),
@@ -3274,6 +3439,7 @@ def _run_packed(
         1.0 if lineshape is None else lineshape.step,
         _pool_kind(lineshape, exchanging),
         feature_mask(features, geometry),
+        *_pool_counts(pools),
     )
     return torch.complex(output_real, output_imag)
 
@@ -3290,9 +3456,10 @@ def _run_packed_vjp(
     geometry: Geometry = NO_GEOMETRY,
     profile: Any = None,
     lineshape: Any = None,
-    exchanging: bool = False,
+    exchanging: bool | PoolLayout = False,
     dynamic: Any = None,
     features: frozenset[str] | None = None,
+    pools: PoolTables | None = None,
 ) -> tuple[torch.Tensor, ...]:
     """Return gradients w.r.t. the tissue and three float event buffers.
 
@@ -3327,6 +3494,7 @@ def _run_packed_vjp(
         shards = _shard_bounds(_train_count(events))
         if shards:
             _carries_the_pair(dynamic, "sharded")
+            _carries_the_pools(pools, "sharded")
             # Each shard is a smaller adjoint of the same kind, and a device
             # holding one is a device with nothing left to split, so the piece
             # can take the first-order kernel the whole would not have.
@@ -3393,12 +3561,14 @@ def _run_packed_vjp(
             lineshape=lineshape,
             exchanging=exchanging,
             features=features,
+            pools=pools,
         )
     streamable = (
         profile is None
         and lineshape is None
         and not exchanging
         and dynamic is None
+        and pools is None
         and _shim_count(tissue) == 1
     )
     if streamable and tissue[0].device.type == "cpu":
@@ -3450,6 +3620,7 @@ def _run_packed_vjp(
             exchanging=exchanging,
             dynamic=dynamic,
             features=features,
+            pools=pools,
         )
         return adjoint
     from torchsim import _epg_cpu
@@ -3483,6 +3654,7 @@ def _run_packed_vjp(
         else dynamic.rows_per_event(_train_count(events), events[1].numel())
     )
     pair_grad = None if dynamic is None else torch.zeros_like(pairs)
+    pool_grad = _pool_cotangent(pools, events)
     _epg_cpu.simulate_vjp(
         _bound_pointers(
             pointers,
@@ -3493,6 +3665,8 @@ def _run_packed_vjp(
             pair_rows,
             None,
             pair_grad,
+            pools=pools,
+            pool_gradient=pool_grad,
         ),
         tissue[0].numel(),
         _train_count(events),
@@ -3511,10 +3685,15 @@ def _run_packed_vjp(
         1.0 if lineshape is None else lineshape.step,
         _pool_kind(lineshape, exchanging),
         feature_mask(features, geometry),
+        *_pool_counts(pools),
     )
-    if dynamic is not None:
-        return (*atom_grads, duration_grad, flip_grad, phase_grad, pair_grad)
-    return (*atom_grads, duration_grad, flip_grad, phase_grad)
+    return (
+        *atom_grads,
+        duration_grad,
+        flip_grad,
+        phase_grad,
+        *_extra_cotangents(pair_grad, pool_grad),
+    )
 
 
 def _run_packed_vjp_jvp(
@@ -3531,10 +3710,11 @@ def _run_packed_vjp_jvp(
     geometry: Geometry = NO_GEOMETRY,
     profile: Any = None,
     lineshape: Any = None,
-    exchanging: bool = False,
+    exchanging: bool | PoolLayout = False,
     dynamic: Any = None,
     dynamic_direction: Any = None,
     features: frozenset[str] | None = None,
+    pools: PoolTables | None = None,
 ) -> tuple[tuple[torch.Tensor, ...], tuple[torch.Tensor, ...]]:
     """Forward-over-reverse pass through the JVP state machine.
 
@@ -3563,6 +3743,7 @@ def _run_packed_vjp_jvp(
     forced = offloading()
     if forced is not None and tissue[0].device.type == "cpu":
         _carries_the_pair(dynamic, "streamed")
+        _carries_the_pools(pools, "streamed")
         return _run_offloaded_vjp_jvp(
             tissue,
             events,
@@ -3582,6 +3763,7 @@ def _run_packed_vjp_jvp(
     streaming = choice is not None and choice.where == "stream"
     if streaming and tissue[0].device.type == "cpu":
         _carries_the_pair(dynamic, "streamed")
+        _carries_the_pools(pools, "streamed")
         return _run_offloaded_vjp_jvp(
             tissue,
             events,
@@ -3598,6 +3780,7 @@ def _run_packed_vjp_jvp(
             features,
         )
     if choice is not None and choice.where != "stream" and _elsewhere(choice, tissue):
+        _carries_the_pools(pools, "moved")
         home = _home(choice)
         with _using(choice.devices):
             moved = _run_packed_vjp_jvp(
@@ -3625,6 +3808,7 @@ def _run_packed_vjp_jvp(
         shards = _shard_bounds(_train_count(events))
         if shards:
             _carries_the_pair(dynamic, "sharded")
+            _carries_the_pools(pools, "sharded")
             home = tissue[0].device
             parts = [
                 simulate_vjp_jvp(
@@ -3665,6 +3849,7 @@ def _run_packed_vjp_jvp(
             dynamic=dynamic,
             dynamic_direction=dynamic_direction,
             features=features,
+            pools=pools,
         )
     from torchsim import _epg_cpu
 
@@ -3697,6 +3882,8 @@ def _run_packed_vjp_jvp(
     # plane its derivative, which is the same split the tissue gradients take.
     pair_grad = None if dynamic is None else torch.zeros_like(pairs)
     pair_curve = None if dynamic is None else torch.zeros_like(pairs)
+    pool_grad = _pool_cotangent(pools, events)
+    pool_curve = _pool_cotangent(pools, events)
     _epg_cpu.simulate_vjp_jvp(
         _bound_pointers(
             pointers,
@@ -3708,6 +3895,9 @@ def _run_packed_vjp_jvp(
             dynamic_direction,
             pair_grad,
             pair_curve,
+            pools=pools,
+            pool_gradient=pool_grad,
+            pool_curvature=pool_curve,
         ),
         tissue[0].numel(),
         _train_count(events),
@@ -3726,11 +3916,13 @@ def _run_packed_vjp_jvp(
         1.0 if lineshape is None else lineshape.step,
         _pool_kind(lineshape, exchanging),
         feature_mask(features, geometry),
+        *_pool_counts(pools),
     )
     # value part -> d/d(tangent inputs); tangent part -> d/d(primal inputs)
-    if dynamic is not None:
-        return (*tangent_grads, pair_curve), (*value_grads, pair_grad)
-    return tangent_grads, value_grads
+    return (
+        (*tangent_grads, *_extra_cotangents(pair_curve, pool_curve)),
+        (*value_grads, *_extra_cotangents(pair_grad, pool_grad)),
+    )
 
 
 def _run_packed_jvp(
@@ -3746,10 +3938,11 @@ def _run_packed_jvp(
     geometry: Geometry = NO_GEOMETRY,
     profile: Any = None,
     lineshape: Any = None,
-    exchanging: bool = False,
+    exchanging: bool | PoolLayout = False,
     dynamic: Any = None,
     dynamic_direction: Any = None,
     features: frozenset[str] | None = None,
+    pools: PoolTables | None = None,
 ) -> torch.Tensor:
     profile = _tables(profile, events, dynamic)
     if profile is not None:
@@ -3773,6 +3966,7 @@ def _run_packed_jvp(
     forced = offloading()
     if forced is not None and tissue[0].device.type == "cpu":
         _carries_the_pair(dynamic, "streamed")
+        _carries_the_pools(pools, "streamed")
         return _run_offloaded_jvp(
             tissue,
             events,
@@ -3792,6 +3986,7 @@ def _run_packed_jvp(
     streaming = choice is not None and choice.where == "stream"
     if streaming and tissue[0].device.type == "cpu":
         _carries_the_pair(dynamic, "streamed")
+        _carries_the_pools(pools, "streamed")
         return _run_offloaded_jvp(
             tissue,
             events,
@@ -3808,6 +4003,7 @@ def _run_packed_jvp(
             features,
         )
     if choice is not None and choice.where != "stream" and _elsewhere(choice, tissue):
+        _carries_the_pools(pools, "moved")
         home = _home(choice)
         with _using(choice.devices):
             moved = _run_packed_jvp(
@@ -3834,6 +4030,7 @@ def _run_packed_jvp(
         shards = _shard_bounds(_train_count(events))
         if shards:
             _carries_the_pair(dynamic, "sharded")
+            _carries_the_pools(pools, "sharded")
             parts = [
                 (
                     end - begin,
@@ -3870,6 +4067,7 @@ def _run_packed_jvp(
             dynamic=dynamic,
             dynamic_direction=dynamic_direction,
             features=features,
+            pools=pools,
         )
     from torchsim import _epg_cpu
 
@@ -3909,6 +4107,7 @@ def _run_packed_jvp(
             pairs,
             pair_rows,
             dynamic_direction,
+            pools=pools,
         ),
         tissue[0].numel(),
         trains,
@@ -3927,5 +4126,6 @@ def _run_packed_jvp(
         1.0 if lineshape is None else lineshape.step,
         _pool_kind(lineshape, exchanging),
         feature_mask(features, geometry),
+        *_pool_counts(pools),
     )
     return torch.complex(output_real, output_imag)
