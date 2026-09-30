@@ -4,6 +4,18 @@
 
 ### Added
 
+- **Up to four chemically exchanging pools beside the free water.**
+  `TissueProperties` takes pools C to E on pool B's terms -- fraction, exchange
+  rate, T1, T2 and chemical shift -- so the free water and pools B to E are the
+  five pools of BART's Bloch-McConnell simulation, each exchanging with the free
+  water alone. From two exchanging pools on, a tissue reaches the kernels as the
+  relaxation-exchange operators of each distinct interval length, formed per
+  voxel in double precision (`torchsim.sequence._pools`). The C++ and Triton
+  kernels apply them in the forward, forward-mode, adjoint and
+  forward-over-reverse passes, under hard, tabulated and per-voxel pulses and a
+  transmit array, and the pool properties take their derivatives back through
+  the operators by autograd.
+
 - **The rotation a shaped pulse performs is public.** `compose_spinor` composes
   a pulse's Cayley-Klein pair sample by sample in torch, under a held or moving
   gradient and for a field of each voxel's own, with derivatives reaching the

@@ -17130,12 +17130,28 @@ def simulate(
     exchanging: bool = False,
     dynamic: Any = None,
     features: frozenset[str] | None = None,
+    pools: Any = None,
 ) -> torch.Tensor:
     """Run a packed state machine on CUDA and return complex signals.
 
     ``real_axis`` of 1 selects the real-subspace kernel; see
     ``real_subspace_axis`` for when that is legitimate.
     """
+    if pools is not None:
+        from . import _pools_triton
+
+        return _pools_triton.simulate(
+            tissue,
+            events,
+            state_count=state_count,
+            output_count=output_count,
+            geometry=geometry,
+            profile=profile,
+            lineshape=lineshape,
+            dynamic=dynamic,
+            features=features,
+            pools=pools,
+        )
     train_count = _train_count(events)
     atom_count = tissue[0].numel()
     output_real = torch.empty(
@@ -17354,6 +17370,7 @@ def simulate_jvp(
     dynamic: Any = None,
     dynamic_direction: Any = None,
     features: frozenset[str] | None = None,
+    pools: Any = None,
 ) -> torch.Tensor:
     """Run one fused state-machine Jacobian-vector product on CUDA.
 
@@ -17361,6 +17378,24 @@ def simulate_jvp(
     derivative along ``b1_phase``, ``b0`` or the RF phase -- seeds along those
     directions leave the subspace, so the caller must rule them out.
     """
+    if pools is not None:
+        from . import _pools_triton
+
+        return _pools_triton.simulate_jvp(
+            tissue,
+            events,
+            tissue_tangents,
+            event_tangents,
+            state_count=state_count,
+            output_count=output_count,
+            geometry=geometry,
+            profile=profile,
+            lineshape=lineshape,
+            dynamic=dynamic,
+            dynamic_direction=dynamic_direction,
+            features=features,
+            pools=pools,
+        )
     train_count = _train_count(events)
     atom_count = tissue[0].numel()
     output_real = torch.empty(
@@ -17590,6 +17625,7 @@ def simulate_vjp(
     lineshape: Any = None,
     exchanging: bool = False,
     features: frozenset[str] | None = None,
+    pools: Any = None,
 ) -> tuple[torch.Tensor, ...]:
     """The first-order adjoint on CUDA, for a whole volume on one device.
 
@@ -17603,6 +17639,22 @@ def simulate_vjp(
     recorded state where that pass records four, and holds one state where it
     holds a dual.
     """
+    if pools is not None:
+        from . import _pools_triton
+
+        return _pools_triton.simulate_vjp(
+            tissue,
+            events,
+            grad_output,
+            state_count=state_count,
+            output_count=output_count,
+            geometry=geometry,
+            profile=profile,
+            dynamic=dynamic,
+            lineshape=lineshape,
+            features=features,
+            pools=pools,
+        )
     (
         t1,
         t2,
@@ -18532,6 +18584,7 @@ def simulate_vjp_jvp(
     dynamic: Any = None,
     dynamic_direction: Any = None,
     features: frozenset[str] | None = None,
+    pools: Any = None,
 ) -> tuple[tuple[torch.Tensor, ...], tuple[torch.Tensor, ...]]:
     """Forward-over-reverse through the state machine on CUDA.
 
@@ -18548,6 +18601,24 @@ def simulate_vjp_jvp(
     Gradients land through atomic accumulation, so repeated runs agree to
     floating-point tolerance rather than bit for bit.
     """
+    if pools is not None:
+        from . import _pools_triton
+
+        return _pools_triton.simulate_vjp_jvp(
+            tissue,
+            events,
+            tangents,
+            grad_output,
+            state_count=state_count,
+            output_count=output_count,
+            geometry=geometry,
+            profile=profile,
+            lineshape=lineshape,
+            dynamic=dynamic,
+            dynamic_direction=dynamic_direction,
+            features=features,
+            pools=pools,
+        )
     atom_count = tissue[0].numel()
     gradients = None
     if dynamic is not None:
