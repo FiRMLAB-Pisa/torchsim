@@ -1,9 +1,14 @@
 [
   {
-    "name": "v0.0.6 (stable)",
-    "version": "v0.0.6",
-    "url": "https://firmlab-pisa.github.io/torchsim/v0.0.6/",
+    "name": "v0.0.7 (stable)",
+    "version": "v0.0.7",
+    "url": "https://firmlab-pisa.github.io/torchsim/v0.0.7/",
     "preferred": true
+  },
+  {
+    "name": "v0.0.6",
+    "version": "v0.0.6",
+    "url": "https://firmlab-pisa.github.io/torchsim/v0.0.6/"
   },
   {
     "name": "v0.0.5",

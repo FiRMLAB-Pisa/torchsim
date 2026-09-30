@@ -1,0 +1,10 @@
+name: torchsim
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      # The gallery notebooks import the phantom, coil, Fourier-encoding and
+      # solver packages while they run, which is the ``examples`` extra.
+      - torchsim[examples]
