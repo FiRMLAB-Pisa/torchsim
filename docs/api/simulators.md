@@ -7,7 +7,7 @@ what is left to give at the call is whatever is actually varying.
 
 ## Closed form
 
-Steady states that have an analytic expression, evaluated in one pass.
+Signals that have an analytic expression, evaluated in one pass.
 
 ```{eval-rst}
 .. autosummary::
@@ -20,6 +20,16 @@ Steady states that have an analytic expression, evaluated in one pass.
    torchsim.simulators.InversionRecoverySimulator
    torchsim.simulators.MultiEchoSimulator
    torchsim.simulators.DoubleAngleSimulator
+   torchsim.simulators.SpinEchoSimulator
+   torchsim.simulators.LookLockerSimulator
+   torchsim.simulators.MOLLISimulator
+   torchsim.simulators.IRbSSFPSimulator
+   torchsim.simulators.HSFPSimulator
+   torchsim.simulators.MultiGradientEchoSimulator
+   torchsim.simulators.IRMultiGradientEchoSimulator
+   torchsim.simulators.DiffusionSimulator
+   torchsim.simulators.LorentzianSimulator
+   torchsim.simulators.ASLSimulator
 ```
 
 ## State machine
