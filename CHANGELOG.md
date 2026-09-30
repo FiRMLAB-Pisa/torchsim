@@ -16,6 +16,15 @@
   transmit array, and the pool properties take their derivatives back through
   the operators by autograd.
 
+- **Pulses played sample by sample, and the sequences BART's `sim` plays.**
+  `SampledPulse` plays a waveform as one hard pulse per sample, with
+  relaxation, precession and exchange between samples, at a phase and an offset
+  of its own or one per train. `FLASHSimulator`, `TrueFISPSimulator` and
+  `CESTSimulator` play FLASH, balanced SSFP and pulsed CEST saturation with
+  them, optionally after BART's hyperbolic secant inversion, and agree with
+  BART's `sim` to about 1e-4 of the peak signal with up to four exchanging
+  pools.
+
 - **The rotation a shaped pulse performs is public.** `compose_spinor` composes
   a pulse's Cayley-Klein pair sample by sample in torch, under a held or moving
   gradient and for a field of each voxel's own, with derivatives reaching the

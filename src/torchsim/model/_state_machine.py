@@ -910,6 +910,11 @@ class Simulator(_SignalModel):
                 .signal
             )
 
+    def _shaped(self, signal: torch.Tensor, batch: tuple[int, ...]) -> torch.Tensor:
+        # The engine gives a tissue of scalar properties no voxel axis, so a
+        # leading axis of one is then a train or a readout, never a voxel.
+        return super()._shaped(signal, batch) if batch else signal
+
 
 class _Described(Simulator):
     """A simulator whose description was handed to it whole."""

@@ -38,6 +38,7 @@ __all__ = [
     "SPGRReadout",
     "SSFPEchoReadout",
     "SSFPFidReadout",
+    "SampledPulse",
     "Saturation",
     "Spoil",
     "bSSFPReadout",
@@ -271,6 +272,123 @@ def Saturation(
     return Operator(emit, duration_s)
 
 
+def SampledPulse(
+    waveform_rad_per_s: Any,
+    dwell_s: float,
+    *,
+    phase_rad: Any = 0.0,
+    offset_hz: Any = 0.0,
+    definition_id: int = 0,
+    shim_id: int = 0,
+) -> Operator:
+    """Return a pulse played as one hard pulse per sample, with free precession between.
+
+    Each sample of the waveform turns the magnetization through its own area
+    at the middle of its dwell, and between two samples the magnetization
+    precesses at each pool's own frequency, relaxes and exchanges. This is the
+    hard-pulse approximation [1]_, second order in the dwell with the turns
+    centred; it is what a pulse needs whenever relaxation or exchange during
+    it matters, a saturation pulse above all, which an instantaneous rotation
+    leaves out.
+
+    A real waveform turns through its signed area, so the negative lobes of a
+    sinc turn the other way; a complex one turns about the axis its phase
+    names. Played ``offset_hz`` off the centre frequency, the axis advances by
+    ``-2 pi offset_hz`` radians per second from the start of the pulse, which
+    puts a voxel whose ``B0`` is the offset on resonance. A ``phase_rad`` or
+    ``offset_hz`` with one value per train plays one train per value.
+
+    Every sample names ``definition_id``, which decides what it deposits in a
+    semisolid pool: the ideal definition deposits nothing, and a rectangular
+    one a dwell long deposits what the sample does. A semisolid pool reads its
+    lineshape at the offset, so a definition other than the ideal one takes a
+    single offset for every train.
+
+    Parameters
+    ----------
+    waveform_rad_per_s : array-like or torch.Tensor
+        The nutation rate, gamma times B1, one sample per dwell, in rad/s.
+    dwell_s : float
+        How long each sample is held, in seconds.
+    phase_rad : float or torch.Tensor, optional
+        The phase the whole pulse is played at.
+    offset_hz : float or torch.Tensor, optional
+        How far off the centre frequency the pulse is played.
+    definition_id, shim_id : int, optional
+        The definition and transmit shim every sample names.
+
+    Returns
+    -------
+    Operator
+        The pulse, holding the timeline for every sample's dwell.
+
+    Raises
+    ------
+    ValueError
+        If the waveform is empty or the dwell is not positive, or if a
+        definition other than the ideal one is played at more than one
+        offset.
+
+    References
+    ----------
+    .. [1] Pauly, J., Le Roux, P., Nishimura, D., Macovski, A., "Parameter
+       relations for the Shinnar-Le Roux selective excitation pulse design
+       algorithm", IEEE Transactions on Medical Imaging 10.1 (1991),
+       pp. 53-65. https://doi.org/10.1109/42.75611
+    """
+    samples = torch.as_tensor(waveform_rad_per_s)
+    if samples.dim() != 1 or samples.numel() == 0:
+        raise ValueError("a sampled pulse is a non-empty one-dimensional waveform")
+    if not float(dwell_s) > 0.0:
+        raise ValueError(f"dwell_s must be positive, not {dwell_s!r}")
+    offset = torch.as_tensor(offset_hz, dtype=torch.float64)
+    if definition_id != 0 and offset.numel() != 1:
+        raise ValueError(
+            "a semisolid pool reads its lineshape at one offset, so a sampled "
+            "pulse naming a definition is played at one offset for every train"
+        )
+    frequency_hz = float(offset.reshape(-1)[0]) if offset.numel() == 1 else 0.0
+    if samples.is_complex():
+        areas = samples.abs() * dwell_s
+        turns = samples.angle()
+    else:
+        areas = samples * dwell_s
+        turns = torch.zeros_like(samples, dtype=torch.float64)
+    middle_s = (torch.arange(samples.numel(), dtype=torch.float64) + 0.5) * dwell_s
+    phases = (
+        torch.as_tensor(phase_rad)[..., None]
+        + turns
+        - 2.0 * torch.pi * offset[..., None] * middle_s
+    )
+    # A value per train leads the axis a train count is read from, and a
+    # plain number stays one so a train of a thousand samples packs as fast
+    # as a train of a thousand ideal pulses.
+    flips = list(areas.unbind(0)) if areas.requires_grad else areas.tolist()
+    if phases.requires_grad:
+        per_sample = list(phases.movedim(-1, 0).unbind(0))
+    elif phases.dim() == 1:
+        per_sample = phases.tolist()
+    else:
+        per_sample = list(phases.movedim(-1, 0).unbind(0))
+    offsets_s = middle_s.tolist()
+
+    def emit(start_s: Any) -> tuple[SequenceEvent, ...]:
+        return tuple(
+            SequenceEvent.rf(
+                _TO_US * (start_s + at_s),
+                definition_id,
+                RfUse.EXCITATION,
+                flip,
+                phase,
+                frequency_hz,
+                shim_id,
+            )
+            for at_s, flip, phase in zip(offsets_s, flips, per_sample, strict=True)
+        )
+
+    return Operator(emit, samples.numel() * dwell_s)
+
+
 def Readout(
     phase_rad: Any = 0.0,
     *,
@@ -460,6 +578,7 @@ _REGISTRY: dict[str, Callable[..., Operator]] = {
     "refocusing": Refocusing,
     "inversion": Inversion,
     "saturation": Saturation,
+    "sampled-pulse": SampledPulse,
     "readout": Readout,
     "delay": Delay,
     "dephase": Dephase,
