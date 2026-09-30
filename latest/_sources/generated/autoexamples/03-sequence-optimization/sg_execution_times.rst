@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:22.791** total execution time for 3 files **from generated/autoexamples/03-sequence-optimization**:
+**00:23.199** total execution time for 3 files **from generated/autoexamples/03-sequence-optimization**:
 
 .. container::
 
@@ -33,11 +33,11 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_generated_autoexamples_03-sequence-optimization_02-joint-relaxometry.py` (``02-joint-relaxometry.py``)
-     - 00:12.226
+     - 00:12.382
      - 0.0
    * - :ref:`sphx_glr_generated_autoexamples_03-sequence-optimization_03-rf-pulse-design.py` (``03-rf-pulse-design.py``)
-     - 00:08.139
+     - 00:08.397
      - 0.0
    * - :ref:`sphx_glr_generated_autoexamples_03-sequence-optimization_01-echo-train-design.py` (``01-echo-train-design.py``)
-     - 00:02.427
+     - 00:02.421
      - 0.0

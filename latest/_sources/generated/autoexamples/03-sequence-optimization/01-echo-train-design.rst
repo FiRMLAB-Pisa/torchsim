@@ -651,7 +651,7 @@ would leave.
  .. code-block:: none
 
 
-    [<matplotlib.legend.Legend object at 0x7f1a19f98050>, <matplotlib.legend.Legend object at 0x7f1a12400560>, <matplotlib.legend.Legend object at 0x7f1a20a5dcd0>]
+    [<matplotlib.legend.Legend object at 0x7fd4a06c6900>, <matplotlib.legend.Legend object at 0x7fd4a06c53a0>, <matplotlib.legend.Legend object at 0x7fd494331a90>]
 
 
 
@@ -674,7 +674,7 @@ References
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.427 seconds)
+   **Total running time of the script:** (0 minutes 2.421 seconds)
 
 
 .. _sphx_glr_download_generated_autoexamples_03-sequence-optimization_01-echo-train-design.py:

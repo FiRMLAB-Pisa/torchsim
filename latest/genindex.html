@@ -258,6 +258,16 @@
 <li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.InversionRecoverySimulator.html">InversionRecoverySimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MultiEchoSimulator.html">MultiEchoSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.DoubleAngleSimulator.html">DoubleAngleSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.SpinEchoSimulator.html">SpinEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.LookLockerSimulator.html">LookLockerSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MOLLISimulator.html">MOLLISimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.IRbSSFPSimulator.html">IRbSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.HSFPSimulator.html">HSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MultiGradientEchoSimulator.html">MultiGradientEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.IRMultiGradientEchoSimulator.html">IRMultiGradientEchoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.DiffusionSimulator.html">DiffusionSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.LorentzianSimulator.html">LorentzianSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.ASLSimulator.html">ASLSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
@@ -495,6 +505,7 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#J"><strong>J</strong></a>
  | <a href="#K"><strong>K</strong></a>
@@ -534,6 +545,8 @@
       <li><a href="generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.adc_events">adc_events (torchsim.SequenceDescription property)</a>
 </li>
       <li><a href="generated/torchsim.TrustRegion.html#torchsim.TrustRegion.anchored">anchored (torchsim.TrustRegion attribute)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.ASLSimulator.html#torchsim.simulators.ASLSimulator">ASLSimulator (class in torchsim.simulators)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -593,13 +606,15 @@
 </li>
       <li><a href="generated/torchsim.Dephase.html#torchsim.Dephase">Dephase() (in module torchsim)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.describe">describe() (torchsim.model.Simulator method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.dictionary">dictionary (torchsim.Subspace attribute)</a>
 </li>
       <li><a href="generated/torchsim.DictionaryMatcher.html#torchsim.DictionaryMatcher">DictionaryMatcher (class in torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.DiffusionSimulator.html#torchsim.simulators.DiffusionSimulator">DiffusionSimulator (class in torchsim.simulators)</a>
 </li>
       <li><a href="generated/torchsim.direct.html#torchsim.direct">direct() (in module torchsim)</a>
 </li>
@@ -616,13 +631,29 @@
       <li><a href="generated/torchsim.model.Simulator.html#torchsim.model.Simulator.evaluate">evaluate() (torchsim.model.Simulator method)</a>
 
       <ul>
+        <li><a href="generated/torchsim.simulators.ASLSimulator.html#torchsim.simulators.ASLSimulator.evaluate">(torchsim.simulators.ASLSimulator method)</a>
+</li>
         <li><a href="generated/torchsim.simulators.bSSFPSimulator.html#torchsim.simulators.bSSFPSimulator.evaluate">(torchsim.simulators.bSSFPSimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.DiffusionSimulator.html#torchsim.simulators.DiffusionSimulator.evaluate">(torchsim.simulators.DiffusionSimulator method)</a>
 </li>
         <li><a href="generated/torchsim.simulators.DoubleAngleSimulator.html#torchsim.simulators.DoubleAngleSimulator.evaluate">(torchsim.simulators.DoubleAngleSimulator method)</a>
 </li>
         <li><a href="generated/torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator.evaluate">(torchsim.simulators.FSESimulator method)</a>
 </li>
+        <li><a href="generated/torchsim.simulators.HSFPSimulator.html#torchsim.simulators.HSFPSimulator.evaluate">(torchsim.simulators.HSFPSimulator method)</a>
+</li>
         <li><a href="generated/torchsim.simulators.InversionRecoverySimulator.html#torchsim.simulators.InversionRecoverySimulator.evaluate">(torchsim.simulators.InversionRecoverySimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.IRbSSFPSimulator.html#torchsim.simulators.IRbSSFPSimulator.evaluate">(torchsim.simulators.IRbSSFPSimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.IRMultiGradientEchoSimulator.html#torchsim.simulators.IRMultiGradientEchoSimulator.evaluate">(torchsim.simulators.IRMultiGradientEchoSimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.LookLockerSimulator.html#torchsim.simulators.LookLockerSimulator.evaluate">(torchsim.simulators.LookLockerSimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.LorentzianSimulator.html#torchsim.simulators.LorentzianSimulator.evaluate">(torchsim.simulators.LorentzianSimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.MOLLISimulator.html#torchsim.simulators.MOLLISimulator.evaluate">(torchsim.simulators.MOLLISimulator method)</a>
 </li>
         <li><a href="generated/torchsim.simulators.MP2RAGESimulator.html#torchsim.simulators.MP2RAGESimulator.evaluate">(torchsim.simulators.MP2RAGESimulator method)</a>
 </li>
@@ -634,7 +665,11 @@
 </li>
         <li><a href="generated/torchsim.simulators.MultiEchoSimulator.html#torchsim.simulators.MultiEchoSimulator.evaluate">(torchsim.simulators.MultiEchoSimulator method)</a>
 </li>
+        <li><a href="generated/torchsim.simulators.MultiGradientEchoSimulator.html#torchsim.simulators.MultiGradientEchoSimulator.evaluate">(torchsim.simulators.MultiGradientEchoSimulator method)</a>
+</li>
         <li><a href="generated/torchsim.simulators.SPGRSimulator.html#torchsim.simulators.SPGRSimulator.evaluate">(torchsim.simulators.SPGRSimulator method)</a>
+</li>
+        <li><a href="generated/torchsim.simulators.SpinEchoSimulator.html#torchsim.simulators.SpinEchoSimulator.evaluate">(torchsim.simulators.SpinEchoSimulator method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -720,6 +755,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.simulators.HSFPSimulator.html#torchsim.simulators.HSFPSimulator">HSFPSimulator (class in torchsim.simulators)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -731,11 +774,15 @@
 </li>
       <li><a href="generated/torchsim.Inversion.html#torchsim.Inversion">Inversion() (in module torchsim)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/torchsim.model.EventOperators.html#torchsim.model.EventOperators.inversion">inversion() (torchsim.model.EventOperators method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/torchsim.simulators.InversionRecoverySimulator.html#torchsim.simulators.InversionRecoverySimulator">InversionRecoverySimulator (class in torchsim.simulators)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.IRbSSFPSimulator.html#torchsim.simulators.IRbSSFPSimulator">IRbSSFPSimulator (class in torchsim.simulators)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.IRMultiGradientEchoSimulator.html#torchsim.simulators.IRMultiGradientEchoSimulator">IRMultiGradientEchoSimulator (class in torchsim.simulators)</a>
 </li>
       <li><a href="generated/torchsim.NonlinearLeastSquares.html#torchsim.NonlinearLeastSquares.iterations">iterations (torchsim.NonlinearLeastSquares attribute)</a>
 </li>
@@ -783,7 +830,11 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="generated/torchsim.simulators.LookLockerSimulator.html#torchsim.simulators.LookLockerSimulator">LookLockerSimulator (class in torchsim.simulators)</a>
+</li>
       <li><a href="generated/torchsim.LookupTable.html#torchsim.LookupTable">LookupTable (class in torchsim)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.LorentzianSimulator.html#torchsim.simulators.LorentzianSimulator">LorentzianSimulator (class in torchsim.simulators)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -809,6 +860,8 @@
 </li>
       <li><a href="generated/torchsim.Subspace.html#torchsim.Subspace.modes">modes (torchsim.Subspace property)</a>
 </li>
+      <li><a href="generated/torchsim.simulators.MOLLISimulator.html#torchsim.simulators.MOLLISimulator">MOLLISimulator (class in torchsim.simulators)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/torchsim.mp2rage_sim.html#torchsim.mp2rage_sim">mp2rage_sim() (in module torchsim)</a>
@@ -828,6 +881,8 @@
       <li><a href="generated/torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator">MRFSimulator (class in torchsim.simulators)</a>
 </li>
       <li><a href="generated/torchsim.simulators.MultiEchoSimulator.html#torchsim.simulators.MultiEchoSimulator">MultiEchoSimulator (class in torchsim.simulators)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.MultiGradientEchoSimulator.html#torchsim.simulators.MultiGradientEchoSimulator">MultiGradientEchoSimulator (class in torchsim.simulators)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -961,13 +1016,15 @@
 </li>
       <li><a href="generated/torchsim.LookupTable.html#torchsim.LookupTable.span">span (torchsim.LookupTable property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/torchsim.spgr_sim.html#torchsim.spgr_sim">spgr_sim() (in module torchsim)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="generated/torchsim.SPGRReadout.html#torchsim.SPGRReadout">SPGRReadout() (in module torchsim)</a>
 </li>
       <li><a href="generated/torchsim.simulators.SPGRSimulator.html#torchsim.simulators.SPGRSimulator">SPGRSimulator (class in torchsim.simulators)</a>
+</li>
+      <li><a href="generated/torchsim.simulators.SpinEchoSimulator.html#torchsim.simulators.SpinEchoSimulator">SpinEchoSimulator (class in torchsim.simulators)</a>
 </li>
       <li><a href="generated/torchsim.model.SpinPhysics.html#torchsim.model.SpinPhysics">SpinPhysics (class in torchsim.model)</a>
 </li>
