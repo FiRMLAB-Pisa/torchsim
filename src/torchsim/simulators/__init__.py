@@ -9,10 +9,13 @@ from __future__ import annotations
 
 __all__ = [
     "ASLSimulator",
+    "CESTSimulator",
     "DiffusionSimulator",
     "DoubleAngleSimulator",
+    "FLASHSimulator",
     "FSESimulator",
     "HSFPSimulator",
+    "HyperechoSimulator",
     "IRMultiGradientEchoSimulator",
     "IRbSSFPSimulator",
     "InversionRecoverySimulator",
@@ -27,14 +30,19 @@ __all__ = [
     "MultiGradientEchoSimulator",
     "SPGRSimulator",
     "SpinEchoSimulator",
+    "StimulatedEchoSimulator",
+    "TrueFISPSimulator",
     "bSSFPSimulator",
+    "fmSSFPSimulator",
 ]
 
 from .asl import ASLSimulator
 from .bssfp import bSSFPSimulator
-from .cest import LorentzianSimulator
+from .cest import CESTSimulator, LorentzianSimulator
 from .diffusion import DiffusionSimulator
-from .fse import FSESimulator
+from .flash import FLASHSimulator
+from .fmssfp import fmSSFPSimulator
+from .fse import FSESimulator, HyperechoSimulator
 from .gradient_echo import IRMultiGradientEchoSimulator, MultiGradientEchoSimulator
 from .hsfp import HSFPSimulator
 from .looklocker import IRbSSFPSimulator, LookLockerSimulator, MOLLISimulator
@@ -49,3 +57,5 @@ from .relaxometry import (
 )
 from .spgr import SPGRSimulator
 from .spin_echo import SpinEchoSimulator
+from .stimulated_echo import StimulatedEchoSimulator
+from .truefisp import TrueFISPSimulator

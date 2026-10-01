@@ -4,6 +4,38 @@
 
 ### Added
 
+- **Up to four chemically exchanging pools beside the free water.**
+  `TissueProperties` takes pools C to E on pool B's terms -- fraction, exchange
+  rate, T1, T2 and chemical shift -- so the free water and pools B to E are the
+  five pools of BART's Bloch-McConnell simulation, each exchanging with the free
+  water alone. From two exchanging pools on, a tissue reaches the kernels as the
+  relaxation-exchange operators of each distinct interval length, formed per
+  voxel in double precision (`torchsim.sequence._pools`). The C++ and Triton
+  kernels apply them in the forward, forward-mode, adjoint and
+  forward-over-reverse passes, under hard, tabulated and per-voxel pulses and a
+  transmit array, and the pool properties take their derivatives back through
+  the operators by autograd.
+
+- **Pulses played sample by sample, and the sequences BART's `sim` plays.**
+  `SampledPulse` plays a waveform as one hard pulse per sample, with
+  relaxation, precession and exchange between samples, at a phase and an offset
+  of its own or one per train. `FLASHSimulator`, `TrueFISPSimulator` and
+  `CESTSimulator` play FLASH, balanced SSFP and pulsed CEST saturation with
+  them, optionally after BART's hyperbolic secant inversion, and agree with
+  BART's `sim` to about 1e-4 of the peak signal with up to four exchanging
+  pools.
+
+- **The trains BART's `epg` plays.** `fmSSFPSimulator` sweeps the pulse phase
+  of a balanced SSFP train through one passband per sweep;
+  `HyperechoSimulator` mirrors a refocusing train about a central 180 degree
+  pulse at the conjugate phases, so the last echo recovers the whole excited
+  magnetization; `StimulatedEchoSimulator` samples the spin echo of two pulses
+  and the stimulated echo of a third. `FLASHSimulator` takes `rf_spoiling`, a
+  quadratic phase cycle with one configuration order wound per repetition, and
+  it and `TrueFISPSimulator` play instantaneous pulses at a `pulse_duration` of
+  zero. With these and `FSESimulator`, every sequence of BART's `epg` has a
+  simulator, and each agrees with it to about 1e-6 of the peak signal.
+
 - **The rotation a shaped pulse performs is public.** `compose_spinor` composes
   a pulse's Cayley-Klein pair sample by sample in torch, under a held or moving
   gradient and for a field of each voxel's own, with derivatives reaching the
@@ -180,6 +212,19 @@
 - **`resolved()` is gone.** It set a flag the constructor already defaulted to,
   so a simulator resolves its structure the first time it runs and rebinds
   afterwards with nothing asked of the caller.
+
+### Fixed
+
+- **Off-resonance and a static field spread reach a stimulated echo.** Where
+  the gradients wind the states at one steady rate, the field is applied to
+  each sample through the time it has gone unrefocused rather than carried by
+  the states. That time is now read as the time since the last pulse less the
+  time the shifts since that pulse stand for, which is the same for every
+  pathway reaching order zero; it was read along the transverse pathway alone,
+  and the stimulated echo, which spent the mixing time along z, turned through
+  the off-resonance of half an echo time it does not have. A crusher played on
+  a wait or a sample also counts towards the winding now, so a train crushed
+  between its pulses takes the same route as one crushed beside them.
 
 ### Added
 

@@ -212,6 +212,50 @@ struct Buffers {
     const float* lineshape;
     std::int64_t lineshape_bins;
     float lineshape_step;
+    // The exchanging pools of a tabulated run (``sequence/_pools.py``): per
+    // atom the equilibrium of the longitudinal pools, then per distinct
+    // interval length the longitudinal operator, that operator applied to the
+    // equilibrium, and the transverse operator as real and imaginary pairs.
+    // ``pool_index`` names the row each (train, event) reads, and runs per
+    // train as the durations do. Null unless the run is tabulated.
+    const float* pool_values;
+    const std::int32_t* pool_index;
+    std::int64_t pool_count;
+    std::int64_t pool_rows;
+    std::int64_t pool_blocks;
+    bool pool_semisolid;
+};
+
+// Where a tabulated run's entries sit in one atom's table.
+struct PoolShape {
+    std::size_t longitudinal;
+    std::size_t transverse;
+    std::size_t rows;
+    std::size_t blocks;
+    std::size_t row_width;
+    std::size_t width;
+
+    explicit PoolShape(const Buffers& buffers)
+        : longitudinal(static_cast<std::size_t>(
+              1 + buffers.pool_count + (buffers.pool_semisolid ? 1 : 0)
+          )),
+          transverse(static_cast<std::size_t>(1 + buffers.pool_count)),
+          rows(static_cast<std::size_t>(buffers.pool_rows)),
+          blocks(static_cast<std::size_t>(buffers.pool_blocks)),
+          row_width(longitudinal * longitudinal + longitudinal
+                    + 2U * transverse * transverse),
+          width(longitudinal + rows * row_width * blocks) {}
+
+    // ``block`` 0 is the operators, 1 their slope along the interval and 2
+    // their curvature.
+    std::size_t row(const std::int64_t index, const std::size_t block) const {
+        return longitudinal
+            + (block * rows + static_cast<std::size_t>(index)) * row_width;
+    }
+
+    std::size_t restored() const { return longitudinal * longitudinal; }
+
+    std::size_t across() const { return longitudinal * longitudinal + longitudinal; }
 };
 
 // Floats one knot of the transition table holds.
@@ -283,6 +327,8 @@ struct JvpBuffers {
     // direction along a channel weight or a sensitivity arrives here already
     // carried through the integral.
     const float* dynamic;
+    // A direction along a tabulated run's table, laid out as it is.
+    const float* pool_values;
 };
 
 using Complex = std::complex<float>;
@@ -805,6 +851,10 @@ enum class Pools {
     SEMISOLID,
     EXCHANGING,
     THREE,
+    // Any number of exchanging pools, with or without a semisolid one, read
+    // from operators tabulated per interval. Never a template argument: the
+    // tabulated kernels are their own.
+    TABULATED,
 };
 
 // How a pulse's rotation is reached, for the same reason the pools are one
@@ -4566,6 +4616,9 @@ struct VjpBuffers {
     // item is one (train, atom), and a row belongs to one train, so each of
     // these entries has exactly one writer.
     float* grad_dynamic;
+    // The cotangent on a tabulated run's table, one table per (train, atom)
+    // in work order, so that each entry has one writer too.
+    float* grad_pool;
 };
 
 using State = std::vector<Complex>;
@@ -6604,6 +6657,11 @@ struct VjpJvpBuffers {
     const float* dynamic;
     float* grad_dot_dynamic;
     float* grad_dynamic;
+    // A direction along a tabulated run's table, and its cotangent in the same
+    // two planes, one table per (train, atom) in work order.
+    const float* pool_values;
+    float* grad_dot_pool;
+    float* grad_pool;
     // tangent part -> gradient w.r.t. the primal inputs
     float* grad_t1;
     float* grad_t2;
@@ -8929,6 +8987,1511 @@ TORCHSIM_ALWAYS_INLINE void simulate_vjp_jvp_range(
     }
 }
 
+// ---------------------------------------------------------------------------
+// Tabulated pools.
+//
+// A tissue with more than one chemically exchanging pool arrives as the
+// operators its intervals apply (``Buffers::pool_values``), formed outside in
+// double precision. Every exchanging pool carries a transverse pair and a
+// longitudinal state of its own, and a semisolid pool, where there is one, a
+// longitudinal state alone and last. What a voxel does to all of its pools
+// alike -- off-resonance, diffusion, flow and washout -- is applied here as it
+// is for a single pool; what separates them is inside the operators.
+//
+// The four passes are two bodies, each written once over a scalar that is
+// either a float or a dual number: the forward pass carrying a direction is
+// the JVP, and the adjoint carrying one is the forward-over-reverse pass. The
+// properties the operators were formed from take their derivatives through
+// the table, so these bodies differentiate the table and nothing it came from.
+//
+// An event reads the row of its own interval length, which it shares with
+// every event of that length. The table holds that row's slope and curvature
+// along the interval when the durations are differentiated, and a pass
+// following a direction in an event's duration moves the operators it reads
+// along that slope.
+// ---------------------------------------------------------------------------
+
+inline Complex conjugate(const Complex a) {
+    return std::conj(a);
+}
+
+inline float imag_part(const Complex a) {
+    return a.imag();
+}
+
+inline DualComplex& operator+=(DualComplex& a, const DualComplex b) {
+    a = a + b;
+    return a;
+}
+
+inline DualFloat& operator+=(DualFloat& a, const DualFloat b) {
+    a = a + b;
+    return a;
+}
+
+inline float tangent_of(const float) {
+    return 0.0F;
+}
+
+inline float tangent_of(const DualFloat a) {
+    return a.tangent;
+}
+
+template <typename Real>
+struct Carried;
+
+template <>
+struct Carried<float> {
+    using Cplx = Complex;
+};
+
+template <>
+struct Carried<DualFloat> {
+    using Cplx = DualComplex;
+};
+
+template <typename Real>
+Real constant(float value);
+
+template <>
+inline float constant<float>(const float value) {
+    return value;
+}
+
+template <>
+inline DualFloat constant<DualFloat>(const float value) {
+    return DualFloat{value, 0.0F};
+}
+
+// A buffer entry, carrying the direction along it when the pass follows one.
+template <typename Real>
+Real read_at(const float* value, const float* direction, std::int64_t index);
+
+template <>
+inline float read_at<float>(
+    const float* const value, const float* const, const std::int64_t index
+) {
+    return value[index];
+}
+
+template <>
+inline DualFloat read_at<DualFloat>(
+    const float* const value, const float* const direction, const std::int64_t index
+) {
+    return DualFloat{value[index], direction != nullptr ? direction[index] : 0.0F};
+}
+
+// A per-voxel property the launch may leave out, at its identity when it does.
+template <typename Real>
+inline Real voxel_value(
+    const float* const value,
+    const float* const direction,
+    const std::int64_t atom,
+    const bool live,
+    const float identity
+) {
+    return live ? read_at<Real>(value, direction, atom) : constant<Real>(identity);
+}
+
+inline float speed_of(const float velocity) {
+    return std::fabs(velocity);
+}
+
+inline DualFloat speed_of(const DualFloat velocity) {
+    return DualFloat{
+        std::fabs(velocity.value), speed_direction(velocity.value) * velocity.tangent
+    };
+}
+
+// ``magnitude * exp(i angle)``, or the magnitude alone when nothing turns.
+inline Complex turned_by(const float magnitude, const float angle, const bool turning) {
+    return turned(magnitude, angle, turning);
+}
+
+inline DualComplex turned_by(
+    const DualFloat magnitude, const DualFloat angle, const bool turning
+) {
+    const Complex unit = turned(1.0F, angle.value, turning);
+    const Complex spun =
+        turning ? Complex(0.0F, magnitude.value * angle.tangent) : Complex{};
+    return DualComplex{
+        magnitude.value * unit, (Complex(magnitude.tangent, 0.0F) + spun) * unit
+    };
+}
+
+template <typename Cplx>
+Cplx seeded(float real, float imag);
+
+template <>
+inline Complex seeded<Complex>(const float real, const float imag) {
+    return Complex(real, imag);
+}
+
+template <>
+inline DualComplex seeded<DualComplex>(const float real, const float imag) {
+    return DualComplex{Complex(real, imag), Complex{}};
+}
+
+// Adds a cotangent to its value plane, and to its tangent plane when the pass
+// carries a direction and the caller wants that plane.
+inline void deposit(float* const value, float* const, const float amount) {
+    *value += amount;
+}
+
+inline void deposit(float* const value, float* const tangent, const DualFloat amount) {
+    *value += amount.value;
+    if (tangent != nullptr) {
+        *tangent += amount.tangent;
+    }
+}
+
+// The cotangent an event's interval length puts on the row's slope. At the
+// row's own length the slope reaches the output only through a direction in
+// that length, so only the tangent plane of a pass following one is written.
+inline void deposit_along(float* const, const float, const float) {}
+
+inline void deposit_along(
+    float* const tangent, const DualFloat amount, const float along
+) {
+    *tangent += amount.value * along;
+}
+
+inline void rotate_by(
+    State& fplus, State& fminus, State& longitudinal, const float alpha,
+    const float phi
+) {
+    rotate(fplus, fminus, longitudinal, alpha, phi);
+}
+
+inline void rotate_by(
+    DualState& fplus, DualState& fminus, DualState& longitudinal,
+    const DualFloat alpha, const DualFloat phi
+) {
+    rotate_dual(fplus, fminus, longitudinal, alpha, phi);
+}
+
+inline void rotate_adjoint_by(
+    const State& fplus_in, const State& fminus_in, const State& longitudinal_in,
+    State& fplus_bar, State& fminus_bar, State& longitudinal_bar,
+    const float alpha, const float phi, float& grad_alpha, float& grad_phi
+) {
+    rotate_adjoint(
+        fplus_in, fminus_in, longitudinal_in, fplus_bar, fminus_bar,
+        longitudinal_bar, alpha, phi, grad_alpha, grad_phi
+    );
+}
+
+inline void rotate_adjoint_by(
+    const DualState& fplus_in, const DualState& fminus_in,
+    const DualState& longitudinal_in, DualState& fplus_bar, DualState& fminus_bar,
+    DualState& longitudinal_bar, const DualFloat alpha, const DualFloat phi,
+    DualFloat& grad_alpha, DualFloat& grad_phi
+) {
+    rotate_adjoint_dual(
+        fplus_in, fminus_in, longitudinal_in, fplus_bar, fminus_bar,
+        longitudinal_bar, alpha, phi, grad_alpha, grad_phi
+    );
+}
+
+inline void rotate_adjoint_spinor_by(
+    const State& fplus_in, const State& fminus_in, const State& longitudinal_in,
+    State& fplus_bar, State& fminus_bar, State& longitudinal_bar,
+    const Complex a, const Complex b, Complex& grad_a, Complex& grad_b
+) {
+    rotate_adjoint_spinor(
+        fplus_in, fminus_in, longitudinal_in, fplus_bar, fminus_bar,
+        longitudinal_bar, a, b, grad_a, grad_b
+    );
+}
+
+inline void rotate_adjoint_spinor_by(
+    const DualState& fplus_in, const DualState& fminus_in,
+    const DualState& longitudinal_in, DualState& fplus_bar, DualState& fminus_bar,
+    DualState& longitudinal_bar, const DualComplex a, const DualComplex b,
+    DualComplex& grad_a, DualComplex& grad_b
+) {
+    rotate_adjoint_spinor_dual(
+        fplus_in, fminus_in, longitudinal_in, fplus_bar, fminus_bar,
+        longitudinal_bar, a, b, grad_a, grad_b
+    );
+}
+
+// What a tabulated pass reads beside the primal buffers, and where an adjoint
+// writes what it returns. A pass following no direction leaves the directions
+// null, and a pass that is not an adjoint leaves the rest null.
+struct PoolPass {
+    const float* m0 = nullptr;
+    const float* b1 = nullptr;
+    const float* b1_phase = nullptr;
+    const float* b0 = nullptr;
+    const float* inversion_efficiency = nullptr;
+    const float* diffusion = nullptr;
+    const float* velocity = nullptr;
+    const float* duration = nullptr;
+    const float* flip = nullptr;
+    const float* phase = nullptr;
+    const float* dynamic = nullptr;
+    const float* table = nullptr;
+    const float* grad_output_real = nullptr;
+    const float* grad_output_imag = nullptr;
+    // The cotangent on the table, one table per (train, atom) in work order so
+    // that every entry has one writer, and on the per-voxel rotations. A pass
+    // following a direction returns the first-order cotangent in the value
+    // plane and its derivative in the tangent plane.
+    float* grad_table = nullptr;
+    float* grad_table_tangent = nullptr;
+    float* grad_dynamic = nullptr;
+    float* grad_dynamic_tangent = nullptr;
+};
+
+// One row of the table as an event reads it. A pass following a direction
+// moves every entry along the table's own direction and along the row's slope
+// by the event's direction in its interval length.
+template <typename Real>
+struct PoolRow;
+
+template <>
+struct PoolRow<float> {
+    const float* value;
+
+    float real(const std::size_t index) const { return value[index]; }
+};
+
+template <>
+struct PoolRow<DualFloat> {
+    const float* value;
+    const float* direction;
+    const float* slope;
+    float along;
+
+    DualFloat real(const std::size_t index) const {
+        return DualFloat{
+            value[index],
+            (direction != nullptr ? direction[index] : 0.0F)
+                + (slope != nullptr ? slope[index] * along : 0.0F),
+        };
+    }
+};
+
+template <typename Real>
+PoolRow<Real> pool_row(
+    const PoolShape& shape, const float* table, const float* direction,
+    std::int64_t index, std::size_t block, float along
+);
+
+template <>
+inline PoolRow<float> pool_row<float>(
+    const PoolShape& shape, const float* const table, const float* const,
+    const std::int64_t index, const std::size_t block, const float
+) {
+    return PoolRow<float>{table + shape.row(index, block)};
+}
+
+template <>
+inline PoolRow<DualFloat> pool_row<DualFloat>(
+    const PoolShape& shape, const float* const table, const float* const direction,
+    const std::int64_t index, const std::size_t block, const float along
+) {
+    const std::size_t at = shape.row(index, block);
+    const bool sloped = block + 1 < shape.blocks;
+    return PoolRow<DualFloat>{
+        table + at,
+        direction != nullptr ? direction + at : nullptr,
+        sloped ? table + shape.row(index, block + 1) : nullptr,
+        along,
+    };
+}
+
+// One interval's operators, read out of a row once for every order.
+template <typename Real>
+struct PoolOperators {
+    using Cplx = typename Carried<Real>::Cplx;
+
+    std::vector<Real> longitudinal;
+    std::vector<Real> restored;
+    std::vector<Cplx> transverse;
+
+    explicit PoolOperators(const PoolShape& shape)
+        : longitudinal(shape.longitudinal * shape.longitudinal),
+          restored(shape.longitudinal),
+          transverse(shape.transverse * shape.transverse) {}
+
+    void read(const PoolRow<Real>& row, const PoolShape& shape) {
+        for (std::size_t index = 0; index < longitudinal.size(); ++index) {
+            longitudinal[index] = row.real(index);
+        }
+        for (std::size_t index = 0; index < restored.size(); ++index) {
+            restored[index] = row.real(shape.restored() + index);
+        }
+        for (std::size_t index = 0; index < transverse.size(); ++index) {
+            const std::size_t at = shape.across() + 2U * index;
+            transverse[index] = widen(row.real(at)) + as_imaginary(row.real(at + 1U));
+        }
+    }
+};
+
+// What one voxel brings to every event of a train.
+template <typename Real>
+struct PoolVoxel {
+    Real m0;
+    Real b1;
+    Real b1_phase;
+    Real b0;
+    Real efficiency;
+    Real damping_rate;
+    Real velocity;
+    Real flow_rate;
+    Real washout_rate;
+
+    PoolVoxel(const Buffers& buffers, const PoolPass& pass, const std::int64_t atom)
+        : m0(voxel_value<Real>(buffers.m0, pass.m0, atom, buffers.density, 1.0F)),
+          b1(voxel_value<Real>(buffers.b1, pass.b1, atom, buffers.transmit, 1.0F)),
+          b1_phase(voxel_value<Real>(
+              buffers.b1_phase, pass.b1_phase, atom, buffers.off_axis, 0.0F
+          )),
+          b0(voxel_value<Real>(buffers.b0, pass.b0, atom, buffers.off_axis, 0.0F)),
+          efficiency(voxel_value<Real>(
+              buffers.inversion_efficiency, pass.inversion_efficiency, atom,
+              buffers.inverting, 1.0F
+          )),
+          damping_rate(voxel_value<Real>(
+              buffers.diffusion, pass.diffusion, atom, buffers.diffusing, 0.0F
+          )),
+          velocity(voxel_value<Real>(
+              buffers.velocity, pass.velocity, atom, buffers.moving, 0.0F
+          )),
+          flow_rate(buffers.flow_scale * velocity),
+          washout_rate(buffers.washout_scale * speed_of(velocity)) {}
+};
+
+// The factors an interval applies to order ``state`` of every pool alike: the
+// transverse one with the voxel's off-resonance and flow turn, the
+// longitudinal one with the flow turn. Washout multiplies both.
+template <typename Real, typename Cplx>
+inline void interval_factors(
+    const Damping<Real>& damping,
+    const Real angle,
+    const Real flow_rate,
+    const Real dt,
+    const std::size_t state,
+    const bool turning,
+    const bool flowing,
+    Cplx& transverse,
+    Cplx& longitudinal
+) {
+    Real turn_longitudinal = constant<Real>(0.0F);
+    Real turn_transverse = constant<Real>(0.0F);
+    if (flowing) {
+        flow_turn_dual(flow_rate, dt, state, turn_longitudinal, turn_transverse);
+    }
+    transverse = turned_by(damping.transverse[state], angle + turn_transverse, turning);
+    longitudinal = turned_by(damping.longitudinal[state], turn_longitudinal, flowing);
+}
+
+// One interval's relaxation and exchange over every order, from ``*_in`` into
+// ``*_out``, which may be the same planes.
+template <typename Real, typename Cplx>
+inline void pooled_relax(
+    const std::vector<std::vector<Cplx>>& plus_in,
+    const std::vector<std::vector<Cplx>>& minus_in,
+    const std::vector<std::vector<Cplx>>& longitudinal_in,
+    std::vector<std::vector<Cplx>>& plus_out,
+    std::vector<std::vector<Cplx>>& minus_out,
+    std::vector<std::vector<Cplx>>& longitudinal_out,
+    const PoolOperators<Real>& operators,
+    const std::vector<Real>& equilibrium,
+    const Damping<Real>& damping,
+    const Real wout,
+    const Real angle,
+    const Real flow_rate,
+    const Real dt,
+    const bool turning,
+    const bool flowing,
+    std::vector<Cplx>& scratch
+) {
+    const std::size_t n = longitudinal_in.size();
+    const std::size_t m = plus_in.size();
+    const std::size_t states = longitudinal_in[0].size();
+    for (std::size_t state = 0; state < states; ++state) {
+        Cplx unit_transverse{};
+        Cplx unit_longitudinal{};
+        interval_factors(
+            damping, angle, flow_rate, dt, state, turning, flowing,
+            unit_transverse, unit_longitudinal
+        );
+        const Cplx carried = wout * unit_transverse;
+        const Cplx conjugated = conjugate(carried);
+        for (std::size_t line = 0; line < m; ++line) {
+            Cplx forward{};
+            Cplx backward{};
+            for (std::size_t column = 0; column < m; ++column) {
+                const Cplx entry = operators.transverse[line * m + column];
+                forward += entry * plus_in[column][state];
+                // ``F-`` follows the conjugate of the operator entry by entry,
+                // not its transpose: it is the conjugate state.
+                backward += conjugate(entry) * minus_in[column][state];
+            }
+            scratch[line] = forward * carried;
+            scratch[m + line] = backward * conjugated;
+        }
+        for (std::size_t line = 0; line < m; ++line) {
+            plus_out[line][state] = scratch[line];
+            minus_out[line][state] = scratch[m + line];
+        }
+        const Cplx spin = wout * unit_longitudinal;
+        for (std::size_t line = 0; line < n; ++line) {
+            Cplx mixed{};
+            for (std::size_t column = 0; column < n; ++column) {
+                mixed += operators.longitudinal[line * n + column]
+                    * longitudinal_in[column][state];
+            }
+            scratch[line] = mixed * spin;
+        }
+        for (std::size_t line = 0; line < n; ++line) {
+            longitudinal_out[line][state] = scratch[line];
+        }
+    }
+    // Inflowing spins arrive at equilibrium, so washout scales what the pools
+    // held and not what they recover towards.
+    for (std::size_t pool = 0; pool < n; ++pool) {
+        longitudinal_out[pool][0] +=
+            widen(equilibrium[pool] - wout * operators.restored[pool]);
+    }
+}
+
+template <RfMode MODE>
+inline void pair_at(
+    const Buffers& buffers, const PoolPass&, const TrainView& view,
+    const std::int64_t event, const std::int64_t location, const std::int64_t atom,
+    const float theta, Complex& a, Complex& b
+) {
+    if constexpr (MODE == RfMode::DYNAMIC) {
+        dynamic_pair_at(buffers, dynamic_row(buffers, view, event), atom, a, b);
+    } else {
+        profile_pair(buffers, table_row<MODE>(buffers, event, location), theta, a, b);
+    }
+}
+
+template <RfMode MODE>
+inline void pair_at(
+    const Buffers& buffers, const PoolPass& pass, const TrainView& view,
+    const std::int64_t event, const std::int64_t location, const std::int64_t atom,
+    const DualFloat theta, DualComplex& a, DualComplex& b
+) {
+    if constexpr (MODE == RfMode::DYNAMIC) {
+        dynamic_pair_dual_at(
+            buffers, pass.dynamic, dynamic_row(buffers, view, event), atom, a, b
+        );
+    } else {
+        Complex pair_a{};
+        Complex pair_b{};
+        Complex slope_a{};
+        Complex slope_b{};
+        profile_pair_slope(
+            buffers, table_row<MODE>(buffers, event, location), theta.value,
+            pair_a, pair_b, slope_a, slope_b
+        );
+        a = DualComplex{pair_a, slope_a * theta.tangent};
+        b = DualComplex{pair_b, slope_b * theta.tangent};
+    }
+}
+
+template <RfMode MODE>
+inline void pair_slope_at(
+    const Buffers& buffers, const PoolPass&, const TrainView& view,
+    const std::int64_t event, const std::int64_t location, const std::int64_t atom,
+    const float theta, Complex& a, Complex& b, Complex& slope_a, Complex& slope_b
+) {
+    if constexpr (MODE == RfMode::DYNAMIC) {
+        dynamic_pair_at(buffers, dynamic_row(buffers, view, event), atom, a, b);
+    } else {
+        profile_pair_slope(
+            buffers, table_row<MODE>(buffers, event, location), theta, a, b,
+            slope_a, slope_b
+        );
+    }
+}
+
+template <RfMode MODE>
+inline void pair_slope_at(
+    const Buffers& buffers, const PoolPass& pass, const TrainView& view,
+    const std::int64_t event, const std::int64_t location, const std::int64_t atom,
+    const DualFloat theta, DualComplex& a, DualComplex& b, DualComplex& slope_a,
+    DualComplex& slope_b
+) {
+    if constexpr (MODE == RfMode::DYNAMIC) {
+        dynamic_pair_dual_at(
+            buffers, pass.dynamic, dynamic_row(buffers, view, event), atom, a, b
+        );
+    } else {
+        profile_pair_slope_dual(
+            buffers, table_row<MODE>(buffers, event, location), theta, a, b,
+            slope_a, slope_b
+        );
+    }
+}
+
+// Where one work item reads its table, and the directions along its events.
+struct PoolItem {
+    TrainView view;
+    std::int64_t location;
+    const float* table;
+    const float* direction;
+    const std::int32_t* rows;
+    const float* dot_duration;
+    const float* dot_flip;
+    const float* dot_phase;
+};
+
+template <RfMode MODE>
+inline PoolItem pool_item(
+    const Buffers& buffers,
+    const PoolPass& pass,
+    const PoolShape& shape,
+    const std::int64_t work,
+    const std::int64_t event_count,
+    const std::int64_t output_count
+) {
+    const TrainView view = train_view(buffers, work, event_count, output_count);
+    const std::size_t offset = static_cast<std::size_t>(view.atom) * shape.width;
+    auto along = [&](const float* const direction) {
+        return direction != nullptr ? direction + view.event_base : nullptr;
+    };
+    return PoolItem{
+        view,
+        slice_row<MODE>(buffers, view.atom),
+        buffers.pool_values + offset,
+        pass.table != nullptr ? pass.table + offset : nullptr,
+        buffers.pool_index + view.event_base,
+        along(pass.duration),
+        along(pass.flip),
+        along(pass.phase),
+    };
+}
+
+// The pulse an event plays, as the voxel receives it.
+template <typename Real>
+struct PoolPulse {
+    std::int64_t transmit;
+    Real b1;
+    Real alpha;
+    Real phi;
+};
+
+template <typename Real>
+inline PoolPulse<Real> pool_pulse(
+    const Buffers& buffers,
+    const PoolPass& pass,
+    const PoolItem& item,
+    const PoolVoxel<Real>& voxel,
+    const std::int64_t event
+) {
+    const std::int64_t atom = item.view.atom;
+    const bool shimmed = buffers.shim_count > 1;
+    const std::int64_t transmit = shimmed ? transmit_row(buffers, event, atom) : atom;
+    const Real b1 = !buffers.transmit
+        ? constant<Real>(1.0F)
+        : (shimmed ? read_at<Real>(buffers.b1, pass.b1, transmit) : voxel.b1);
+    const Real b1_phase = shimmed
+        ? read_at<Real>(buffers.b1_phase, pass.b1_phase, transmit)
+        : voxel.b1_phase;
+    return PoolPulse<Real>{
+        transmit,
+        b1,
+        read_at<Real>(item.view.flip, item.dot_flip, event) * b1,
+        read_at<Real>(item.view.phase, item.dot_phase, event) + b1_phase,
+    };
+}
+
+// The semisolid pool's saturation by a pulse, which reads the bare flip the
+// transmit field gives the voxel at the pulse's offset from it.
+template <typename Real>
+inline Real absorbed_by(
+    const Buffers& buffers, const PoolVoxel<Real>& voxel, const Real alpha,
+    const std::int64_t event
+) {
+    const Real offset = constant<Real>(buffers.rf_frequency[event]) - voxel.b0;
+    return exponential(
+        buffers.saturation[event] * (alpha * alpha * lineshape_at(buffers, offset))
+    );
+}
+
+// The events of one train after the interval: the shifts, the pulse or the
+// reading, and the spoiling. Returns whether the event records, with what the
+// coil reads left in ``recorded``.
+template <RfMode MODE, typename Real>
+inline bool pooled_event(
+    const Buffers& buffers,
+    const PoolPass& pass,
+    const PoolItem& item,
+    const PoolVoxel<Real>& voxel,
+    const std::int64_t event,
+    std::vector<std::vector<typename Carried<Real>::Cplx>>& plus,
+    std::vector<std::vector<typename Carried<Real>::Cplx>>& minus,
+    std::vector<std::vector<typename Carried<Real>::Cplx>>& longitudinal,
+    typename Carried<Real>::Cplx& recorded
+) {
+    using Cplx = typename Carried<Real>::Cplx;
+    const std::size_t m = plus.size();
+    const std::size_t n = longitudinal.size();
+    const std::uint8_t action = buffers.action[event];
+    bool records = false;
+    if ((action & PRE_SHIFT) != 0) {
+        for (std::size_t pool = 0; pool < m; ++pool) {
+            shift(plus[pool], minus[pool]);
+        }
+    }
+    if (buffers.kind[event] == 1) {
+        if ((action & INVERSION) != 0) {
+            // Every exchanging pool is free water and inverts like it; a
+            // semisolid one is saturated by the pulse's own term.
+            const Real inverted = constant<Real>(0.0F) - voxel.efficiency;
+            for (std::size_t pool = 0; pool < m; ++pool) {
+                for (Cplx& value : longitudinal[pool]) {
+                    value = value * inverted;
+                }
+            }
+        } else {
+            const PoolPulse<Real> pulse =
+                pool_pulse(buffers, pass, item, voxel, event);
+            if (buffers.pool_semisolid) {
+                const Real absorbed = absorbed_by(buffers, voxel, pulse.alpha, event);
+                for (Cplx& value : longitudinal[n - 1]) {
+                    value = value * absorbed;
+                }
+            }
+            if constexpr (MODE != RfMode::INSTANT) {
+                Cplx a{};
+                Cplx b{};
+                pair_at<MODE>(
+                    buffers, pass, item.view, event, item.location, item.view.atom,
+                    pulse.alpha, a, b
+                );
+                const Cplx spun = b
+                    * turned_by(
+                        constant<Real>(1.0F), constant<Real>(0.0F) - pulse.phi, true
+                    );
+                for (std::size_t pool = 0; pool < m; ++pool) {
+                    rotate_spinor(plus[pool], minus[pool], longitudinal[pool], a, spun);
+                }
+            } else {
+                for (std::size_t pool = 0; pool < m; ++pool) {
+                    rotate_by(
+                        plus[pool], minus[pool], longitudinal[pool], pulse.alpha,
+                        pulse.phi
+                    );
+                }
+            }
+        }
+    } else if (buffers.kind[event] == 2 && (action & RECORD) != 0) {
+        records = true;
+        recorded = Cplx{};
+        for (std::size_t pool = 0; pool < m; ++pool) {
+            recorded += plus[pool][0];
+        }
+    }
+    if ((action & POST_SHIFT) != 0) {
+        for (std::size_t pool = 0; pool < m; ++pool) {
+            shift(plus[pool], minus[pool]);
+        }
+    }
+    if ((action & SPOIL_AFTER) != 0) {
+        for (std::size_t pool = 0; pool < m; ++pool) {
+            std::fill(plus[pool].begin(), plus[pool].end(), Cplx{});
+            std::fill(minus[pool].begin(), minus[pool].end(), Cplx{});
+        }
+    } else if ((action & SHIFT_AFTER) != 0) {
+        for (std::size_t pool = 0; pool < m; ++pool) {
+            shift(plus[pool], minus[pool]);
+        }
+    }
+    return records;
+}
+
+inline void emit(const Buffers& buffers, const std::int64_t index, const Complex signal) {
+    buffers.output_real[index] = signal.real();
+    buffers.output_imag[index] = signal.imag();
+}
+
+// A pass carrying a direction writes the signal's derivative along it.
+inline void emit(
+    const Buffers& buffers, const std::int64_t index, const DualComplex signal
+) {
+    buffers.output_real[index] = signal.tangent.real();
+    buffers.output_imag[index] = signal.tangent.imag();
+}
+
+// The forward state machine over tabulated pools, and with a dual scalar the
+// derivative of its signal along a direction.
+template <RfMode MODE, typename Real>
+void simulate_pooled(
+    const Buffers& buffers,
+    const PoolPass& pass,
+    const std::int64_t work_begin,
+    const std::int64_t work_end,
+    const std::int64_t event_count,
+    const std::int64_t state_count,
+    const std::int64_t output_count
+) {
+    using Cplx = typename Carried<Real>::Cplx;
+    using Planes = std::vector<std::vector<Cplx>>;
+    const PoolShape shape(buffers);
+    const std::size_t n = shape.longitudinal;
+    const std::size_t m = shape.transverse;
+    const bool turning = buffers.off_axis || buffers.moving;
+    const bool flowing = buffers.moving;
+    const std::size_t states = static_cast<std::size_t>(state_count);
+    Planes plus(m, std::vector<Cplx>(states));
+    Planes minus(m, std::vector<Cplx>(states));
+    Planes longitudinal(n, std::vector<Cplx>(states));
+    std::vector<Cplx> scratch(2U * std::max(n, m));
+    std::vector<Real> equilibrium(n);
+    PoolOperators<Real> operators(shape);
+    Damping<Real> damping(states);
+
+    for (std::int64_t work = work_begin; work < work_end; ++work) {
+        const PoolItem item =
+            pool_item<MODE>(buffers, pass, shape, work, event_count, output_count);
+        const std::int64_t atom = item.view.atom;
+        const PoolVoxel<Real> voxel(buffers, pass, atom);
+        for (std::size_t pool = 0; pool < m; ++pool) {
+            std::fill(plus[pool].begin(), plus[pool].end(), Cplx{});
+            std::fill(minus[pool].begin(), minus[pool].end(), Cplx{});
+        }
+        for (std::size_t pool = 0; pool < n; ++pool) {
+            equilibrium[pool] = read_at<Real>(item.table, item.direction, pool);
+            std::fill(longitudinal[pool].begin(), longitudinal[pool].end(), Cplx{});
+            longitudinal[pool][0] = widen(equilibrium[pool]);
+        }
+        for (std::int64_t event = 0; event < event_count; ++event) {
+            const Real dt = read_at<Real>(item.view.duration, item.dot_duration, event);
+            damping.set(voxel.damping_rate, dt);
+            const Real wout = flowing
+                ? washout_out(voxel.washout_rate, dt)
+                : constant<Real>(1.0F);
+            const Real angle = -2.0F * PI * (voxel.b0 * dt);
+            operators.read(
+                pool_row<Real>(
+                    shape, item.table, item.direction, item.rows[event], 0U,
+                    tangent_of(dt)
+                ),
+                shape
+            );
+            pooled_relax(
+                plus, minus, longitudinal, plus, minus, longitudinal, operators,
+                equilibrium, damping, wout, angle, voxel.flow_rate, dt, turning,
+                flowing, scratch
+            );
+            Cplx recorded{};
+            if (pooled_event<MODE, Real>(
+                    buffers, pass, item, voxel, event, plus, minus, longitudinal,
+                    recorded
+                )) {
+                const Real phase =
+                    read_at<Real>(item.view.phase, item.dot_phase, event);
+                const Cplx demodulation = turned_by(
+                    constant<Real>(1.0F), constant<Real>(0.0F) - phase, true
+                );
+                emit(
+                    buffers,
+                    item.view.output_base + buffers.output_index[event],
+                    voxel.m0 * (recorded * demodulation)
+                );
+            }
+        }
+    }
+}
+
+// The adjoint of ``simulate_pooled``: the state entering every event is
+// recorded on the way forward and each event replayed from it on the way back.
+// With a dual scalar it is the forward-over-reverse pass, the adjoint's
+// derivative along a direction.
+template <RfMode MODE, typename Real>
+void simulate_pooled_adjoint(
+    const Buffers& buffers,
+    const PoolPass& pass,
+    const std::int64_t work_begin,
+    const std::int64_t work_end,
+    const std::int64_t event_count,
+    const std::int64_t state_count,
+    const std::int64_t output_count,
+    Real* grad_flip_local,
+    Real* grad_phase_local,
+    Real* grad_duration_local,
+    Real* grad_tissue_local
+) {
+    using Cplx = typename Carried<Real>::Cplx;
+    using Plane = std::vector<Cplx>;
+    using Planes = std::vector<Plane>;
+    const PoolShape shape(buffers);
+    const TissueLayout layout(buffers.shim_count);
+    const std::int64_t atoms = buffers.atom_count;
+    const std::size_t n = shape.longitudinal;
+    const std::size_t m = shape.transverse;
+    const bool turning = buffers.off_axis || buffers.moving;
+    const bool flowing = buffers.moving;
+    const std::size_t states = static_cast<std::size_t>(state_count);
+    const std::size_t stride = (2U * m + n) * states;
+    const Cplx imaginary = seeded<Cplx>(0.0F, 1.0F);
+    const Cplx minus_imaginary = seeded<Cplx>(0.0F, -1.0F);
+
+    std::vector<Cplx> trajectory(static_cast<std::size_t>(event_count) * stride);
+    Planes plus(m, Plane(states));
+    Planes minus(m, Plane(states));
+    Planes longitudinal(n, Plane(states));
+    Planes plus_bar(m, Plane(states));
+    Planes minus_bar(m, Plane(states));
+    Planes longitudinal_bar(n, Plane(states));
+    Planes plus_relaxed(m, Plane(states));
+    Planes minus_relaxed(m, Plane(states));
+    Planes longitudinal_relaxed(n, Plane(states));
+    Planes plus_shifted(m, Plane(states));
+    Planes minus_shifted(m, Plane(states));
+    Plane scratch(2U * std::max(n, m));
+    Plane mixed_plus(m);
+    Plane mixed_minus(m);
+    Plane mixed_longitudinal(n);
+    std::vector<Real> equilibrium(n);
+    std::vector<Real> grad_equilibrium(n);
+    std::vector<Real> cotangent(shape.row_width);
+    PoolOperators<Real> operators(shape);
+    Damping<Real> damping(states);
+    const Real zero = constant<Real>(0.0F);
+
+    for (std::int64_t work = work_begin; work < work_end; ++work) {
+        const PoolItem item =
+            pool_item<MODE>(buffers, pass, shape, work, event_count, output_count);
+        const TrainView& view = item.view;
+        const std::int64_t atom = view.atom;
+        const PoolVoxel<Real> voxel(buffers, pass, atom);
+        Real* const grad_flip_train = grad_flip_local + view.event_base;
+        Real* const grad_phase_train = grad_phase_local + view.event_base;
+        Real* const grad_duration_train = grad_duration_local + view.event_base;
+        float* const grad_table = pass.grad_table
+            + static_cast<std::size_t>(work) * shape.width;
+        float* const grad_table_tangent = pass.grad_table_tangent != nullptr
+            ? pass.grad_table_tangent + static_cast<std::size_t>(work) * shape.width
+            : nullptr;
+        for (std::size_t pool = 0; pool < m; ++pool) {
+            std::fill(plus[pool].begin(), plus[pool].end(), Cplx{});
+            std::fill(minus[pool].begin(), minus[pool].end(), Cplx{});
+        }
+        for (std::size_t pool = 0; pool < n; ++pool) {
+            equilibrium[pool] = read_at<Real>(item.table, item.direction, pool);
+            std::fill(longitudinal[pool].begin(), longitudinal[pool].end(), Cplx{});
+            longitudinal[pool][0] = widen(equilibrium[pool]);
+        }
+
+        // ---- forward, recording the state entering each event ----
+        for (std::int64_t event = 0; event < event_count; ++event) {
+            Cplx* slot = trajectory.data() + static_cast<std::size_t>(event) * stride;
+            for (std::size_t pool = 0; pool < m; ++pool) {
+                std::copy(plus[pool].begin(), plus[pool].end(), slot);
+                std::copy(minus[pool].begin(), minus[pool].end(), slot + states);
+                slot += 2U * states;
+            }
+            for (std::size_t pool = 0; pool < n; ++pool) {
+                std::copy(longitudinal[pool].begin(), longitudinal[pool].end(), slot);
+                slot += states;
+            }
+            const Real dt = read_at<Real>(view.duration, item.dot_duration, event);
+            damping.set(voxel.damping_rate, dt);
+            const Real wout = flowing
+                ? washout_out(voxel.washout_rate, dt)
+                : constant<Real>(1.0F);
+            const Real angle = -2.0F * PI * (voxel.b0 * dt);
+            operators.read(
+                pool_row<Real>(
+                    shape, item.table, item.direction, item.rows[event], 0U,
+                    tangent_of(dt)
+                ),
+                shape
+            );
+            pooled_relax(
+                plus, minus, longitudinal, plus, minus, longitudinal, operators,
+                equilibrium, damping, wout, angle, voxel.flow_rate, dt, turning,
+                flowing, scratch
+            );
+            Cplx recorded{};
+            pooled_event<MODE, Real>(
+                buffers, pass, item, voxel, event, plus, minus, longitudinal,
+                recorded
+            );
+        }
+
+        // ---- reverse ----
+        for (std::size_t pool = 0; pool < m; ++pool) {
+            std::fill(plus_bar[pool].begin(), plus_bar[pool].end(), Cplx{});
+            std::fill(minus_bar[pool].begin(), minus_bar[pool].end(), Cplx{});
+        }
+        for (std::size_t pool = 0; pool < n; ++pool) {
+            std::fill(
+                longitudinal_bar[pool].begin(), longitudinal_bar[pool].end(), Cplx{}
+            );
+            grad_equilibrium[pool] = zero;
+        }
+        Real grad_m0 = zero;
+        Real grad_b1 = zero;
+        Real grad_b1_phase = zero;
+        Real grad_b0 = zero;
+        Real grad_efficiency = zero;
+        Real grad_damping = zero;
+        Real grad_flow = zero;
+        Real grad_washout = zero;
+        // Transmit gradients are summed per shim: the running pair is flushed
+        // to its row whenever the walk back reaches a pulse on a different one.
+        std::int64_t held = 0;
+
+        for (std::int64_t event = event_count - 1; event >= 0; --event) {
+            const Cplx* slot =
+                trajectory.data() + static_cast<std::size_t>(event) * stride;
+            for (std::size_t pool = 0; pool < m; ++pool) {
+                std::copy(slot, slot + states, plus[pool].begin());
+                std::copy(slot + states, slot + 2U * states, minus[pool].begin());
+                slot += 2U * states;
+            }
+            for (std::size_t pool = 0; pool < n; ++pool) {
+                std::copy(slot, slot + states, longitudinal[pool].begin());
+                slot += states;
+            }
+            const Real dt = read_at<Real>(view.duration, item.dot_duration, event);
+            const float along = tangent_of(dt);
+            damping.set(voxel.damping_rate, dt);
+            const Real wout = flowing
+                ? washout_out(voxel.washout_rate, dt)
+                : constant<Real>(1.0F);
+            const Real angle = -2.0F * PI * (voxel.b0 * dt);
+            const std::int64_t row = item.rows[event];
+            operators.read(
+                pool_row<Real>(shape, item.table, item.direction, row, 0U, along),
+                shape
+            );
+            const std::uint8_t action = buffers.action[event];
+
+            // replay this event to recover the intra-event states
+            pooled_relax(
+                plus, minus, longitudinal, plus_relaxed, minus_relaxed,
+                longitudinal_relaxed, operators, equilibrium, damping, wout, angle,
+                voxel.flow_rate, dt, turning, flowing, scratch
+            );
+            for (std::size_t pool = 0; pool < m; ++pool) {
+                plus_shifted[pool] = plus_relaxed[pool];
+                minus_shifted[pool] = minus_relaxed[pool];
+                if ((action & PRE_SHIFT) != 0) {
+                    shift(plus_shifted[pool], minus_shifted[pool]);
+                }
+            }
+
+            // --- adjoint of the trailing shift/spoil ---
+            for (std::size_t pool = 0; pool < m; ++pool) {
+                if ((action & SPOIL_AFTER) != 0) {
+                    std::fill(plus_bar[pool].begin(), plus_bar[pool].end(), Cplx{});
+                    std::fill(minus_bar[pool].begin(), minus_bar[pool].end(), Cplx{});
+                } else if ((action & SHIFT_AFTER) != 0) {
+                    shift_adjoint(plus_bar[pool], minus_bar[pool]);
+                }
+                if ((action & POST_SHIFT) != 0) {
+                    shift_adjoint(plus_bar[pool], minus_bar[pool]);
+                }
+            }
+
+            // --- adjoint of the ADC ---
+            if (buffers.kind[event] == 2 && (action & RECORD) != 0) {
+                const std::int64_t index =
+                    view.output_base + buffers.output_index[event];
+                const Cplx seed = seeded<Cplx>(
+                    pass.grad_output_real[index], pass.grad_output_imag[index]
+                );
+                const Real phase = read_at<Real>(view.phase, item.dot_phase, event);
+                const Cplx demodulation =
+                    turned_by(constant<Real>(1.0F), zero - phase, true);
+                // an ADC event carries no RF, so the recorded state is the one
+                // left by the pre-shift
+                Cplx recorded{};
+                for (std::size_t pool = 0; pool < m; ++pool) {
+                    recorded += plus_shifted[pool][0];
+                }
+                grad_m0 += real_part(conjugate(seed) * (recorded * demodulation));
+                grad_phase_train[event] += real_part(
+                    conjugate(seed)
+                    * (voxel.m0 * (recorded * (minus_imaginary * demodulation)))
+                );
+                const Cplx weighted = conjugate(voxel.m0 * demodulation) * seed;
+                for (std::size_t pool = 0; pool < m; ++pool) {
+                    plus_bar[pool][0] += weighted;
+                }
+            }
+
+            // --- adjoint of the RF ---
+            if (buffers.kind[event] == 1) {
+                if ((action & INVERSION) != 0) {
+                    const Real inverted = zero - voxel.efficiency;
+                    for (std::size_t pool = 0; pool < m; ++pool) {
+                        for (std::size_t state = 0; state < states; ++state) {
+                            Cplx& bar = longitudinal_bar[pool][state];
+                            grad_efficiency = grad_efficiency
+                                - real_part(
+                                    conjugate(bar) * longitudinal_relaxed[pool][state]
+                                );
+                            bar = bar * inverted;
+                        }
+                    }
+                } else {
+                    const PoolPulse<Real> pulse =
+                        pool_pulse(buffers, pass, item, voxel, event);
+                    const std::int64_t shim =
+                        buffers.shim_count > 1 ? buffers.shim_index[event] : 0;
+                    if (shim != held) {
+                        grad_tissue_local[
+                            (layout.base[B1_INDEX] + held) * atoms + atom
+                        ] += grad_b1;
+                        grad_tissue_local[
+                            (layout.base[B1_PHASE_INDEX] + held) * atoms + atom
+                        ] += grad_b1_phase;
+                        grad_b1 = zero;
+                        grad_b1_phase = zero;
+                        held = shim;
+                    }
+                    Real grad_alpha = zero;
+                    Real grad_phi = zero;
+                    if constexpr (MODE != RfMode::INSTANT) {
+                        Cplx pair_a{};
+                        Cplx pair_b{};
+                        Cplx slope_a{};
+                        Cplx slope_b{};
+                        pair_slope_at<MODE>(
+                            buffers, pass, view, event, item.location, atom,
+                            pulse.alpha, pair_a, pair_b, slope_a, slope_b
+                        );
+                        const Cplx turn =
+                            turned_by(constant<Real>(1.0F), zero - pulse.phi, true);
+                        const Cplx spun = pair_b * turn;
+                        Cplx grad_a{};
+                        Cplx grad_b{};
+                        for (std::size_t pool = 0; pool < m; ++pool) {
+                            rotate_adjoint_spinor_by(
+                                plus_shifted[pool], minus_shifted[pool],
+                                longitudinal_relaxed[pool], plus_bar[pool],
+                                minus_bar[pool], longitudinal_bar[pool], pair_a, spun,
+                                grad_a, grad_b
+                            );
+                        }
+                        // The RF phase turns the axis once the pair is out,
+                        // so it reaches ``b`` alone -- under either mode.
+                        grad_phi = real_part(conjugate(grad_b) * (minus_imaginary * spun));
+                        if constexpr (MODE == RfMode::DYNAMIC) {
+                            // The flip is inside the pair rather than read
+                            // against it, so the cotangent goes out on the pair.
+                            const std::int64_t at = dynamic_offset(
+                                buffers, dynamic_row(buffers, view, event), atom
+                            );
+                            // ``b`` was turned by the phase after the pair came
+                            // out, so the cotangent turns back the other way.
+                            const Cplx unturned = grad_b * conjugate(turn);
+                            const Real parts[4] = {
+                                real_part(grad_a), imag_part(grad_a),
+                                real_part(unturned), imag_part(unturned),
+                            };
+                            for (std::size_t part = 0; part < 4; ++part) {
+                                deposit(
+                                    pass.grad_dynamic + at + part,
+                                    pass.grad_dynamic_tangent != nullptr
+                                        ? pass.grad_dynamic_tangent + at + part
+                                        : nullptr,
+                                    parts[part]
+                                );
+                            }
+                        } else {
+                            grad_alpha = real_part(conjugate(grad_a) * slope_a)
+                                + real_part(conjugate(grad_b) * (slope_b * turn));
+                        }
+                    } else {
+                        for (std::size_t pool = 0; pool < m; ++pool) {
+                            rotate_adjoint_by(
+                                plus_shifted[pool], minus_shifted[pool],
+                                longitudinal_relaxed[pool], plus_bar[pool],
+                                minus_bar[pool], longitudinal_bar[pool], pulse.alpha,
+                                pulse.phi, grad_alpha, grad_phi
+                            );
+                        }
+                    }
+                    if (buffers.pool_semisolid) {
+                        // The pulse scales every order of the semisolid pool by
+                        // one real number, so its cotangent is a single sum
+                        // over the states it multiplied.
+                        const Real offset =
+                            constant<Real>(buffers.rf_frequency[event]) - voxel.b0;
+                        Real shape_value = zero;
+                        Real shape_slope = zero;
+                        lineshape_at_slope(buffers, offset, shape_value, shape_slope);
+                        const float deposited = buffers.saturation[event];
+                        const Real absorbed = exponential(
+                            deposited * (pulse.alpha * pulse.alpha * shape_value)
+                        );
+                        Real grad_absorbed = zero;
+                        Plane& bar = longitudinal_bar[n - 1];
+                        for (std::size_t state = 0; state < states; ++state) {
+                            grad_absorbed += real_part(
+                                conjugate(bar[state])
+                                * longitudinal_relaxed[n - 1][state]
+                            );
+                            bar[state] = bar[state] * absorbed;
+                        }
+                        const Real grad_exponent = grad_absorbed * absorbed;
+                        grad_alpha += (2.0F * deposited)
+                            * (grad_exponent * pulse.alpha * shape_value);
+                        // The lineshape is read at the pulse's offset from the
+                        // voxel, so a step in the voxel's own off-resonance
+                        // moves the read the other way.
+                        grad_b0 = grad_b0
+                            - deposited
+                                * (grad_exponent * pulse.alpha * pulse.alpha
+                                   * shape_slope);
+                    }
+                    grad_flip_train[event] += grad_alpha * pulse.b1;
+                    grad_b1 += grad_alpha
+                        * read_at<Real>(view.flip, item.dot_flip, event);
+                    grad_phase_train[event] += grad_phi;
+                    grad_b1_phase += grad_phi;
+                }
+            }
+
+            if ((action & PRE_SHIFT) != 0) {
+                for (std::size_t pool = 0; pool < m; ++pool) {
+                    shift_adjoint(plus_bar[pool], minus_bar[pool]);
+                }
+            }
+
+            // --- adjoint of the interval ---
+            for (Real& entry : cotangent) {
+                entry = zero;
+            }
+            Real grad_wout = zero;
+            // Order zero also carries the recovery, which is the equilibrium
+            // less what washout leaves of the operator applied to it. Read
+            // before the sweep below replaces the seeds.
+            for (std::size_t pool = 0; pool < n; ++pool) {
+                const Real seed = real_part(longitudinal_bar[pool][0]);
+                grad_equilibrium[pool] += seed;
+                cotangent[shape.restored() + pool] += zero - wout * seed;
+                grad_wout = grad_wout - seed * operators.restored[pool];
+            }
+            Real grad_angle = zero;
+            // The b-factor reaches every order through a different weight,
+            // and flow through a turn of its own, so both collect weighted
+            // sums rather than scalar ones.
+            Real grad_b_factor = zero;
+            Real grad_turn = zero;
+            for (std::size_t state = 0; state < states; ++state) {
+                Cplx unit_transverse{};
+                Cplx unit_longitudinal{};
+                interval_factors(
+                    damping, angle, voxel.flow_rate, dt, state, turning, flowing,
+                    unit_transverse, unit_longitudinal
+                );
+                const Cplx carried = wout * unit_transverse;
+                const Cplx spin = wout * unit_longitudinal;
+                for (std::size_t line = 0; line < m; ++line) {
+                    Cplx forward{};
+                    Cplx backward{};
+                    for (std::size_t column = 0; column < m; ++column) {
+                        const Cplx entry = operators.transverse[line * m + column];
+                        forward += entry * plus[column][state];
+                        backward += conjugate(entry) * minus[column][state];
+                    }
+                    mixed_plus[line] = forward;
+                    mixed_minus[line] = backward;
+                }
+                for (std::size_t line = 0; line < n; ++line) {
+                    Cplx mixed{};
+                    for (std::size_t column = 0; column < n; ++column) {
+                        mixed += operators.longitudinal[line * n + column]
+                            * longitudinal[column][state];
+                    }
+                    mixed_longitudinal[line] = mixed;
+                }
+                // The damping is homogeneous of degree one in every state it
+                // acts on, so its gradient times the damping itself is the
+                // cotangent taken against the states the interval leaves; the
+                // turns are the same derivatives with an imaginary weight.
+                Real transverse_scaled = zero;
+                Real transverse_angle = zero;
+                for (std::size_t line = 0; line < m; ++line) {
+                    const Cplx seed_plus = conjugate(plus_bar[line][state]);
+                    const Cplx seed_minus = conjugate(minus_bar[line][state]);
+                    const Cplx out_plus = seed_plus * (carried * mixed_plus[line]);
+                    const Cplx out_minus =
+                        seed_minus * (conjugate(carried) * mixed_minus[line]);
+                    transverse_scaled += real_part(out_plus + out_minus);
+                    transverse_angle += real_part(imaginary * (out_plus - out_minus));
+                    grad_wout += real_part(
+                        seed_plus * (unit_transverse * mixed_plus[line])
+                        + seed_minus * (conjugate(unit_transverse) * mixed_minus[line])
+                    );
+                }
+                Real longitudinal_scaled = zero;
+                Real longitudinal_angle = zero;
+                for (std::size_t line = 0; line < n; ++line) {
+                    const Cplx seed = conjugate(longitudinal_bar[line][state]);
+                    const Cplx out = seed * (spin * mixed_longitudinal[line]);
+                    longitudinal_scaled += real_part(out);
+                    longitudinal_angle += real_part(imaginary * out);
+                    grad_wout += real_part(
+                        seed * (unit_longitudinal * mixed_longitudinal[line])
+                    );
+                }
+                // The operators' own entries. ``F-`` follows the conjugate of
+                // the transverse operator, so its cotangent lands on the entry
+                // itself rather than on the conjugate of it.
+                const Cplx released = conjugate(carried);
+                for (std::size_t line = 0; line < m; ++line) {
+                    const Cplx bar_plus = plus_bar[line][state];
+                    const Cplx seed_minus = conjugate(minus_bar[line][state]);
+                    for (std::size_t column = 0; column < m; ++column) {
+                        const Cplx entry = released
+                            * (bar_plus * conjugate(plus[column][state])
+                               + seed_minus * minus[column][state]);
+                        const std::size_t at = shape.across() + 2U * (line * m + column);
+                        cotangent[at] += real_part(entry);
+                        cotangent[at + 1U] += imag_part(entry);
+                    }
+                }
+                for (std::size_t line = 0; line < n; ++line) {
+                    const Cplx seed = conjugate(longitudinal_bar[line][state]) * spin;
+                    for (std::size_t column = 0; column < n; ++column) {
+                        cotangent[line * n + column] +=
+                            real_part(seed * longitudinal[column][state]);
+                    }
+                }
+                // The seeds back through the interval.
+                for (std::size_t column = 0; column < m; ++column) {
+                    Cplx back_plus{};
+                    Cplx back_minus{};
+                    for (std::size_t line = 0; line < m; ++line) {
+                        const Cplx step =
+                            carried * operators.transverse[line * m + column];
+                        back_plus += conjugate(step) * plus_bar[line][state];
+                        back_minus += step * minus_bar[line][state];
+                    }
+                    scratch[column] = back_plus;
+                    scratch[m + column] = back_minus;
+                }
+                for (std::size_t column = 0; column < m; ++column) {
+                    plus_bar[column][state] = scratch[column];
+                    minus_bar[column][state] = scratch[m + column];
+                }
+                const Cplx returned = conjugate(spin);
+                for (std::size_t column = 0; column < n; ++column) {
+                    Cplx back{};
+                    for (std::size_t line = 0; line < n; ++line) {
+                        back += operators.longitudinal[line * n + column]
+                            * (returned * longitudinal_bar[line][state]);
+                    }
+                    scratch[column] = back;
+                }
+                for (std::size_t column = 0; column < n; ++column) {
+                    longitudinal_bar[column][state] = scratch[column];
+                }
+                const float order = static_cast<float>(state);
+                grad_angle += transverse_angle;
+                grad_b_factor = grad_b_factor
+                    - (transverse_weight(state) * transverse_scaled
+                       + longitudinal_weight(state) * longitudinal_scaled);
+                grad_turn = grad_turn
+                    - ((order + 0.5F) * transverse_angle + order * longitudinal_angle);
+            }
+
+            // The row this event read is shared with every event of its
+            // length; its cotangent is summed into it, and reaches the event's
+            // own length through the row's slope.
+            Real grad_table_duration = zero;
+            float* const grad_row = grad_table + shape.row(row, 0U);
+            float* const grad_row_tangent = grad_table_tangent != nullptr
+                ? grad_table_tangent + shape.row(row, 0U)
+                : nullptr;
+            for (std::size_t entry = 0; entry < shape.row_width; ++entry) {
+                deposit(
+                    grad_row + entry,
+                    grad_row_tangent != nullptr ? grad_row_tangent + entry : nullptr,
+                    cotangent[entry]
+                );
+            }
+            if (shape.blocks > 1U) {
+                const PoolRow<Real> slope = pool_row<Real>(
+                    shape, item.table, item.direction, row, 1U, along
+                );
+                for (std::size_t entry = 0; entry < shape.row_width; ++entry) {
+                    grad_table_duration += cotangent[entry] * slope.real(entry);
+                }
+                if (grad_table_tangent != nullptr) {
+                    float* const grad_slope = grad_table_tangent + shape.row(row, 1U);
+                    for (std::size_t entry = 0; entry < shape.row_width; ++entry) {
+                        deposit_along(grad_slope + entry, cotangent[entry], along);
+                    }
+                }
+            }
+
+            // Washout scales every factor the interval applies and the
+            // recovery it leaves; past the clamp nothing depends on the rate.
+            const Real grad_fraction =
+                flowing && primal(voxel.washout_rate * dt) < 1.0F
+                    ? zero - grad_wout
+                    : zero;
+            grad_b0 += grad_angle * (-2.0F * PI * dt);
+            grad_damping += grad_b_factor * dt;
+            grad_flow += grad_turn * dt;
+            grad_washout += grad_fraction * dt;
+            grad_duration_train[event] += grad_angle * (-2.0F * PI * voxel.b0)
+                + grad_b_factor * voxel.damping_rate + grad_turn * voxel.flow_rate
+                + grad_fraction * voxel.washout_rate + grad_table_duration;
+        }
+
+        // The equilibrium is also where every pool starts, which the walk back
+        // reaches last.
+        for (std::size_t pool = 0; pool < n; ++pool) {
+            grad_equilibrium[pool] += real_part(longitudinal_bar[pool][0]);
+            deposit(
+                grad_table + pool,
+                grad_table_tangent != nullptr ? grad_table_tangent + pool : nullptr,
+                grad_equilibrium[pool]
+            );
+        }
+        grad_tissue_local[layout.base[2] * atoms + atom] += grad_m0;
+        grad_tissue_local[(layout.base[B1_INDEX] + held) * atoms + atom] += grad_b1;
+        grad_tissue_local[(layout.base[B1_PHASE_INDEX] + held) * atoms + atom] +=
+            grad_b1_phase;
+        grad_tissue_local[layout.base[5] * atoms + atom] += grad_b0;
+        grad_tissue_local[layout.base[6] * atoms + atom] += grad_efficiency;
+        grad_tissue_local[layout.base[7] * atoms + atom] += grad_damping;
+        // One buffer drives two rates, so the velocity gradient is the sum of
+        // what each geometry carries back.
+        grad_tissue_local[layout.base[8] * atoms + atom] +=
+            buffers.flow_scale * grad_flow
+            + (speed_direction(primal(voxel.velocity)) * buffers.washout_scale)
+                * grad_washout;
+    }
+}
+
+// What each pass hands the two bodies.
+inline PoolPass pool_pass(const JvpBuffers& buffers) {
+    PoolPass pass;
+    pass.m0 = buffers.m0;
+    pass.b1 = buffers.b1;
+    pass.b1_phase = buffers.b1_phase;
+    pass.b0 = buffers.b0;
+    pass.inversion_efficiency = buffers.inversion_efficiency;
+    pass.diffusion = buffers.diffusion;
+    pass.velocity = buffers.velocity;
+    pass.duration = buffers.duration;
+    pass.flip = buffers.flip;
+    pass.phase = buffers.phase;
+    pass.dynamic = buffers.dynamic;
+    pass.table = buffers.pool_values;
+    return pass;
+}
+
+inline PoolPass pool_pass(const VjpBuffers& buffers) {
+    PoolPass pass;
+    pass.grad_output_real = buffers.grad_output_real;
+    pass.grad_output_imag = buffers.grad_output_imag;
+    pass.grad_table = buffers.grad_pool;
+    pass.grad_dynamic = buffers.grad_dynamic;
+    return pass;
+}
+
+inline PoolPass pool_pass(const VjpJvpBuffers& buffers) {
+    PoolPass pass;
+    pass.m0 = buffers.dot_m0;
+    pass.b1 = buffers.dot_b1;
+    pass.b1_phase = buffers.dot_b1_phase;
+    pass.b0 = buffers.dot_b0;
+    pass.inversion_efficiency = buffers.dot_inversion_efficiency;
+    pass.diffusion = buffers.dot_diffusion;
+    pass.velocity = buffers.dot_velocity;
+    pass.duration = buffers.dot_duration;
+    pass.flip = buffers.dot_flip;
+    pass.phase = buffers.dot_phase;
+    pass.dynamic = buffers.dynamic;
+    pass.table = buffers.pool_values;
+    pass.grad_output_real = buffers.grad_output_real;
+    pass.grad_output_imag = buffers.grad_output_imag;
+    pass.grad_table = buffers.grad_dot_pool;
+    pass.grad_table_tangent = buffers.grad_pool;
+    pass.grad_dynamic = buffers.grad_dot_dynamic;
+    pass.grad_dynamic_tangent = buffers.grad_dynamic;
+    return pass;
+}
+
+template <RfMode MODE>
+void simulate_pooled_range(
+    const Buffers& buffers,
+    const std::int64_t work_begin,
+    const std::int64_t work_end,
+    const std::int64_t event_count,
+    const std::int64_t state_count,
+    const std::int64_t output_count
+) {
+    simulate_pooled<MODE, float>(
+        buffers, PoolPass{}, work_begin, work_end, event_count, state_count,
+        output_count
+    );
+}
+
+template <RfMode MODE>
+void simulate_pooled_jvp_range(
+    const JvpBuffers& buffers,
+    const std::int64_t work_begin,
+    const std::int64_t work_end,
+    const std::int64_t event_count,
+    const std::int64_t state_count,
+    const std::int64_t output_count
+) {
+    simulate_pooled<MODE, DualFloat>(
+        buffers.primal, pool_pass(buffers), work_begin, work_end, event_count,
+        state_count, output_count
+    );
+}
+
+template <RfMode MODE>
+void simulate_pooled_vjp_range(
+    const VjpBuffers& buffers,
+    const std::int64_t work_begin,
+    const std::int64_t work_end,
+    const std::int64_t event_count,
+    const std::int64_t state_count,
+    const std::int64_t output_count,
+    float* grad_flip_local,
+    float* grad_phase_local,
+    float* grad_duration_local,
+    float* grad_tissue_local
+) {
+    simulate_pooled_adjoint<MODE, float>(
+        buffers.primal, pool_pass(buffers), work_begin, work_end, event_count,
+        state_count, output_count, grad_flip_local, grad_phase_local,
+        grad_duration_local, grad_tissue_local
+    );
+}
+
+template <RfMode MODE>
+void simulate_pooled_vjp_jvp_range(
+    const VjpJvpBuffers& buffers,
+    const std::int64_t work_begin,
+    const std::int64_t work_end,
+    const std::int64_t event_count,
+    const std::int64_t state_count,
+    const std::int64_t output_count,
+    DualFloat* grad_flip_local,
+    DualFloat* grad_phase_local,
+    DualFloat* grad_duration_local,
+    DualFloat* grad_tissue_local
+) {
+    simulate_pooled_adjoint<MODE, DualFloat>(
+        buffers.primal, pool_pass(buffers), work_begin, work_end, event_count,
+        state_count, output_count, grad_flip_local, grad_phase_local,
+        grad_duration_local, grad_tissue_local
+    );
+}
+
 // Vector clones of the single-pool derivative kernels.
 //
 // ``target_clones`` multiplies a function by its instruction sets and the pool
@@ -9083,12 +10646,17 @@ inline Buffers packed_buffers(
     return buffers;
 }
 
-// Every entry point's pointer sequence ends with the same eight slots, so
+// Every entry point's pointer sequence ends with the same thirteen slots, so
 // they are named and counted back from the end rather than written out at each
 // site. An entry point reads only the ones its kernel can use; the rest are
 // null. Naming them is what makes a slot left unassigned a visible omission
 // instead of a null the kernel writes through.
 enum class Tail : Py_ssize_t {
+    POOLS = 13,
+    POOL_INDEX = 12,
+    POOL_DIRECTION = 11,
+    POOL_GRADIENT = 10,
+    POOL_CURVATURE = 9,
     TABLE = 8,
     TABLE_INDEX = 7,
     PAIRS = 6,
@@ -9099,12 +10667,63 @@ enum class Tail : Py_ssize_t {
     ABSORPTION = 1,
 };
 
-constexpr Py_ssize_t TAIL_COUNT = static_cast<Py_ssize_t>(Tail::TABLE);
+constexpr Py_ssize_t TAIL_COUNT = static_cast<Py_ssize_t>(Tail::POOLS);
 
 inline void* tail_slot(
     void* const* const raw, const Py_ssize_t expected, const Tail slot
 ) {
     return raw[expected - static_cast<Py_ssize_t>(slot)];
+}
+
+// Pool kinds past the closed forms: exchanging pools tabulated per interval,
+// without and with a semisolid pool beside them.
+constexpr int POOLS_TABULATED = 4;
+constexpr int POOLS_TABULATED_SATURATED = 5;
+
+inline bool tabulated(const int pool_kind) {
+    return pool_kind == POOLS_TABULATED || pool_kind == POOLS_TABULATED_SATURATED;
+}
+
+// Hands a tabulated run's table and its row index to the buffers, and checks
+// the counts that size them. Returns false with a Python error set.
+inline bool attach_pools(
+    Buffers& buffers,
+    void* const* const raw,
+    const Py_ssize_t expected,
+    const int pool_kind,
+    const long long pool_count,
+    const long long pool_rows,
+    const long long pool_blocks
+) {
+    if (!tabulated(pool_kind)) {
+        return true;
+    }
+    buffers.pool_values =
+        static_cast<const float*>(tail_slot(raw, expected, Tail::POOLS));
+    buffers.pool_index =
+        static_cast<const std::int32_t*>(tail_slot(raw, expected, Tail::POOL_INDEX));
+    buffers.pool_count = static_cast<std::int64_t>(pool_count);
+    buffers.pool_rows = static_cast<std::int64_t>(pool_rows);
+    buffers.pool_blocks = static_cast<std::int64_t>(pool_blocks);
+    buffers.pool_semisolid = pool_kind == POOLS_TABULATED_SATURATED;
+    if (buffers.pool_values == nullptr || buffers.pool_index == nullptr
+        || pool_count < 1 || pool_rows < 1 || pool_blocks < 1
+        || (buffers.pool_semisolid && buffers.lineshape == nullptr)) {
+        PyErr_SetString(PyExc_ValueError, "invalid pool table");
+        return false;
+    }
+    return true;
+}
+
+inline Pools pool_of(const int pool_kind) {
+    if (tabulated(pool_kind)) {
+        return Pools::TABULATED;
+    }
+    return pool_kind == 3
+        ? Pools::THREE
+        : (pool_kind == 2
+            ? Pools::EXCHANGING
+            : (pool_kind == 1 ? Pools::SEMISOLID : Pools::ONE));
 }
 
 bool parse_pointer(PyObject* sequence, const Py_ssize_t index, void** pointer) {
@@ -9137,9 +10756,12 @@ PyObject* simulate(PyObject*, PyObject* arguments) {
     double lineshape_step = 1.0;
     int pool_kind = 0;
     int features = FEATURE_ALL;
+    long long pool_count = 0;
+    long long pool_rows = 0;
+    long long pool_blocks = 0;
     if (!PyArg_ParseTuple(
             arguments,
-            "OLLLLLiiddLLLdLdii",
+            "OLLLLLiiddLLLdLdiiLLL",
             &pointers,
             &atom_count,
             &train_count,
@@ -9157,15 +10779,14 @@ PyObject* simulate(PyObject*, PyObject* arguments) {
             &lineshape_bins,
             &lineshape_step,
             &pool_kind,
-            &features
+            &features,
+            &pool_count,
+            &pool_rows,
+            &pool_blocks
         )) {
         return nullptr;
     }
-    const Pools pools = pool_kind == 3
-        ? Pools::THREE
-        : (pool_kind == 2
-            ? Pools::EXCHANGING
-            : (pool_kind == 1 ? Pools::SEMISOLID : Pools::ONE));
+    const Pools pools = pool_of(pool_kind);
     // The packed buffers, the two output planes, then the transition tables
     // and the per-event index that says which an event reads, then the
     // per-voxel rotations, their own index and a direction along them, then
@@ -9187,7 +10808,7 @@ PyObject* simulate(PyObject*, PyObject* arguments) {
             return nullptr;
         }
     }
-    const Buffers buffers = packed_buffers(
+    Buffers buffers = packed_buffers(
         raw,
         static_cast<float*>(raw[PACKED_COUNT]),
         static_cast<float*>(raw[PACKED_COUNT + 1]),
@@ -9208,6 +10829,11 @@ PyObject* simulate(PyObject*, PyObject* arguments) {
         static_cast<float>(lineshape_step),
         features
     );
+    if (!attach_pools(
+            buffers, raw, expected, pool_kind, pool_count, pool_rows, pool_blocks
+        )) {
+        return nullptr;
+    }
 
     // TORCHSIM_LANES=1 selects a lane-vectorized forward that walks the
     // (atom, train block) product instead of (atom, train), putting a block of
@@ -9260,6 +10886,12 @@ PyObject* simulate(PyObject*, PyObject* arguments) {
                 : (mode == RfMode::PROFILED
                     ? &simulate_range<RfMode::PROFILED, Pools::SEMISOLID>
                     : &simulate_range<RfMode::INSTANT, Pools::SEMISOLID>);
+        } else if (pools == Pools::TABULATED) {
+            kernel = mode == RfMode::DYNAMIC
+                ? &simulate_pooled_range<RfMode::DYNAMIC>
+                : (mode == RfMode::PROFILED
+                    ? &simulate_pooled_range<RfMode::PROFILED>
+                    : &simulate_pooled_range<RfMode::INSTANT>);
         } else if (mode == RfMode::DYNAMIC) {
             kernel = &simulate_range<RfMode::DYNAMIC, Pools::ONE>;
         } else if (mode == RfMode::PROFILED) {
@@ -9336,7 +10968,13 @@ void dispatch_jvp(
             ? RfMode::DYNAMIC
             : (buffers.primal.profile != nullptr ? RfMode::PROFILED
                                                      : RfMode::INSTANT);
-        if (pools == Pools::THREE) {
+        if (pools == Pools::TABULATED) {
+            kernel = mode == RfMode::DYNAMIC
+                ? &simulate_pooled_jvp_range<RfMode::DYNAMIC>
+                : (mode == RfMode::PROFILED
+                    ? &simulate_pooled_jvp_range<RfMode::PROFILED>
+                    : &simulate_pooled_jvp_range<RfMode::INSTANT>);
+        } else if (pools == Pools::THREE) {
             kernel = mode == RfMode::DYNAMIC
                 ? &simulate_jvp_range<RfMode::DYNAMIC, Pools::THREE>
                 : (mode == RfMode::PROFILED
@@ -9395,9 +11033,12 @@ PyObject* simulate_jvp(PyObject*, PyObject* arguments) {
     double lineshape_step = 1.0;
     int pool_kind = 0;
     int features = FEATURE_ALL;
+    long long pool_count = 0;
+    long long pool_rows = 0;
+    long long pool_blocks = 0;
     if (!PyArg_ParseTuple(
             arguments,
-            "OLLLLLiiddLLLdLdii",
+            "OLLLLLiiddLLLdLdiiLLL",
             &pointers,
             &atom_count,
             &train_count,
@@ -9415,15 +11056,14 @@ PyObject* simulate_jvp(PyObject*, PyObject* arguments) {
             &lineshape_bins,
             &lineshape_step,
             &pool_kind,
-            &features
+            &features,
+            &pool_count,
+            &pool_rows,
+            &pool_blocks
         )) {
         return nullptr;
     }
-    const Pools pools = pool_kind == 3
-        ? Pools::THREE
-        : (pool_kind == 2
-            ? Pools::EXCHANGING
-            : (pool_kind == 1 ? Pools::SEMISOLID : Pools::ONE));
+    const Pools pools = pool_of(pool_kind);
     // The packed buffers, one tangent per differentiable input, the two output
     // planes, then the transition tables and the per-event index that says
     // which an event reads, then the bound pool's lineshape -- all null when
@@ -9446,7 +11086,7 @@ PyObject* simulate_jvp(PyObject*, PyObject* arguments) {
     }
     constexpr std::size_t tangents = PACKED_COUNT;
     constexpr std::size_t outputs = tangents + FLOAT_COUNT;
-    const Buffers primal = packed_buffers(
+    Buffers primal = packed_buffers(
         raw,
         static_cast<float*>(raw[outputs]),
         static_cast<float*>(raw[outputs + 1]),
@@ -9467,6 +11107,11 @@ PyObject* simulate_jvp(PyObject*, PyObject* arguments) {
         static_cast<float>(lineshape_step),
         features
     );
+    if (!attach_pools(
+            primal, raw, expected, pool_kind, pool_count, pool_rows, pool_blocks
+        )) {
+        return nullptr;
+    }
     JvpBuffers buffers{};
     buffers.primal = primal;
     // Named rather than positional: an aggregate initializer one entry short
@@ -9487,6 +11132,9 @@ PyObject* simulate_jvp(PyObject*, PyObject* arguments) {
     }
     buffers.dynamic = static_cast<const float*>(
         tail_slot(raw, expected, Tail::DIRECTION)
+    );
+    buffers.pool_values = static_cast<const float*>(
+        tail_slot(raw, expected, Tail::POOL_DIRECTION)
     );
 
     Py_BEGIN_ALLOW_THREADS
@@ -9518,9 +11166,12 @@ PyObject* simulate_vjp(PyObject*, PyObject* arguments) {
     double lineshape_step = 1.0;
     int pool_kind = 0;
     int features = FEATURE_ALL;
+    long long pool_count = 0;
+    long long pool_rows = 0;
+    long long pool_blocks = 0;
     if (!PyArg_ParseTuple(
             arguments,
-            "OLLLLLiiddLLLdLdii",
+            "OLLLLLiiddLLLdLdiiLLL",
             &pointers,
             &atom_count,
             &train_count,
@@ -9538,7 +11189,10 @@ PyObject* simulate_vjp(PyObject*, PyObject* arguments) {
             &lineshape_bins,
             &lineshape_step,
             &pool_kind,
-            &features
+            &features,
+            &pool_count,
+            &pool_rows,
+            &pool_blocks
         )) {
         return nullptr;
     }
@@ -9566,7 +11220,7 @@ PyObject* simulate_vjp(PyObject*, PyObject* arguments) {
     }
     constexpr std::size_t seed = PACKED_COUNT;
     constexpr std::size_t grads = seed + 2;
-    const Buffers primal = packed_buffers(
+    Buffers primal = packed_buffers(
         raw, nullptr, nullptr,
         static_cast<std::int64_t>(atom_count),
         static_cast<std::int64_t>(train_count),
@@ -9585,6 +11239,11 @@ PyObject* simulate_vjp(PyObject*, PyObject* arguments) {
         static_cast<float>(lineshape_step),
         features
     );
+    if (!attach_pools(
+            primal, raw, expected, pool_kind, pool_count, pool_rows, pool_blocks
+        )) {
+        return nullptr;
+    }
     VjpBuffers buffers{};
     buffers.primal = primal;
     buffers.grad_output_real = static_cast<const float*>(raw[seed]);
@@ -9607,6 +11266,13 @@ PyObject* simulate_vjp(PyObject*, PyObject* arguments) {
     buffers.grad_dynamic = static_cast<float*>(
         tail_slot(raw, expected, Tail::GRADIENT)
     );
+    buffers.grad_pool = static_cast<float*>(
+        tail_slot(raw, expected, Tail::POOL_GRADIENT)
+    );
+    if (tabulated(pool_kind) && buffers.grad_pool == nullptr) {
+        PyErr_SetString(PyExc_ValueError, "a tabulated run needs its table's cotangent");
+        return nullptr;
+    }
 
     // Lanes over atoms, which is the axis a dictionary is wide in; a run with
     // fewer than a block of them takes the per-atom kernel. Diffusion is left
@@ -9647,7 +11313,13 @@ PyObject* simulate_vjp(PyObject*, PyObject* arguments) {
             ? RfMode::DYNAMIC
             : (buffers.primal.profile != nullptr ? RfMode::PROFILED
                                                      : RfMode::INSTANT);
-        if (pool_kind == 3) {
+        if (tabulated(pool_kind)) {
+            kernel = mode == RfMode::DYNAMIC
+                ? &simulate_pooled_vjp_range<RfMode::DYNAMIC>
+                : (mode == RfMode::PROFILED
+                    ? &simulate_pooled_vjp_range<RfMode::PROFILED>
+                    : &simulate_pooled_vjp_range<RfMode::INSTANT>);
+        } else if (pool_kind == 3) {
             kernel = mode == RfMode::DYNAMIC
                 ? &simulate_vjp_range<RfMode::DYNAMIC, Pools::THREE>
                 : (mode == RfMode::PROFILED
@@ -9777,7 +11449,13 @@ void dispatch_second_order(
             ? RfMode::DYNAMIC
             : (buffers.primal.profile != nullptr ? RfMode::PROFILED
                                                      : RfMode::INSTANT);
-        if (pools == Pools::THREE) {
+        if (pools == Pools::TABULATED) {
+            kernel = mode == RfMode::DYNAMIC
+                ? &simulate_pooled_vjp_jvp_range<RfMode::DYNAMIC>
+                : (mode == RfMode::PROFILED
+                    ? &simulate_pooled_vjp_jvp_range<RfMode::PROFILED>
+                    : &simulate_pooled_vjp_jvp_range<RfMode::INSTANT>);
+        } else if (pools == Pools::THREE) {
             kernel = mode == RfMode::DYNAMIC
                 ? &simulate_vjp_jvp_range<RfMode::DYNAMIC, Pools::THREE>
                 : (mode == RfMode::PROFILED
@@ -9910,9 +11588,12 @@ PyObject* simulate_vjp_jvp(PyObject*, PyObject* arguments) {
     double lineshape_step = 1.0;
     int pool_kind = 0;
     int features = FEATURE_ALL;
+    long long pool_count = 0;
+    long long pool_rows = 0;
+    long long pool_blocks = 0;
     if (!PyArg_ParseTuple(
             arguments,
-            "OLLLLLiiddLLLdLdii",
+            "OLLLLLiiddLLLdLdiiLLL",
             &pointers,
             &atom_count,
             &train_count,
@@ -9930,7 +11611,10 @@ PyObject* simulate_vjp_jvp(PyObject*, PyObject* arguments) {
             &lineshape_bins,
             &lineshape_step,
             &pool_kind,
-            &features
+            &features,
+            &pool_count,
+            &pool_rows,
+            &pool_blocks
         )) {
         return nullptr;
     }
@@ -9948,11 +11632,7 @@ PyObject* simulate_vjp_jvp(PyObject*, PyObject* arguments) {
         PyErr_SetString(PyExc_ValueError, "invalid EPG buffer dimensions");
         return nullptr;
     }
-    const Pools pools = pool_kind == 3
-        ? Pools::THREE
-        : (pool_kind == 2
-            ? Pools::EXCHANGING
-            : (pool_kind == 1 ? Pools::SEMISOLID : Pools::ONE));
+    const Pools pools = pool_of(pool_kind);
 
     void* raw[expected]{};
     for (Py_ssize_t index = 0; index < expected; ++index) {
@@ -9960,7 +11640,7 @@ PyObject* simulate_vjp_jvp(PyObject*, PyObject* arguments) {
             return nullptr;
         }
     }
-    const Buffers primal = packed_buffers(
+    Buffers primal = packed_buffers(
         raw, nullptr, nullptr,
         static_cast<std::int64_t>(atom_count),
         static_cast<std::int64_t>(train_count),
@@ -9979,6 +11659,11 @@ PyObject* simulate_vjp_jvp(PyObject*, PyObject* arguments) {
         static_cast<float>(lineshape_step),
         features
     );
+    if (!attach_pools(
+            primal, raw, expected, pool_kind, pool_count, pool_rows, pool_blocks
+        )) {
+        return nullptr;
+    }
     VjpJvpBuffers buffers{};
     buffers.primal = primal;
     constexpr std::size_t tangents = PACKED_COUNT;
@@ -10043,6 +11728,20 @@ PyObject* simulate_vjp_jvp(PyObject*, PyObject* arguments) {
     buffers.grad_dynamic = static_cast<float*>(
         tail_slot(raw, expected, Tail::CURVATURE)
     );
+    buffers.pool_values = static_cast<const float*>(
+        tail_slot(raw, expected, Tail::POOL_DIRECTION)
+    );
+    buffers.grad_dot_pool = static_cast<float*>(
+        tail_slot(raw, expected, Tail::POOL_GRADIENT)
+    );
+    buffers.grad_pool = static_cast<float*>(
+        tail_slot(raw, expected, Tail::POOL_CURVATURE)
+    );
+    if (tabulated(pool_kind)
+        && (buffers.grad_dot_pool == nullptr || buffers.grad_pool == nullptr)) {
+        PyErr_SetString(PyExc_ValueError, "a tabulated run needs its table's cotangent");
+        return nullptr;
+    }
 
     Py_BEGIN_ALLOW_THREADS
     dispatch_second_order(

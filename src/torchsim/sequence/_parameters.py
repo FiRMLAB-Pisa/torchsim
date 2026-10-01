@@ -25,6 +25,7 @@ __all__ = [
     "features_of",
     "wants_bound_pool",
     "wants_exchange_pool",
+    "exchange_pool_count",
     "tissue_gradient_bases",
     "tissue_gradient_rows",
     "tissue_gradient_height",
@@ -131,6 +132,37 @@ TISSUE_PARAMETERS: tuple[Parameter, ...] = (
     Parameter("pool_b_shift_hz", identity=0.0, feature="BM"),
 )
 
+# The chemically exchanging pools past pool B, as BART's Bloch-McConnell model
+# counts them: up to four beside the free water, each exchanging with the free
+# water alone. They are not in the ABI above. A tissue with more than one
+# exchanging pool reaches the kernels as its relaxation and exchange operators,
+# tabulated per interval from these and pool B's own properties
+# (``torchsim.sequence._pools``), so no kernel reads them one by one.
+EXTRA_POOLS: tuple[str, ...] = ("c", "d", "e")
+
+POOL_PARAMETERS: tuple[Parameter, ...] = tuple(
+    parameter
+    for letter in EXTRA_POOLS
+    for parameter in (
+        Parameter(
+            f"pool_{letter}_fraction",
+            identity=0.0,
+            feature=f"POOL_{letter.upper()}",
+            gate=True,
+        ),
+        Parameter(
+            f"pool_{letter}_exchange_hz", identity=0.0, feature=f"POOL_{letter.upper()}"
+        ),
+        Parameter(f"t1_pool_{letter}_ms", feature=f"POOL_{letter.upper()}"),
+        Parameter(f"t2_pool_{letter}_ms", feature=f"POOL_{letter.upper()}"),
+        Parameter(
+            f"pool_{letter}_shift_hz", identity=0.0, feature=f"POOL_{letter.upper()}"
+        ),
+    )
+)
+
+POOL_NAMES: tuple[str, ...] = tuple(parameter.name for parameter in POOL_PARAMETERS)
+
 # What a voxel does to a sample rather than to a state, which is why these are
 # not in the ABI above: no kernel reads them. A static spread of the field
 # dephases a sample by how long it has gone unrefocused, and a configuration
@@ -188,8 +220,12 @@ SAMPLE_NAMES: tuple[str, ...] = tuple(parameter.name for parameter in SAMPLE_PAR
 
 # Every property a tissue carries, whether a kernel reads it or the signal
 # does. What a caller may set, and what a model may declare.
-PROPERTY_PARAMETERS: tuple[Parameter, ...] = (*TISSUE_PARAMETERS, *SAMPLE_PARAMETERS)
-PROPERTY_NAMES: tuple[str, ...] = (*TISSUE_NAMES, *SAMPLE_NAMES)
+PROPERTY_PARAMETERS: tuple[Parameter, ...] = (
+    *TISSUE_PARAMETERS,
+    *POOL_PARAMETERS,
+    *SAMPLE_PARAMETERS,
+)
+PROPERTY_NAMES: tuple[str, ...] = (*TISSUE_NAMES, *POOL_NAMES, *SAMPLE_NAMES)
 
 # What a caller writes for each tissue field. This is the vocabulary a
 # protocol is stated in: naming one of these in a call is what asks for its
@@ -214,6 +250,17 @@ PUBLIC_PROPERTIES: dict[str, str] = {
     "poolB_T1": "t1_pool_b_ms",
     "poolB_T2": "t2_pool_b_ms",
     "poolB_shift": "pool_b_shift_hz",
+    **{
+        f"pool{letter.upper()}_{public}": field.format(letter)
+        for letter in EXTRA_POOLS
+        for public, field in (
+            ("fraction", "pool_{}_fraction"),
+            ("exchange", "pool_{}_exchange_hz"),
+            ("T1", "t1_pool_{}_ms"),
+            ("T2", "t2_pool_{}_ms"),
+            ("shift", "pool_{}_shift_hz"),
+        )
+    },
 }
 
 # Which tissue buffers hold a row per shim.
@@ -385,6 +432,24 @@ def wants_bound_pool(bound_fraction: Any) -> bool:
 def wants_exchange_pool(pool_b_fraction: Any) -> bool:
     """Whether this fraction gives the chemically exchanging pool anything to do."""
     return not at_identity(TISSUE_PARAMETERS[POOL_B_FRACTION_INPUT], pool_b_fraction)
+
+
+def exchange_pool_count(tissue: Any) -> int:
+    """How many chemically exchanging pools this tissue carries beside the water.
+
+    The last of pools B to E whose fraction matters, on the terms
+    :func:`at_identity` sets; a pool before it whose fraction was left at zero
+    is carried empty, which is the same answer as leaving it out.
+    """
+    fractions = (
+        TISSUE_PARAMETERS[POOL_B_FRACTION_INPUT],
+        *(parameter for parameter in POOL_PARAMETERS if parameter.gate),
+    )
+    count = 0
+    for position, parameter in enumerate(fractions, start=1):
+        if not at_identity(parameter, getattr(tissue, parameter.name)):
+            count = position
+    return count
 
 
 def tissue_gradient_rows(shims: int) -> tuple[int, ...]:

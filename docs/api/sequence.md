@@ -22,6 +22,9 @@ reaches the fused kernels with no change to them.
 
 The five readouts differ only in what they play around the sample, which is
 what separates a spoiled, an unbalanced, a balanced and a refocused train.
+{func}`SampledPulse` plays a waveform as one hard pulse per sample, with
+relaxation, precession and exchange between samples, for a pulse whose
+duration matters to the signal.
 
 ```{eval-rst}
 .. autosummary::
@@ -33,6 +36,7 @@ what separates a spoiled, an unbalanced, a balanced and a refocused train.
    Refocusing
    Inversion
    Saturation
+   SampledPulse
    Readout
    Delay
    Dephase
