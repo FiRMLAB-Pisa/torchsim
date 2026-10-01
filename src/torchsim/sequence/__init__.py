@@ -5,6 +5,7 @@ from __future__ import annotations
 __all__ = [
     "SequenceDescription",
     "ShimDefinition",
+    "read_mrd_description",
     "execution",
     "FSEReadout",
     "Operator",
@@ -49,6 +50,7 @@ from ._description import (
     ideal_rf_definition,  # noqa: F401
     rf_definition,
 )
+from ._mrd import read_mrd_description
 from ._operators import (
     Delay,
     Dephase,
