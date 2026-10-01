@@ -269,9 +269,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.LorentzianSimulator.html">LorentzianSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.ASLSimulator.html">ASLSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.HyperechoSimulator.html">HyperechoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.StimulatedEchoSimulator.html">StimulatedEchoSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.FLASHSimulator.html">FLASHSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.TrueFISPSimulator.html">TrueFISPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.fmSSFPSimulator.html">fmSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.CESTSimulator.html">CESTSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.spgr_sim.html">spgr_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.fse_sim.html">fse_sim</a></li>
@@ -287,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Refocusing.html">Refocusing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Inversion.html">Inversion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SampledPulse.html">SampledPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Readout.html">Readout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Delay.html">Delay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Dephase.html">Dephase</a></li>
@@ -494,11 +501,11 @@
                 <article class="bd-article">
                   
   <h1>Source code for torchsim.simulators.cest</h1><div class="highlight"><pre>
-<span></span><span class="sd">"""The Z-spectrum as a sum of Lorentzian lines, in closed form."""</span>
+<span></span><span class="sd">"""The Z-spectrum: Lorentzian lines in closed form, and pulsed saturation simulated."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"LorentzianSimulator"</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"CESTSimulator"</span><span class="p">,</span> <span class="s2">"LorentzianSimulator"</span><span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
@@ -506,9 +513,12 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">..model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..sequence._array</span><span class="w"> </span><span class="kn">import</span> <span class="n">arrays</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulator</span><span class="p">,</span> <span class="n">SpinPhysics</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..sequence</span><span class="w"> </span><span class="kn">import</span> <span class="n">Delay</span><span class="p">,</span> <span class="n">Excitation</span><span class="p">,</span> <span class="n">Readout</span><span class="p">,</span> <span class="n">SampledPulse</span><span class="p">,</span> <span class="n">Spoil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..sequence._array</span><span class="w"> </span><span class="kn">import</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">as_torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">._contrast</span><span class="w"> </span><span class="kn">import</span> <span class="n">across_contrasts</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._pulses</span><span class="w"> </span><span class="kn">import</span> <span class="n">sample_count</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.gradient_echo</span><span class="w"> </span><span class="kn">import</span> <span class="n">GAMMA_BAR_HZ_PER_T</span>
 
 
 <div class="viewcode-block" id="LorentzianSimulator">
@@ -604,6 +614,146 @@
             <span class="n">distance</span> <span class="o">=</span> <span class="n">offsets</span> <span class="o">-</span> <span class="n">held</span><span class="p">[</span><span class="sa">f</span><span class="s2">"pool</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">_shift"</span><span class="p">]</span>
             <span class="n">remaining</span> <span class="o">=</span> <span class="n">remaining</span> <span class="o">-</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">half</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">half</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">distance</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">held</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"M0"</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">remaining</span></div>
+
+
+
+<div class="viewcode-block" id="CESTSimulator">
+<a class="viewcode-back" href="../../../generated/torchsim.simulators.CESTSimulator.html#torchsim.simulators.CESTSimulator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CESTSimulator</span><span class="p">(</span><span class="n">Simulator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A Z-spectrum simulated through a train of saturation pulses, pool by pool.</span>
+
+<span class="sd">    At each offset the magnetization starts from equilibrium, a train of</span>
+<span class="sd">    rectangular pulses saturates it while the free water and every exchanging</span>
+<span class="sd">    pool precess at their own frequency, relax and exchange, and the</span>
+<span class="sd">    longitudinal magnetization left once a spoiled delay has passed is the</span>
+<span class="sd">    point of the spectrum. The pools are the Bloch-McConnell model's [1]_:</span>
+<span class="sd">    ``poolB_*`` to ``poolE_*`` beside the free water, each a fraction of</span>
+<span class="sd">    ``M0`` with its own exchange rate, relaxation times and chemical shift in</span>
+<span class="sd">    Hz. Each pulse starts at the phase the one before it ended at, so the</span>
+<span class="sd">    train is continuous in phase over the time the pulses play and not over</span>
+<span class="sd">    the delays between them, which is how a Pulseq CEST protocol accumulates</span>
+<span class="sd">    it. This is the sequence BART's ``sim`` plays as ``CEST``.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Zaiss, M., Bachert, P., "Chemical exchange saturation transfer</span>
+<span class="sd">       (CEST) and MR Z-spectroscopy in vivo: a review of theoretical</span>
+<span class="sd">       approaches and methods", Physics in Medicine and Biology 58.22 (2013),</span>
+<span class="sd">       pp. R221-R269. https://doi.org/10.1088/0031-9155/58/22/R221</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. exec::</span>
+
+<span class="sd">        import torch</span>
+<span class="sd">        from torchsim.simulators import CESTSimulator</span>
+
+<span class="sd">        sequence = CESTSimulator(offsets=torch.linspace(-5.0, 5.0, 21))</span>
+<span class="sd">        spectrum = sequence.simulate(</span>
+<span class="sd">            T1=1300.0, T2=75.0,</span>
+<span class="sd">            poolB_fraction=0.001, poolB_exchange=1000.0, poolB_T1=1300.0,</span>
+<span class="sd">            poolB_T2=10.0, poolB_shift=3.5 * 127.7,</span>
+<span class="sd">        )</span>
+<span class="sd">        print(spectrum.shape)</span>
+
+<span class="sd">    """</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">SpinPhysics</span><span class="p">(</span>
+        <span class="n">properties</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">"T1"</span><span class="p">:</span> <span class="s2">"t1_ms"</span><span class="p">,</span>
+            <span class="s2">"T2"</span><span class="p">:</span> <span class="s2">"t2_ms"</span><span class="p">,</span>
+            <span class="s2">"M0"</span><span class="p">:</span> <span class="s2">"m0"</span><span class="p">,</span>
+            <span class="s2">"B1"</span><span class="p">:</span> <span class="s2">"b1"</span><span class="p">,</span>
+            <span class="s2">"B0"</span><span class="p">:</span> <span class="s2">"b0_hz"</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+    <span class="c1"># The pulses are played in the rotating frame and the delay before the</span>
+    <span class="c1"># read spoils, so no order but zero ever holds anything.</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="CESTSimulator.layout">
+<a class="viewcode-back" href="../../../generated/torchsim.simulators.CESTSimulator.html#torchsim.simulators.CESTSimulator.layout">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">layout</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">offsets</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
+        <span class="n">field_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.0</span><span class="p">,</span>
+        <span class="n">B1sat</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">npulses</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">pulse_duration</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span>
+        <span class="n">interpulse_delay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">recovery</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">6.5</span><span class="p">,</span>
+        <span class="n">dwell</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return one saturation train and read per offset.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        offsets : array-like</span>
+<span class="sd">            Saturation frequency offsets from the free water, in ppm.</span>
+<span class="sd">        field_strength : float, optional</span>
+<span class="sd">            Main field in tesla, which turns an offset in ppm into Hz.</span>
+<span class="sd">        B1sat : float, optional</span>
+<span class="sd">            Amplitude of each saturation pulse in microtesla.</span>
+<span class="sd">        npulses : int, optional</span>
+<span class="sd">            Saturation pulses per offset.</span>
+<span class="sd">        pulse_duration : float, optional</span>
+<span class="sd">            Duration of each pulse in milliseconds.</span>
+<span class="sd">        interpulse_delay : float, optional</span>
+<span class="sd">            Time between two pulses in milliseconds.</span>
+<span class="sd">        recovery : float, optional</span>
+<span class="sd">            Time in milliseconds from the end of the last pulse to the read,</span>
+<span class="sd">            over which the transverse magnetization is spoiled.</span>
+<span class="sd">        dwell : float, optional</span>
+<span class="sd">            How long each sample of a pulse is held, in milliseconds.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If a pulse is not a whole number of samples.</span>
+<span class="sd">        """</span>
+        <span class="n">dwell_s</span> <span class="o">=</span> <span class="mf">1e-3</span> <span class="o">*</span> <span class="n">dwell</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="n">sample_count</span><span class="p">(</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">pulse_duration</span><span class="p">,</span> <span class="n">dwell_s</span><span class="p">)</span>
+        <span class="n">nutation</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">GAMMA_BAR_HZ_PER_T</span> <span class="o">*</span> <span class="mf">1e-6</span> <span class="o">*</span> <span class="n">as_torch</span><span class="p">(</span><span class="n">B1sat</span><span class="p">)</span>
+        <span class="n">waveform</span> <span class="o">=</span> <span class="n">nutation</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">offset_hz</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">GAMMA_BAR_HZ_PER_T</span>
+            <span class="o">*</span> <span class="mf">1e-6</span>
+            <span class="o">*</span> <span class="n">field_strength</span>
+            <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">as_torch</span><span class="p">(</span><span class="n">offsets</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">parts</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pulse_s</span> <span class="o">=</span> <span class="n">count</span> <span class="o">*</span> <span class="n">dwell_s</span>
+        <span class="k">for</span> <span class="n">pulse</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">npulses</span><span class="p">)):</span>
+            <span class="c1"># Each pulse takes up the phase the one before it ended at.</span>
+            <span class="n">carried</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">offset_hz</span> <span class="o">*</span> <span class="n">pulse</span> <span class="o">*</span> <span class="n">pulse_s</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">SampledPulse</span><span class="p">(</span><span class="n">waveform</span><span class="p">,</span> <span class="n">dwell_s</span><span class="p">,</span> <span class="n">phase_rad</span><span class="o">=</span><span class="n">carried</span><span class="p">,</span> <span class="n">offset_hz</span><span class="o">=</span><span class="n">offset_hz</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">pulse</span> <span class="o">&lt;</span> <span class="n">npulses</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">interpulse_delay</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Delay</span><span class="p">(</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">interpulse_delay</span><span class="p">))</span>
+        <span class="n">parts</span> <span class="o">+=</span> <span class="p">[</span><span class="n">Spoil</span><span class="p">(),</span> <span class="n">Delay</span><span class="p">(</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">recovery</span><span class="p">),</span> <span class="n">Excitation</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">Readout</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="n">parts</span></div>
+
+
+<div class="viewcode-block" id="CESTSimulator.evaluate">
+<a class="viewcode-back" href="../../../generated/torchsim.simulators.CESTSimulator.html#torchsim.simulators.CESTSimulator.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">sequence</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the longitudinal magnetization, offsets last."""</span>
+        <span class="c1"># One train per offset, each read once: (offsets, voxels) or, for a</span>
+        <span class="c1"># single voxel, (offsets,).</span>
+        <span class="n">signal</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">properties</span><span class="p">,</span> <span class="o">**</span><span class="n">sequence</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">movedim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># The read is a pi/2 pulse, which the transmit field scales and turns</span>
+        <span class="c1"># like every other, so it lays Mz along -i exp(i phase) sin(b1 pi/2).</span>
+        <span class="n">tissue</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">tissue</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
+        <span class="n">b1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">tissue</span><span class="o">.</span><span class="n">b1</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">signal</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">phase</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">tissue</span><span class="o">.</span><span class="n">b1_phase_rad</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">signal</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">read</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">b1</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">phase</span><span class="p">)</span>
+        <span class="n">batch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batch</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">batch</span><span class="p">:</span>
+            <span class="n">read</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">read</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">signal</span> <span class="o">/</span> <span class="n">read</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span><span class="o">.</span><span class="n">real</span></div>
+</div>
 
 </pre></div>
 

@@ -269,9 +269,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.LorentzianSimulator.html">LorentzianSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.ASLSimulator.html">ASLSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.HyperechoSimulator.html">HyperechoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.StimulatedEchoSimulator.html">StimulatedEchoSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.FLASHSimulator.html">FLASHSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.TrueFISPSimulator.html">TrueFISPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.fmSSFPSimulator.html">fmSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.CESTSimulator.html">CESTSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.spgr_sim.html">spgr_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.fse_sim.html">fse_sim</a></li>
@@ -287,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Refocusing.html">Refocusing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Inversion.html">Inversion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SampledPulse.html">SampledPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Readout.html">Readout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Delay.html">Delay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Dephase.html">Dephase</a></li>
@@ -1442,7 +1449,12 @@
                 <span class="p">)</span>
                 <span class="o">.</span><span class="n">signal</span>
             <span class="p">)</span></div>
-</div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_shaped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="c1"># The engine gives a tissue of scalar properties no voxel axis, so a</span>
+        <span class="c1"># leading axis of one is then a train or a readout, never a voxel.</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_shaped</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span> <span class="k">if</span> <span class="n">batch</span> <span class="k">else</span> <span class="n">signal</span></div>
 
 
 

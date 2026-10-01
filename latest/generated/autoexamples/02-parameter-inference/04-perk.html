@@ -274,9 +274,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.LorentzianSimulator.html">LorentzianSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.ASLSimulator.html">ASLSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.HyperechoSimulator.html">HyperechoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.StimulatedEchoSimulator.html">StimulatedEchoSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FLASHSimulator.html">FLASHSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.TrueFISPSimulator.html">TrueFISPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.fmSSFPSimulator.html">fmSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.CESTSimulator.html">CESTSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.bssfp_sim.html">bssfp_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.spgr_sim.html">spgr_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.fse_sim.html">fse_sim</a></li>
@@ -292,6 +298,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Refocusing.html">Refocusing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Inversion.html">Inversion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SampledPulse.html">SampledPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Readout.html">Readout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Delay.html">Delay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Dephase.html">Dephase</a></li>
@@ -648,7 +655,7 @@ arithmetic that searches it.</p>
 </span>    <span class="n">T1</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="p">[</span><span class="mf">500.0</span><span class="p">,</span> <span class="mf">833.0</span><span class="p">,</span> <span class="mf">2569.0</span><span class="p">]</span><span class="p">)</span><span class="p">,</span> <span class="n">T2</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="p">[</span><span class="mf">70.0</span><span class="p">,</span> <span class="mf">83.0</span><span class="p">,</span> <span class="mf">329.0</span><span class="p">]</span><span class="p">)</span><span class="w">
 </span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="w">
 </span></pre></div></div>
-<img src="../../../_images/sphx_glr_04-perk_002.png" srcset="../../../_images/sphx_glr_04-perk_002.png" alt="the schedule, fingerprints" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7fd4a3978f50&gt;]
+<img src="../../../_images/sphx_glr_04-perk_002.png" srcset="../../../_images/sphx_glr_04-perk_002.png" alt="the schedule, fingerprints" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7ff57327b890&gt;]
 </pre></div>
 </div>
 <p>The measurement, with noise at 2% of the peak fingerprint. One number sets
@@ -698,7 +705,7 @@ keeps is the relative squared error of projecting through it and back.</p>
 </span><span class="w">
 </span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="int"><span class="n">RANK</span></a> <span class="o">=</span> <span class="mi">4</span><span class="w">
 </span></pre></div></div>
-<img src="../../../_images/sphx_glr_04-perk_003.png" srcset="../../../_images/sphx_glr_04-perk_003.png" alt="what projecting through the basis loses" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7fd4a06c6f00&gt;]
+<img src="../../../_images/sphx_glr_04-perk_003.png" srcset="../../../_images/sphx_glr_04-perk_003.png" alt="what projecting through the basis loses" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7ff58062cb60&gt;]
 </pre></div>
 </div>
 <p>Four directions leave less outside the basis than the noise puts in, so
@@ -733,10 +740,10 @@ card while the slice was mapped, and a dash on a machine with no card. The
 dictionary row is the reference point.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>method                       train     map     model      peak      T1      T2
 ------------------------------------------------------------------------------
-match, rank 4                 1.2s   1.74s   1.4 MiB        --    0.6%    1.6%
-PERK, 500 features            1.4s   0.03s   0.0 MiB        --    1.7%    9.9%
-PERK, 1000 features           1.7s   0.04s   0.1 MiB        --    1.0%    5.0%
-PERK, 4000 features           9.8s   0.12s   0.4 MiB        --    0.7%    4.9%
+match, rank 4                 1.2s   1.86s   1.4 MiB        --    0.6%    1.6%
+PERK, 500 features            1.4s   0.03s   0.0 MiB        --    1.5%    4.7%
+PERK, 1000 features           1.9s   0.04s   0.1 MiB        --    0.7%    6.7%
+PERK, 4000 features          10.6s   0.11s   0.4 MiB        --    1.2%    4.3%
 </pre></div>
 </div>
 </section>
@@ -764,8 +771,8 @@ sequence, so the gap is what the method loses.</p>
 </span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">bound</span></a> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;</span><span class="s2">T1</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">floor</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="p">)</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">T2</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">floor</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="p">)</span><span class="p">}</span><span class="w">
 </span></pre></div></div>
 <img src="../../../_images/sphx_glr_04-perk_006.png" srcset="../../../_images/sphx_glr_04-perk_006.png" alt="PERK, CRLB, PERK, relative" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>            PERK      CRLB     PERK   (median over the brain)
-T1        8.3 ms    2.4 ms     1.2%
-T2       11.3 ms    0.5 ms    15.6%
+T1        8.7 ms    2.4 ms     1.4%
+T2       10.2 ms    0.5 ms    14.7%
 </pre></div>
 </div>
 <p>Each row uses its own parameter’s colormap. The two absolute panels share a
@@ -779,7 +786,7 @@ enlarge.</p>
 <p>The number is not the noise alone. A regression trained on a prior answers
 with the prior where the data is weak, and is wrong the same way in every
 realization, so repeating the scan would never show that part.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 31.497 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 33.345 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-02-parameter-inference-04-perk-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/02-parameter-inference/04-perk.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo1.svg" style="width: 150px;" />

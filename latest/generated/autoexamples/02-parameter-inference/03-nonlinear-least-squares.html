@@ -274,9 +274,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.LorentzianSimulator.html">LorentzianSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.ASLSimulator.html">ASLSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.HyperechoSimulator.html">HyperechoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.StimulatedEchoSimulator.html">StimulatedEchoSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FLASHSimulator.html">FLASHSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.TrueFISPSimulator.html">TrueFISPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.fmSSFPSimulator.html">fmSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.CESTSimulator.html">CESTSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.bssfp_sim.html">bssfp_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.spgr_sim.html">spgr_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.fse_sim.html">fse_sim</a></li>
@@ -292,6 +298,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Refocusing.html">Refocusing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Inversion.html">Inversion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SampledPulse.html">SampledPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Readout.html">Readout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Delay.html">Delay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Dephase.html">Dephase</a></li>
@@ -695,10 +702,10 @@ card while the slice was mapped, and a dash on a machine with no card.</p>
 match, T2 only                     400    0.0s   0.01s   0.1 MiB        --   17.9%
 match, T2 x 10 offsets            4000    0.0s   0.11s   0.5 MiB        --    1.8%
 match, T2 x 20 offsets            8000    0.0s   0.22s   1.1 MiB        --    1.8%
-match, T2 x 40 offsets           16000    0.0s   0.44s   2.1 MiB        --    1.8%
-match, T2 x 80 offsets           32000    0.0s   1.02s   4.3 MiB        --    1.7%
-fit, T2 + M0, floor known           --    0.0s   0.60s   0.0 MiB        --    0.6%
-fit, T2 + M0 + offset               --    0.0s   0.99s   0.0 MiB        --    1.8%
+match, T2 x 40 offsets           16000    0.0s   0.45s   2.1 MiB        --    1.8%
+match, T2 x 80 offsets           32000    0.0s   0.96s   4.3 MiB        --    1.7%
+fit, T2 + M0, floor known           --    0.0s   0.59s   0.0 MiB        --    0.6%
+fit, T2 + M0 + offset               --    0.0s   0.97s   0.0 MiB        --    1.8%
 </pre></div>
 </div>
 </section>
@@ -716,7 +723,7 @@ Levenberg-Marquardt loop is tens of passes where a match is one. What it does
 not do is grow. Each nuisance multiplies the grid again and adds one column
 to the Jacobian, so where the two cross is arithmetic; the memory has crossed
 already.</p>
-<img src="../../../_images/sphx_glr_03-nonlinear-least-squares_003.png" srcset="../../../_images/sphx_glr_03-nonlinear-least-squares_003.png" alt="time, memory" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7fd49452ef00&gt;
+<img src="../../../_images/sphx_glr_03-nonlinear-least-squares_003.png" srcset="../../../_images/sphx_glr_03-nonlinear-least-squares_003.png" alt="time, memory" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7ff57b3c2960&gt;
 </pre></div>
 </div>
 </section>
@@ -734,7 +741,7 @@ scores every atom.</p>
 <p>Equality constraints belong in the model, not in the bounds. Two fractions
 that must sum to one are written with one as the unknown and the other as
 <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">-</span> <span class="pre">f</span></code> inside the model, so the constraint holds at every iterate.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 12.910 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 12.556 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-02-parameter-inference-03-nonlinear-least-squares-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/02-parameter-inference/03-nonlinear-least-squares.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo1.svg" style="width: 150px;" />

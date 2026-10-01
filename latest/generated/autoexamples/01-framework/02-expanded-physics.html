@@ -274,9 +274,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.LorentzianSimulator.html">LorentzianSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.ASLSimulator.html">ASLSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.HyperechoSimulator.html">HyperechoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.StimulatedEchoSimulator.html">StimulatedEchoSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FLASHSimulator.html">FLASHSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.TrueFISPSimulator.html">TrueFISPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.fmSSFPSimulator.html">fmSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.CESTSimulator.html">CESTSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.bssfp_sim.html">bssfp_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.spgr_sim.html">spgr_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.fse_sim.html">fse_sim</a></li>
@@ -292,6 +298,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Refocusing.html">Refocusing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Inversion.html">Inversion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SampledPulse.html">SampledPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Readout.html">Readout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Delay.html">Delay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Dephase.html">Dephase</a></li>
@@ -628,7 +635,7 @@ a different readout to be visible, only the readout is changed.</p>
 efficiency. Every other field a voxel has can be given to it anyway, and
 giving one is what asks for its physics:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>declared: T1, T2, M0, B1, inv_efficiency
-accepted: T1, T2, M0, B1, inv_efficiency, B1phase, B0, T2prime, D, v, bound_fraction, bound_exchange, bound_T1, poolB_fraction, poolB_exchange, poolB_T1, poolB_T2, poolB_shift
+accepted: T1, T2, M0, B1, inv_efficiency, B1phase, B0, T2prime, D, v, bound_fraction, bound_exchange, bound_T1, poolB_fraction, poolB_exchange, poolB_T1, poolB_T2, poolB_shift, poolC_fraction, poolC_exchange, poolC_T1, poolC_T2, poolC_shift, poolD_fraction, poolD_exchange, poolD_T1, poolD_T2, poolD_shift, poolE_fraction, poolE_exchange, poolE_T1, poolE_T2, poolE_shift
 the sequence is written in: flip, TR, TI, phases
 </pre></div>
 </div>
@@ -642,7 +649,7 @@ makes ignoring it a bias in both.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">transmit</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.15</span><span class="p">]</span><span class="p">)</span><span class="w">
 </span><span class="n">scaled</span> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><span class="n">fingerprinting</span></a><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="o">*</span><span class="o">*</span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">WATER</span></a><span class="p">,</span> <span class="n">B1</span><span class="o">=</span><span class="n">transmit</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../../_images/sphx_glr_02-expanded-physics_001.png" srcset="../../../_images/sphx_glr_02-expanded-physics_001.png" alt="a transmit error reshapes the trajectory" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7fd4ad4e0ad0&gt;]
+<img src="../../../_images/sphx_glr_02-expanded-physics_001.png" srcset="../../../_images/sphx_glr_02-expanded-physics_001.png" alt="a transmit error reshapes the trajectory" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.legend.Legend object at 0x7ff580679160&gt;]
 </pre></div>
 </div>
 </section>
@@ -693,7 +700,7 @@ machine sees it, so a single pair of per-voxel buffers reaches the kernels.</p>
 <img src="../../../_images/sphx_glr_02-expanded-physics_002.png" srcset="../../../_images/sphx_glr_02-expanded-physics_002.png" alt="four channels a quarter turn apart, and the shim that finds them" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>  driven alike     [0.0, 0.0, 0.0]
   counter-rotated  [0.8234, 0.8765, 0.8949]
 
-[&lt;matplotlib.legend.Legend object at 0x7fd4a9de0bc0&gt;]
+[&lt;matplotlib.legend.Legend object at 0x7ff580677320&gt;]
 </pre></div>
 </div>
 <p>A shim belongs to the pulse rather than to the sequence: each RF event names
@@ -890,7 +897,7 @@ is left out of the kernel that is compiled and run.</p>
 <p>Every term above is one the kernels already carry. A term they do not – a
 third free pool, a gradient moment that varies down the train – is a change
 to the engine rather than a name in a call.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 29.382 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 25.016 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-01-framework-02-expanded-physics-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/01-framework/02-expanded-physics.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo.svg" style="width: 150px;" />

@@ -111,7 +111,7 @@ giving one is what asks for its physics:
  .. code-block:: none
 
       declared: T1, T2, M0, B1, inv_efficiency
-      accepted: T1, T2, M0, B1, inv_efficiency, B1phase, B0, T2prime, D, v, bound_fraction, bound_exchange, bound_T1, poolB_fraction, poolB_exchange, poolB_T1, poolB_T2, poolB_shift
+      accepted: T1, T2, M0, B1, inv_efficiency, B1phase, B0, T2prime, D, v, bound_fraction, bound_exchange, bound_T1, poolB_fraction, poolB_exchange, poolB_T1, poolB_T2, poolB_shift, poolC_fraction, poolC_exchange, poolC_T1, poolC_T2, poolC_shift, poolD_fraction, poolD_exchange, poolD_T1, poolD_T2, poolD_shift, poolE_fraction, poolE_exchange, poolE_T1, poolE_T2, poolE_shift
       the sequence is written in: flip, TR, TI, phases
 
 
@@ -150,7 +150,7 @@ makes ignoring it a bias in both.
  .. code-block:: none
 
 
-    [<matplotlib.legend.Legend object at 0x7fd4ad4e0ad0>]
+    [<matplotlib.legend.Legend object at 0x7ff580679160>]
 
 
 
@@ -225,7 +225,7 @@ machine sees it, so a single pair of per-voxel buffers reaches the kernels.
       driven alike     [0.0, 0.0, 0.0]
       counter-rotated  [0.8234, 0.8765, 0.8949]
 
-    [<matplotlib.legend.Legend object at 0x7fd4a9de0bc0>]
+    [<matplotlib.legend.Legend object at 0x7ff580677320>]
 
 
 
@@ -658,7 +658,7 @@ to the engine rather than a name in a call.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 29.382 seconds)
+   **Total running time of the script:** (0 minutes 25.016 seconds)
 
 
 .. _sphx_glr_download_generated_autoexamples_01-framework_02-expanded-physics.py:

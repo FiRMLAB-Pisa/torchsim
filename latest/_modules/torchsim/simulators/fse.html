@@ -269,9 +269,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.LorentzianSimulator.html">LorentzianSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.ASLSimulator.html">ASLSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.HyperechoSimulator.html">HyperechoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.StimulatedEchoSimulator.html">StimulatedEchoSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.FLASHSimulator.html">FLASHSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.TrueFISPSimulator.html">TrueFISPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.fmSSFPSimulator.html">fmSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.CESTSimulator.html">CESTSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.spgr_sim.html">spgr_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.fse_sim.html">fse_sim</a></li>
@@ -287,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Refocusing.html">Refocusing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Inversion.html">Inversion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SampledPulse.html">SampledPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Readout.html">Readout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Delay.html">Delay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Dephase.html">Dephase</a></li>
@@ -498,7 +505,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"FSESimulator"</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"FSESimulator"</span><span class="p">,</span> <span class="s2">"HyperechoSimulator"</span><span class="p">]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
@@ -563,6 +570,19 @@
 <span class="sd">        """</span>
         <span class="n">angles</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">as_torch</span><span class="p">(</span><span class="n">flip</span><span class="p">)))</span>
         <span class="n">turns</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">matched</span><span class="p">(</span><span class="n">phases</span><span class="p">,</span> <span class="n">angles</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_train</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">turns</span><span class="p">,</span> <span class="n">turns</span><span class="p">,</span> <span class="n">ESP</span><span class="p">,</span> <span class="n">exc_flip</span><span class="p">,</span> <span class="n">exc_phase</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_train</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">angles</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">turns</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">demodulation</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+        <span class="n">ESP</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">exc_flip</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">exc_phase</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""The excitation, then each refocusing pulse and the echo it forms."""</span>
         <span class="c1"># Not tensorized: a scalar spacing keeps the precision the caller</span>
         <span class="c1"># gave it, and the echo times are what the whole train is placed by.</span>
         <span class="n">spacing_s</span> <span class="o">=</span> <span class="n">ESP</span> <span class="o">*</span> <span class="mf">1e-3</span>
@@ -583,9 +603,12 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">refocusing</span><span class="p">(</span><span class="n">angles</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">index</span><span class="p">],</span> <span class="n">turns</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">index</span><span class="p">]),</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">echo_s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span><span class="n">turns</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">index</span><span class="p">])))</span>
-        <span class="k">return</span> <span class="n">parts</span></div>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">echo_s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span><span class="n">demodulation</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">index</span><span class="p">])))</span>
+        <span class="k">return</span> <span class="n">parts</span>
 
+    <span class="k">def</span><span class="w"> </span><span class="nf">_echoes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">played</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""How many echoes the train records."""</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">as_torch</span><span class="p">(</span><span class="n">played</span><span class="p">[</span><span class="s2">"flip"</span><span class="p">]))</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <div class="viewcode-block" id="FSESimulator.repetition_s">
 <a class="viewcode-back" href="../../../generated/torchsim.simulators.FSESimulator.html#torchsim.simulators.FSESimulator.repetition_s">[docs]</a>
@@ -601,7 +624,7 @@
 <span class="w">        </span><span class="sd">"""Simulate one train, then let it recover for what is left of the TR."""</span>
         <span class="n">played</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">played</span><span class="p">(</span><span class="o">**</span><span class="n">sequence</span><span class="p">)</span>
         <span class="n">signal</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">properties</span><span class="p">,</span> <span class="o">**</span><span class="n">sequence</span><span class="p">)</span>
-        <span class="n">echoes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">played</span><span class="p">[</span><span class="s2">"flip"</span><span class="p">])</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">echoes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_echoes</span><span class="p">(</span><span class="n">played</span><span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">beside</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">            </span><span class="sd">"""Put a value where the signal came back from.</span>
@@ -622,6 +645,92 @@
             <span class="n">density</span> <span class="o">=</span> <span class="n">density</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">density</span> <span class="o">*</span> <span class="n">signal</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">recovered</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">recovered</span> <span class="o">*</span> <span class="n">signal</span><span class="p">)</span></div>
 </div>
+
+
+
+<div class="viewcode-block" id="HyperechoSimulator">
+<a class="viewcode-back" href="../../../generated/torchsim.simulators.HyperechoSimulator.html#torchsim.simulators.HyperechoSimulator">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">HyperechoSimulator</span><span class="p">(</span><span class="n">FSESimulator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A refocused train mirrored about a central refocusing pulse.</span>
+
+<span class="sd">    The pulses after the central one replay those before it in reverse order,</span>
+<span class="sd">    each with the opposite flip angle about the opposite phase -- ``-alpha``</span>
+<span class="sd">    about ``-phi``, which is ``alpha`` at ``180 - phi`` degrees -- so every</span>
+<span class="sd">    coherence pathway the first half split is brought back by the last echo,</span>
+<span class="sd">    the hyperecho [1]_. But for relaxation, that echo is the full spin echo of</span>
+<span class="sd">    the excitation, whatever the flip angles before it. Every echo is</span>
+<span class="sd">    demodulated at zero phase, the axis of the central pulse. With one flip</span>
+<span class="sd">    angle at zero phase throughout, this is the sequence BART's ``epg`` plays</span>
+<span class="sd">    as Hyperecho.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Hennig, J., Scheffler, K., "Hyperechoes", Magnetic Resonance in</span>
+<span class="sd">       Medicine 46.1 (2001), pp. 6-12. https://doi.org/10.1002/mrm.1153</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. exec::</span>
+
+<span class="sd">        import torch</span>
+<span class="sd">        from torchsim.simulators import HyperechoSimulator</span>
+
+<span class="sd">        sequence = HyperechoSimulator(flip=60.0 * torch.ones(5), ESP=10.0)</span>
+<span class="sd">        signal = sequence.simulate(T1=1000.0, T2=80.0)</span>
+<span class="sd">        print(signal.shape)</span>
+
+<span class="sd">    """</span>
+
+    <span class="c1"># The hyperecho is brought back from the highest order the first half</span>
+    <span class="c1"># reached, so the orders are sized from the whole winding.</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="HyperechoSimulator.layout">
+<a class="viewcode-back" href="../../../generated/torchsim.simulators.HyperechoSimulator.html#torchsim.simulators.HyperechoSimulator.layout">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">layout</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">flip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
+        <span class="n">ESP</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
+        <span class="n">phases</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">refocusing</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">180.0</span><span class="p">,</span>
+        <span class="n">exc_flip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">90.0</span><span class="p">,</span>
+        <span class="n">exc_phase</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">90.0</span><span class="p">,</span>
+        <span class="n">TR</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span> <span class="o">=</span> <span class="mf">1e6</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the train, placed at the echo times it is timed from.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        flip : float or array-like</span>
+<span class="sd">            Flip angles in degrees of the refocusing pulses before the central</span>
+<span class="sd">            one, one per echo; the train holds twice as many and one more.</span>
+<span class="sd">        ESP : float or array-like</span>
+<span class="sd">            Echo spacing in milliseconds.</span>
+<span class="sd">        phases : float or array-like, optional</span>
+<span class="sd">            Phases in degrees of the refocusing pulses before the central one.</span>
+<span class="sd">        refocusing : float, optional</span>
+<span class="sd">            Flip angle in degrees of the central pulse, played at zero phase.</span>
+<span class="sd">        exc_flip, exc_phase : float, optional</span>
+<span class="sd">            The excitation, in degrees.</span>
+<span class="sd">        TR : float or array-like, optional</span>
+<span class="sd">            Repetition time in milliseconds, which sets how far the</span>
+<span class="sd">            longitudinal magnetization recovers before the next train.</span>
+<span class="sd">        """</span>
+        <span class="n">before</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">as_torch</span><span class="p">(</span><span class="n">flip</span><span class="p">)))</span>
+        <span class="n">turns</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">matched</span><span class="p">(</span><span class="n">phases</span><span class="p">,</span> <span class="n">before</span><span class="p">))</span>
+        <span class="n">central</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">before</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="mi">1</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span> <span class="o">*</span> <span class="n">refocusing</span><span class="p">)</span>
+        <span class="n">angles</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">before</span><span class="p">,</span> <span class="n">central</span><span class="p">,</span> <span class="n">before</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">turns</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">turns</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">central</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">-</span> <span class="n">turns</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_train</span><span class="p">(</span>
+            <span class="n">angles</span><span class="p">,</span> <span class="n">turns</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">turns</span><span class="p">),</span> <span class="n">ESP</span><span class="p">,</span> <span class="n">exc_flip</span><span class="p">,</span> <span class="n">exc_phase</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_echoes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">played</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_echoes</span><span class="p">(</span><span class="n">played</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span></div>
 
 </pre></div>
 

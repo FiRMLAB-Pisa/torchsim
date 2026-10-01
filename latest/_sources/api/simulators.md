@@ -42,9 +42,15 @@ Trains that have to be played out, run on the extended phase graph engine.
    :nosignatures:
 
    torchsim.simulators.FSESimulator
+   torchsim.simulators.HyperechoSimulator
+   torchsim.simulators.StimulatedEchoSimulator
    torchsim.simulators.MPRAGESimulator
    torchsim.simulators.MPnRAGESimulator
    torchsim.simulators.MRFSimulator
+   torchsim.simulators.FLASHSimulator
+   torchsim.simulators.TrueFISPSimulator
+   torchsim.simulators.fmSSFPSimulator
+   torchsim.simulators.CESTSimulator
 ```
 
 ## Functional wrappers

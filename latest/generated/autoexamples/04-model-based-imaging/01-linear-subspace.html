@@ -274,9 +274,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.LorentzianSimulator.html">LorentzianSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.ASLSimulator.html">ASLSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.HyperechoSimulator.html">HyperechoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.StimulatedEchoSimulator.html">StimulatedEchoSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FLASHSimulator.html">FLASHSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.TrueFISPSimulator.html">TrueFISPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.fmSSFPSimulator.html">fmSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.CESTSimulator.html">CESTSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.bssfp_sim.html">bssfp_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.spgr_sim.html">spgr_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.fse_sim.html">fse_sim</a></li>
@@ -292,6 +298,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Refocusing.html">Refocusing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Inversion.html">Inversion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SampledPulse.html">SampledPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Readout.html">Readout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Delay.html">Delay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Dephase.html">Dephase</a></li>
@@ -809,7 +816,7 @@ tensor([[ 51.9840,  73.3066,  67.2144,  ...,  86.2525,  60.3607,  35.2305],
         [ 30.6613,  66.4529, 121.2826,  ...,  64.1683,  65.6914,  71.7836],
         ...,
         [ 33.7074,  20.0000, 105.2906,  ...,  76.3527,  50.4609,  81.6834],
-        [ 82.4449, 161.6433, 157.0742,  ..., 110.6212,  50.4609,  38.2766],
+        [ 82.4449, 160.8818, 157.0742,  ..., 110.6212,  50.4609,  38.2766],
         [ 93.1062,  84.7295, 110.6212,  ..., 115.9519, 205.0501, 119.7595]])
 </pre></div>
 </div>
@@ -832,7 +839,7 @@ because the basis must span the product of the ranges. Both cases put the
 model inside the operator, which is the nonlinear route.</p>
 <p>The rank is not a guess: <a class="reference internal" href="../../torchsim.Subspace.html#torchsim.Subspace.retained" title="torchsim.Subspace.retained"><code class="xref py py-attr docutils literal notranslate"><span class="pre">retained</span></code></a> says what a
 basis keeps before anything is projected through it.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.099 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.905 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-04-model-based-imaging-01-linear-subspace-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/04-model-based-imaging/01-linear-subspace.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo3.svg" style="width: 150px;" />

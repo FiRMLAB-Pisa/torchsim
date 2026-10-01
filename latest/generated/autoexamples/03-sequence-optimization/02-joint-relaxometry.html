@@ -274,9 +274,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.LorentzianSimulator.html">LorentzianSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.ASLSimulator.html">ASLSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.HyperechoSimulator.html">HyperechoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.StimulatedEchoSimulator.html">StimulatedEchoSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FLASHSimulator.html">FLASHSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.TrueFISPSimulator.html">TrueFISPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.fmSSFPSimulator.html">fmSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.CESTSimulator.html">CESTSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.bssfp_sim.html">bssfp_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.spgr_sim.html">spgr_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.fse_sim.html">fse_sim</a></li>
@@ -292,6 +298,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Refocusing.html">Refocusing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Inversion.html">Inversion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SampledPulse.html">SampledPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Readout.html">Readout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Delay.html">Delay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Dephase.html">Dephase</a></li>
@@ -687,7 +694,7 @@ what the scanner will play and are enforced exactly.</p>
 value itself.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>published spread   sigma(T1)/T1 = 11.0%, 12.9%   sigma(T2)/T2 = 10.1%, 12.1%
 designed           sigma(T1)/T1 = 7.4%, 8.9%   sigma(T2)/T2 = 7.4%, 9.1%
-designed in 4.8 s
+designed in 4.0 s
 </pre></div>
 </div>
 </section>
@@ -695,7 +702,7 @@ designed in 4.8 s
 <h2>Optimized schedule<a class="headerlink" href="#optimized-schedule" title="Link to this heading">#</a></h2>
 <p>What the scanner is handed: eight scans, four spoiled and four balanced, each
 differing only in flip angle. Before and after.</p>
-<img src="../../../_images/sphx_glr_02-joint-relaxometry_001.png" srcset="../../../_images/sphx_glr_02-joint-relaxometry_001.png" alt="SPGR block, bSSFP block" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7fd4a01a9a60&gt;
+<img src="../../../_images/sphx_glr_02-joint-relaxometry_001.png" srcset="../../../_images/sphx_glr_02-joint-relaxometry_001.png" alt="SPGR block, bSSFP block" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend object at 0x7ff582cd3aa0&gt;
 </pre></div>
 </div>
 </section>
@@ -774,7 +781,7 @@ standard deviation the bound was computed with.</p>
 </span><span class="w">
 </span><a class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="dict"><span class="n">maps</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-torchsim sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.NonlinearLeastSquares.html#torchsim.NonlinearLeastSquares" title="torchsim.NonlinearLeastSquares"><span class="n">problem</span></a><span class="p">(</span><span class="n">measured</span><span class="p">)</span>  <span class="c1"># {&quot;T1&quot;: ..., &quot;T2&quot;: ..., &quot;M0&quot;: ..., &quot;B0&quot;: ...}</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>38980 joint fits in 3.9 s
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>38980 joint fits in 3.7 s
 </pre></div>
 </div>
 <p>The bound was computed for two tissues; the slice has thousands. Evaluated at
@@ -829,7 +836,7 @@ estimation”, Magnetic Resonance in Medicine 79.1 (2018), pp. 234-245.
 <a class="reference external" href="https://doi.org/10.1002/mrm.26670">https://doi.org/10.1002/mrm.26670</a></p>
 </aside>
 </aside>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 12.382 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 11.140 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-03-sequence-optimization-02-joint-relaxometry-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/03-sequence-optimization/02-joint-relaxometry.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo2.svg" style="width: 150px;" />

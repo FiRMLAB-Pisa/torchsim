@@ -274,9 +274,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.LorentzianSimulator.html">LorentzianSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.ASLSimulator.html">ASLSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.HyperechoSimulator.html">HyperechoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.StimulatedEchoSimulator.html">StimulatedEchoSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.FLASHSimulator.html">FLASHSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.TrueFISPSimulator.html">TrueFISPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.fmSSFPSimulator.html">fmSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.simulators.CESTSimulator.html">CESTSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.spgr_sim.html">spgr_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.fse_sim.html">fse_sim</a></li>
@@ -292,6 +298,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Refocusing.html">Refocusing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Inversion.html">Inversion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SampledPulse.html">SampledPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Readout.html">Readout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Delay.html">Delay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.Dephase.html">Dephase</a></li>
@@ -591,7 +598,10 @@ returning the events it plays and how long it holds the timeline, and <code clas
 composes two into one – so a preparation or a readout TorchSim does not ship
 reaches the fused kernels with no change to them.</p>
 <p>The five readouts differ only in what they play around the sample, which is
-what separates a spoiled, an unbalanced, a balanced and a refocused train.</p>
+what separates a spoiled, an unbalanced, a balanced and a refocused train.
+<a class="reference internal" href="../generated/torchsim.SampledPulse.html#torchsim.SampledPulse" title="torchsim.SampledPulse"><code class="xref py py-func docutils literal notranslate"><span class="pre">SampledPulse()</span></code></a> plays a waveform as one hard pulse per sample, with
+relaxation, precession and exchange between samples, for a pulse whose
+duration matters to the signal.</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.Operator.html#torchsim.Operator" title="torchsim.Operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Operator</span></code></a></p></td>
@@ -609,31 +619,34 @@ what separates a spoiled, an unbalanced, a balanced and a refocused train.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.Saturation.html#torchsim.Saturation" title="torchsim.Saturation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Saturation</span></code></a></p></td>
 <td><p>Return an off-resonance pulse that deposits power in a semisolid pool.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../generated/torchsim.Readout.html#torchsim.Readout" title="torchsim.Readout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Readout</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/torchsim.SampledPulse.html#torchsim.SampledPulse" title="torchsim.SampledPulse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SampledPulse</span></code></a></p></td>
+<td><p>Return a pulse played as one hard pulse per sample, with free precession between.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.Readout.html#torchsim.Readout" title="torchsim.Readout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Readout</span></code></a></p></td>
 <td><p>Return one sample of the transverse magnetization, demodulated by a phase.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Delay</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/torchsim.Delay.html#torchsim.Delay" title="torchsim.Delay"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Delay</span></code></a></p></td>
 <td><p>Return time passing, and whatever the sequence plays across it.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../generated/torchsim.Dephase.html#torchsim.Dephase" title="torchsim.Dephase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dephase</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.Dephase.html#torchsim.Dephase" title="torchsim.Dephase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dephase</span></code></a></p></td>
 <td><p>Return an unbalanced gradient, taking no time to play.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.Spoil.html#torchsim.Spoil" title="torchsim.Spoil"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Spoil</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/torchsim.Spoil.html#torchsim.Spoil" title="torchsim.Spoil"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Spoil</span></code></a></p></td>
 <td><p>Return ideal transverse spoiling, taking no time to play.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../generated/torchsim.bSSFPReadout.html#torchsim.bSSFPReadout" title="torchsim.bSSFPReadout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bSSFPReadout</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.bSSFPReadout.html#torchsim.bSSFPReadout" title="torchsim.bSSFPReadout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bSSFPReadout</span></code></a></p></td>
 <td><p>Return a sample the repetition rewinds after.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.SSFPFidReadout.html#torchsim.SSFPFidReadout" title="torchsim.SSFPFidReadout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSFPFidReadout</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/torchsim.SSFPFidReadout.html#torchsim.SSFPFidReadout" title="torchsim.SSFPFidReadout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSFPFidReadout</span></code></a></p></td>
 <td><p>Return a sample followed by one unbalanced gradient.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../generated/torchsim.SSFPEchoReadout.html#torchsim.SSFPEchoReadout" title="torchsim.SSFPEchoReadout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSFPEchoReadout</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.SSFPEchoReadout.html#torchsim.SSFPEchoReadout" title="torchsim.SSFPEchoReadout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SSFPEchoReadout</span></code></a></p></td>
 <td><p>Return one unbalanced gradient, then the sample the echo forms at.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.SPGRReadout.html#torchsim.SPGRReadout" title="torchsim.SPGRReadout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SPGRReadout</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/torchsim.SPGRReadout.html#torchsim.SPGRReadout" title="torchsim.SPGRReadout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SPGRReadout</span></code></a></p></td>
 <td><p>Return a sample followed by ideal transverse spoiling.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../generated/torchsim.FSEReadout.html#torchsim.FSEReadout" title="torchsim.FSEReadout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FSEReadout</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.FSEReadout.html#torchsim.FSEReadout" title="torchsim.FSEReadout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FSEReadout</span></code></a></p></td>
 <td><p>Return the sample at a spin echo, marked as the echo centre.</p></td>
 </tr>
 </tbody>

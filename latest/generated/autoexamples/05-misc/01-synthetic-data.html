@@ -274,9 +274,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.LorentzianSimulator.html">LorentzianSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.ASLSimulator.html">ASLSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.HyperechoSimulator.html">HyperechoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.StimulatedEchoSimulator.html">StimulatedEchoSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.FLASHSimulator.html">FLASHSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.TrueFISPSimulator.html">TrueFISPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.fmSSFPSimulator.html">fmSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.simulators.CESTSimulator.html">CESTSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.bssfp_sim.html">bssfp_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.spgr_sim.html">spgr_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.fse_sim.html">fse_sim</a></li>
@@ -292,6 +298,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Refocusing.html">Refocusing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Inversion.html">Inversion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../torchsim.SampledPulse.html">SampledPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Readout.html">Readout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Delay.html">Delay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../torchsim.Dephase.html">Dephase</a></li>
@@ -661,28 +668,31 @@ under the home directory.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.PosixPath" title="pathlib.PosixPath"><span class="n">CACHE</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-method reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path.home" title="pathlib.Path.home"><span class="n">Path</span><span class="o">.</span><span class="n">home</span></a><span class="p">(</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">.cache</span><span class="s2">&quot;</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">torchsim</span><span class="s2">&quot;</span> <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">ixi-tiny</span><span class="s2">&quot;</span><span class="w">
 </span><span class="n">subject</span> <span class="o">=</span> <a class="sphx-glr-backref-module-typing sphx-glr-backref-type-py-class reference external" href="https://docs.python.org/3/library/typing.html#typing.Generic" title="typing.Generic"><span class="n">tio</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">IXITiny</span></a><span class="p">(</span><span class="nb">str</span><span class="p">(</span><a class="sphx-glr-backref-module-pathlib sphx-glr-backref-type-py-class sphx-glr-backref-instance reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.PosixPath" title="pathlib.PosixPath"><span class="n">CACHE</span></a><span class="p">)</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Downloading https://www.dropbox.com/s/ogxjwjxdv5mieah/ixi_tiny.zip?dl=1 to /tmp/tmpo8d3amzw.zip
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Downloading https://www.dropbox.com/s/ogxjwjxdv5mieah/ixi_tiny.zip?dl=1 to /tmp/tmp5ndtp5gm.zip
 
 0it [00:00, ?it/s]
   0%|          | 0/233926107 [00:01&lt;?, ?it/s]
-  0%|          | 663552/233926107 [00:01&lt;00:35, 6614174.51it/s]
-  4%|▍         | 9641984/233926107 [00:01&lt;00:04, 55456117.04it/s]
- 12%|█▏        | 28196864/233926107 [00:01&lt;00:01, 112326994.80it/s]
- 16%|█▌        | 37797888/233926107 [00:02&lt;00:02, 88260404.17it/s]
- 22%|██▏       | 51560448/233926107 [00:02&lt;00:01, 100990841.70it/s]
- 28%|██▊       | 65544192/233926107 [00:02&lt;00:01, 112093991.71it/s]
- 33%|███▎      | 76652544/233926107 [00:02&lt;00:01, 101775887.88it/s]
- 39%|███▉      | 91537408/233926107 [00:02&lt;00:01, 115059092.33it/s]
- 46%|████▌     | 106856448/233926107 [00:02&lt;00:01, 126011108.69it/s]
- 53%|█████▎    | 123125760/233926107 [00:02&lt;00:00, 136586797.47it/s]
- 59%|█████▉    | 138764288/233926107 [00:02&lt;00:00, 142390156.23it/s]
- 66%|██████▌   | 154714112/233926107 [00:02&lt;00:00, 145919772.31it/s]
- 72%|███████▏  | 169418752/233926107 [00:03&lt;00:00, 131966215.60it/s]
- 78%|███████▊  | 182935552/233926107 [00:03&lt;00:00, 130926758.99it/s]
- 85%|████████▌ | 198918144/233926107 [00:03&lt;00:00, 135323571.11it/s]
- 91%|█████████▏| 213917696/233926107 [00:03&lt;00:00, 103649576.77it/s]
- 99%|█████████▊| 230490112/233926107 [00:03&lt;00:00, 117242102.29it/s]
-233930752it [00:03, 61542086.69it/s]
+  5%|▌         | 12591104/233926107 [00:01&lt;00:01, 117301551.20it/s]
+ 11%|█         | 25174016/233926107 [00:01&lt;00:01, 121025473.15it/s]
+ 17%|█▋        | 40288256/233926107 [00:01&lt;00:01, 134474906.63it/s]
+ 22%|██▏       | 51945472/233926107 [00:01&lt;00:01, 116113307.08it/s]
+ 28%|██▊       | 65126400/233926107 [00:01&lt;00:01, 118312352.58it/s]
+ 34%|███▍      | 80084992/233926107 [00:01&lt;00:01, 128275577.92it/s]
+ 40%|███▉      | 92577792/233926107 [00:02&lt;00:01, 126071841.21it/s]
+ 45%|████▍     | 104964096/233926107 [00:02&lt;00:01, 122201776.05it/s]
+ 50%|█████     | 117047296/233926107 [00:02&lt;00:01, 108053118.76it/s]
+ 55%|█████▍    | 128016384/233926107 [00:02&lt;00:01, 101966761.75it/s]
+ 59%|█████▉    | 138354688/233926107 [00:02&lt;00:00, 97524103.18it/s]
+ 63%|██████▎   | 148209664/233926107 [00:02&lt;00:00, 93556543.74it/s]
+ 67%|██████▋   | 157827072/233926107 [00:02&lt;00:00, 90496627.58it/s]
+ 72%|███████▏  | 167706624/233926107 [00:02&lt;00:00, 92725530.16it/s]
+ 76%|███████▌  | 177037312/233926107 [00:02&lt;00:00, 89028588.75it/s]
+ 80%|████████  | 187301888/233926107 [00:03&lt;00:00, 88538574.44it/s]
+ 84%|████████▍ | 197156864/233926107 [00:03&lt;00:00, 91270951.80it/s]
+ 88%|████████▊ | 206340096/233926107 [00:03&lt;00:00, 87748779.17it/s]
+ 92%|█████████▏| 215957504/233926107 [00:03&lt;00:00, 90084257.10it/s]
+ 96%|█████████▋| 225198080/233926107 [00:03&lt;00:00, 87347689.35it/s]
+233930752it [00:03, 61957480.37it/s]
 </pre></div>
 </div>
 </section>
@@ -762,7 +772,7 @@ sixteen thousand.</p>
 </span><span class="w">
 </span><span class="n">per_class</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><a class="sphx-glr-backref-module-torchsim-simulators sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../torchsim.simulators.MRFSimulator.html#torchsim.simulators.MRFSimulator" title="torchsim.simulators.MRFSimulator"><span class="n">simulator</span></a><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">flip</span><span class="o">=</span><span class="n">schedule</span><span class="p">)</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>3 classes x 400 frames in 0.4s -&gt; (3, 400)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>3 classes x 400 frames in 0.5s -&gt; (3, 400)
 </pre></div>
 </div>
 </section>
@@ -812,7 +822,7 @@ twenty-one-fold undersampled, which is how MRF is run.</p>
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>400 arms built in 3.8s
-forward NUFFT 3.6s -&gt; (400, 8, 768)
+forward NUFFT 4.2s -&gt; (400, 8, 768)
 </pre></div>
 </div>
 <p>Eight birdcage sensitivities, and one spiral arm per frame rotated so that
@@ -830,7 +840,7 @@ here because the maps are known. A real pipeline would estimate them.</p>
 </span>    <span class="n">weights</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="p">)</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e-6</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>adjoint and combine 4.1s
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>adjoint and combine 4.8s
 </pre></div>
 </div>
 </section>
@@ -895,7 +905,7 @@ instead of the spiral and the sine generated here;</p></li>
 <p>The tissue table is the one thing decided rather than read. A relaxometry
 protocol on the same subject would fill it from data, which is what the
 parameter-inference notebooks do.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 12.806 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (2 minutes 15.845 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-generated-autoexamples-05-misc-01-synthetic-data-py">
 <div class="binder-badge docutils container">
 <a class="reference external image-reference" href="https://mybinder.org/v2/gh/firmlab-pisa/torchsim/gh-pages?urlpath=lab/tree/latest/examples/generated/autoexamples/05-misc/01-synthetic-data.ipynb"><img alt="Launch binder" src="../../../_images/binder_badge_logo4.svg" style="width: 150px;" />

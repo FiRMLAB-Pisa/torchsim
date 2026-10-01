@@ -269,9 +269,15 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.LorentzianSimulator.html">LorentzianSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.ASLSimulator.html">ASLSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.FSESimulator.html">FSESimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.HyperechoSimulator.html">HyperechoSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.StimulatedEchoSimulator.html">StimulatedEchoSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPRAGESimulator.html">MPRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MPnRAGESimulator.html">MPnRAGESimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.MRFSimulator.html">MRFSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.FLASHSimulator.html">FLASHSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.TrueFISPSimulator.html">TrueFISPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.fmSSFPSimulator.html">fmSSFPSimulator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.simulators.CESTSimulator.html">CESTSimulator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.bssfp_sim.html">bssfp_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.spgr_sim.html">spgr_sim</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.fse_sim.html">fse_sim</a></li>
@@ -287,6 +293,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Refocusing.html">Refocusing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Inversion.html">Inversion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Saturation.html">Saturation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.SampledPulse.html">SampledPulse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Readout.html">Readout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Delay.html">Delay</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../generated/torchsim.Dephase.html">Dephase</a></li>
@@ -534,6 +541,7 @@
     <span class="s2">"SPGRReadout"</span><span class="p">,</span>
     <span class="s2">"SSFPEchoReadout"</span><span class="p">,</span>
     <span class="s2">"SSFPFidReadout"</span><span class="p">,</span>
+    <span class="s2">"SampledPulse"</span><span class="p">,</span>
     <span class="s2">"Saturation"</span><span class="p">,</span>
     <span class="s2">"Spoil"</span><span class="p">,</span>
     <span class="s2">"bSSFPReadout"</span><span class="p">,</span>
@@ -785,6 +793,126 @@
 
 
 
+<div class="viewcode-block" id="SampledPulse">
+<a class="viewcode-back" href="../../../generated/torchsim.SampledPulse.html#torchsim.SampledPulse">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">SampledPulse</span><span class="p">(</span>
+    <span class="n">waveform_rad_per_s</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">dwell_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">phase_rad</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">offset_hz</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">definition_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">shim_id</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Operator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return a pulse played as one hard pulse per sample, with free precession between.</span>
+
+<span class="sd">    Each sample of the waveform turns the magnetization through its own area</span>
+<span class="sd">    at the middle of its dwell, and between two samples the magnetization</span>
+<span class="sd">    precesses at each pool's own frequency, relaxes and exchanges. This is the</span>
+<span class="sd">    hard-pulse approximation [1]_, second order in the dwell with the turns</span>
+<span class="sd">    centred; it is what a pulse needs whenever relaxation or exchange during</span>
+<span class="sd">    it matters, a saturation pulse above all, which an instantaneous rotation</span>
+<span class="sd">    leaves out.</span>
+
+<span class="sd">    A real waveform turns through its signed area, so the negative lobes of a</span>
+<span class="sd">    sinc turn the other way; a complex one turns about the axis its phase</span>
+<span class="sd">    names. Played ``offset_hz`` off the centre frequency, the axis advances by</span>
+<span class="sd">    ``-2 pi offset_hz`` radians per second from the start of the pulse, which</span>
+<span class="sd">    puts a voxel whose ``B0`` is the offset on resonance. A ``phase_rad`` or</span>
+<span class="sd">    ``offset_hz`` with one value per train plays one train per value.</span>
+
+<span class="sd">    Every sample names ``definition_id``, which decides what it deposits in a</span>
+<span class="sd">    semisolid pool: the ideal definition deposits nothing, and a rectangular</span>
+<span class="sd">    one a dwell long deposits what the sample does. A semisolid pool reads its</span>
+<span class="sd">    lineshape at the offset, so a definition other than the ideal one takes a</span>
+<span class="sd">    single offset for every train.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    waveform_rad_per_s : array-like or torch.Tensor</span>
+<span class="sd">        The nutation rate, gamma times B1, one sample per dwell, in rad/s.</span>
+<span class="sd">    dwell_s : float</span>
+<span class="sd">        How long each sample is held, in seconds.</span>
+<span class="sd">    phase_rad : float or torch.Tensor, optional</span>
+<span class="sd">        The phase the whole pulse is played at.</span>
+<span class="sd">    offset_hz : float or torch.Tensor, optional</span>
+<span class="sd">        How far off the centre frequency the pulse is played.</span>
+<span class="sd">    definition_id, shim_id : int, optional</span>
+<span class="sd">        The definition and transmit shim every sample names.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Operator</span>
+<span class="sd">        The pulse, holding the timeline for every sample's dwell.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the waveform is empty or the dwell is not positive, or if a</span>
+<span class="sd">        definition other than the ideal one is played at more than one</span>
+<span class="sd">        offset.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [1] Pauly, J., Le Roux, P., Nishimura, D., Macovski, A., "Parameter</span>
+<span class="sd">       relations for the Shinnar-Le Roux selective excitation pulse design</span>
+<span class="sd">       algorithm", IEEE Transactions on Medical Imaging 10.1 (1991),</span>
+<span class="sd">       pp. 53-65. https://doi.org/10.1109/42.75611</span>
+<span class="sd">    """</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">waveform_rad_per_s</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">samples</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">samples</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"a sampled pulse is a non-empty one-dimensional waveform"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">float</span><span class="p">(</span><span class="n">dwell_s</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"dwell_s must be positive, not </span><span class="si">{</span><span class="n">dwell_s</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">offset_hz</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">definition_id</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">offset</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"a semisolid pool reads its lineshape at one offset, so a sampled "</span>
+            <span class="s2">"pulse naming a definition is played at one offset for every train"</span>
+        <span class="p">)</span>
+    <span class="n">frequency_hz</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">offset</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">offset</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="mf">0.0</span>
+    <span class="k">if</span> <span class="n">samples</span><span class="o">.</span><span class="n">is_complex</span><span class="p">():</span>
+        <span class="n">areas</span> <span class="o">=</span> <span class="n">samples</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">*</span> <span class="n">dwell_s</span>
+        <span class="n">turns</span> <span class="o">=</span> <span class="n">samples</span><span class="o">.</span><span class="n">angle</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">areas</span> <span class="o">=</span> <span class="n">samples</span> <span class="o">*</span> <span class="n">dwell_s</span>
+        <span class="n">turns</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">middle_s</span> <span class="o">=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">samples</span><span class="o">.</span><span class="n">numel</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">dwell_s</span>
+    <span class="n">phases</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">phase_rad</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="o">+</span> <span class="n">turns</span>
+        <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">offset</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">middle_s</span>
+    <span class="p">)</span>
+    <span class="c1"># A value per train leads the axis a train count is read from, and a</span>
+    <span class="c1"># plain number stays one so a train of a thousand samples packs as fast</span>
+    <span class="c1"># as a train of a thousand ideal pulses.</span>
+    <span class="n">flips</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">areas</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="k">if</span> <span class="n">areas</span><span class="o">.</span><span class="n">requires_grad</span> <span class="k">else</span> <span class="n">areas</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">phases</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">:</span>
+        <span class="n">per_sample</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">phases</span><span class="o">.</span><span class="n">movedim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">phases</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">per_sample</span> <span class="o">=</span> <span class="n">phases</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">per_sample</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">phases</span><span class="o">.</span><span class="n">movedim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unbind</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">offsets_s</span> <span class="o">=</span> <span class="n">middle_s</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">emit</span><span class="p">(</span><span class="n">start_s</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">SequenceEvent</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">SequenceEvent</span><span class="o">.</span><span class="n">rf</span><span class="p">(</span>
+                <span class="n">_TO_US</span> <span class="o">*</span> <span class="p">(</span><span class="n">start_s</span> <span class="o">+</span> <span class="n">at_s</span><span class="p">),</span>
+                <span class="n">definition_id</span><span class="p">,</span>
+                <span class="n">RfUse</span><span class="o">.</span><span class="n">EXCITATION</span><span class="p">,</span>
+                <span class="n">flip</span><span class="p">,</span>
+                <span class="n">phase</span><span class="p">,</span>
+                <span class="n">frequency_hz</span><span class="p">,</span>
+                <span class="n">shim_id</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">at_s</span><span class="p">,</span> <span class="n">flip</span><span class="p">,</span> <span class="n">phase</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">offsets_s</span><span class="p">,</span> <span class="n">flips</span><span class="p">,</span> <span class="n">per_sample</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Operator</span><span class="p">(</span><span class="n">emit</span><span class="p">,</span> <span class="n">samples</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">*</span> <span class="n">dwell_s</span><span class="p">)</span></div>
+
+
+
 <div class="viewcode-block" id="Readout">
 <a class="viewcode-back" href="../../../generated/torchsim.Readout.html#torchsim.Readout">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">Readout</span><span class="p">(</span>
@@ -1001,6 +1129,7 @@
     <span class="s2">"refocusing"</span><span class="p">:</span> <span class="n">Refocusing</span><span class="p">,</span>
     <span class="s2">"inversion"</span><span class="p">:</span> <span class="n">Inversion</span><span class="p">,</span>
     <span class="s2">"saturation"</span><span class="p">:</span> <span class="n">Saturation</span><span class="p">,</span>
+    <span class="s2">"sampled-pulse"</span><span class="p">:</span> <span class="n">SampledPulse</span><span class="p">,</span>
     <span class="s2">"readout"</span><span class="p">:</span> <span class="n">Readout</span><span class="p">,</span>
     <span class="s2">"delay"</span><span class="p">:</span> <span class="n">Delay</span><span class="p">,</span>
     <span class="s2">"dephase"</span><span class="p">:</span> <span class="n">Dephase</span><span class="p">,</span>
