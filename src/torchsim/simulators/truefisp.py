@@ -8,8 +8,8 @@ import numpy.typing as npt
 import torch
 
 from ..model import Simulator, SpinPhysics
-from ..sequence import Readout, SampledPulse, module
-from ._pulses import half_alpha_parts, inversion_parts, windowed_sinc
+from ..sequence import Readout, module
+from ._pulses import excitation, half_alpha_parts, inversion_parts
 from .flash import _per_shot
 
 
@@ -23,8 +23,10 @@ class TrueFISPSimulator(Simulator):
     recovery curve carries T1, T2 and the proton density together [2]_. Every
     pulse is a windowed sinc played sample by sample, so the magnetization
     relaxes, precesses off resonance and exchanges between pools while it
-    plays. This is the sequence BART's ``sim`` plays as ``BSSFP`` and
-    ``IR-BSSFP``.
+    plays, unless ``pulse_duration`` is zero and each is an instantaneous
+    rotation. This is the sequence BART's ``sim`` plays as ``BSSFP`` and
+    ``IR-BSSFP``, and with instantaneous pulses the one its ``epg`` plays as
+    bSSFP.
 
     References
     ----------
@@ -94,7 +96,8 @@ class TrueFISPSimulator(Simulator):
             Echo time in milliseconds, from the centre of the pulse; half the
             repetition time when not given, where a balanced train refocuses.
         pulse_duration : float, optional
-            Duration of each pulse in milliseconds.
+            Duration of each pulse in milliseconds. Zero plays each as an
+            instantaneous rotation.
         bandwidth_time : float, optional
             Zero crossings of the Hamming-windowed sinc across the pulse.
         half_alpha : bool, optional
@@ -137,7 +140,7 @@ class TrueFISPSimulator(Simulator):
                 "half the pulse and ends before the next one begins"
             )
         angles = _per_shot(flip, nshots)
-        shape = windowed_sinc(1.0, pulse_s, dwell_s, bandwidth_time=bandwidth_time)
+        pulse = excitation(pulse_s, dwell_s, bandwidth_time=bandwidth_time)
         parts = inversion_parts(
             inversion,
             duration_s=1e-3 * inversion_duration,
@@ -158,7 +161,7 @@ class TrueFISPSimulator(Simulator):
             turn = torch.pi * (shot % 2)
             parts.append(
                 module(
-                    SampledPulse(angle * shape, dwell_s, phase_rad=turn),
+                    pulse(angle, turn),
                     (pulse_s / 2 + echo_s, Readout(turn)),
                     duration_s=repetition_s,
                 )

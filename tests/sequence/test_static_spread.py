@@ -21,6 +21,7 @@ import torch
 
 from torchsim.sequence import (
     EpgEngine,
+    EventAction,
     TissueProperties,
     _builders,
 )
@@ -29,7 +30,13 @@ from torchsim.sequence._description import (
     SequenceDescription,
     ideal_rf_definition,
 )
-from torchsim.sequence._operators import Excitation, Readout, Refocusing, compose
+from torchsim.sequence._operators import (
+    Dephase,
+    Excitation,
+    Readout,
+    Refocusing,
+    compose,
+)
 
 T1_MS, T2_MS = 1000.0, 80.0
 T2_PRIME_MS = 25.0
@@ -65,6 +72,56 @@ def _sampled_spin_echo(echoes: int = 4) -> SequenceDescription:
         tr_duration_us=1e6 * echoes * SPACING_S,
         events=events,
         rf_definitions={0: ideal_rf_definition()},
+    )
+
+
+def _described(modules: list, duration_s: float) -> SequenceDescription:
+    events, _ = compose(*modules)
+    return SequenceDescription(
+        subsequence_index=0,
+        tr_duration_us=1e6 * duration_s,
+        events=events,
+        rf_definitions={0: ideal_rf_definition()},
+    )
+
+
+def _crushed_between_pulses(echoes: int = 4) -> SequenceDescription:
+    """A spin-echo train whose crushers are played midway into each gap."""
+    modules: list = [(0.0, Excitation(torch.pi / 2, torch.pi / 2))]
+    for index in range(echoes):
+        pulse_s = (index + 0.5) * SPACING_S
+        modules += [
+            (pulse_s - 0.25 * SPACING_S, Dephase()),
+            (pulse_s, Refocusing(torch.pi * 0.8, 0.0, crushed=False)),
+            (pulse_s + 0.25 * SPACING_S, Dephase()),
+            (pulse_s + 0.5 * SPACING_S, Readout(0.0, is_echo=True)),
+        ]
+    return _described(modules, echoes * SPACING_S)
+
+
+def _crushed_at_pulses(echoes: int = 4) -> SequenceDescription:
+    modules: list = [(0.0, Excitation(torch.pi / 2, torch.pi / 2))]
+    for index in range(echoes):
+        pulse_s = (index + 0.5) * SPACING_S
+        modules += [
+            (pulse_s, Refocusing(torch.pi * 0.8, 0.0)),
+            (pulse_s + 0.5 * SPACING_S, Readout(0.0, is_echo=True)),
+        ]
+    return _described(modules, echoes * SPACING_S)
+
+
+def _stimulated_echo(mixing_s: float = 30e-3) -> SequenceDescription:
+    """The spin echo of two pulses, spoiled, then the stimulated echo of a third."""
+    return _described(
+        [
+            (0.0, Excitation(torch.pi / 3, 0.0)),
+            (0.5 * SPACING_S, Refocusing(torch.pi / 2, 0.0)),
+            (SPACING_S, Readout(0.0, action=EventAction.SPOIL_AFTER)),
+            (0.5 * SPACING_S + mixing_s, Excitation(torch.pi / 2, 0.0)),
+            (0.75 * SPACING_S + mixing_s, Dephase()),
+            (SPACING_S + mixing_s, Readout(0.0, is_echo=True)),
+        ],
+        SPACING_S + mixing_s,
     )
 
 
@@ -188,6 +245,27 @@ def test_the_spread_comes_back_either_side_of_an_echo():
     offsets_s = np.tile(np.abs(OFFSETS_S), len(ratio) // len(OFFSETS_S))
     expected = np.exp(-offsets_s / (T2_PRIME_MS * 1e-3))
     assert np.abs(ratio - expected).max() < 1e-5
+
+
+def test_a_crusher_between_pulses_winds_as_one_beside_the_pulse():
+    """Where in the gap a crusher plays changes nothing a sample can see."""
+    beside = _crushed_at_pulses()
+    between = _crushed_between_pulses()
+    for tissue in ({"b0_hz": 31.0}, {"t2_prime_ms": T2_PRIME_MS}):
+        expected = _signal(beside, **tissue)
+        np.testing.assert_allclose(
+            _signal(between, **tissue), expected, atol=1e-6 * np.abs(expected).max()
+        )
+
+
+def test_a_stimulated_echo_is_left_exactly_as_it_stands():
+    """Its coherence spent as long dephasing before the store as after it."""
+    description = _stimulated_echo()
+    plain = _signal(description)
+    for tissue in ({"b0_hz": 31.0}, {"t2_prime_ms": T2_PRIME_MS}):
+        np.testing.assert_allclose(
+            _signal(description, **tissue), plain, atol=1e-6 * np.abs(plain).max()
+        )
 
 
 def test_a_sequence_that_does_not_wind_at_one_rate_refuses_the_spread():

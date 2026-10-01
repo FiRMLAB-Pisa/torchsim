@@ -107,6 +107,24 @@ def inversion_parts(
     return parts
 
 
+def excitation(
+    duration_s: float, dwell_s: float, *, bandwidth_time: float = 4.0
+) -> Any:
+    """What plays an excitation of a given flip and phase, both in radians.
+
+    A windowed sinc ``duration_s`` long played sample by sample, or an
+    instantaneous rotation when ``duration_s`` is zero.
+    """
+    if duration_s == 0:
+        return Excitation
+    shape = windowed_sinc(1.0, duration_s, dwell_s, bandwidth_time=bandwidth_time)
+
+    def sampled(flip_rad: Any, phase_rad: Any = 0.0) -> Any:
+        return SampledPulse(flip_rad * shape, dwell_s, phase_rad=phase_rad)
+
+    return sampled
+
+
 def half_alpha_parts(
     flip_rad: Any,
     *,
@@ -119,10 +137,14 @@ def half_alpha_parts(
 
     Played at the opposite phase to the train's first pulse, it tips the
     magnetization halfway to where the train holds it. A spacing of zero is
-    an instantaneous rotation at the train's start.
+    an instantaneous rotation at the train's start, and a duration of zero an
+    instantaneous rotation ``spacing_s`` ahead of it.
     """
-    if spacing_s == 0:
-        return [Excitation(flip_rad / 2, torch.pi)]
+    if spacing_s == 0 or duration_s == 0:
+        parts: list = [Excitation(flip_rad / 2, torch.pi)]
+        if spacing_s > 0:
+            parts.append(Delay(spacing_s))
+        return parts
     if spacing_s < duration_s:
         raise ValueError(
             "the alpha/2 preparation is spaced from the train by at least its own pulse"
@@ -130,7 +152,7 @@ def half_alpha_parts(
     waveform = windowed_sinc(
         flip_rad / 2, duration_s, dwell_s, bandwidth_time=bandwidth_time
     )
-    parts: list = [SampledPulse(waveform, dwell_s, phase_rad=torch.pi)]
+    parts = [SampledPulse(waveform, dwell_s, phase_rad=torch.pi)]
     if spacing_s > duration_s:
         parts.append(Delay(spacing_s - duration_s))
     return parts
