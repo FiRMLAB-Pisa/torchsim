@@ -189,7 +189,7 @@ so the invertible range is a number rather than an assumption.
  .. code-block:: none
 
 
-    [<matplotlib.legend.Legend object at 0x7ff57363cf50>]
+    [<matplotlib.legend.Legend object at 0x7f07a9f9d1f0>]
 
 
 
@@ -275,9 +275,9 @@ of three passes over the slice.
          60     3.29%     0.75%     3.5ms     0.5ms
         120     0.78%     0.71%     3.5ms     0.6ms
         250     0.80%     0.71%     6.1ms     0.6ms
-        500     0.62%     0.71%    12.6ms     0.7ms
-       1000     0.66%     0.71%    21.9ms     0.7ms
-       2000     0.71%     0.71%    57.4ms     0.9ms
+        500     0.62%     0.71%    12.0ms     0.7ms
+       1000     0.66%     0.71%    24.5ms     0.7ms
+       2000     0.71%     0.71%    54.0ms     0.8ms
 
 
 
@@ -309,7 +309,7 @@ exactly; the table's advantage is that it was never told how fine.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7ff5735de390>
+    <matplotlib.legend.Legend object at 0x7f07a1a67290>
 
 
 
@@ -370,8 +370,8 @@ product per voxel.
 
     method                      train      map     model      peak      T1      M0
     ------------------------------------------------------------------------------
-    lookup, 60 points           0.00s    0.6ms  0.00 MiB        --   0.75%   0.46%
-    match, 2000 atoms           0.00s   57.5ms  0.05 MiB        --   0.71%   0.45%
+    lookup, 60 points           0.00s    0.5ms  0.00 MiB        --   0.75%   0.46%
+    match, 2000 atoms           0.00s   53.7ms  0.05 MiB        --   0.71%   0.45%
 
 
 
@@ -405,7 +405,7 @@ product per voxel.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.182 seconds)
+   **Total running time of the script:** (0 minutes 2.180 seconds)
 
 
 .. _sphx_glr_download_generated_autoexamples_02-parameter-inference_02-lookup-table.py:

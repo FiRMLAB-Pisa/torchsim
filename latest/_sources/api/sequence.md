@@ -76,8 +76,9 @@ The event stream itself: what a layout composes to, and what a sequence
 arriving from a scanner is read into.
 {meth}`SequenceDescription.from_operators` builds one directly,
 {meth}`SequenceDescription.from_pulseq` reads one out of a Pulseq `.seq` file
-or a sequence a design holds in memory,
-and {meth}`~torchsim.model.Simulator.from_description` runs either.
+or a sequence a design holds in memory, {func}`read_mrd_description` reads the
+ones an MRD stream carries ahead of its first acquisition,
+and {meth}`~torchsim.model.Simulator.from_description` runs any of them.
 
 Reading a `.seq` file needs pypulseq, which parses the format and computes the
 gradient trajectory the echo is found on: `pip install torchsim[pulseq]`.
@@ -89,4 +90,5 @@ Nothing else in the package imports it.
    :nosignatures:
 
    SequenceDescription
+   read_mrd_description
 ```

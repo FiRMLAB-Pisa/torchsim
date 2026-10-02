@@ -317,7 +317,7 @@ already.
  .. code-block:: none
 
 
-    <matplotlib.legend.Legend object at 0x7ff57b3c2960>
+    <matplotlib.legend.Legend object at 0x7f07a1de7f50>
 
 
 
@@ -361,7 +361,7 @@ that must sum to one are written with one as the unknown and the other as
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 12.556 seconds)
+   **Total running time of the script:** (0 minutes 12.452 seconds)
 
 
 .. _sphx_glr_download_generated_autoexamples_02-parameter-inference_03-nonlinear-least-squares.py:

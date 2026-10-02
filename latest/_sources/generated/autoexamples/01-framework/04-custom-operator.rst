@@ -407,7 +407,7 @@ top of it.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.600 seconds)
+   **Total running time of the script:** (0 minutes 0.599 seconds)
 
 
 .. _sphx_glr_download_generated_autoexamples_01-framework_04-custom-operator.py:

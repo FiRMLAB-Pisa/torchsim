@@ -466,7 +466,7 @@ iteration.
 
     per conjugate-gradient step, 3 channels solved for:
       model    J  v      3.1 ms
-      model    J^H v     1.2 ms
+      model    J^H v     1.3 ms
       encoding A         5.3 ms
       encoding A^H       5.0 ms
     the Jacobian this avoids holding: 1.7 MiB, against 0.6 MiB for a signal
@@ -509,7 +509,7 @@ the operator, the loop and the encoding are unchanged.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.821 seconds)
+   **Total running time of the script:** (0 minutes 3.814 seconds)
 
 
 .. _sphx_glr_download_generated_autoexamples_04-model-based-imaging_02-nonlinear-inversion.py:

@@ -162,7 +162,7 @@ arithmetic that searches it.
  .. code-block:: none
 
 
-    [<matplotlib.legend.Legend object at 0x7ff57327b890>]
+    [<matplotlib.legend.Legend object at 0x7f07a1bcede0>]
 
 
 
@@ -268,7 +268,7 @@ keeps is the relative squared error of projecting through it and back.
  .. code-block:: none
 
 
-    [<matplotlib.legend.Legend object at 0x7ff58062cb60>]
+    [<matplotlib.legend.Legend object at 0x7f07b14f9430>]
 
 
 
@@ -344,9 +344,9 @@ dictionary row is the reference point.
     method                       train     map     model      peak      T1      T2
     ------------------------------------------------------------------------------
     match, rank 4                 1.2s   1.86s   1.4 MiB        --    0.6%    1.6%
-    PERK, 500 features            1.4s   0.03s   0.0 MiB        --    1.5%    4.7%
-    PERK, 1000 features           1.9s   0.04s   0.1 MiB        --    0.7%    6.7%
-    PERK, 4000 features          10.6s   0.11s   0.4 MiB        --    1.2%    4.3%
+    PERK, 500 features            1.4s   0.03s   0.0 MiB        --    1.4%   15.0%
+    PERK, 1000 features           1.9s   0.04s   0.1 MiB        --    0.9%    3.2%
+    PERK, 4000 features          10.7s   0.11s   0.4 MiB        --    1.0%    6.9%
 
 
 
@@ -438,8 +438,8 @@ sequence, so the gap is what the method loses.
  .. code-block:: none
 
                 PERK      CRLB     PERK   (median over the brain)
-    T1        8.7 ms    2.4 ms     1.4%
-    T2       10.2 ms    0.5 ms    14.7%
+    T1        9.2 ms    2.4 ms     1.3%
+    T2       11.1 ms    0.5 ms    14.0%
 
 
 
@@ -463,7 +463,7 @@ realization, so repeating the scan would never show that part.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 33.345 seconds)
+   **Total running time of the script:** (0 minutes 33.431 seconds)
 
 
 .. _sphx_glr_download_generated_autoexamples_02-parameter-inference_04-perk.py:

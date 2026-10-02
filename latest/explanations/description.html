@@ -314,6 +314,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.ShimDefinition.html">ShimDefinition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SequenceDescription.html">SequenceDescription</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.read_mrd_description.html">read_mrd_description</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -574,7 +575,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blocks-to-events">Blocks to events</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pulse-shapes">Pulse shapes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#echo-detection">Echo detection</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mrd-waveforms">MRD waveforms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mrd-stream">The MRD stream</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradients-the-stream-does-not-carry">Gradients the stream does not carry</a></li>
 </ul>
             </nav>
@@ -715,14 +716,16 @@ every blade of a PROPELLER – all of them are <code class="docutils literal not
 each echo is central in the direction it sweeps, and one echo flag is set,
 because only one of them is the line through k = 0.</p>
 </section>
-<section id="mrd-waveforms">
-<h2>MRD waveforms<a class="headerlink" href="#mrd-waveforms" title="Link to this heading">#</a></h2>
-<p>A scanner does not send a file. The description travels beside the raw data as
-four MRD custom waveforms – a scan-global header, the event stream, the RF
-shapes, and the transmit shims – which the MRD client decodes into the same
-object <a class="reference internal" href="../generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.from_pulseq" title="torchsim.SequenceDescription.from_pulseq"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_pulseq()</span></code></a> builds. A simulation
-driven from a design script and one driven from a running scan therefore read
-one derivation, not two.</p>
+<section id="the-mrd-stream">
+<h2>The MRD stream<a class="headerlink" href="#the-mrd-stream" title="Link to this heading">#</a></h2>
+<p>A scanner does not send a file. Pulserver’s reconstruction proxy reads the
+sequence file a series was played from and sends its description on the MRD
+stream, after the XML header and before the first acquisition, as one <code class="docutils literal notranslate"><span class="pre">TEXT</span></code>
+message holding a description per file of the sequence chain.
+<code class="xref py py-func docutils literal notranslate"><span class="pre">read_mrd_description()</span></code> decodes it into the same object
+<a class="reference internal" href="../generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.from_pulseq" title="torchsim.SequenceDescription.from_pulseq"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_pulseq()</span></code></a> builds, so a simulation driven
+from a design script and one driven from a running scan read one derivation,
+not two. Which model the rows drive is chosen by the reader.</p>
 <p>The fields of an event are positional and in that wire order, which is why an
 RF event’s numbers are reached through named properties rather than by index.</p>
 </section>
@@ -792,7 +795,7 @@ preparation that has to reach the kernels belongs in a pulse the wire can name.<
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#blocks-to-events">Blocks to events</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pulse-shapes">Pulse shapes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#echo-detection">Echo detection</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mrd-waveforms">MRD waveforms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-mrd-stream">The MRD stream</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradients-the-stream-does-not-carry">Gradients the stream does not carry</a></li>
 </ul>
   </nav></div>

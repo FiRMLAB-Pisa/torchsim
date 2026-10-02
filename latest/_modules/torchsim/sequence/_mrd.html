@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>torchsim.simulators.mpnrage &#8212; TorchSim Documentation</title>
+    <title>torchsim.sequence._mrd &#8212; TorchSim Documentation</title>
   
   
   
@@ -52,7 +52,7 @@
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/torchsim/simulators/mpnrage';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/torchsim/sequence/_mrd';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.20.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://firmlab-pisa.github.io/torchsim/versions.json';
@@ -61,7 +61,7 @@
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/_modules/torchsim/simulators/mpnrage.html" />
+    <link rel="canonical" href="https://firmlab-pisa.github.io/torchsim/latest/_modules/torchsim/sequence/_mrd.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -424,7 +424,7 @@
       
       
       
-      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2F_modules/torchsim/simulators/mpnrage.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/FiRMLAB-Pisa/torchsim/issues/new?title=Issue%20on%20page%20%2F_modules/torchsim/sequence/_mrd.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -501,106 +501,183 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <h1>Source code for torchsim.simulators.mpnrage</h1><div class="highlight"><pre>
-<span></span><span class="sd">"""Magnetization-prepared multi-echo spoiled GRE."""</span>
+  <h1>Source code for torchsim.sequence._mrd</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Reading the sequence description an MRD stream carries ahead of its data.</span>
+
+<span class="sd">Pulserver's reconstruction proxy infers the description from the sequence file</span>
+<span class="sd">a series was played from and sends it after the MRD XML header and before the</span>
+<span class="sd">first acquisition, as one ``TEXT`` message: a JSON object under the key</span>
+<span class="sd">``pulserver_sequence_description``, holding one entry per file of the sequence</span>
+<span class="sd">chain. What is read here is mechanical; which signal model the rows drive is</span>
+<span class="sd">chosen by whoever reads them.</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"MPnRAGESimulator"</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"read_mrd_description"</span><span class="p">]</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">struct</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">BinaryIO</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">npt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">..model</span><span class="w"> </span><span class="kn">import</span> <span class="n">SPOILED</span><span class="p">,</span> <span class="n">Simulator</span><span class="p">,</span> <span class="n">SpinPhysics</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">..sequence._array</span><span class="w"> </span><span class="kn">import</span> <span class="n">as_torch</span><span class="p">,</span> <span class="n">matched</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._description</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AdcRole</span><span class="p">,</span>
+    <span class="n">EventType</span><span class="p">,</span>
+    <span class="n">RfDefinition</span><span class="p">,</span>
+    <span class="n">RfShape</span><span class="p">,</span>
+    <span class="n">RfUse</span><span class="p">,</span>
+    <span class="n">SequenceDescription</span><span class="p">,</span>
+    <span class="n">SequenceEvent</span><span class="p">,</span>
+    <span class="n">_trapezoid</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1">#: The key the description's JSON object opens with.</span>
+<span class="n">MESSAGE_KEY</span> <span class="o">=</span> <span class="s2">"pulserver_sequence_description"</span>
+
+<span class="c1"># MRD streaming message identifiers, and the fixed size of a FILENAME message.</span>
+<span class="n">_FILENAME</span><span class="p">,</span> <span class="n">_CONFIG</span><span class="p">,</span> <span class="n">_HEADER</span><span class="p">,</span> <span class="n">_CLOSE</span><span class="p">,</span> <span class="n">_TEXT</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span>
+<span class="n">_FILENAME_BYTES</span> <span class="o">=</span> <span class="mi">1024</span>
 
 
-<div class="viewcode-block" id="MPnRAGESimulator">
-<a class="viewcode-back" href="../../../generated/torchsim.simulators.MPnRAGESimulator.html#torchsim.simulators.MPnRAGESimulator">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">MPnRAGESimulator</span><span class="p">(</span><span class="n">Simulator</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""An inversion followed by a spoiled gradient-echo train, every shot read.</span>
+<div class="viewcode-block" id="read_mrd_description">
+<a class="viewcode-back" href="../../../generated/torchsim.read_mrd_description.html#torchsim.read_mrd_description">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_mrd_description</span><span class="p">(</span>
+    <span class="n">stream</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">SequenceDescription</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Read an MRD stream up to its sequence description.</span>
 
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    .. exec::</span>
+<span class="sd">    The messages ahead of the description -- a config, a config file name, the</span>
+<span class="sd">    XML header, other texts -- are read and the stream is left at the message</span>
+<span class="sd">    after the description, which is where its first acquisition is.</span>
 
-<span class="sd">        from torchsim.simulators import MPnRAGESimulator</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    stream : binary file-like</span>
+<span class="sd">        The stream, read with ``read(n)``: an open file, or a socket's</span>
+<span class="sd">        ``makefile("rb")``.</span>
 
-<span class="sd">        sequence = MPnRAGESimulator(nshots=128, flip=5.0, TR=10.0)</span>
-<span class="sd">        signal = sequence.simulate(T1=1000.0, inv_efficiency=0.95)</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    header : str or None</span>
+<span class="sd">        The MRD XML header, ``None`` if the stream carried none before the</span>
+<span class="sd">        description.</span>
+<span class="sd">    descriptions : list of SequenceDescription</span>
+<span class="sd">        One per file of the sequence chain, in play order. RF definitions carry</span>
+<span class="sd">        the envelope normalised to a peak of one, played at the event's</span>
+<span class="sd">        ``amplitude_hz``, and their sample times in units of the RF raster.</span>
 
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If any other message, or the end of the stream, comes before the</span>
+<span class="sd">        description.</span>
 <span class="sd">    """</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="p">(</span><span class="n">identifier</span><span class="p">,)</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">"&lt;H"</span><span class="p">,</span> <span class="n">_exactly</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">identifier</span> <span class="o">==</span> <span class="n">_FILENAME</span><span class="p">:</span>
+            <span class="n">_exactly</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">_FILENAME_BYTES</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_CONFIG</span><span class="p">,</span> <span class="n">_HEADER</span><span class="p">,</span> <span class="n">_TEXT</span><span class="p">):</span>
+            <span class="p">(</span><span class="n">length</span><span class="p">,)</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s2">"&lt;I"</span><span class="p">,</span> <span class="n">_exactly</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">_exactly</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">b</span><span class="s2">"</span><span class="se">\0</span><span class="s2">"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">identifier</span> <span class="o">==</span> <span class="n">_HEADER</span><span class="p">:</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="n">text</span>
+            <span class="k">elif</span> <span class="n">identifier</span> <span class="o">==</span> <span class="n">_TEXT</span> <span class="ow">and</span> <span class="n">text</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">'{"'</span> <span class="o">+</span> <span class="n">MESSAGE_KEY</span> <span class="o">+</span> <span class="s1">'"'</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">header</span><span class="p">,</span> <span class="p">[</span>
+                    <span class="n">_description</span><span class="p">(</span><span class="n">each</span><span class="p">)</span> <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">text</span><span class="p">)[</span><span class="n">MESSAGE_KEY</span><span class="p">]</span>
+                <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"MRD message </span><span class="si">{</span><span class="n">identifier</span><span class="si">}</span><span class="s2"> arrived before the sequence description"</span>
+            <span class="p">)</span></div>
 
-    <span class="n">model</span> <span class="o">=</span> <span class="n">SpinPhysics</span><span class="p">(</span>
-        <span class="n">properties</span><span class="o">=</span><span class="p">{</span>
-            <span class="s2">"T1"</span><span class="p">:</span> <span class="s2">"t1_ms"</span><span class="p">,</span>
-            <span class="s2">"M0"</span><span class="p">:</span> <span class="s2">"m0"</span><span class="p">,</span>
-            <span class="s2">"B1"</span><span class="p">:</span> <span class="s2">"b1"</span><span class="p">,</span>
-            <span class="s2">"inv_efficiency"</span><span class="p">:</span> <span class="s2">"inversion_efficiency"</span><span class="p">,</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_exactly</span><span class="p">(</span><span class="n">stream</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="n">read</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">read</span><span class="p">)</span> <span class="o">!=</span> <span class="n">count</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"the MRD stream ended before the sequence description"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">read</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_array</span><span class="p">(</span><span class="n">packed</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">packed</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_description</span><span class="p">(</span><span class="n">fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">SequenceDescription</span><span class="p">:</span>
+    <span class="n">kinds</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"type"</span><span class="p">],</span> <span class="s2">"&lt;i4"</span><span class="p">)</span>
+    <span class="n">times_us</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"timestamp_us"</span><span class="p">],</span> <span class="s2">"&lt;f8"</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">_array</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"params"</span><span class="p">],</span> <span class="s2">"&lt;f4"</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">kinds</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+    <span class="n">raster_s</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"rf_raster_time_s"</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">SequenceDescription</span><span class="p">(</span>
+        <span class="n">subsequence_index</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"subsequence_index"</span><span class="p">]),</span>
+        <span class="n">tr_duration_us</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"tr_duration_us"</span><span class="p">]),</span>
+        <span class="n">events</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">_event</span><span class="p">(</span><span class="n">EventType</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kind</span><span class="p">)),</span> <span class="nb">float</span><span class="p">(</span><span class="n">time_us</span><span class="p">),</span> <span class="n">row</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">kind</span><span class="p">,</span> <span class="n">time_us</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">kinds</span><span class="p">,</span> <span class="n">times_us</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">),</span>
+        <span class="n">rf_definitions</span><span class="o">=</span><span class="p">{</span>
+            <span class="nb">int</span><span class="p">(</span><span class="n">each</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]):</span> <span class="n">_definition</span><span class="p">(</span><span class="n">each</span><span class="p">,</span> <span class="n">raster_s</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">each</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">[</span><span class="s2">"rf_definitions"</span><span class="p">]</span>
         <span class="p">},</span>
-        <span class="c1"># The train samples at the pulse and spoils after it, so no transverse</span>
-        <span class="c1"># magnetization survives an interval and no T2 is asked for.</span>
-        <span class="n">fixed</span><span class="o">=</span><span class="p">{</span><span class="s2">"t2_ms"</span><span class="p">:</span> <span class="mf">100.0</span><span class="p">},</span>
-        <span class="n">operators</span><span class="o">=</span><span class="n">SPOILED</span><span class="p">,</span>
+        <span class="n">rf_raster_time_s</span><span class="o">=</span><span class="n">raster_s</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">states</span> <span class="o">=</span> <span class="mi">1</span>
-
-<div class="viewcode-block" id="MPnRAGESimulator.layout">
-<a class="viewcode-back" href="../../../generated/torchsim.simulators.MPnRAGESimulator.html#torchsim.simulators.MPnRAGESimulator.layout">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">layout</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="o">*</span><span class="p">,</span>
-        <span class="n">nshots</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-        <span class="n">flip</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
-        <span class="n">TR</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
-        <span class="n">TI</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-        <span class="n">phases</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Return the prepared train, every shot acquired.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        nshots : int</span>
-<span class="sd">            Readouts per inversion block.</span>
-<span class="sd">        flip : float or array-like</span>
-<span class="sd">            Excitation flip angle in degrees, scalar or one per shot.</span>
-<span class="sd">        TR : float or array-like</span>
-<span class="sd">            Repetition time in milliseconds.</span>
-<span class="sd">        TI : float or array-like, optional</span>
-<span class="sd">            Inversion time in milliseconds.</span>
-<span class="sd">        phases : float or array-like, optional</span>
-<span class="sd">            Excitation phases in degrees.</span>
-<span class="sd">        """</span>
-        <span class="n">shots</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">as_torch</span><span class="p">(</span><span class="n">nshots</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(())</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
-        <span class="k">if</span> <span class="n">shots</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"nshots must be positive"</span><span class="p">)</span>
-        <span class="n">angles</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">as_torch</span><span class="p">(</span><span class="n">flip</span><span class="p">)))</span>
-        <span class="k">if</span> <span class="n">angles</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">angles</span> <span class="o">=</span> <span class="n">angles</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">shots</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">angles</span><span class="o">.</span><span class="n">numel</span><span class="p">()</span> <span class="o">!=</span> <span class="n">shots</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"flip must be scalar or contain nshots values"</span><span class="p">)</span>
-        <span class="n">turns</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">matched</span><span class="p">(</span><span class="n">phases</span><span class="p">,</span> <span class="n">angles</span><span class="p">))</span>
-        <span class="n">spacing_s</span> <span class="o">=</span> <span class="n">matched</span><span class="p">(</span><span class="n">TR</span><span class="p">,</span> <span class="n">angles</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-3</span>
-
-        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">inversion</span><span class="p">(</span><span class="n">duration_s</span><span class="o">=</span><span class="n">TI</span> <span class="o">*</span> <span class="mf">1e-3</span><span class="p">)]</span>
-        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">shots</span><span class="p">):</span>
-            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">excitation</span><span class="p">(</span><span class="n">angles</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">turns</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
-            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">operators</span><span class="o">.</span><span class="n">readout</span><span class="p">(</span><span class="n">turns</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">duration_s</span><span class="o">=</span><span class="n">spacing_s</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="n">parts</span></div>
 
 
-<div class="viewcode-block" id="MPnRAGESimulator.evaluate">
-<a class="viewcode-back" href="../../../generated/torchsim.simulators.MPnRAGESimulator.html#torchsim.simulators.MPnRAGESimulator.evaluate">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">properties</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="o">**</span><span class="n">sequence</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Return the train the inversion recovers through."""</span>
-        <span class="k">return</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">properties</span><span class="p">,</span> <span class="o">**</span><span class="n">sequence</span><span class="p">)</span></div>
-</div>
+<span class="k">def</span><span class="w"> </span><span class="nf">_event</span><span class="p">(</span><span class="n">kind</span><span class="p">:</span> <span class="n">EventType</span><span class="p">,</span> <span class="n">time_us</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SequenceEvent</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="ow">is</span> <span class="n">EventType</span><span class="o">.</span><span class="n">RF</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SequenceEvent</span><span class="o">.</span><span class="n">rf</span><span class="p">(</span>
+            <span class="n">time_us</span><span class="p">,</span>
+            <span class="n">definition_id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+            <span class="n">use</span><span class="o">=</span><span class="n">RfUse</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">])),</span>
+            <span class="n">amplitude_hz</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+            <span class="n">phase_rad</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span>
+            <span class="n">frequency_hz</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span>
+            <span class="n">shim_id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">]),</span>
+            <span class="n">slice_select_gradient_hz_per_m</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">6</span><span class="p">]),</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="ow">is</span> <span class="n">EventType</span><span class="o">.</span><span class="n">ADC</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">SequenceEvent</span><span class="o">.</span><span class="n">adc</span><span class="p">(</span>
+            <span class="n">time_us</span><span class="p">,</span>
+            <span class="n">role</span><span class="o">=</span><span class="n">AdcRole</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span>
+            <span class="n">phase_rad</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="n">is_echo</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">SequenceEvent</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">time_us</span><span class="p">)</span>
 
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_shape</span><span class="p">(</span><span class="n">fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RfShape</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">RfShape</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"num_uncompressed"</span><span class="p">]),</span> <span class="n">_array</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"samples"</span><span class="p">],</span> <span class="s2">"&lt;f4"</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_definition</span><span class="p">(</span><span class="n">fields</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">raster_s</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RfDefinition</span><span class="p">:</span>
+    <span class="n">magnitude</span> <span class="o">=</span> <span class="n">_shape</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"magnitude"</span><span class="p">])</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">_shape</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"time"</span><span class="p">])</span>
+    <span class="n">envelope</span> <span class="o">=</span> <span class="n">magnitude</span><span class="o">.</span><span class="n">decompress</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">time_s</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">envelope</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">raster_s</span>
+        <span class="k">if</span> <span class="n">time</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="k">else</span> <span class="n">time</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">raster_s</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">RfDefinition</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]),</span>
+        <span class="n">bandwidth_hz</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"bandwidth_hz"</span><span class="p">]),</span>
+        <span class="n">num_bands</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"num_bands"</span><span class="p">]),</span>
+        <span class="n">band_frequency_offsets_hz</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span>
+            <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">[</span><span class="s2">"band_frequency_offsets_hz"</span><span class="p">]</span>
+        <span class="p">),</span>
+        <span class="n">band_bandwidth_hz</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"band_bandwidth_hz"</span><span class="p">]),</span>
+        <span class="c1"># Not carried by the stream: the stored envelope's squared integral.</span>
+        <span class="n">total_b1sq_power</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">_trapezoid</span><span class="p">(</span><span class="n">envelope</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">time_s</span><span class="p">)),</span>
+        <span class="n">magnitude</span><span class="o">=</span><span class="n">magnitude</span><span class="p">,</span>
+        <span class="n">phase</span><span class="o">=</span><span class="n">_shape</span><span class="p">(</span><span class="n">fields</span><span class="p">[</span><span class="s2">"phase"</span><span class="p">]),</span>
+        <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">,</span>
+    <span class="p">)</span>
 </pre></div>
 
                 </article>

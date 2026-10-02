@@ -312,6 +312,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.ShimDefinition.html">ShimDefinition</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.compose_spinor.html">compose_spinor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.SequenceDescription.html">SequenceDescription</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../generated/torchsim.read_mrd_description.html">read_mrd_description</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="estimators.html">Parameter estimation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -684,8 +685,9 @@ a pulse’s own samples are designed rather than chosen.</p>
 arriving from a scanner is read into.
 <a class="reference internal" href="../generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.from_operators" title="torchsim.SequenceDescription.from_operators"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SequenceDescription.from_operators()</span></code></a> builds one directly,
 <a class="reference internal" href="../generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription.from_pulseq" title="torchsim.SequenceDescription.from_pulseq"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SequenceDescription.from_pulseq()</span></code></a> reads one out of a Pulseq <code class="docutils literal notranslate"><span class="pre">.seq</span></code> file
-or a sequence a design holds in memory,
-and <a class="reference internal" href="../generated/torchsim.model.Simulator.html#torchsim.model.Simulator.from_description" title="torchsim.model.Simulator.from_description"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_description()</span></code></a> runs either.</p>
+or a sequence a design holds in memory, <a class="reference internal" href="../generated/torchsim.read_mrd_description.html#torchsim.read_mrd_description" title="torchsim.read_mrd_description"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_mrd_description()</span></code></a> reads the
+ones an MRD stream carries ahead of its first acquisition,
+and <a class="reference internal" href="../generated/torchsim.model.Simulator.html#torchsim.model.Simulator.from_description" title="torchsim.model.Simulator.from_description"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_description()</span></code></a> runs any of them.</p>
 <p>Reading a <code class="docutils literal notranslate"><span class="pre">.seq</span></code> file needs pypulseq, which parses the format and computes the
 gradient trajectory the echo is found on: <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">torchsim[pulseq]</span></code>.
 Nothing else in the package imports it.</p>
@@ -693,6 +695,9 @@ Nothing else in the package imports it.</p>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="../generated/torchsim.SequenceDescription.html#torchsim.SequenceDescription" title="torchsim.SequenceDescription"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SequenceDescription</span></code></a></p></td>
 <td><p>Event stream and RF resources for one sequence or subsequence.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/torchsim.read_mrd_description.html#torchsim.read_mrd_description" title="torchsim.read_mrd_description"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_mrd_description</span></code></a></p></td>
+<td><p>Read an MRD stream up to its sequence description.</p></td>
 </tr>
 </tbody>
 </table>
