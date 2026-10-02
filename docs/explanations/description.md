@@ -140,14 +140,16 @@ The train in the figure is the tied case: all eight roles are `SINGLE`, because
 each echo is central in the direction it sweeps, and one echo flag is set,
 because only one of them is the line through k = 0.
 
-## MRD waveforms
+## The MRD stream
 
-A scanner does not send a file. The description travels beside the raw data as
-four MRD custom waveforms -- a scan-global header, the event stream, the RF
-shapes, and the transmit shims -- which the MRD client decodes into the same
-object {meth}`~torchsim.SequenceDescription.from_pulseq` builds. A simulation
-driven from a design script and one driven from a running scan therefore read
-one derivation, not two.
+A scanner does not send a file. Pulserver's reconstruction proxy reads the
+sequence file a series was played from and sends its description on the MRD
+stream, after the XML header and before the first acquisition, as one `TEXT`
+message holding a description per file of the sequence chain.
+{func}`~torchsim.sequence.read_mrd_description` decodes it into the same object
+{meth}`~torchsim.SequenceDescription.from_pulseq` builds, so a simulation driven
+from a design script and one driven from a running scan read one derivation,
+not two. Which model the rows drive is chosen by the reader.
 
 The fields of an event are positional and in that wire order, which is why an
 RF event's numbers are reached through named properties rather than by index.
